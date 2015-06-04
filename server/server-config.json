@@ -1,0 +1,37 @@
+{
+    "ServerConfig-production": {
+        "port": 8000,
+        "protocol": "https",
+        "logger": "default",
+        "logAllCalls": false,
+        "enableCompression": true,
+        "webRoot": "/public",
+        "enableSessions": false,
+        "sessionSecret1": "123",
+        "sessionSecret2": "1234",
+        "enableCORS": true,
+        "AccessControlAllowOrigin": "*",
+        "AccessControlAllowMethods": "GET,PUT,POST,DELETE,OPTIONS",
+        "AccessControlAllowHeaders": "Origin, X-Requested-With, Content-Type, Accept",
+        "AccessControlAllowCredentials": true,
+        "AccessControlMaxAge": 3600
+    },
+
+    "ServerConfig-development": {
+        "port": 8000,
+        "protocol": "http",
+        "logger": "dev",
+        "logAllCalls": false,
+        "enableCompression": true,
+        "webRoot": "../WebRTC",
+        "enableSessions": false,
+        "sessionSecret1": "123",
+        "sessionSecret2": "1234",
+        "enableCORS": true,
+        "AccessControlAllowOrigin": "*",
+        "AccessControlAllowMethods": "GET,PUT,POST,DELETE,OPTIONS",
+        "AccessControlAllowHeaders": "Origin, X-Requested-With, Content-Type, Accept",
+        "AccessControlAllowCredentials": true,
+        "AccessControlMaxAge": 3600
+    }
+}

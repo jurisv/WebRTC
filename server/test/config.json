@@ -1,0 +1,10 @@
+{
+    "name": "tests",
+    "global_timeout": 10000,
+    "protocol": "http://",
+    "url": "localhost:8000",
+    "win_width": 1024,
+    "win_height": 768,
+    "browser": "chrome",
+    "use_screenshots": false
+}
