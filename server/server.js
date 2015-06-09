@@ -23,7 +23,33 @@ var io = require('socket.io')(http);
 nconf.env().file({file: path.join(__dirname, 'server-config.json')});
 environment = global.App.mode = process.env.NODE_ENV || 'development';
 ServerConfig = nconf.get("ServerConfig-" + environment);
-ExtDirectConfig = nconf.get("ExtDirectConfig-" + environment);
+
+// GLOBAL: make the express app global
+global.App = app;
+
+var OpenTok = require('opentok');               //OpenTok WebTRC service calls  http://www.tokbox.com
+
+// Verify that the API Key and API Secret are defined
+var otApiKey = ServerConfig.otAPIKEY,
+    otApiSecret = ServerConfig.otAPISECRET;
+if (!otApiKey || !otApiSecret) {
+  console.log('You must specify API_KEY and API_SECRET environment variables');
+  process.exit(1);
+}
+
+// GLOBAL: Initialize OpenTok authenticated instance
+opentok = new OpenTok(otApiKey, otApiSecret);
+
+
+// Create a session and store it in the express app
+// This will be the global room for this server
+opentok.createSession(function(err, session) {
+  if (err) throw err;
+  app.set('sessionId', session.sessionId);
+
+  // We will wait on starting the app until this is done
+  initServer();
+});
 
 // simple logger placing first and using next()
 // allows this to run as well as other matching methods.
@@ -53,23 +79,7 @@ app.use(express.static('Overrides', __dirname + '../admin/overrides/' ));
 app.use(express.static('Ext6','/Users/brad/Sencha/SDK/ext-6.0.0/' ));
 
 
-app.resource = function(path, obj) {
-  this.get(path, obj.index);                                        //LIST
-  this.get(path + '/:a..:b.:format?', function(req, res){           //RANGE
-    var a = parseInt(req.params.a, 10);
-    var b = parseInt(req.params.b, 10);
-    var format = req.params.format;
-    obj.range(req, res, a, b, format);
-  });
-  this.get(path + '/:id', obj.show);                                //DETAIL
-  this.all(path + '/:id/edit', obj.edit);                           //EDIT
-  this.all(path + '/:id/cmd/:mode', function(req, res){             //CMD-MODE
-    var mode = req.params.mode;
-    obj.mode(req, res, mode);
-  });
-  this.delete(path + '/:id', obj.destroy);                             //DELETE
-};
-
+//Route all data related calls as a single route
 app.route('/data/:store')
   .get(function(req, res) {
     var store = 'GET_'+ req.params.store;
@@ -111,10 +121,14 @@ if(ServerConfig.enableCORS){
 app.use(function(err, req, res, next){
   // whatever you want here, feel free to populate
   // properties on `err` to treat it differently in here.
-  res.send(err.status || 500, { error: err.message });
+  res.status(err.status || 500).send({ error: err.message });
 });
 
 //LAST
+// our custom JSON 404 middleware. Since it's placed last
+// it will be the last middleware called, if all others
+// invoke next() and do not respond.
+
 app.use(function(req, res){
  var template = fs.readFileSync(__dirname + '/views/404.html', 'utf8');
  var body = ejs.render(template, {
@@ -123,22 +137,26 @@ app.use(function(req, res){
   });
   res.status(404).send(body) ;
 });
-// our custom JSON 404 middleware. Since it's placed last
-// it will be the last middleware called, if all others
-// invoke next() and do not respond.
 
 
-http.listen(port);
+
+
+
+// Starts server listening and called by opentok after it's ready
+function initServer(){
+    http.listen(port);
+}
 
 io.on('connection', function(socket){
   console.log('a user connected');
 
   socket.broadcast.emit('hi');
 
-   io.emit('chat message', 'connected!');
+  io.emit('chat message', 'connected!');
 
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
   });
 
 });
+

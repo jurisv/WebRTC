@@ -9,6 +9,23 @@ Ext.define('WebRTC.view.main.MainController', {
 
     alias: 'controller.main',
 
+    init: function() {
+         var me = this;
+         //get the global TokBox session
+         Ext.Ajax.request({
+            url: '/data/global/',
+            params: {
+                id: 1
+            },
+            success: function(response){
+                var session = response.responseText;
+
+                //set the global session
+                me.getViewModel().set('globalSession',session);
+            }
+        });
+    },
+
     onItemSelected: function (sender, record) {
         Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
     },

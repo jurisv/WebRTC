@@ -108,5 +108,10 @@ Ext.define('WebRTC.view.main.Main', {
         title: 'DataChannel',
         iconCls: 'fa-database',
         xtype: 'chatmain'
+    }, {
+        title: 'QuickStart',
+        // iconCls: 'fa-database',
+        xtype: 'panel',
+        id: 'myPublisherDiv'
     }]
 });

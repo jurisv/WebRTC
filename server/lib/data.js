@@ -1,32 +1,41 @@
-
-function wrapresponse (data,total){
-    return {
-            "success": true,
-            "message": "Successful",
-            "total": total,
-            "timestamp": new Date(),
-            "data" : data
-    }
-}
-
 var data = {
+
+    wrapresponse: function  (data,total){
+        return {
+                "success": true,
+                "message": "Successful",
+                "total": total,
+                "timestamp": new Date(),
+                "data" : data
+        }
+    },
+
+    getGlobal: function (req, res){
+        var session = App.get('sessionId'),
+            token = global.opentok.generateToken(session),
+            data = {
+                apiKey: '45254262',
+                sessionId: session,
+                token: token
+            };
+        //send the global app sessionId setup during startup
+        res.status(200).send(data);
+    },
+
     GET_users: function(req, res){
         res.status(200).send('user');
     },
-    index: function(req, res){
+    GET_rooms: function(req, res){
+        res.status(200).send({rooms:'hi'});
     },
-    show: function(req, res){
-        res.send('show');
+    POST_global: function(req, res){
+        this.getGlobal(req, res)
     },
-    edit: function(req, res){
-        res.send('edit');
-    },
-    destroy: function(req, res){
-        res.send('destroy');
-    },
-    range: function(req, res ){ //a, b, format
-        res.send('range');
+    GET_global: function(req, res){
+        this.getGlobal(req, res)
     }
+
+
 };
 
 module.exports = data;

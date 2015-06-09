@@ -13,7 +13,7 @@ Ext.define('WebRTC.Application', {
     ],
     
     launch: function () {
-        // TODO - Launch the application
+
     },
 
     onAppUpdate: function () {

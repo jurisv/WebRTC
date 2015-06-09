@@ -14,7 +14,9 @@
         "AccessControlAllowMethods": "GET,PUT,POST,DELETE,OPTIONS",
         "AccessControlAllowHeaders": "Origin, X-Requested-With, Content-Type, Accept",
         "AccessControlAllowCredentials": true,
-        "AccessControlMaxAge": 3600
+        "AccessControlMaxAge": 3600,
+        "otAPIKEY": "45254262",
+        "otAPISECRET": "e5347229812c31502f93a0337b673ffcca9859ff"
     },
 
     "ServerConfig-development": {
@@ -32,6 +34,8 @@
         "AccessControlAllowMethods": "GET,PUT,POST,DELETE,OPTIONS",
         "AccessControlAllowHeaders": "Origin, X-Requested-With, Content-Type, Accept",
         "AccessControlAllowCredentials": true,
-        "AccessControlMaxAge": 3600
+        "AccessControlMaxAge": 3600,
+        "otAPIKEY": "45254262",
+        "otAPISECRET": "e5347229812c31502f93a0337b673ffcca9859ff"
     }
 }

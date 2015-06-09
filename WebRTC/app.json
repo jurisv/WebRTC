@@ -180,6 +180,10 @@
             //this is a remotely grabbed, locally cached adapter to standardize the WebRTC calls
             "path": "http://webrtc.github.io/samples/src/js/adapter.js",
             "remote": true
+        },{
+            //this is a remotely grabbed, locally cached tokbox session management client library
+            "path": "http://static.opentok.com/v2/js/opentok.min.js",
+            "remote": true
         }
     ],
 
