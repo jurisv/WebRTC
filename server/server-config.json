@@ -9,33 +9,35 @@
         "enableSessions": false,
         "sessionSecret1": "123",
         "sessionSecret2": "1234",
-        "enableCORS": true,
+        "enableCORS": false,
         "AccessControlAllowOrigin": "*",
         "AccessControlAllowMethods": "GET,PUT,POST,DELETE,OPTIONS",
         "AccessControlAllowHeaders": "Origin, X-Requested-With, Content-Type, Accept",
         "AccessControlAllowCredentials": true,
         "AccessControlMaxAge": 3600,
         "otAPIKEY": "45254262",
-        "otAPISECRET": "e5347229812c31502f93a0337b673ffcca9859ff"
+        "otAPISECRET": "e5347229812c31502f93a0337b673ffcca9859ff",
+        "otDefaultSessionId": "1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4"
     },
-
     "ServerConfig-development": {
         "port": 8000,
         "protocol": "http",
         "logger": "dev",
-        "logAllCalls": false,
+        "logAllCalls": true,
         "enableCompression": true,
         "webRoot": "../WebRTC",
         "enableSessions": false,
         "sessionSecret1": "123",
         "sessionSecret2": "1234",
-        "enableCORS": true,
+        "enableCORS": false,
         "AccessControlAllowOrigin": "*",
         "AccessControlAllowMethods": "GET,PUT,POST,DELETE,OPTIONS",
         "AccessControlAllowHeaders": "Origin, X-Requested-With, Content-Type, Accept",
         "AccessControlAllowCredentials": true,
         "AccessControlMaxAge": 3600,
+        "ExtLocalPath": "/Users/brad/Sencha/SDK/ext-6.0.0/",
         "otAPIKEY": "45254262",
-        "otAPISECRET": "e5347229812c31502f93a0337b673ffcca9859ff"
+        "otAPISECRET": "e5347229812c31502f93a0337b673ffcca9859ff",
+        "otDefaultSessionId": "1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4"
     }
 }

@@ -11,7 +11,7 @@ Ext.define('WebRTC.view.main.Main', {
         'WebRTC.view.main.List',
 
         'WebRTC.view.main.UserMedia',
-        'WebRTC.view.chat.ChatMain'
+        'WebRTC.view.chat.ChatRoom'
 
     ],
 
@@ -20,10 +20,11 @@ Ext.define('WebRTC.view.main.Main', {
 
     ui: 'navigation',
 
+    deferredRender: false,
     tabBarHeaderPosition: 1,
     titleRotation: 0,
     tabRotation: 0,
-    activeTab: 3,
+   // activeTab: 2,
 
     header: {
         layout: {
@@ -31,7 +32,7 @@ Ext.define('WebRTC.view.main.Main', {
         },
         title: {
             bind: {
-                text: '{name}'
+                text: '{appName}'
             },
             flex: 0
         },
@@ -78,40 +79,52 @@ Ext.define('WebRTC.view.main.Main', {
         iconCls: 'fa-home',
         // The following grid shares a store with the classic version's grid as well!
         items: [{
+            // xtype: 'roomlist'
+        },{
             xtype: 'mainlist'
         }]
-    }, {
+    },{
         title: 'UserMedia',
         iconCls: 'fa-user',
         layout: 'center',
+        hidden: true,
         items: [{
-            xtype: 'UserMedia',
+            // xtype: 'UserMedia',
             width: 640,
             height: 480
 
         }]
     }, {
-        title: 'PeerToPeer',
+        title: 'Video',
         iconCls: 'fa-users',
-        layout: 'column',
-        autoScroll: true,
+        layout: 'border',
         items: [{
-            xtype: 'UserMedia',
-            width: '40%'
+            xtype: 'panel',
+            bind: {
+                title: '{name}'
+            },
+            itemId: 'publisher',
+            region: 'center',
+            layout: 'fit',
+            width: '50%'
+
 
         },{
-            xtype: 'UserMedia',
-            width: '40%'
-
-        }]
+            xtype: 'panel',
+            itemId: 'subscribers',
+            autoScroll: true,
+            width: '50%',
+            // split:true,
+            // collapsible: true,
+            // collasped:false,
+            region: 'east'
+        }],
+        listeners:{
+           // activate: 'onPublisherActivate'
+        }
     }, {
-        title: 'DataChannel',
-        iconCls: 'fa-database',
-        xtype: 'chatmain'
-    }, {
-        title: 'QuickStart',
-        // iconCls: 'fa-database',
-        xtype: 'panel',
-        id: 'myPublisherDiv'
+        title: 'Chat',
+        iconCls: 'fa-weixin',
+        xtype: 'chatroom'
     }]
 });

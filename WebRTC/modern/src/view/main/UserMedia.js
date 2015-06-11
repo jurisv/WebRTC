@@ -45,7 +45,7 @@ Ext.define('WebRTC.view.main.UserMedia', {
     },
 
     listeners: {
-        afterrender: function(){this.doGetUserMedia()},  //classic
-        initialize: function(){this.doGetUserMedia()}   //modern
+        // afterrender: function(){this.doGetUserMedia()},  //classic
+        // initialize: function(){this.doGetUserMedia()}   //modern
     }
 });

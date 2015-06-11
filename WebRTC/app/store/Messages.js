@@ -1,17 +1,8 @@
 Ext.define('WebRTC.store.Messages', {
     extend: 'Ext.data.Store',
-
     alias: 'store.messages',
-
-    fields: [
-        'message', 'time', 'user'
-    ],
-
-    data: {
-        items: [
-            { message: 'Enter your message below' }
-        ]
-    },
+    fields: [  'message', 'time', 'from'],
+    data: { items: [] },
     proxy: {
         type: 'memory',
         reader: {

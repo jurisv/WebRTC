@@ -9,16 +9,15 @@ Ext.define('WebRTC.view.main.List', {
         'WebRTC.store.Personnel'
     ],
 
-    title: 'Personnel',
+    title: 'Users On',
 
     store: {
         type: 'personnel'
     },
 
     columns: [
-        { text: 'Name',  dataIndex: 'name' },
-        { text: 'Email', dataIndex: 'email', flex: 1 },
-        { text: 'Phone', dataIndex: 'phone', flex: 1 }
+        { text: 'Name',  dataIndex: 'name', flex: 1 },
+        { text: 'Broadcasting', dataIndex: 'publishing'}
     ],
 
     listeners: {

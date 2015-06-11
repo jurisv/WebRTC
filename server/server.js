@@ -4,52 +4,32 @@ if(!global.App){
     global.App = {};
 }
 
-var path = require('path'),
-    express = require('express'),               //The web routing engine and framework
-    nconf = require('nconf'),                   // node config Key/Value pairs
-    fs = require('fs'),                         //file system
-    moment = require('moment'),                 //moment is a friendly time library
+var fs = require('fs'),                         // file system
+    path = require('path'),                     // path joining library
     bodyparser = require('body-parser'),        // used for POST and QueryString Parsing
-    ejs = require('ejs'),                       //ejs is a template engine for JSON to HTML
-    data = require('./lib/data'),               //resource based lookups
-    ServerConfig, ExtDirectConfig,              //variables for later use
+    nconf = require('nconf'),                   // node config Key/Value pairs
+    express = require('express'),               // The web routing engine and framework
+    moment = require('moment'),                 // moment is a friendly time library
+    ejs = require('ejs'),                       // ejs is a template engine for JSON to HTML
+
+    ServerConfig, ExtDirectConfig,              // variables for later use
     environment, port, protocol,
     store, pub_path;
 
-var app = module.exports = require('express')(); //Setup express app
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var app = module.exports = require('express')();        // Setup express app
+var http = require('http').Server(app);                 // http on top of express for websocket handling
+// var data = require('./lib/data').init(app);                // routes for data packages
+var data = require('./lib/data/stores.js');                // routes for data packages
+var io = require('./lib/sockets')(http);                // seperate module for all websocket requests
 
-nconf.env().file({file: path.join(__dirname, 'server-config.json')});
-environment = global.App.mode = process.env.NODE_ENV || 'development';
-ServerConfig = nconf.get("ServerConfig-" + environment);
+//app.use(data());
+
+nconf.env().file({file: path.join(__dirname, 'server-config.json')});   // path to config JSON
+environment = global.App.mode = process.env.NODE_ENV || 'production';   // default to production
+ServerConfig = nconf.get("ServerConfig-" + environment);                // load server config JSON
 
 // GLOBAL: make the express app global
 global.App = app;
-
-var OpenTok = require('opentok');               //OpenTok WebTRC service calls  http://www.tokbox.com
-
-// Verify that the API Key and API Secret are defined
-var otApiKey = ServerConfig.otAPIKEY,
-    otApiSecret = ServerConfig.otAPISECRET;
-if (!otApiKey || !otApiSecret) {
-  console.log('You must specify API_KEY and API_SECRET environment variables');
-  process.exit(1);
-}
-
-// GLOBAL: Initialize OpenTok authenticated instance
-opentok = new OpenTok(otApiKey, otApiSecret);
-
-
-// Create a session and store it in the express app
-// This will be the global room for this server
-opentok.createSession(function(err, session) {
-  if (err) throw err;
-  app.set('sessionId', session.sessionId);
-
-  // We will wait on starting the app until this is done
-  initServer();
-});
 
 // simple logger placing first and using next()
 // allows this to run as well as other matching methods.
@@ -61,38 +41,65 @@ if(ServerConfig.logAllCalls) {
     });
 }
 
+//port and protocol settings
 app.set('port', ServerConfig.port | 8000);
 app.set('protocol', ServerConfig.protocol || 'http');
-app.use(bodyparser());
-
 port = app.get('port');
 protocol = app.get('protocol');
 pub_path = path.join(__dirname, ServerConfig.webRoot);
 
+//server side compression of assets
 if(ServerConfig.enableCompression){
    var compress = require('compression');
    app.use(compress());
 }
 
+//static routes for files using webRoot based on production or development environments
 app.use(express.static(path.join(__dirname, ServerConfig.webRoot)));
-app.use(express.static('Overrides', __dirname + '../admin/overrides/' ));
-app.use(express.static('Ext6','/Users/brad/Sencha/SDK/ext-6.0.0/' ));
 
+//to parse form body
+app.use(bodyparser());
 
-//Route all data related calls as a single route
+//Route all data related calls as a single route with an id or not
+app.route('/data/:store/:id')
+.get(function(req, res, id) {
+var store = 'get'+ req.params.store;
+data[store](req,res, id);
+})
+.post(function(req, res, id) {
+var store = 'add'+ req.params.store;
+data[store](req,res, id);
+})
+.put(function(req, res, id) {
+var store = 'set'+ req.params.store;
+data[store](req,res, id);
+});
+
 app.route('/data/:store')
-  .get(function(req, res) {
-    var store = 'GET_'+ req.params.store;
-    data[store](req,res);
-  })
-  .post(function(req, res) {
-    var store = 'POST_'+ req.params.store;
-    data[store](req,res);
-  })
-  .put(function(req, res) {
-    var store = 'PUT_'+ req.params.store;
-    data[store](req,res);
-  });
+.get(function(req, res) {
+var store = 'get'+ req.params.store;
+data[store](req,res);
+})
+.post(function(req, res) {
+var store = 'add'+ req.params.store;
+data[store](req,res);
+})
+.put(function(req, res) {
+var store = 'set'+ req.params.store;
+data[store](req,res);
+});
+
+
+
+//Development routes to include packages, override, and Ext Library
+if(process.env.NODE_ENV == 'development'){
+    app.use(express.static('Overrides', __dirname + '../admin/overrides/' ));
+    app.use(express.static('Ext6',ServerConfig.ExtLocalPath ));
+}
+
+
+
+
 
 //CORS Supports
 if(ServerConfig.enableCORS){
@@ -124,7 +131,7 @@ app.use(function(err, req, res, next){
   res.status(err.status || 500).send({ error: err.message });
 });
 
-//LAST
+
 // our custom JSON 404 middleware. Since it's placed last
 // it will be the last middleware called, if all others
 // invoke next() and do not respond.
@@ -139,24 +146,9 @@ app.use(function(req, res){
 });
 
 
+//setup default opentok cred for app
+app.set('otSessionId', ServerConfig.otDefaultSessionId);
+app.set('otAPIKEY', ServerConfig.otAPIKEY);
+app.set('otAPISECRET', ServerConfig.otAPISECRET);
 
-
-
-// Starts server listening and called by opentok after it's ready
-function initServer(){
-    http.listen(port);
-}
-
-io.on('connection', function(socket){
-  console.log('a user connected');
-
-  socket.broadcast.emit('hi');
-
-  io.emit('chat message', 'connected!');
-
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-  });
-
-});
-
+http.listen(port);
