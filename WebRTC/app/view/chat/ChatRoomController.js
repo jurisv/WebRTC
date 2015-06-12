@@ -49,7 +49,7 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
                 if (error) {
                     console.log(error.message);
                 } else {
-                    console.log('I connected to session:' + sessionInfo.sessionId);
+                    /*console.log('I connected to session:' + sessionInfo.sessionId);
 
                     session.signal({
                         type: 'chat',
@@ -58,7 +58,7 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
                         if (!error) {
                             //
                         }
-                    });
+                    });*/
 
                     // session.publish('myPublisherDiv', {width: 320, height: 240});
                 }
