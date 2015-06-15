@@ -8,21 +8,13 @@ Ext.define('WebRTC.view.chat.ChatRoomModel', {
     alias: 'viewmodel.chatroom',
 
     data: {
-        otSessionInfo: {},              // set by GET: /data/global
-        otSession: null                // created by controller
+       otSessionInfo: {}
+       // otSession: null     // created by controller
     },
 
     stores: {
         roommessages: {
-            fields: [  'message', 'time', 'from'],
-            data: { items: [] },
-            proxy: {
-                type: 'memory',
-                reader: {
-                    type: 'json',
-                    rootProperty: 'items'
-                }
-            },
+            model:'WebRTC.model.RoomMessage',
             autoLoad: true
         },
         members: {

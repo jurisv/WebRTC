@@ -2,67 +2,28 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.chatroom',
 
-    manageOTSession: function(){
+    onRoomShow: function(){
         var me = this,
-        sessionInfo = me.getViewModel().get('otSessionInfo'),
-        connectionCount = me.getViewModel().get('otConnectionCount');
+            openTok = me.getViewModel().get('otSessionInfo');
 
         //OT is included in the app.JSON as a resource for OpenTok
+        // The client does not support WebRTC.
         if (OT.checkSystemRequirements() != 1) {
-          // The client does not support WebRTC.
           me.getView().disable();
           Ext.toast({
-                html: 'Your browser does not support WebRTC at this time.',
-                title: 'Not Supported',
-                width: 400,
-                align: 't'
+            html: 'Your browser does not support WebRTC at this time.',
+            title: 'Not Supported',
+            width: 400,
+            align: 't'
           });
 
         } else {
 
-            var session = OT.initSession(sessionInfo.apiKey, sessionInfo.sessionId);
-            me.getViewModel().set('otSession',session);
-
-            session.on({
-                connectionCreated: Ext.bind(me.onConnectionCreated,me),
-                'signal:chat': Ext.bind(me.onChatReceived,me),
-                streamCreated: Ext.bind(me.onStreamCreated,me),
-                streamDestroyed: Ext.bind(me.onStreamDestroyed,me),
-                sessionConnected: Ext.bind(me.onSessionConnected,me),
-                connectionDestroyed: function connectionDestroyedHandler (event) {
-                   var store = me.getView().down('grid[title=Users]').getStore(),
-                       idx = store.find('id',event.connection.connectionId);
-
-                   if(idx){
-                     store.removeAt(idx);
-                   }
-                },
-                sessionDisconnected: function sessionDisconnectHandler(event) {
-                    // The event is defined by the SessionDisconnectEvent class
-                    if (event.reason == "networkDisconnected") {
-                        alert("Your network connection terminated.")
-                    }
-                }
-            });
-
-            session.connect(sessionInfo.token, function (error) {
-                if (error) {
-                    console.log(error.message);
-                } else {
-                    /*console.log('I connected to session:' + sessionInfo.sessionId);
-
-                    session.signal({
-                        type: 'chat',
-                        data: 'initChat'
-                    }, function (error) {
-                        if (!error) {
-                            //
-                        }
-                    });*/
-
-                    // session.publish('myPublisherDiv', {width: 320, height: 240});
-                }
-            });
+            if(!me.getViewModel().get('otSession')){
+                me.getViewModel().set('otSession', OT.initSession(openTok.apiKey, openTok.sessionId));
+                me.bindSessionEvents(me.getViewModel().get('otSession'));
+                me.getViewModel().get('otSession').connect(openTok.token);
+            }
         }
     },
 
@@ -120,6 +81,45 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
 
     },
 
+    /*onRoomShow: function() {
+
+    },*/
+    onRoomHide: function(){
+
+    },
+
+    bindSessionEvents: function(session){
+        var me= this;
+        session.on({
+            connectionCreated: Ext.bind(me.onConnectionCreated,me),
+            'signal:chat': Ext.bind(me.onChatReceived,me),
+            // streamCreated: Ext.bind(me.onStreamCreated,me),
+            // streamDestroyed: Ext.bind(me.onStreamDestroyed,me),
+            sessionConnected: Ext.bind(me.onSessionConnected,me),
+            connectionDestroyed: function connectionDestroyedHandler (event) {
+               var store = me.getView().down('grid[title=Users]').getStore(),
+                   idx = store.find('id',event.connection.connectionId);
+
+               if(idx){
+                 store.removeAt(idx);
+               }
+            },
+            sessionDisconnected: function sessionDisconnectHandler(event) {
+                // The event is defined by the SessionDisconnectEvent class
+                console.log('session disconnect');
+                if (event.reason == "networkDisconnected") {
+                    Ext.toast({
+                        html: 'Your network connection terminated.',
+                        title: 'Offline',
+                        width: 400,
+                        align: 't'
+                    });
+                }
+            }
+        });
+    },
+
+
     onChatReceived: function (event) {
          var me=this,
             session = this.getViewModel().get('otSession');
@@ -129,38 +129,53 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
                 data = event.from.data,
                 name = eval('{' + data.replace('=',':"') + '"}');
 
-            historyGrid.getStore().add({message:event.data, from: name});
+            historyGrid.getStore().add({
+                id: event.data.id,
+                message: event.data.message,
+                from: name
+            });
         }
     },
 
-    onShow: function() {
-         var me = this;
-         if(!me.sessionActive){
-             me.manageOTSession();
-             me.sessionActive = true;
-         }
-    },
+    onChatSend: function(button){
 
-    onSend: function(button){
-
-        var session = this.getViewModel().get('otSession'),
+        var me= this,
+            session = this.getViewModel().get('otSession'),
             historyGrid = button.up('panel').down('grid'),
+            timestamp = new Date().getUTCMilliseconds(),
+            id = this.getViewModel().get('name') + timestamp,
             message = button.up('toolbar').down('textfield');
 
        message.focus(false,200);
 
+       if(!message.getValue()){ return false}
+
        session.signal({
             type: 'chat',
-            data: message.getValue()
-        }, function (error) {
+            data: {
+                id: id,
+                message: message.getValue()
+            }
+       }, function (error) {
             if (!error) {
-                //
+                historyGrid.store.add({
+                       id: id,
+                       message: message.getValue(),
+                       from: me.getViewModel().get('name')
+                });
+
+                message.setValue('');
+                historyGrid.getView().scrollBy(0, 999999, true);
+            }else{
+                Ext.toast({
+                        html: 'There was an error sending your message.',
+                        title: 'Send Error',
+                        width: 400,
+                        align: 't'
+                });
             }
        });
 
-       historyGrid.store.add({message:message.getValue(), from: this.getViewModel().get('name')});
-       message.setValue('');
-       historyGrid.getView().scrollBy(0, 999999, true);
     }
 
 });

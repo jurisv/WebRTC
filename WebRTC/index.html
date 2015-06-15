@@ -48,31 +48,21 @@
     
     <!-- The line below must be kept intact for Sencha Cmd to build your application -->
     <script id="microloader" data-app="2b952a57-508c-48f1-8814-7fe8853e6f99" type="text/javascript" src="bootstrap.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
 
+    /*var socket = io();
 
-    <!--<script type="text/javascript">
-      // Initialize API key, session, and token...
-      // Think of a session as a room, and a token as the key to get in to the room
-      // Sessions and tokens are generated on your server and passed down to the client
-      var apiKey = "45254262";
-      var sessionId = "1_MX40NTI1NDI2Mn5-MTQzMzUyNzAwMzc1Mn5INnVOYXdqcFZZcUFzWDVURFg1eHNIME9-fg";
-      var token = "T1==cGFydG5lcl9pZD00NTI1NDI2MiZzaWc9OTE3ZDIyNTVjZWMzZGNkYTIyOWU1MDU0NDgwODNiODEwY2QxOTdiMzpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5USTFOREkyTW41LU1UUXpNelV5TnpBd016YzFNbjVJTm5WT1lYZHFjRlpaY1VGeldEVlVSRmcxZUhOSU1FOS1mZyZjcmVhdGVfdGltZT0xNDMzNzc4MjQ1Jm5vbmNlPTAuMTQ0NzYxNDA4NjAxODM3MDY=";
+    socket.on('rooms', function(msg){
+        console.log('rooms changed' + msg);
+    });*/
 
-      // Initialize session, set up event listeners, and connect
-      var session = OT.initSession(apiKey, sessionId);
-
-      session.on("streamCreated", function(event) {
-        session.subscribe(event.stream);
-      });
-
-      session.connect(token, function(error) {
-        var publisher = OT.initPublisher();
-        session.publish(publisher);
-      });
-  </script>-->
+    </script>
 
 </head>
 <body>
+<div id="_publisher"></div>
 
+<div id="_subscribers"></div>
 </body>
 </html>

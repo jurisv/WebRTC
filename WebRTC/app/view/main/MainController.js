@@ -18,6 +18,7 @@ Ext.define('WebRTC.view.main.MainController', {
                 me.getOTGlobalSession();
             }
          });
+
     },
 
     getOTGlobalSession: function(){
@@ -30,19 +31,24 @@ Ext.define('WebRTC.view.main.MainController', {
                 name: me.getViewModel().get('name')
             },
             success: function(response){
-               //set session info on default room
-               me.getView().down('chatroom').getViewModel().set('otSessionInfo', JSON.parse(response.responseText));
+               var sessionInfo = JSON.parse(response.responseText);
+               me.getView().down('chatroom').getViewModel().set('otSessionInfo', sessionInfo );
             }
         });
-    },
-
-    onItemSelected: function (sender, record) {
-        Ext.Msg.confirm('Confirm', 'Open a private chat with ' + record.get('name') + '?', 'onConfirm', this);
-    },
-
-    onConfirm: function (choice) {
-        if (choice === 'yes') {
-            //
-        }
+        Ext.Ajax.request({
+            url: '/data/token/1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4',
+            params: {
+                role: 'publisher',
+                name: me.getViewModel().get('name')
+            },
+            success: function(response){
+               //set session info on video room
+               var sessionInfo = JSON.parse(response.responseText);
+               me.getView().down('videoroom').getViewModel().set('otSessionInfo', sessionInfo );
+            }
+        });
     }
+
+
+
 });

@@ -1,4 +1,4 @@
-var roomsDB = require('./rooms.db');
+var roomsDB = require('./rooms.db.js');
 
 module.exports = function(io) {
  
@@ -6,7 +6,7 @@ module.exports = function(io) {
  
     rooms.on('connection', function(socket) {
  
-        socket.on('getAllrooms', function() {
+        socket.on('getAllRooms', function() {
             dispatchAll(socket);
         });
  
@@ -37,8 +37,8 @@ module.exports = function(io) {
  
  
     function dispatchAll(socket) {
-        roomsDB.getAllrooms(function(err, data) {
-            if (err) throw err; // You can emit the error to a socket 
+        roomsDB.getAllRooms(function(err, data) {
+            if (err) throw err; // You can emit the error to a socket
             io.of('/rooms').emit('allrooms', data);
         });
     }

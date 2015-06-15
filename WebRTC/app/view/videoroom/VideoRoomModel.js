@@ -1,4 +1,4 @@
-Ext.define('WebRTC.view.video.VideoRoomModel', {
+Ext.define('WebRTC.view.videoroom.VideoRoomModel', {
     extend: 'Ext.app.ViewModel',
     requires: [
         'WebRTC.model.Room',
@@ -7,8 +7,8 @@ Ext.define('WebRTC.view.video.VideoRoomModel', {
     alias: 'viewmodel.videoroom',
 
     data: {
-        otSessionInfo: {},              // set by GET: /data/global
-        otSession: null                // created by controller
+        otSessionInfo: {},
+        otSession: null
     },
 
     stores: {

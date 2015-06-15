@@ -23,8 +23,8 @@ var data = {
         }
     },
 
-    _getGlobal: function (req, res){
-        var session = App.get('otSessionId'),
+    _getToken: function (req, res, id){
+        var session = id,
             role = req.body['role'] || 'publisher',
             name = req.body['name'] || 'anonymous',
             otApiKey = App.get('otAPIKEY'),
@@ -32,7 +32,7 @@ var data = {
             opentok = new OpenTok(otApiKey, otApiSecret),
             token = opentok.generateToken(session,{
                   role :       role,
-                  expireTime : tokenExpires,
+                 // expireTime : tokenExpires,
                   data :       'name=' + name
             }),
             data = {
@@ -48,24 +48,53 @@ var data = {
         res.status(200).send('user');
     },
 
-    _rooms: [
-        {title: 'General'},
-        {title: 'Brad'}
-    ],
+    _rooms: [],
+    /*_rooms: [
+        {
+            title: 'Chat',
+            sessionId: '1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4',
+            isPrivate: false,
+            createdBy: 'admin'
+        },
+        {
+            title: 'Video',
+            sessionId: '1_MX40NTI1NDI2Mn5-MTQzNDE0MDE2ODcxN35Vb0xRRkdSQmRtbzZUR1JyeUhvMUhRSjN-fg',
+            isPrivate: false,
+            createdBy: 'admin'
+        }
+    ],*/
 
     getrooms: function(req, res, id){
 
-        if(!module.exports._rooms){
-            /*var rooms = module.exports.baseRef.child('rooms');
-            rooms.on('value', function(childSnapshot, prevChildName) {
+        //rooms.set(module.exports._rooms);
+
+        if(module.exports._rooms.length == 0){
+
+            var rooms = module.exports.baseRef.child('rooms');
+
+            rooms.once('value', function(childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined){
                     var data = childSnapshot.val();
                     module.exports._rooms = data;
                     if(res){
                         res.status(200).send(module.exports.wrapresponse(module.exports._rooms,module.exports._rooms.length) );
                     }
+
+                    //now watch for changes
+                    rooms.on('value', function(childSnapshot, prevChildName) {
+                        if (childSnapshot.val() && childSnapshot.val() != undefined){
+                            var data = childSnapshot.val();
+                            module.exports._rooms = data;
+                            var roomsIo = App.io;
+                            roomsIo.emit('rooms',data);
+                            console.log('rooms changed');
+                        }
+                    });
                 }
-            });*/
+            });
+
+
+
         }else{
             res.status(200).send(module.exports.wrapresponse(module.exports._rooms,module.exports._rooms.length) );
         }
@@ -73,13 +102,22 @@ var data = {
     },
     //for AJAX
     addglobal: function(req, res, id){
-        this._getGlobal(req, res)
+        this._getToken(req, res, App.get('otSessionId'))
     },
-    //for web
-    getglobal: function(req, res, id){
-        this._getGlobal(req, res)
-    }
 
+    //a global room that's always up
+    getglobal: function(req, res){
+        this._getToken(req, res, App.get('otSessionId'))
+    },
+
+    //a token for a room
+    addtoken: function(req, res, id){
+        this._getToken(req, res, id)
+    },
+    //a token for a room
+    gettoken: function(req, res, id){
+        this._getToken(req, res, id)
+    }
 
 };
 

@@ -18,8 +18,8 @@ var fs = require('fs'),                         // file system
 
 var app = module.exports = require('express')();        // Setup express app
 var http = require('http').Server(app);                 // http on top of express for websocket handling
-// var data = require('./lib/data').init(app);                // routes for data packages
-var data = require('./lib/data/stores.js');                // routes for data packages
+// var data = require('./lib/data').init(app);          // routes for data packages
+var data = require('./lib/data/stores.js');             // routes for data packages
 var io = require('./lib/sockets')(http);                // seperate module for all websocket requests
 
 //app.use(data());
@@ -30,6 +30,7 @@ ServerConfig = nconf.get("ServerConfig-" + environment);                // load 
 
 // GLOBAL: make the express app global
 global.App = app;
+global.App.io = io;
 
 // simple logger placing first and using next()
 // allows this to run as well as other matching methods.
@@ -64,15 +65,15 @@ app.use(bodyparser());
 app.route('/data/:store/:id')
 .get(function(req, res, id) {
 var store = 'get'+ req.params.store;
-data[store](req,res, id);
+data[store](req,res, req.params.id);
 })
 .post(function(req, res, id) {
 var store = 'add'+ req.params.store;
-data[store](req,res, id);
+data[store](req,res, req.params.id);
 })
 .put(function(req, res, id) {
 var store = 'set'+ req.params.store;
-data[store](req,res, id);
+data[store](req,res, req.params.id);
 });
 
 app.route('/data/:store')

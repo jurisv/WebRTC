@@ -2,8 +2,7 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
     extend: 'Ext.form.Panel',
     requires: [
       'WebRTC.view.chat.ChatRoomModel',
-      'WebRTC.view.chat.ChatRoomController',
-      'WebRTC.store.Messages'
+      'WebRTC.view.chat.ChatRoomController'
     ],
     xtype: 'chatroom',
     layout: 'border',
@@ -19,9 +18,8 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
         xtype:'grid',
         layout:'fit',
         hideHeaders: true,
-        // store: '{roommessages}',
-        store: {
-            type: 'messages'
+        bind: {
+            store: '{roommessages}'
         },
         columns: [
             { text: 'From', flex:1, dataIndex: 'from' },
@@ -50,12 +48,15 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
     bbar:[{
         xtype:'textfield',
         name:'text',
+        reference: 'chattext',
         listeners: {
           specialkey: function(f,e){
             if (e.getKey() == e.ENTER) {
-                // alert("about to submit");
                 myButton = this.up().down('button');
                 myButton.fireEvent('click', myButton);
+            }
+            if (e.getKey() == e.UP) {
+                alert('edit last')
             }
           }
         },
@@ -63,11 +64,12 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
     },'->',{
         text:'send',
         listeners: {
-            click: 'onSend'
+            click: 'onChatSend'
         }
     }],
 
     listeners: {
-        show: 'onShow'
+       show: 'onRoomShow',
+       hide: 'onRoomHide'
     }
 });
