@@ -1,5 +1,5 @@
 Ext.define('WebRTC.view.videoroom.VideoRoom', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.Container',
     requires: [
         'WebRTC.view.videoroom.VideoRoomModel',
         'WebRTC.view.videoroom.VideoRoomController'
@@ -15,6 +15,10 @@ Ext.define('WebRTC.view.videoroom.VideoRoom', {
         bind: {
             title: '{name}'
         },
+        tools:[{
+                type: 'pin',
+                callback: 'onToggleFullScreen'
+        }],
         items:{
             xtype:'container',
             layout:'center',

@@ -2,8 +2,6 @@ Ext.define('WebRTC.view.videoroom.VideoRoomController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.videoroom',
 
-
-
     manageOTSession: function(){
         var me = this,
          pubDiv = me.getView().down('#publisher').id,
@@ -74,18 +72,22 @@ Ext.define('WebRTC.view.videoroom.VideoRoomController', {
         });
     },
 
+    /*onToggleFullScreen: function(){
+        this.callParent();
+    },*/
 
     onRoomHide: function(){
         var me = this,
+            publisher = me.getViewModel().get('otPublisher'),
             session = me.getViewModel().get('otSession');
-
+        session.unpublish(publisher);
        // me.stopPublishing();
 
     },
 
     onRoomShow: function() {
          var me = this;
-         if(!me.getViewModel().get('otSession')){
+         if(me.getViewModel().get('otSession') == null){
              me.manageOTSession();
          }
     }

@@ -6,7 +6,7 @@ Ext.define('WebRTC.view.main.Main', {
         'Ext.plugin.Viewport',
         'Ext.window.MessageBox',
 
-        'WebRTC.view.main.MainController',
+        'WebRTC.src.view.main.MainController',
         'WebRTC.view.main.MainModel',
         'WebRTC.view.main.List',
 

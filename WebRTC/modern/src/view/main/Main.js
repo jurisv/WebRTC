@@ -6,57 +6,47 @@
  * TODO - Replace this content of this view to suite the needs of your application.
  */
 Ext.define('WebRTC.view.main.Main', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.Container',
     xtype: 'app-main',
 
     requires: [
         'Ext.MessageBox',
 
-        'WebRTC.view.main.MainController',
-        'WebRTC.view.main.MainModel',
-        'WebRTC.view.main.List',
+  //      'WebRTC.view.main.MainController',
+  //      'WebRTC.view.main.MainModel',
+  //      'WebRTC.view.main.List',
 
-        'WebRTC.view.main.UserMedia'
-
+   //     'WebRTC.view.main.UserMedia',
+        'Ext.Menu'
 
     ],
 
-    controller: 'main',
-    viewModel: 'main',
+   controller: 'main',
+ //   viewModel: 'main',
 
-    defaults: {
-        styleHtmlContent: true
+    layout: {
+        type: 'card'
     },
-
-    tabBarPosition: 'bottom',
 
     items: [
         {
-            title: 'Home',
-            iconCls: 'fa-home',
-            layout: 'fit',
-            // The following grid shares a store with the classic version's grid as well!
-            items: [{
-                xtype: 'mainlist'
-            }]
-        },{
-            title: 'UserMedia',
-            iconCls: 'fa-user',
-            items: [{
-                xtype: 'UserMedia'
-            }]
-        },{
-            title: 'PeerConnection',
-            iconCls: 'fa-users',
-            bind: {
-                html: '{loremIpsum}'
-            }
-        },{
-            title: 'DataChannel',
-            iconCls: 'fa-database',
-            bind: {
-                html: '{loremIpsum}'
-            }
+            xtype: 'toolbar',
+            docked: 'top',
+            title: 'Main Menu',
+            items: [
+                {
+                    xtype: 'button',
+                    iconCls: 'x-fa fa-home',
+                    // ui: 'plain',
+                    style: 'color: #fff',
+                    handler: 'onHamburgerClick'
+                }
+            ]
         }
-    ]
+    ],
+
+    listeners:{
+        show: 'onShow',
+        scope: 'controller'
+    }
 });
