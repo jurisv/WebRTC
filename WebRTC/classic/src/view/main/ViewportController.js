@@ -4,7 +4,7 @@
  *
  * TODO - Replace this content of this view to suite the needs of your application.
  */
-Ext.define('WebRTC.src.view.main.MainController', {
+Ext.define('WebRTC.src.view.main.ViewportController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.main',
 
@@ -23,7 +23,8 @@ Ext.define('WebRTC.src.view.main.MainController', {
                      };
                      me.getViewModel().set('name', value);
                      Ext.util.Cookies.set('user',newUser, expires);
-                     me.getOTGlobalSession();
+
+                     // me.getOTGlobalSession();
                  }
              });
          }

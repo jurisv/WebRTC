@@ -1,4 +1,2 @@
-Compass.add_project_configuration('../../../../../ext/modern/theme-base/sass/config.rb')
-Compass.add_project_configuration('../../../../../ext/modern/theme-neptune/sass/config.rb')
 Compass.add_project_configuration('../../../../../sass/config.rb')
-cache_path = '/Users/brad/Data/Node/webRTC/build/.sass-cache'
+cache_path = '/Volumes/Data/Sencha/BradSchaferGit/WebRTC/WebRTC/build/.sass-cache'
