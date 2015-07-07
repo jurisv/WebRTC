@@ -9,15 +9,25 @@ Ext.define('WebRTC.src.view.main.MainController', {
     alias: 'controller.main',
 
     init: function() {
-         var me = this;
+         var me = this,
+             user = Ext.util.Cookies.get('user');
 
-         Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
-            if(value) {
-                //set the persons name
-                me.getViewModel().set('name', value);
-                me.getOTGlobalSession();
-            }
-         });
+         if(!user){
+             Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
+                 if(value) {
+                     //set the persons name
+                     var expires = new Date("October 13, 2095 11:13:00"),
+                         newUser = {
+                         username: value
+
+                     };
+                     me.getViewModel().set('name', value);
+                     Ext.util.Cookies.set('user',newUser, expires);
+                     me.getOTGlobalSession();
+                 }
+             });
+         }
+
 
     },
 

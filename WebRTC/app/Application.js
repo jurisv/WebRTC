@@ -8,13 +8,9 @@ Ext.define('WebRTC.Application', {
     
     name: 'WebRTC',
 
-    stores: [
-        // TODO: add global / shared stores here
+    requires: [
+        'WebRTC.*'
     ],
-    
-    launch: function () {
-
-    },
 
     onAppUpdate: function () {
         Ext.Msg.confirm('Application Update', 'This application has an update, reload?',

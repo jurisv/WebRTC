@@ -55,7 +55,8 @@
      *      ]
      */
     "requires": [
-        "font-awesome"
+        "font-awesome",
+        "ux"
     ],
 
     /**
@@ -528,7 +529,7 @@
 
         "modern": {
             "toolkit": "modern",
-            "theme": "theme-neptune"
+            "theme": "theme-triton"
         }
     },
     

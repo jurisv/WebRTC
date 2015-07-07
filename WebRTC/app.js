@@ -9,14 +9,14 @@ Ext.application({
     extend: 'WebRTC.Application',
 
     requires: [
-        'WebRTC.view.main.Main'
+        'WebRTC.*'
     ],
 
     // The name of the initial view to create. With the classic toolkit this class
     // will gain a "viewport" plugin if it does not extend Ext.Viewport. With the
     // modern toolkit, the main view will be added to the Viewport.
     //
-    mainView: 'WebRTC.view.main.Main'
+    mainView: 'WebRTC.view.main.Viewport'
 	
     //-------------------------------------------------------------------------
     // Most customizations should be made to WebRTC.Application. If you need to

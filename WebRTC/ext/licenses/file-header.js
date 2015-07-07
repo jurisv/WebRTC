@@ -1,18 +1,18 @@
 /*
-This file is part of Ext JS 6.0.0.415
+This file is part of Ext JS 6.0.0.640
 
 Copyright (c) 2011-2015 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-Pre-release code in the Ext repository is intended for development purposes only and will
-not always be stable. 
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
-Use of pre-release code is permitted with your application at your own risk under standard
-Ext license terms. Public redistribution is prohibited.
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
 
-For early licensing, please contact us at licensing@sencha.com
-
-Version: 6.0.0.415 Build date: 2015-05-25 14:03:27 (8b543d4ca077b2a2e5af8ce854d0cd2a011d0383)
+Version: 6.0.0.640 Build date: 2015-06-28 12:34:54 (134671ed5b6bf074e014e83502b615cd2e26a515)
 
 */

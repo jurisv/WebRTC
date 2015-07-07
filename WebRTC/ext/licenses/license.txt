@@ -1,17 +1,33 @@
-Ext JS 6.0.0.415 - JavaScript Library
+Ext JS 6.0.0.640 - JavaScript Library
 Copyright (c) 2006-2015, Sencha Inc.
 All rights reserved.
 licensing@sencha.com
 
-http://www.sencha.com/license
+options: http://www.sencha.com/license
+license: http://www.sencha.com/legal/sencha-sdk-software-license-agreement
+
+
+Commercial License
+------------------------------------------------------------------------------------------
+This version of Sencha Ext JS is licensed commercially. This is the appropriate option 
+if you are creating proprietary applications and you are not prepared to distribute and 
+share the source code of your application under the GPL v3 license. 
+See http://www.sencha.com/legal/sencha-sdk-software-license-agreement for license terms.
 
 
 Beta License
 ------------------------------------------------------------------------------------------
-This version of Ext JS is licensed commercially as beta software. 
-Please visit http://www.sencha.com/legal/commercial-software-beta-license-agreement 
-for more details.
+If this is a Beta version of Sencha Ext JS, use is permitted for internal evaluation 
+and review purposes and not use for production purposes.
+See http://www.sencha.com/legal/sencha-sdk-software-license-agreement (Beta License) 
+for license terms. 
 
+
+Open Source Licensing
+------------------------------------------------------------------------------------------
+Open Source Licensing is available for an alternate download of Sencha Ext JS.
+For more details, please visit: www.sencha.com/license/.
+This version of Sencha Ext JS may not be used under an open source license.
 
 
 Third Party Content
@@ -31,9 +47,21 @@ Library: flexible-js-formatting - date parsing and formatting
 License: MIT
 Location: http://code.google.com/p/flexible-js-formatting/
 
-Library: sparkline.js ? micro charts
+Library: spin.js - animated graphic
+License: MIT
+Location: http://fgnass.github.com/spin.js/
+
+Library: sparkline.js - micro charts
 License: BSD
 Location: http://omnipotent.net/jquery.sparkline
+
+Library: DeftJS
+License: MIT
+Location: http://deftjs.org/
+
+Library: Open-Sans
+License: Apache
+Location: http://www.fontsquirrel.com/fonts/open-sans
 
 
 Examples
@@ -44,8 +72,7 @@ Location: http://www.famfamfam.com/lab/icons/silk/
 
 --
 
-THIS SOFTWARE IS DISTRIBUTED "AS-IS" WITHOUT ANY WARRANTIES, CONDITIONS AND 
-REPRESENTATIONS WHETHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE 
-IMPLIED WARRANTIES AND CONDITIONS OF MERCHANTABILITY, MERCHANTABLE QUALITY, 
-FITNESS FOR A PARTICULAR PURPOSE, DURABILITY, NON-INFRINGEMENT, PERFORMANCE 
-AND THOSE ARISING BY STATUTE OR FROM CUSTOM OR USAGE OF TRADE OR COURSE OF DEALING.
+THIS SOFTWARE IS DISTRIBUTED "AS-IS" WITHOUT ANY WARRANTIES, CONDITIONS AND REPRESENTATIONS WHETHER EXPRESS OR IMPLIED,
+INCLUDING WITHOUT LIMITATION THE IMPLIED WARRANTIES AND CONDITIONS OF MERCHANTABILITY, MERCHANTABLE QUALITY, FITNESS FOR A
+PARTICULAR PURPOSE, DURABILITY, NON-INFRINGEMENT, PERFORMANCE AND THOSE ARISING BY STATUTE OR FROM CUSTOM OR USAGE OF TRADE
+OR COURSE OF DEALING.
