@@ -4,7 +4,7 @@
  *
  * TODO - Replace this content of this view to suite the needs of your application.
  */
-Ext.define('WebRTC.src.view.main.ViewportController', {
+Ext.define('WebRTC.view.main.ViewportController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.main',
 
