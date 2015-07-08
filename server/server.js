@@ -95,7 +95,7 @@ data[store](req,res);
 //Development routes to include packages, override, and Ext Library
 if(process.env.NODE_ENV == 'development'){
     app.use(express.static('Overrides', __dirname + '../admin/overrides/' ));
-    app.use(express.static('Ext6',ServerConfig.ExtLocalPath ));
+    app.use(express.static('Ext6', __dirname + '../WebRTC/ext/' ));
 }
 
 
