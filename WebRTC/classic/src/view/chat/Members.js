@@ -1,10 +1,9 @@
 Ext.define('WebRTC.view.chat.Members', {
     extend: 'Ext.Panel',
     xtype: 'chatmembers',
-    controller : 'chat',
-    layout:'fit',
     autoScroll: true,
     bodyPadding: 10,
+
     items:[{
         xtype:'dataview',
 

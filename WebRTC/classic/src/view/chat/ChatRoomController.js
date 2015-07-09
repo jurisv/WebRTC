@@ -1,8 +1,14 @@
-Ext.define('WebRTC.view.chat.ChatController', {
+Ext.define('WebRTC.view.chat.ChatRoomController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.chat',
+    alias: 'controller.chatroom',
 
 
+
+    onMemberConnect: function(){},
+
+    onMemberDisconnect: function(){},
+
+    onReceivedChat: function(){},
 
     onSpecialKey: function(f,e){
         if (e.getKey() == e.ENTER) {

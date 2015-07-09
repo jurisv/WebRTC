@@ -1,43 +1,15 @@
 Ext.define('WebRTC.view.chat.VideoWall', {
     extend: 'Ext.Panel',
     xtype: 'chatvideowall',
-    layout: 'border',
-
-    controller : 'chat',
 
     items: [{
-        //title: 'Video Wall',
-        region: 'center',
         flex: 3,
-        bodyPadding: 25,
-        // hidden: true,
         layout: {
             type: 'vbox',
             align: 'stretch'
         },
         items:[{
-            // title:'roomheader',
-            viewModel : {
-                data: {
-                    room: {
-                        title :'Boson Epic Chat Room',
-                        description: 'This is the most epic chat room of all time'
-                    }
-                }
-            },
-            bind : {
-                data : '{room}'
-            },
-            tpl: [
-                '<div class="room-data">',
-                '<h1 class="room-title"><span class="x-fa fa-group"></span> {title}</h1>',
-                '<h4 class="room-description">{description}&nbsp;</h4>',
-                '</div>'
-            ],
-            flex: 1
-        },{
-            // title:'mainvideo',
-            // xtype: 'video',
+            xtype: 'tokboxVideo',
             viewModel : {
                 data: {
                     video: {
@@ -49,37 +21,66 @@ Ext.define('WebRTC.view.chat.VideoWall', {
                     }
                 }
             },
-            bind : {
-                data : '{video}'
-            },
-            tpl: [
-                '<video autoplay  id="mainVideo" height="{height}" width="{width}"></video>',
-                '<div class="title">{title}</div>'
-            ],
             flex: 3
         },{
-            //title:'othervideo',
             flex: 1,
+            bodyPadding: 10,
             layout: {
                 type: 'hbox',
                 align: 'stretch'
             },
             items:[{
-                title:'roomvideos',
-                flex: 4
+                flex: 3,
+                layout: {
+                    type: 'hbox'
+                },
+                items:[{
+                    xtype: 'tokboxVideo',
+                    width: 110,
+                    viewModel : {
+                        data: {
+                            video: {
+                                title :'Ablert',
+                                height: 100,
+                                width: 100,
+                                volume: .2,
+                                muted: false
+                            }
+                        }
+                    }
 
+                },{
+                    xtype: 'tokboxVideo',
+                    width: 110,
+                    viewModel : {
+                        data: {
+                            video: {
+                                title :'Sir Isaac',
+                                height: 100,
+                                width: 100,
+                                volume: .2,
+                                muted: false
+                            }
+                        }
+                    }
+                }]
             },{
-                title:'myvideo',
+                // title:'myvideo',
+                xtype: 'tokboxVideo',
+                viewModel : {
+                    data: {
+                        video: {
+                            title :'You',
+                            height: 100,
+                            width: 100,
+                            volume: .2,
+                            muted: false
+                        }
+                    }
+                },
                 flex: 1
 
             }]
         }]
-    }, {
-        // xtype: 'panel',
-        region: 'east',
-        width: '40%',
-        hidden: true,
-        flex: 1,
-        items: []
     }]
 });

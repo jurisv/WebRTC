@@ -2,7 +2,7 @@ Ext.define('WebRTC.view.chat.History', {
     extend: 'Ext.Panel',
     xtype: 'chathistory',
     reference: 'history',
-    controller : 'chat',
+
     bodyPadding: 10,
     layout:'fit',
 
