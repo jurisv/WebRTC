@@ -11,18 +11,16 @@ Ext.define('WebRTC.view.main.Viewport', {
 
     requires: [
         'Ext.MessageBox',
-
-  //      'WebRTC.view.main.MainController',
-  //      'WebRTC.view.main.MainModel',
-  //      'WebRTC.view.main.List',
-
-   //     'WebRTC.view.main.UserMedia',
         'Ext.Menu'
 
     ],
 
-   controller: 'main',
- //   viewModel: 'main',
+    viewModel:{
+        data: {
+            name: null
+        }
+    },
+    controller: 'main',
 
     layout: {
         type: 'card'

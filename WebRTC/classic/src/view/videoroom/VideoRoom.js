@@ -1,9 +1,5 @@
 Ext.define('WebRTC.view.videoroom.VideoRoom', {
-    extend: 'Ext.Container',
-    requires: [
-        'WebRTC.view.videoroom.VideoRoomModel',
-        'WebRTC.view.videoroom.VideoRoomController'
-    ],
+    extend: 'Ext.Panel',
     xtype: 'videoroom',
     layout: 'border',
 
@@ -39,10 +35,10 @@ Ext.define('WebRTC.view.videoroom.VideoRoom', {
         // collapsible: true,
         // collasped:false,
         region: 'center'
-    }],
+    }]
 
-    listeners:{
+    /*listeners:{
         show: 'onRoomShow',
         hide: 'onRoomHide'
-    }
+    }*/
 });

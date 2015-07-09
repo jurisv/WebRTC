@@ -16,7 +16,8 @@ Ext.define('WebRTC.view.main.Viewport', {
         align: 'stretch'
     },
 
-    items: [{
+    items: [
+        {
         //title:'Left Side',
         flex: 1,
         layout: {
@@ -28,112 +29,42 @@ Ext.define('WebRTC.view.main.Viewport', {
                 xtype: 'tabpanel',
                 flex:1,
                 items:[{
-                    title: 'Users'
-                },{
+                    title: 'Users',
+                    xtype: 'chatmembers',
+                    iconCls: 'x-fa fa-home',
+                    flex: 1
+                },
+                {
                     title: 'Rooms',
-                    xtype:'dataview',
-                    itemSelector: 'div.thumb-wrap',
-                    tpl: [
-                    '<tpl for=".">',
-                    '<div style="margin-bottom: 10px;" class="thumb-wrap">',
-                    '{title}',
-                    '<br/><span>{description}</span>',
-                    '</div>',
-                    '</tpl>'
-                    ],
-
-                    viewModel : {
-                        stores: {
-                            rooms: {
-                                data: [{
-                                    title: 'Boson Epic Chat Room',
-                                    description: 'This is the most epic chat room of all time'
-                                }]
-                            }
-                        }
-                    },
-                    bind:{
-                        store: '{rooms}'
-                    }
-                }]
+                    iconCls: 'x-fa fa-keyboard-o',
+                    flex: 1,
+                    xtype: 'chatrooms'
+                }
+                ]
             },
             {
                 xtype: 'tabpanel',
                 flex:1,
                 items:[{
-                    title: 'Chat'
-                },{
-                    title: 'Files'
+                    title: '1:1 Chat',
+                    xtype: 'chatmembers',
+                    iconCls: 'x-fa fa-shield',
+                    flex: 1
                 }]
             }
         ]
-    },{
-        //title: 'Right Side',
-        flex: 4,
-        bodyPadding: 25,
-        layout: {
-            type: 'vbox',
-            align: 'stretch'
-        },
-        items:[{
-            // title:'roomheader',
-            viewModel : {
-                data: {
-                    room: {
-                        title :'Boson Epic Chat Room',
-                        description: 'This is the most epic chat room of all time'
-                    }
-                }
-            },
-            bind : {
-                data : '{room}'
-            },
-            tpl: [
-                '<div class="room-data">',
-                '<h1 class="room-title"><span class="x-fa fa-group"></span> {title}</h1>',
-                '<h4 class="room-description">{description}&nbsp;</h4>',
-                '</div>'
-            ],
-            flex: 1
-        },{
-            // title:'mainvideo',
-            viewModel : {
-                data: {
-                    video: {
-                        title :'Marie Curie',
-                        height: 500,
-                        width: 800,
-                        volume: .2,
-                        muted: false
-                    }
-                }
-            },
-            bind : {
-                data : '{video}'
-            },
-            tpl: [
-                '<video autoplay  id="mainVideo" height="{height}" width="{width}"></video>',
-                '<div class="title">{title}</div>'
-            ],
-            flex: 3
-        },{
-            //title:'othervideo',
-            flex: 1,
-            layout: {
-                type: 'hbox',
-                align: 'stretch'
-            },
+    },
+        {
+            xtype: 'tabpanel',
+            flex:4,
             items:[{
-                title:'roomvideos',
-                flex: 4
-
-            },{
-                title:'myvideo',
+                title: 'Boson',
+                xtype: 'chatroom',
+                iconCls: 'x-fa fa-comments',
                 flex: 1
-
             }]
-        }]
-    }
+        }
+
 
     /*{
         title: 'Home',

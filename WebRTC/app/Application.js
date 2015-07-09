@@ -9,9 +9,13 @@ Ext.define('WebRTC.Application', {
     name: 'WebRTC',
 
     requires: [
-        'WebRTC.*'
+        'WebRTC.*',
+        'WebRTC.controller.OpenTok'
     ],
 
+    controllers:[
+      'OpenTok'         // so it gets launched to start listeners
+    ],
     onAppUpdate: function () {
         Ext.Msg.confirm('Application Update', 'This application has an update, reload?',
             function (choice) {
