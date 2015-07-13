@@ -49,24 +49,8 @@ var data = {
     },
 
     _rooms: [],
-    /*_rooms: [
-        {
-            title: 'Chat',
-            sessionId: '1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4',
-            isPrivate: false,
-            createdBy: 'admin'
-        },
-        {
-            title: 'Video',
-            sessionId: '1_MX40NTI1NDI2Mn5-MTQzNDE0MDE2ODcxN35Vb0xRRkdSQmRtbzZUR1JyeUhvMUhRSjN-fg',
-            isPrivate: false,
-            createdBy: 'admin'
-        }
-    ],*/
 
     getrooms: function(req, res, id){
-
-        //rooms.set(module.exports._rooms);
 
         if(module.exports._rooms.length == 0){
 

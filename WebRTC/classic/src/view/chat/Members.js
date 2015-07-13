@@ -3,31 +3,19 @@ Ext.define('WebRTC.view.chat.Members', {
     xtype: 'chatmembers',
     autoScroll: true,
     bodyPadding: 10,
-
     items:[{
         xtype:'dataview',
-
         viewModel:{
-            data: {
-                provider: 'webRTC',   //values supported : webRTC, websockets
-                roomInfo: null
-            },
             stores: {
                 members: {
-                    // model:'WebRTC.model.RoomMember',
-                    // autoLoad: true,
-                    data: [{
-                        name: 'Moderator',
-                        publishing: false
-                    }]
+                    model:'WebRTC.model.RoomMember',
+                    autoLoad: true
                 }
             }
         },
-
         bind:{
             store: '{members}'
         },
-
         itemSelector: 'div.member-wrap',
         tpl: [
             '<tpl for=".">',

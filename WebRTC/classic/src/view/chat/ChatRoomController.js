@@ -2,39 +2,50 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.chatroom',
 
-
-
-    onMemberConnect: function(){},
-
-    onMemberDisconnect: function(){},
-
-    onReceivedChat: function(){},
-
     onSpecialKey: function(f,e){
         if (e.getKey() == e.ENTER) {
-            this.sendChat();
+            this.chatSend();
         }
         if (e.getKey() == e.UP) {
             alert('edit last')
         }
     },
 
-    sendChat: function(){
+
+
+    roomMemberAdd: function(member){
+        var store = this.getView().down('chatmembers').down('dataview').getViewModel().getStore('members');
+        store.add(member);
+    },
+
+    roomMemberRemove: function(id){
+         var store = this.getView().down('chatmembers').down('dataview').getViewModel().getStore('members'),
+         idx = store.find('id',id);
+
+         if(idx){
+            store.removeAt(idx);
+         }
+
+    },
+
+
+    chatReceived: function(chat){
+        var store = this.getView().down('chathistory').down('dataview').getViewModel().getStore('messages');
+        store.add(chat);
+    },
+
+    chatSend: function(){
         var me = this,
             chat,
             list = me.lookupReference('historylist'),
             timestamp = new Date().getUTCMilliseconds(),
-            provider = me.getViewModel().get('provider'),
-            room = me.getViewModel().get('roomInfo'),
             name = Ext.util.Cookies.get('user'),
-            id = provider + timestamp,
+            id = timestamp,
             message = me.lookupReference('chattext');
 
         chat = {
             message: message.getValue(),
-            provider: provider,
-            id: id,
-            room: room
+            id: id
         };
 
         message.focus(false,200);

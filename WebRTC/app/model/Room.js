@@ -19,10 +19,10 @@ Ext.define('WebRTC.model.Room', {
         ]
     },
     proxy: {
-        url : '/data/rooms'
-    },
-    reader: {
-        type: 'json', // This is the default
-        rootProperty: 'data'
+        url : '/data/rooms',
+        reader: {
+            type: 'json', // This is the default
+            rootProperty: 'data'
+        }
     }
 });

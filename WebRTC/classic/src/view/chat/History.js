@@ -1,7 +1,6 @@
 Ext.define('WebRTC.view.chat.History', {
     extend: 'Ext.Panel',
     xtype: 'chathistory',
-    reference: 'history',
 
     bodyPadding: 10,
     layout:'fit',
@@ -11,19 +10,15 @@ Ext.define('WebRTC.view.chat.History', {
         reference: 'historylist',
         autoScroll: true,
         viewModel:{
-            data: {
-                provider: 'webRTC',   //values supported : webRTC, websockets
-                roomInfo: null
-            },
             stores: {
-                roommessages: {
+                messages: {
                     model:'WebRTC.model.RoomMessage',
                     autoLoad: true
                 }
             }
         },
         bind: {
-            store: '{roommessages}'
+            store: '{messages}'
         },
         itemSelector: 'div.chat-wrap',
         tpl: [
@@ -48,7 +43,7 @@ Ext.define('WebRTC.view.chat.History', {
         iconCls: 'x-fa fa-smile-o',
         plain: true,
         listeners: {
-            click: 'sendChat'
+            click: 'chatSend'
         }
     }]
 

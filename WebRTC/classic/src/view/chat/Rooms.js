@@ -6,7 +6,6 @@ Ext.define('WebRTC.view.chat.Rooms', {
 
     items:[{
         xtype: 'dataview',
-        reference: 'roomlist',
         itemSelector: 'div.room-wrap',
         tpl: [
             '<tpl for=".">',
@@ -20,7 +19,11 @@ Ext.define('WebRTC.view.chat.Rooms', {
         viewModel : {
             stores: {
                 rooms: {
-                    data: []
+                    model: 'WebRTC.model.Room',
+                    autoLoad: true,
+                    listeners:{
+                        load: 'selectFirstRoom'
+                    }
                 }
             }
         },

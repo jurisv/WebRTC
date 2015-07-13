@@ -3,7 +3,7 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
     xtype: 'chatroom',
     layout: 'border',
 
-    controller : 'chatroom',
+    controller: 'chatroom',
 
     viewModel : {
         data: {
@@ -51,6 +51,7 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
             items:[{
                 title: 'Chat',
                 xtype: 'chathistory',
+                reference: 'chathistory',
                 iconCls: 'x-fa fa-comments',
                 flex: 1
             },{
@@ -60,6 +61,7 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
                 flex: 1
             },{
                 title: 'Files',
+                reference: 'chatfiles',
                 // xtype: 'chatattachments',
                 iconCls: 'x-fa fa-paperclip',
                 flex: 1
