@@ -15,6 +15,13 @@ Ext.define('WebRTC.view.main.Viewport', {
         align: 'stretch'
     },
 
+    viewModel:{
+        //initial prompt of name saved here.
+        data: {
+            name: null
+        }
+    },
+
     items: [
         {
         flex: 1,
@@ -27,21 +34,21 @@ Ext.define('WebRTC.view.main.Viewport', {
                 xtype: 'tabpanel',
                 flex:3,
                 deferredRender: false,
-                items:[{
-                    title: 'Users',
-                    xtype: 'chatmembers',
-                    reference: 'homeusers',
-                    iconCls: 'x-fa fa-home',
-                    flex: 1
-                },
+                items:[
                 {
                     title: 'Rooms',
                     xtype: 'chatrooms',
-                    iconCls: 'x-fa fa-keyboard-o',
+                    iconCls: 'x-fa fa-home',
                     flex: 1,
                     reference: 'homerooms'
-                }
-                ]
+                },{
+                    title: 'Users',
+                    xtype: 'chatmembers',
+                    reference: 'homeusers',
+                    hidden: true,
+                    iconCls: 'x-fa fa-home',
+                    flex: 1
+                }]
             },
             {
                 xtype: 'tabpanel',

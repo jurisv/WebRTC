@@ -2,17 +2,6 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.chatroom',
 
-    onSpecialKey: function(f,e){
-        if (e.getKey() == e.ENTER) {
-            this.chatSend();
-        }
-        if (e.getKey() == e.UP) {
-            alert('edit last')
-        }
-    },
-
-
-
     roomMemberAdd: function(member){
         var store = this.getView().down('chatmembers').down('dataview').getViewModel().getStore('members');
         store.add(member);
@@ -28,6 +17,15 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
 
     },
 
+
+    onSpecialKey: function(f,e){
+        if (e.getKey() == e.ENTER) {
+            this.chatSend();
+        }
+        if (e.getKey() == e.UP) {
+            alert('edit last')
+        }
+    },
 
     chatReceived: function(chat){
         var store = this.getView().down('chathistory').down('dataview').getViewModel().getStore('messages');
@@ -58,6 +56,15 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
         list.scrollBy(0, 999999, true);
 
         me.fireEvent('chatmessage', me, chat);
+    },
+
+
+    onPublishToggle: function(){
+        var you = this.lookupReference('you');
+        you.show();
+
+        this.fireEvent('initpublisher', this, you.getEl().id );
+
     }
 
 });

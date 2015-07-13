@@ -12,7 +12,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 streamcreated : 'onOTStreamCreated',
                 streamdestroyed : 'onOTStreamDestroyed',
                 sessionconnected : 'onOTSessionConnected',
-                sessiondestroyed : 'onOTSessionDestroyed'
+                sessiondisconnect : 'onOTSessionDestroyed'
             }
         },
         component:{
@@ -38,7 +38,10 @@ Ext.define('WebRTC.view.main.ViewportController', {
                      //set the persons name
                      var expires = new Date("October 13, 2095 11:13:00"),
                          newUser = value;
+                     Ext.util.Cookies.clear('user');
+
                      me.getViewModel().set('name', value);
+
                      Ext.util.Cookies.set('user',newUser, expires);
 
                      Ext.toast({
@@ -48,7 +51,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
                          align: 't'
                      });
 
-
+                    me.selectFirstRoom();
 
                  }
              });
@@ -59,12 +62,16 @@ Ext.define('WebRTC.view.main.ViewportController', {
                  width: 400,
                  align: 't'
              });
+             me.selectFirstRoom()
+
          }
     },
 
-    selectFirstRoom: function (store) {
-        var list = this.getView().down('chatrooms').down('dataview'),
-            selection;
+    selectFirstRoom: function () {
+        var selection,
+            list = this.getView().down('chatrooms').down('dataview'),
+            store = list.getStore();
+
 
         if (store && store.getCount()) {
             selection = list.getSelection();
@@ -75,11 +82,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 100);
             }
         }
-    },
-
-    getRoomTabById: function(id){
-        var roomtabs = this.lookupReference('roomtabs');
-        return roomtabs.child('chatroom[roomId="' + id + '"]');
     },
 
     onRoomSelect: function(view,record){
@@ -111,8 +113,16 @@ Ext.define('WebRTC.view.main.ViewportController', {
             Ext.resumeLayouts(true);
         }
         roomtabs.setActiveTab(tab);
+
+        // Notify TokBox in this case
         me.fireEvent('roomselect',tab, record.data);
 
+    },
+
+
+    getRoomTabById: function(id){
+        var roomtabs = this.lookupReference('roomtabs');
+        return roomtabs.child('chatroom[roomId="' + id + '"]');
     },
 
     onToggleFullScreen: function () {

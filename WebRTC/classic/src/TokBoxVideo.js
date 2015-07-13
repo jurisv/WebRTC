@@ -4,13 +4,13 @@ Ext.define('WebRTC.TokBoxVideo', {
 // Todo: Make this extend from the video class
 //  extend: 'WebRTC.Video',
     xtype: 'tokboxVideo',
-    layout: 'fit',
     viewModel : {
         data: {
             video: {
-                title :'Max',
-                height: 100,
-                width: 100,
+                title :null,
+                id: null,
+                height: 200,
+                width: 300,
                 volume: .2,
                 muted: false
             }
@@ -20,7 +20,9 @@ Ext.define('WebRTC.TokBoxVideo', {
         data : '{video}'
     },
     tpl: [
-        '<video autoplay  id="mainVideo" height="{height}" width="{width}"></video>',
-        '<div class="title">{title}</div>'
+//      '<video autoplay  id="{id}" height="{height}" width="{width}"></video>',
+//      '<div class="title">{title}</div>',
+        '<div id="{id}" height="400px" width="100%"></div>'
+
     ]
 });

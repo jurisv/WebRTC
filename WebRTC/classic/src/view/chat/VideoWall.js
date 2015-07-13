@@ -3,44 +3,53 @@ Ext.define('WebRTC.view.chat.VideoWall', {
     xtype: 'chatvideowall',
 
     items: [{
-        flex: 3,
         layout: {
             type: 'vbox',
             align: 'stretch'
         },
         items:[{
-            xtype: 'tokboxVideo',
+            xtype: 'container',
+            height: 300,
+            width: 800,
+            reference: 'them',
+            id: 'them',
             viewModel : {
                 data: {
                     video: {
-                        title :'Marie Curie',
-                        height: 500,
+                        title : null,
+                        id: 'speaker',
+                        height: 300,
                         width: 800,
                         volume: .2,
                         muted: false
                     }
                 }
-            },
-            flex: 3
+            }
         },{
             flex: 1,
             bodyPadding: 10,
+            minHeight: 200,
             layout: {
                 type: 'hbox',
                 align: 'stretch'
             },
             items:[{
                 flex: 3,
-                layout: {
+
+                xtype: 'container'
+                 /*layout: {
                     type: 'hbox'
-                },
-                items:[{
+                }*/
+             /*   items:[
+                {
                     xtype: 'tokboxVideo',
+                    // hidden: true,
                     width: 110,
                     viewModel : {
                         data: {
                             video: {
-                                title :'Ablert',
+                                title :'Albert',
+                                id: 'albert',
                                 height: 100,
                                 width: 100,
                                 volume: .2,
@@ -51,11 +60,13 @@ Ext.define('WebRTC.view.chat.VideoWall', {
 
                 },{
                     xtype: 'tokboxVideo',
+                   //  hidden: true,
                     width: 110,
                     viewModel : {
                         data: {
                             video: {
                                 title :'Sir Isaac',
+                                id: 'isaac',
                                 height: 100,
                                 width: 100,
                                 volume: .2,
@@ -63,24 +74,39 @@ Ext.define('WebRTC.view.chat.VideoWall', {
                             }
                         }
                     }
-                }]
+                }]*/
             },{
                 // title:'myvideo',
+                id: 'you',
+                reference: 'you',
                 xtype: 'tokboxVideo',
+                height: 200,
+                width: 300,
+                // hidden: true,
                 viewModel : {
                     data: {
                         video: {
                             title :'You',
+                            id: 'you',
                             height: 100,
-                            width: 100,
+                            width: 300,
                             volume: .2,
                             muted: false
                         }
                     }
-                },
-                flex: 1
+                }
+
 
             }]
         }]
-    }]
+    }],
+
+    tbar:[{
+        iconCls: 'x-fa fa-video-camera',
+        plain: true,
+        listeners: {
+            click: 'onPublishToggle'
+        }
+    },'->'
+    ]
 });

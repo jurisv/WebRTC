@@ -20,10 +20,7 @@ Ext.define('WebRTC.view.chat.Rooms', {
             stores: {
                 rooms: {
                     model: 'WebRTC.model.Room',
-                    autoLoad: true,
-                    listeners:{
-                        load: 'selectFirstRoom'
-                    }
+                    autoLoad: true
                 }
             }
         },

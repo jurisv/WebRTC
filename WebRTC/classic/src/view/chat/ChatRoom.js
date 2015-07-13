@@ -69,4 +69,6 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
         }
     ]
 
+
+
 });

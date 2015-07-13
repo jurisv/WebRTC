@@ -10,11 +10,13 @@ Ext.define('WebRTC.controller.OpenTok', {
         controller: {
             '*': {
                 roomselect: 'onSessionCreate',
+                initpublisher: 'onInitPublisher',
                 chatmessage: 'onChatEmit'
             }
         }
     },
     sessions:[],
+    publisher: null,
 
     unmetRequirements: function(){
         Ext.toast({
@@ -61,16 +63,20 @@ Ext.define('WebRTC.controller.OpenTok', {
 
         var me = this,
             sessionId = data.sessionId,
+            publisher,
             session = me.getSessionById(sessionId);
 
         if(!me.sessions[data.sessionId]){
+
             session = OT.initSession(data.apiKey, data.sessionId);
+
             me.bindSessionEvents(session);
 
             //store the session in an array to keep the session and listeners around
             me.sessions.push(session);
 
-            this.getConnectionToken(session, sessionId)
+            me.getConnectionToken(session, sessionId);
+
         }
 
         //set component session & connection so we can look for it later
@@ -79,6 +85,11 @@ Ext.define('WebRTC.controller.OpenTok', {
         }
 
     },
+
+    onSessionConnected: function(event) {
+        this.fireEvent('sessionconnected',event);
+    },
+
 
     getConnectionToken: function(session, sessionId){
         Ext.Ajax.request({
@@ -90,15 +101,14 @@ Ext.define('WebRTC.controller.OpenTok', {
             success: function(response){
                 //set session info on video room
                 var sessionInfo = JSON.parse(response.responseText);
-                session.connect(sessionInfo.token);
+                session.connect(sessionInfo.token, function(error){
+                    if (error) {
+                        console.log('There was an error connecting to the session:', error.code, error.message);
+                    }
+                });
             }
         });
     },
-
-    onSessionConnected: function(event) {
-      this.fireEvent('sessionconnected',event);
-    },
-
 
     onConnectionCreated: function(event) {
        this.fireEvent('connectioncreated',event);
@@ -153,6 +163,22 @@ Ext.define('WebRTC.controller.OpenTok', {
         if(from != myself){
             this.fireEvent('chatreceived',event);
         }
+    },
+
+    onInitPublisher: function(controller, element){
+        var me = this,
+            room = controller.getViewModel().get('room'),
+            sessionId = room.sessionId,
+            session = me.getSessionById(sessionId);
+
+            var publisher = OT.initPublisher(element, {
+                // insertMode: 'append',
+                width: '300',
+                height: '200'
+            });
+
+            session.publish(publisher);
+
     },
 
 

@@ -21,10 +21,12 @@ Ext.define('WebRTC.OpenTokMixin', {
             tab = this.getRoomBySessionId(sessionId),
             name = eval('{' + data.replace('=',':"') + '"}');
 
-        tab.getController().roomMemberAdd({
-            name: name,
-            id: event.connection.connectionId
-        });
+        if(tab){
+            tab.getController().roomMemberAdd({
+                name: name,
+                id: event.connection.connectionId
+            });
+        }
     },
 
     onOTConnectionDestroyed: function(event){
@@ -36,7 +38,6 @@ Ext.define('WebRTC.OpenTokMixin', {
 
 
     onOTStreamCreated: function (event) {
-        console.log('A new stream published.');
         // Create a container for a new Subscriber, assign it an id using the streamId, put it inside
         // the element with id="subscribers"
         // var subContainer = document.createElement('div');
@@ -57,6 +58,15 @@ Ext.define('WebRTC.OpenTokMixin', {
         // session.subscribe(event.stream, me.getView().down('#subscribers').down('#' + event.stream.streamId).id);
 
         //session.subscribe(event.stream, me.getView().down('#subscribers').id, {insertMode: 'append'});
+        var OT = WebRTC.app.getController('WebRTC.controller.OpenTok'),
+            session = OT.getSessionById(event.target.sessionId);
+
+        session.subscribe(event.stream, 'them', {
+           //insertMode: 'append',
+           width: '800',
+           height: '300'
+        });
+
     },
 
     onOTStreamDestroyed: function (event) {
@@ -65,14 +75,20 @@ Ext.define('WebRTC.OpenTokMixin', {
 
 
     onOTSessionConnected: function(event){
+/*
         var sessionId = event.target.sessionId,
             tab = this.getRoomBySessionId(sessionId);
 
-       // tab.getController().roomMemberAdd({});
+        tab.getController().roomMemberAdd({});
+*/
     },
 
     onOTSessionDestroyed: function(event){
-        console.log('session disconnect');
+        var id = event.connection.connectionId,
+            tab = this.getRoomBySessionId(event.target.sessionId);
+
+        tab.getController().roomMemberRemove(id);
+
         if (event.reason == "networkDisconnected") {
             Ext.toast({
                 html: 'Your network connection terminated.',
