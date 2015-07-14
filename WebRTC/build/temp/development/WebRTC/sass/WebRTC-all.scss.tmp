@@ -988,9 +988,6 @@ $include-webrtc-view-main-mainmodel: dynamic(true);;
 $include-webrtc-view-main-usermedia: dynamic(true);;
 $include-webrtc-view-main-viewport: dynamic(true);;
 $include-webrtc-view-main-viewportcontroller: dynamic(true);;
-$include-webrtc-view-videoroom-videoroom: dynamic(true);;
-$include-webrtc-view-videoroom-videoroomcontroller: dynamic(true);;
-$include-webrtc-view-videoroom-videoroommodel: dynamic(true);;
 
 
 /* ======================== ETC ======================== */
