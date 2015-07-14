@@ -6,7 +6,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
     listen: {
         controller: {
             '*': {
-              playsound: 'onPlaysound'
+           //   playsound: 'onPlaysound'
             },
             'opentok': {
                 chatreceived : 'onOTChatReceived',
