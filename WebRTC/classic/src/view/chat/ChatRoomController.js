@@ -66,10 +66,12 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
 
 
     onPublishToggle: function(){
-        var you = this.lookupReference('you');
-        you.show();
-
-        this.fireEvent('initpublisher', this, you.getEl().id );
+        var you = this.lookupReference('you'),
+            video = you.media;
+        // video.show();    
+        // you.show();
+// console.log(you, you.getEl());
+        this.fireEvent('initpublisher', this, you.id );
 
     }
 

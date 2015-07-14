@@ -2,29 +2,34 @@ Ext.define('WebRTC.view.chat.VideoWall', {
     extend: 'Ext.Panel',
     xtype: 'chatvideowall',
 
+    requires: ['Ext.media.Video'],
+
     items: [{
         layout: {
             type: 'vbox',
             align: 'stretch'
         },
         items:[{
-            xtype: 'tokboxVideo',
+            xtype: 'classic-video',
             height: 300,
             width: 800,
-             reference: 'them',
-             id: 'them',
-            viewModel : {
-                data: {
-                    video: {
-                        title : null,
-                        id: 'them',
-                        height: 300,
-                        width: 800,
-                        volume: .2,
-                        muted: false
-                    }
-                }
-            }
+            reference: 'them',
+            // id: 'them',
+            volume: .2,
+            muted: false
+
+            // viewModel : {
+            //     data: {
+            //         video: {
+            //             title : null,
+            //             id: 'them',
+            //             height: 300,
+            //             width: 800,
+            //             volume: .2,
+            //             muted: false
+            //         }
+            //     }
+            // }
         },{
             flex: 1,
             bodyPadding: 10,
@@ -79,22 +84,25 @@ Ext.define('WebRTC.view.chat.VideoWall', {
                 // title:'myvideo',
                 //id: 'you',
                 reference: 'you',
-                xtype: 'tokboxVideo',
+                // xtype: 'tokboxVideo',
+                xtype: 'classic-video',
                 height: 200,
                 width: 300,
+                volume: .2,
+                muted: false
                 // hidden: true,
-                viewModel : {
-                    data: {
-                        video: {
-                            title :'You',
-                            id: 'you',
-                            height: 100,
-                            width: 300,
-                            volume: .2,
-                            muted: false
-                        }
-                    }
-                }
+                // viewModel : {
+                //     data: {
+                //         video: {
+                //             title :'You',
+                //             id: 'you',
+                //             height: 100,
+                //             width: 300,
+                //             volume: .2,
+                //             muted: false
+                //         }
+                //     }
+                // }
 
 
             }]

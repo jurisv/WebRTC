@@ -66,9 +66,12 @@ Ext.define('WebRTC.OpenTokMixin', {
 
         //session.subscribe(event.stream, me.getView().down('#subscribers').id, {insertMode: 'append'});
         var OT = WebRTC.app.getController('WebRTC.controller.OpenTok'),
-            session = OT.getSessionById(event.target.sessionId);
+            session = OT.getSessionById(event.target.sessionId),
+            them = this.getReference('them');
 
-        session.subscribe(event.stream, 'them', {
+
+
+        session.subscribe(event.stream, them.id, {
            //insertMode: 'append',
            width: '800',
            height: '300'

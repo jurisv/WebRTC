@@ -6,7 +6,7 @@
  */
 Ext.define('WebRTC.Media', {
     extend: 'Ext.Component',
-    xtype: 'media',
+    xtype: 'remove-media',
 
     /**
      * @event play
