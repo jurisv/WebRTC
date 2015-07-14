@@ -13,6 +13,7 @@ Ext.define('WebRTC.view.chat.VideoWall', {
             xtype: 'classic-video',
             height: 300,
             width: 800,
+            itemId: 'them',
             reference: 'them',
             // id: 'them',
             volume: .2,
