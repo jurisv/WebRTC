@@ -177,7 +177,23 @@ Ext.define('WebRTC.controller.OpenTok', {
                 height: '200'
             });
 
-            session.publish(publisher);
+        var movingAvg = null;
+        publisher.on('audioLevelUpdated', function(event) {
+            if (movingAvg === null || movingAvg <= event.audioLevel) {
+                movingAvg = event.audioLevel;
+            } else {
+                movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
+            }
+
+            // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
+            var logLevel = (Math.log(movingAvg) / Math.LN10) / 1.5 + 1;
+            logLevel = Math.min(Math.max(logLevel, 0), 1);
+            // console.log(logLevel);
+            // document.getElementById('publisherMeter').value = logLevel;
+        });
+
+
+        session.publish(publisher);
 
     },
 

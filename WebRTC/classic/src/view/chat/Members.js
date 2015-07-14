@@ -5,7 +5,7 @@ Ext.define('WebRTC.view.chat.Members', {
     bodyPadding: 10,
     items:[{
         xtype:'dataview',
-        viewModel:{
+       /* viewModel:{
             stores: {
                 members: {
                     model:'WebRTC.model.RoomMember',
@@ -15,6 +15,10 @@ Ext.define('WebRTC.view.chat.Members', {
         },
         bind:{
             store: '{members}'
+        },
+        */
+        store: {
+          type: 'members'
         },
         itemSelector: 'div.member-wrap',
         tpl: [

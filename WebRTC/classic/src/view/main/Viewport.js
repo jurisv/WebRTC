@@ -15,6 +15,16 @@ Ext.define('WebRTC.view.main.Viewport', {
         align: 'stretch'
     },
 
+    tools:[{
+        type: 'maximize',
+        iconCls: 'x-fa fa-home',
+        callback: 'onToggleFullScreen'
+    },{
+        type: 'gear',
+        iconCls: 'x-fa fa-home',
+        callback: 'onViewportGear'
+    }],
+
     viewModel:{
         //initial prompt of name saved here.
         data: {

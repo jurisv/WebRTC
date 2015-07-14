@@ -26,7 +26,14 @@ Ext.define('WebRTC.OpenTokMixin', {
                 name: name,
                 id: event.connection.connectionId
             });
-        }
+
+            console.log(name );
+            var audio = Ext.getElementById('whistle');
+            // audio.currentTime = .1;
+            audio.play();
+
+        };
+
     },
 
     onOTConnectionDestroyed: function(event){

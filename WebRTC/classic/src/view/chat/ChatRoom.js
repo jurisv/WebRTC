@@ -46,21 +46,26 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
             width: '30%',
             hidden: false,
             split:true,
-            xtype: 'tabpanel',
+            // xtype: 'tabpanel',
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
             flex:1,
             items:[{
-                title: 'Chat',
-                xtype: 'chathistory',
-                reference: 'chathistory',
-                iconCls: 'x-fa fa-comments',
-                flex: 1
-            },{
                 title: 'Members',
                 xtype: 'chatmembers',
                 iconCls: 'x-fa fa-group',
                 flex: 1
             },{
+                title: 'Chat',
+                xtype: 'chathistory',
+                reference: 'chathistory',
+                iconCls: 'x-fa fa-comments',
+                flex: 3
+            },{
                 title: 'Files',
+                hidden: true,
                 reference: 'chatfiles',
                 // xtype: 'chatattachments',
                 iconCls: 'x-fa fa-paperclip',

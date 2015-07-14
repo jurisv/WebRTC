@@ -8,7 +8,6 @@ Ext.define('WebRTC.TokBoxVideo', {
         data: {
             video: {
                 title :null,
-                id: null,
                 height: 200,
                 width: 300,
                 volume: .2,
@@ -20,9 +19,9 @@ Ext.define('WebRTC.TokBoxVideo', {
         data : '{video}'
     },
     tpl: [
-//      '<video autoplay  id="{id}" height="{height}" width="{width}"></video>',
+        '<video autoplay height="{height}" width="{width}"></video>'
 //      '<div class="title">{title}</div>',
-        '<div id="{id}" height="400px" width="100%"></div>'
+//        '<div height="400px" width="100%"></div>'
 
     ]
 });

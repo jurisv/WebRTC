@@ -5,6 +5,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     listen: {
         controller: {
+            '*': {
+              playsound: 'onPlaysound'
+            },
             'opentok': {
                 chatreceived : 'onOTChatReceived',
                 connectioncreated : 'onOTConnectionCreated',
@@ -13,9 +16,16 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 streamdestroyed : 'onOTStreamDestroyed',
                 sessionconnected : 'onOTSessionConnected',
                 sessiondisconnect : 'onOTSessionDestroyed'
+            },
+            'socketio':{
+                roomschanged: 'onRoomsChanged'
             }
         },
         component:{
+            'chatrooms':{
+//             activate: 'onActivate',
+//             deactivate: 'onDeactivate'
+            },
             'chatrooms dataview':{
              //   afterrender: 'selectFirstRoom'
             }
@@ -44,12 +54,13 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
                      Ext.util.Cookies.set('user',newUser, expires);
 
-                     Ext.toast({
+                   /*  Ext.toast({
                          html: newUser + ' give us a moment while we set things up.',
                          title: 'Welcome',
                          width: 400,
                          align: 't'
                      });
+                    */
 
                     me.selectFirstRoom();
 
@@ -62,7 +73,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
                  width: 400,
                  align: 't'
              });
-             me.selectFirstRoom()
+             me.selectFirstRoom();
 
          }
     },
@@ -119,6 +130,17 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     },
 
+    onRoomsChanged: function(rooms){
+        this.lookupReference('homerooms').down('dataview').getStore().loadData(rooms);
+    },
+
+    onDeactivate: function(){
+        alert('deactivate');
+    },
+
+    onActivate: function(){
+        alert('deactivate');
+    },
 
     getRoomTabById: function(id){
         var roomtabs = this.lookupReference('roomtabs');
@@ -151,4 +173,4 @@ Ext.define('WebRTC.view.main.ViewportController', {
     }
 
 
-});
+})

@@ -8,16 +8,16 @@ Ext.define('WebRTC.view.chat.VideoWall', {
             align: 'stretch'
         },
         items:[{
-            xtype: 'container',
+            xtype: 'tokboxVideo',
             height: 300,
             width: 800,
-            reference: 'them',
-            id: 'them',
+             reference: 'them',
+             id: 'them',
             viewModel : {
                 data: {
                     video: {
                         title : null,
-                        id: 'speaker',
+                        id: 'them',
                         height: 300,
                         width: 800,
                         volume: .2,
@@ -77,7 +77,7 @@ Ext.define('WebRTC.view.chat.VideoWall', {
                 }]*/
             },{
                 // title:'myvideo',
-                id: 'you',
+                //id: 'you',
                 reference: 'you',
                 xtype: 'tokboxVideo',
                 height: 200,

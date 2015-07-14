@@ -3,12 +3,14 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
     alias: 'controller.chatroom',
 
     roomMemberAdd: function(member){
-        var store = this.getView().down('chatmembers').down('dataview').getViewModel().getStore('members');
+        var store = this.getView().down('chatmembers').down('dataview').getStore('members');
+       // var store = this.getView().down('chatmembers').down('dataview').getViewModel().getStore('members');
         store.add(member);
     },
 
     roomMemberRemove: function(id){
-         var store = this.getView().down('chatmembers').down('dataview').getViewModel().getStore('members'),
+        var store = this.getView().down('chatmembers').down('dataview').getStore('members');
+        // var store = this.getView().down('chatmembers').down('dataview').getViewModel().getStore('members'),
          idx = store.find('id',id);
 
          if(idx){
@@ -28,8 +30,12 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
     },
 
     chatReceived: function(chat){
-        var store = this.getView().down('chathistory').down('dataview').getViewModel().getStore('messages');
+        var store = this.getView().down('chathistory').down('dataview').getStore('messages');
         store.add(chat);
+
+        var audio = Ext.getElementById('whistle');
+        // audio.currentTime = .1;
+        audio.play();
     },
 
     chatSend: function(){
