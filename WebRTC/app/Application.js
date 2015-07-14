@@ -10,7 +10,8 @@ Ext.define('WebRTC.Application', {
 
     requires: [
         'WebRTC.*',
-        'WebRTC.controller.OpenTok'
+        'WebRTC.controller.OpenTok',
+        'WebRTC.SoundLibrary'
     ],
 
     controllers:[

@@ -32,8 +32,7 @@ Ext.define('WebRTC.view.main.Viewport', {
         }
     },
 
-    items: [
-        {
+    items: [{
         flex: 1,
         layout: {
             type: 'vbox',
