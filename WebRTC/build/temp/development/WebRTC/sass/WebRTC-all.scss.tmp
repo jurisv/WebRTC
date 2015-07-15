@@ -1,5 +1,5 @@
 $app-name:  dynamic( 'WebRTC' );
-$image-search-path: '/Users/mfierro/tmp/WebRTC/WebRTC/build/development/WebRTC/classic/resources';
+$image-search-path: '/Volumes/Data/Sencha/BradSchaferGit/WebRTC/WebRTC/build/development/WebRTC/classic/resources';
 $theme-name:  dynamic( 'theme-triton' );
 $include-ext-abstractcomponent: dynamic(true);;
 $include-ext-abstractcontainer: dynamic(true);;
@@ -960,11 +960,8 @@ $include-ext-window-messagebox: dynamic(true);;
 $include-ext-window-toast: dynamic(true);;
 $include-ext-window-window: dynamic(true);;
 $include-webrtc-application: dynamic(true);;
-$include-webrtc-media: dynamic(true);;
 $include-webrtc-opentokmixin: dynamic(true);;
 $include-webrtc-soundlibrary: dynamic(true);;
-$include-webrtc-tokboxvideo: dynamic(true);;
-$include-webrtc-video: dynamic(true);;
 $include-webrtc-controller-opentok: dynamic(true);;
 $include-webrtc-controller-socketio: dynamic(true);;
 $include-webrtc-model-config: dynamic(true);;

@@ -5,9 +5,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     listen: {
         controller: {
-            '*': {
-           //   playsound: 'onPlaysound'
-            },
             'opentok': {
                 chatreceived : 'onOTChatReceived',
                 connectioncreated : 'onOTConnectionCreated',
@@ -42,8 +39,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
          var me = this,
              user = Ext.util.Cookies.get('user');
 
-         //create the list of audio files needed for event sounds.
-         Ext.create('WebRTC.SoundLibrary');
+
 
          if(!user || 1==1){
              Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
@@ -77,7 +73,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
                  align: 't'
              });
              me.selectFirstRoom();
-
          }
     },
 

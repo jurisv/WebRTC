@@ -11,7 +11,7 @@ Ext.define('WebRTC.view.chat.Rooms', {
             '<tpl for=".">',
             '<div style="margin-bottom: 10px;" class="room-wrap">',
             '{name}',
-            '<br/><span>{description}</span>',
+            // '<br/><span>{description}</span>',
             '</div>',
             '</tpl>'
         ],

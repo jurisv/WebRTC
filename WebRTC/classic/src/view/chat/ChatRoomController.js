@@ -33,9 +33,7 @@ Ext.define('WebRTC.view.chat.ChatRoomController', {
         var store = this.getView().down('chathistory').down('dataview').getStore('messages');
         store.add(chat);
 
-        var audio = Ext.getElementById('whistle');
-        // audio.currentTime = .1;
-        audio.play();
+        this.fireEvent('playsound','whistle');
     },
 
     chatSend: function(){

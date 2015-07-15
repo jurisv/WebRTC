@@ -9,14 +9,17 @@ Ext.define('WebRTC.Application', {
     name: 'WebRTC',
 
     requires: [
-        'WebRTC.*',
-        'WebRTC.controller.OpenTok',
-        'WebRTC.SoundLibrary'
+        'WebRTC.*'
     ],
 
     controllers:[
-      'OpenTok',            // Launched to start listeners
-      'SocketIO'            // Launched to start listeners
+      'OpenTok',
+      'SocketIO',
+      'SoundLibrary'
+    ],
+
+    stores:[
+        'WebRTC.store.opentok.Sessions'
     ],
 
     onAppUpdate: function () {

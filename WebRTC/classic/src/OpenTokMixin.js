@@ -27,12 +27,9 @@ Ext.define('WebRTC.OpenTokMixin', {
                 id: event.connection.connectionId
             });
 
-            console.log(name );
-            var audio = Ext.getElementById('whistle');
-            // audio.currentTime = .1;
-            audio.play();
+            this.fireEvent('playsound','whistle');
 
-        };
+        }
 
     },
 
@@ -66,16 +63,32 @@ Ext.define('WebRTC.OpenTokMixin', {
 
         //session.subscribe(event.stream, me.getView().down('#subscribers').id, {insertMode: 'append'});
         var OT = WebRTC.app.getController('WebRTC.controller.OpenTok'),
+            stream = event.stream,
             session = OT.getSessionById(event.target.sessionId),
             view = this.getView(),
-            them = view.down('#them');//this.lookupReference('them');
+            remotestreams = view.down('#remotestreams'),
+            them = view.down('#them');
 
-
-        session.subscribe(event.stream, them.id, {
-           //insertMode: 'append',
-           width: '800',
-           height: '300'
+        var newly = remotestreams.add({
+            xtype: 'classic-video',
+            width: 100,
+            height: 100
         });
+
+
+        var subscriber = session.subscribe(event.stream, newly.id , {
+            insertMode: 'replace',
+            style: {
+            audioLevelDisplayMode: 'auto'
+            //   backgroundImageURI : '/resources/images/BlankAvatar.png'
+           },
+           // fitMode:'contain',
+           width: '100',
+           height: '100',
+           showControls: true
+        });
+
+        // console.log(subscriber.id);
 
     },
 

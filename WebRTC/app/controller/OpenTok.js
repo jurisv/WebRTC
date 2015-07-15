@@ -15,7 +15,6 @@ Ext.define('WebRTC.controller.OpenTok', {
             }
         }
     },
-    sessions:[],
     publisher: null,
 
     unmetRequirements: function(){
@@ -29,11 +28,14 @@ Ext.define('WebRTC.controller.OpenTok', {
     },
 
     getSessionById: function(sessionId){
-        var session = this.sessions.filter(function( obj ) {
-            return obj.id == sessionId;
-        })[0];
+        var session = Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').getById(sessionId);
+        if(session){
+            return session.get('session');
 
-        return session || null;
+        }else{
+            return null;
+        }
+
     },
 
     bindSessionEvents: function(session){
@@ -63,19 +65,23 @@ Ext.define('WebRTC.controller.OpenTok', {
 
         var me = this,
             sessionId = data.sessionId,
-            publisher,
             session = me.getSessionById(sessionId);
 
-        if(!me.sessions[data.sessionId]){
+        if(!session){
 
-            session = OT.initSession(data.apiKey, data.sessionId);
+            session = Ext.create('opentokSession',{
+                id: data.sessionId,
+                session: OT.initSession(data.apiKey, data.sessionId)
+                });
 
-            me.bindSessionEvents(session);
+            //create the event bindings prior to adding to the store
+            me.bindSessionEvents(session.get('session'));
 
-            //store the session in an array to keep the session and listeners around
-            me.sessions.push(session);
+            //store the session in an store to make it public
+            Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').add(session);
 
-            me.getConnectionToken(session, sessionId);
+
+            me.getConnectionToken(session.get('session'), sessionId);
 
         }
 
@@ -173,8 +179,8 @@ Ext.define('WebRTC.controller.OpenTok', {
 
             var publisher = OT.initPublisher(element, {
                 // insertMode: 'append',
-                width: '300',
-                height: '200'
+                width: '100%',
+                height: '100%'
             });
 
         var movingAvg = null;

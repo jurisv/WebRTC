@@ -9,8 +9,11 @@ Ext.define('WebRTC.view.chat.VideoWall', {
             type: 'vbox',
             align: 'stretch'
         },
-        items:[{
+        autoScroll: true,
+        items:[
+        {
             xtype: 'classic-video',
+            posterUrl: '/resources/images/BlankAvatar.png',
             height: 300,
             width: 800,
             itemId: 'them',
@@ -31,7 +34,8 @@ Ext.define('WebRTC.view.chat.VideoWall', {
             //         }
             //     }
             // }
-        },{
+        },
+        {
             flex: 1,
             bodyPadding: 10,
             minHeight: 200,
@@ -41,54 +45,23 @@ Ext.define('WebRTC.view.chat.VideoWall', {
             },
             items:[{
                 flex: 3,
-
-                xtype: 'container'
-                 /*layout: {
+                xtype: 'container',
+                autoscroll: 'true',
+                itemId: 'remotestreams',
+                minHeight: 200,
+                layout: {
                     type: 'hbox'
-                }*/
-             /*   items:[
-                {
-                    xtype: 'tokboxVideo',
-                    // hidden: true,
-                    width: 110,
-                    viewModel : {
-                        data: {
-                            video: {
-                                title :'Albert',
-                                id: 'albert',
-                                height: 100,
-                                width: 100,
-                                volume: .2,
-                                muted: false
-                            }
-                        }
-                    }
-
-                },{
-                    xtype: 'tokboxVideo',
-                   //  hidden: true,
-                    width: 110,
-                    viewModel : {
-                        data: {
-                            video: {
-                                title :'Sir Isaac',
-                                id: 'isaac',
-                                height: 100,
-                                width: 100,
-                                volume: .2,
-                                muted: false
-                            }
-                        }
-                    }
-                }]*/
+                },
+                items:[]
             },{
                 // title:'myvideo',
                 //id: 'you',
                 reference: 'you',
                 // xtype: 'tokboxVideo',
-                xtype: 'classic-video',
+                // xtype: 'classic-video',
+                html: '<img src="/resources/images/BlankAvatar.png" height="100" />',
                 height: 200,
-                width: 300,
+                width: 200,
                 volume: .2,
                 muted: false
                 // hidden: true,

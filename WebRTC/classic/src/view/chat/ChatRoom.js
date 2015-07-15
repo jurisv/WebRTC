@@ -26,7 +26,8 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
               type: 'vbox',
               align: 'stretch'
             },
-            items: [{
+            items: [
+            {
 
                 bind : {
                     data : '{room}'
@@ -37,7 +38,8 @@ Ext.define('WebRTC.view.chat.ChatRoom', {
                     '<h4 class="room-description">{description}&nbsp;</h4>',
                     '</div>'
                 ]
-            },{
+            }
+                ,{
                 xtype: 'chatvideowall',
                 flex: 1
             }]
