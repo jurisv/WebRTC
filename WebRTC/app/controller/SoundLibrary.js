@@ -30,7 +30,7 @@ Ext.define('WebRTC.controller.SoundLibrary', {
     },
 
     onPlaysound: function(sound,startAt,duration){
-        var audio = Ext.getElementById(sound);
+        var audio = Ext.getElementById('x-soundlibrary-' + sound);
         if(audio){
             if(startAt){
                 audio.currentTime = startAt;
