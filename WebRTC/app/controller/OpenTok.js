@@ -155,8 +155,7 @@ Ext.define('WebRTC.controller.OpenTok', {
             session.signal({
                 type: 'chat',
                 data: {
-                    id: chat.id,
-                    message: chat.message
+                    chat: chat
                 }
             }, function (error) {
                 if (error) {

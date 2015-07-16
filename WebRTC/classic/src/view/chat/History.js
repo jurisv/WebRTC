@@ -9,14 +9,6 @@ Ext.define('WebRTC.view.chat.History', {
         xtype: 'dataview',
         reference: 'historylist',
         autoScroll: true,
-        viewModel:{
-            stores: {
-                messages: {
-                    model:'WebRTC.model.RoomMessage',
-                    autoLoad: true
-                }
-            }
-        },
         bind: {
             store: '{messages}'
         },
@@ -30,7 +22,7 @@ Ext.define('WebRTC.view.chat.History', {
             '</td><td style="font-weight:400;border-bottom: solid 1px #eee;">',
             '{message}',
             '</td><td width="100" style="font-weight:400;border-bottom: solid 1px #eee;text-align:right;">',
-            '{time:date("g:i A")}',
+            '{shortDate}',
             '</td>',
             '</tr>',
             '</tpl>',

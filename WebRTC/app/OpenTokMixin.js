@@ -22,15 +22,13 @@ Ext.define('WebRTC.OpenTokMixin', {
             name = eval('{' + data.replace('=',':"') + '"}');
 
         if(tab){
-            tab.getController().roomMemberAdd({
+            var member = Ext.create('WebRTC.model.chat.RoomMember',{
                 name: name,
                 id: event.connection.connectionId
             });
 
-            this.fireEvent('playsound','whistle');
-
+            tab.getController().roomMemberAdd(member);
         }
-
     },
 
     onOTConnectionDestroyed: function(event){
@@ -42,28 +40,7 @@ Ext.define('WebRTC.OpenTokMixin', {
 
 
     onOTStreamCreated: function (event) {
-        // Create a container for a new Subscriber, assign it an id using the streamId, put it inside
-        // the element with id="subscribers"
-        // var subContainer = document.createElement('div');
-        // subContainer.id = 'stream-' + event.stream.streamId;
-        // document.getElementById(me.getView().down('#subscribers').id).appendChild(subContainer);
-
-        /*
-         var stream = Ext.create('Ext.panel,Panel',{
-         itemId: event.stream.streamId,
-         layout: 'fit'
-         });
-
-         me.getView().down('#subscribers').add(stream);
-         */
-
-
-        // Subscribe to the stream that caused this event, put it inside the container we just made
-        // session.subscribe(event.stream, me.getView().down('#subscribers').down('#' + event.stream.streamId).id);
-
-        //session.subscribe(event.stream, me.getView().down('#subscribers').id, {insertMode: 'append'});
-        var OT = WebRTC.app.getController('WebRTC.controller.OpenTok'),
-            stream = event.stream,
+          var OT = WebRTC.app.getController('WebRTC.controller.OpenTok'),
             session = OT.getSessionById(event.target.sessionId),
             view = this.getView(),
             remotestreams = view.down('#remotestreams'),
@@ -74,7 +51,6 @@ Ext.define('WebRTC.OpenTokMixin', {
             flex: 1,
             layout: 'fit'
         });
-
 
         var subscriber = session.subscribe(event.stream, newly.id , {
             insertMode: 'replace',
@@ -88,22 +64,13 @@ Ext.define('WebRTC.OpenTokMixin', {
            showControls: true
         });
 
-        // console.log(subscriber.id);
-
     },
 
     onOTStreamDestroyed: function (event) {
-        console.log('A stream was destroyed.');
     },
 
 
     onOTSessionConnected: function(event){
-/*
-        var sessionId = event.target.sessionId,
-            tab = this.getRoomBySessionId(sessionId);
-
-        tab.getController().roomMemberAdd({});
-*/
     },
 
     onOTSessionDestroyed: function(event){
@@ -124,19 +91,9 @@ Ext.define('WebRTC.OpenTokMixin', {
 
 
     onOTChatReceived: function(event){
-        var me=this,
-            now = new Date(),
-            tab = this.getRoomBySessionId(event.target.sessionId);
+        var tab = this.getRoomBySessionId(event.target.sessionId);
 
-            var data = event.from.data,
-                name = eval('{' + data.replace('=',':"') + '"}'),
-                chat = {
-                    id: event.data.id,
-                    message: event.data.message,
-                    from: name,
-                    time: now
-                };
-            tab.getController().chatReceived(chat);
+        tab.getController().chatReceived(event.data.chat);
     }
 
 });

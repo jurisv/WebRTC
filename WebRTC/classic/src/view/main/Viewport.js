@@ -12,15 +12,15 @@ Ext.define('WebRTC.view.main.Viewport', {
     viewModel:{
         data: {
             name: null,                     // set by prompt
-            room: null
+            room: null                      // ?? perhaps delete
         },
         stores: {
             rooms: {
-                model: 'WebRTC.model.Room',
+                model: 'WebRTC.model.chat.Room',
                 autoLoad: true
             },
             globalusers: {
-                model: 'WebRTC.model.RoomMember',
+                model: 'WebRTC.model.chat.RoomMember',
                 autoLoad: true
             }
         },

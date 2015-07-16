@@ -15,15 +15,6 @@ Ext.define('WebRTC.view.chat.Rooms', {
             '</div>',
             '</tpl>'
         ],
-
-        viewModel : {
-            stores: {
-                rooms: {
-                    model: 'WebRTC.model.Room',
-                    autoLoad: true
-                }
-            }
-        },
         bind:{
             store: '{rooms}'
         },

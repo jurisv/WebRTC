@@ -16,8 +16,21 @@ Ext.define('WebRTC.view.chat.Room', {
             useMic: true,
             useCamera: true,
             room: {
-                type: 'WebRTC.model.Room',
+                type: 'WebRTC.model.chat.Room',
                 create: true
+            }
+        },
+        // todo: remove messages and members and place as associated data stores of the room model.
+        stores:{
+            messages: {
+                model:'WebRTC.model.chat.Message',
+                storeId: 'roomMessages',
+                autoLoad: true
+            },
+            members: {
+                model:'WebRTC.model.chat.RoomMember',
+                storeId: 'roomMembers',
+                autoLoad: true
             }
         }
     },
