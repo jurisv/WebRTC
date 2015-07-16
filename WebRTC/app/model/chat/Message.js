@@ -3,7 +3,9 @@ Ext.define('WebRTC.model.chat.Message', {
     config: {
         fields: [
             { name: 'id', type: 'string'},
-            { name: 'timeid', type: 'string',  convert: function(value, record){
+            { name: 'timeid', type: 'string',
+              depends: [ 'date' ],
+              convert: function(value, record){
                 var date = record.get('date');
                 return Ext.Date.format(date, 'd-m-Y-H-i-s');
             }},
@@ -14,9 +16,12 @@ Ext.define('WebRTC.model.chat.Message', {
 
 
             { name: 'date', type: 'date' },
-            { name: 'shortDate', type: 'string', convert: function(value, record){
+            { name: 'shortDate',
+              type: 'string',
+              depends: [ 'date' ],
+              calculate: function(record){
                 var now = new Date(),
-                    date = record.get('date'),
+                    date = record.date,
                     days = parseInt((now.getTime() - date.getTime())/(24*3600*1000)),
                     sameDay = parseInt(Ext.Date.format(date, 'dm')) == parseInt(Ext.Date.format(now, 'dm'));
 
