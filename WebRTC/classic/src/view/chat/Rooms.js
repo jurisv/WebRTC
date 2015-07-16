@@ -30,25 +30,6 @@ Ext.define('WebRTC.view.chat.Rooms', {
         listeners: {
             select : 'onRoomSelect'
         }
-    }],
-
-    tbar:[{
-        iconCls: 'x-fa fa-pencil',
-        plain: true,
-        hidden: true,
-        listeners: {
-            click: 'onRoomMenu'
-        }
-    },'->',{
-        iconCls: 'x-fa fa-plus-square',
-        plain: true,
-        hidden: true,
-        listeners: {
-            click: 'onRoomMenu'
-        }
     }]
-
-
-
 
 });

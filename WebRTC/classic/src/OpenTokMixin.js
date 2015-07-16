@@ -70,9 +70,9 @@ Ext.define('WebRTC.OpenTokMixin', {
             them = view.down('#them');
 
         var newly = remotestreams.add({
-            xtype: 'classic-video',
-            width: 100,
-            height: 100
+            xtype: 'panel',
+            flex: 1,
+            layout: 'fit'
         });
 
 
@@ -83,8 +83,8 @@ Ext.define('WebRTC.OpenTokMixin', {
             //   backgroundImageURI : '/resources/images/BlankAvatar.png'
            },
            // fitMode:'contain',
-           width: '100',
-           height: '100',
+           width: '100%',
+           height: '100%',
            showControls: true
         });
 
@@ -125,6 +125,7 @@ Ext.define('WebRTC.OpenTokMixin', {
 
     onOTChatReceived: function(event){
         var me=this,
+            now = new Date(),
             tab = this.getRoomBySessionId(event.target.sessionId);
 
             var data = event.from.data,
@@ -132,7 +133,8 @@ Ext.define('WebRTC.OpenTokMixin', {
                 chat = {
                     id: event.data.id,
                     message: event.data.message,
-                    from: name
+                    from: name,
+                    time: now
                 };
             tab.getController().chatReceived(chat);
     }

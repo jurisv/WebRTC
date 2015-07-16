@@ -9,31 +9,91 @@ Ext.define('WebRTC.view.main.Viewport', {
 
     controller: 'mainviewport',
 
+    viewModel:{
+        data: {
+            name: null,                     // set by prompt
+            room: null
+        },
+        stores: {
+            rooms: {
+                model: 'WebRTC.model.Room',
+                autoLoad: true
+            },
+            globalusers: {
+                model: 'WebRTC.model.RoomMember',
+                autoLoad: true
+            }
+        },
+        formulas: {
+            isAdmin: function (get) {
+                return get('name') != 'admin' ;    //shows config button if name is admin
+            },
+            isRoomSelected: function (get) {
+                return get('room') != null ;    //edit allowed only when selected
+            }
+        }
+    },
+
     flex: 1,
     layout: {
         type: 'hbox',
         align: 'stretch'
     },
 
-    tools:[{
-        type: 'maximize',
-        iconCls: 'x-fa fa-home',
-        callback: 'onToggleFullScreen'
-    },{
-        type: 'gear',
-        iconCls: 'x-fa fa-home',
-        callback: 'onViewportGear'
-    }],
-
-    viewModel:{
-        //initial prompt of name saved here.
-        data: {
-            name: null
+    tbar:[
+        {
+            iconCls: 'x-fa fa-plus-square',
+            plain: true,
+            listeners: {
+                click: 'onRoomAdd'
+            }
+        },{
+            iconCls: 'x-fa fa-pencil',
+            plain: true,
+            bind:{
+                disabled: '{!isRoomSelected}'
+            },
+            listeners: {
+                click: 'onRoomEdit'
+            }
+        },{
+            xtype: 'combobox',
+            reference: 'roomscombo',
+            bind:{
+                store: '{rooms}'
+            },
+            queryMode: 'local',
+            displayField: 'name',
+            valueField: 'id',
+            listeners: {
+                select: 'onRoomSelect'
+            }
         }
-    },
+        ,'->',
+        {
+            iconCls: 'x-fa fa-user',
+            bind:{
+                text: '{name}'
+            },
+            handler: 'onSettingsUserSelect'
+        },
+        {
+            iconCls: 'x-fa fa-expand',
+            handler: 'onToggleFullScreen'
+        },{
+            iconCls: 'x-fa fa-gear',
+            bind:{
+                hidden: '{isAdmin}'
+            },
+            handler: 'onSettingsAdminSelect'
+        }
+    ],
 
-    items: [{
+
+    items: [
+        {
         flex: 1,
+        hidden: true, // todo: not implemented
         layout: {
             type: 'vbox',
             align: 'stretch'
@@ -62,7 +122,6 @@ Ext.define('WebRTC.view.main.Viewport', {
             {
                 xtype: 'tabpanel',
                 flex:1,
-                hidden: true, // todo: not implemented
                 items:[{
                     title: '1:1 Chat',
                     xtype: 'chatmembers',
@@ -73,14 +132,11 @@ Ext.define('WebRTC.view.main.Viewport', {
             }
         ]
     },
-    {
-        xtype: 'tabpanel',
-        reference: 'roomtabs',
-        flex:4,
-        items:[]
-    }
-    ],
-    listeners:{
-       // afterrender: ''
-    }
+        {
+            xtype: 'tabpanel',
+            reference: 'roomtabs',
+            flex:4,
+            items:[]
+        }
+    ]
 });

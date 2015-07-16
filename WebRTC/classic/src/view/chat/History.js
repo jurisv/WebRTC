@@ -22,12 +22,20 @@ Ext.define('WebRTC.view.chat.History', {
         },
         itemSelector: 'div.chat-wrap',
         tpl: [
+            '<table cellspacing="0" cellpadding="8" width="100%">',
             '<tpl for=".">',
-            '<div style="margin-bottom: 10px;" class="chat-wrap">',
-            '<span class="x-fa fa-user" title="{from}"> </span> {message}',
-            '<br/>',
-            '</div>',
-            '</tpl>'
+            '<tr>',
+            '<td width="125" style="font-weight:100;border-bottom: solid 1px #eee;">',
+            '{from}',
+            '</td><td style="font-weight:400;border-bottom: solid 1px #eee;">',
+            '{message}',
+            '</td><td width="100" style="font-weight:400;border-bottom: solid 1px #eee;text-align:right;">',
+            '{time:date("g:i A")}',
+            '</td>',
+            '</tr>',
+            '</tpl>',
+            '</table>'
+
         ]
     }],
 

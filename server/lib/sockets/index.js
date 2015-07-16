@@ -11,5 +11,6 @@ module.exports = function(server) {
     });
 
     var rooms = require('./rooms.ws.js')(io);
+
     return io;
 };

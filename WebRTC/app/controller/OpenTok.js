@@ -9,9 +9,14 @@ Ext.define('WebRTC.controller.OpenTok', {
     listen: {
         controller: {
             '*': {
-                roomselect: 'onSessionCreate',
-                initpublisher: 'onInitPublisher',
-                chatmessage: 'onChatEmit'
+                joinroom: 'onSessionCreate',
+                callroom: 'onCallRoom',
+                endcall: 'onUnpublish',
+                chatmessage: 'onChatEmit',
+                showPublisherAudio: 'onShowAudio',
+                hidePublisherAudio: 'onHideAudio',
+                showPublisherVideo: 'onShowVideo',
+                hidePublisherVideo: 'onHideVideo'
             }
         }
     },
@@ -121,6 +126,7 @@ Ext.define('WebRTC.controller.OpenTok', {
     },
 
 
+
     onStreamCreated: function(event) {
         this.fireEvent('streamcreated',event);
     },
@@ -131,9 +137,8 @@ Ext.define('WebRTC.controller.OpenTok', {
 
 
 
-    onChatEmit: function(controller,chat){
+    onChatEmit: function(sessionId,chat){
         var me= this,
-            sessionId = controller.getView().sessionId,
             session = me.getSessionById(sessionId),
             showError = function(){
                 Ext.toast({
@@ -171,20 +176,23 @@ Ext.define('WebRTC.controller.OpenTok', {
         }
     },
 
-    onInitPublisher: function(controller, element){
+
+
+    onCallRoom: function(sessionId, element){
         var me = this,
-            room = controller.getViewModel().get('room'),
-            sessionId = room.sessionId,
             session = me.getSessionById(sessionId);
 
-            var publisher = OT.initPublisher(element, {
-                // insertMode: 'append',
+            session.localPublisher = OT.initPublisher(element, {
+                insertMode: 'append',
+                // fitMode:'contain',
                 width: '100%',
-                height: '100%'
+                height: '100%',
+                showControls: false
             });
 
-        var movingAvg = null;
-        publisher.on('audioLevelUpdated', function(event) {
+
+        /*var movingAvg = null;
+        session.localPublisher.on('audioLevelUpdated', function(event) {
             if (movingAvg === null || movingAvg <= event.audioLevel) {
                 movingAvg = event.audioLevel;
             } else {
@@ -196,13 +204,51 @@ Ext.define('WebRTC.controller.OpenTok', {
             logLevel = Math.min(Math.max(logLevel, 0), 1);
             // console.log(logLevel);
             // document.getElementById('publisherMeter').value = logLevel;
-        });
+        });*/
 
 
-        session.publish(publisher);
+        session.publish(session.localPublisher);
 
     },
 
+
+
+    onUnpublish: function(sessionId, element){
+        var me = this,
+            session = me.getSessionById(sessionId);
+
+        session.unpublish(session.localPublisher);
+    },
+
+    onShowVideo: function(sessionId){
+        var me = this,
+            session = me.getSessionById(sessionId);
+
+       session.localPublisher.publishVideo(true);
+    },
+
+    onHideVideo: function(sessionId){
+        var me = this,
+            session = me.getSessionById(sessionId);
+
+        session.localPublisher.publishVideo(false);
+    },
+
+
+
+    onShowAudio: function(sessionId){
+        var me = this,
+            session = me.getSessionById(sessionId);
+
+        session.localPublisher.publishAudio(true);
+    },
+
+    onHideAudio: function(sessionId){
+        var me = this,
+            session = me.getSessionById(sessionId);
+
+        session.localPublisher.publishAudio(false);
+    },
 
     /*
     * some of this needs to get re-incorporated for startup

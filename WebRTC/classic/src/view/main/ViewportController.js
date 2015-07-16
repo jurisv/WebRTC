@@ -39,6 +39,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
          var me = this,
              user = Ext.util.Cookies.get('user');
 
+        // Use this area to run function to launch screen instantly
+        // this.onSettingsUserSelect();
+        // return;
 
 
          if(!user || 1==1){
@@ -72,12 +75,13 @@ Ext.define('WebRTC.view.main.ViewportController', {
                  width: 400,
                  align: 't'
              });
-             me.selectFirstRoom();
+              me.selectFirstRoom();
          }
     },
 
     selectFirstRoom: function () {
         var selection,
+            combo = this.lookupReference('roomscombo'),
             list = this.getView().down('chatrooms').down('dataview'),
             store = list.getStore();
 
@@ -86,11 +90,42 @@ Ext.define('WebRTC.view.main.ViewportController', {
             selection = list.getSelection();
             if (!selection || !selection.length) {
                 Ext.Function.defer(function(){
-                    list.getSelectionModel().select(0)
+                   combo.select(store.getAt(0));
+                   list.getSelectionModel().select(0)
                 },
                 100);
             }
         }
+    },
+
+    onRoomAdd: function(){
+        Ext.create('Ext.window.Window', {
+            title: 'Add Room',
+            iconCls: 'x-fa fa-plus-square fa-lg',
+            height: 250,
+            width: 800,
+            layout: 'fit',
+            items: {
+                xtype: 'chatroomform',
+                border: false
+
+            }
+        }).show();
+    },
+
+    onRoomEdit: function(){
+        Ext.create('Ext.window.Window', {
+            title: 'Edit Room',
+            iconCls: 'x-fa fa-plus-square fa-lg',
+            height: 250,
+            width: 800,
+            layout: 'fit',
+            items: {
+                xtype: 'chatroomform',
+                border: false
+
+            }
+        }).show();
     },
 
     onRoomSelect: function(view,record){
@@ -101,6 +136,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
             room;
 
         if(!record) return false;
+
+        //set main active room
+        me.getViewModel().set('room',record.data);
 
         //only add one
         if (!tab) {
@@ -120,11 +158,13 @@ Ext.define('WebRTC.view.main.ViewportController', {
             Ext.suspendLayouts();
             tab = roomtabs.insert(0, room);
             Ext.resumeLayouts(true);
+
+            // Notify TokBox in this case
+            me.fireEvent('joinroom',tab, record.data);
         }
         roomtabs.setActiveTab(tab);
 
-        // Notify TokBox in this case
-        me.fireEvent('roomselect',tab, record.data);
+
 
     },
 
@@ -145,7 +185,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
         return roomtabs.child('chatroom[roomId="' + id + '"]');
     },
 
-    onToggleFullScreen: function () {
+    onToggleFullScreen: function (button) {
         if (!document.fullscreenElement &&    // alternative standard method
             !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
             if (document.documentElement.requestFullscreen) {
@@ -168,7 +208,36 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 document.webkitExitFullscreen();
             }
         }
-    }
+    },
 
+    onSettingsUserSelect: function(){
+        Ext.create('Ext.window.Window', {
+            title: 'User Settings',
+            iconCls: 'x-fa fa-user fa-lg',
+            height: 200,
+            width: 400,
+            layout: 'fit',
+            items: {
+                xtype: 'settingsuser',
+                border: false
+
+            }
+        }).show();
+    },
+
+    onSettingsAdminSelect: function(){
+        Ext.create('Ext.window.Window', {
+            title: 'Admin Settings',
+            iconCls: 'x-fa fa-gear fa-lg',
+            height: 400,
+            width: 400,
+            layout: 'fit',
+            items: {
+                xtype: 'settingsadmin',
+                border: false
+
+            }
+        }).show();
+    }
 
 })

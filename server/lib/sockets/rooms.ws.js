@@ -10,22 +10,22 @@ module.exports = function(io) {
             dispatchAll(socket);
         });
  
-        socket.on('saveRoom', function(todo) {
-            roomsDB.saveTodo(todo, function(err, data) {
+        socket.on('saveRoom', function(room) {
+            roomsDB.saveRoom(room, function(err, data) {
                 if (err) throw err; // You can emit the error to a socket	
                 dispatchAll(socket);
             });
         });
  
         socket.on('updateRoom', function(data) {
-            roomsDB.updateTodo(data, function(err, data) {
+            roomsDB.updateRoom(data, function(err, data) {
                 if (err) throw err; // You can emit the error to a socket 
                 dispatchAll(socket);
             });
         });
         
         socket.on('deleteRoom', function(data) {
-            roomsDB.deleteTodo(data.id, function(err, data) {
+            roomsDB.deleteRoom(data.id, function(err, data) {
                 if (err) throw err; // You can emit the error to a socket 
                 dispatchAll(socket);
             });
