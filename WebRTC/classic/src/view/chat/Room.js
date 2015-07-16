@@ -4,7 +4,7 @@ Ext.define('WebRTC.view.chat.Room', {
 
     layout: {
         type: 'box',
-        vertical: false,
+        vertical: true,
         align: 'stretch'
     },
 
@@ -31,6 +31,10 @@ Ext.define('WebRTC.view.chat.Room', {
                 model:'WebRTC.model.chat.RoomMember',
                 // storeId: 'roomMembers',
                 autoLoad: true
+            },
+            feeds:{
+                model:'WebRTC.model.chat.Message',
+                autoLoad: true
             }
         }
     },
@@ -41,97 +45,111 @@ Ext.define('WebRTC.view.chat.Room', {
 
     items: [
         {
-            bodyPadding: 25,
-            flex:2,
-            layout: {
-              type: 'box',
-              vertical: true,
-              align: 'stretch'
-            },
-            items: [
-            {
-                xtype: 'chatinfo',
-                hidden: true
-            },{
-                // title: 'Videos',
-                // iconCls: 'x-fa fa-video-camera fa-lg',
-                xtype: 'chatvideowall',
-                minHeight: 200,
-                flex: 1
-            },{
-                xtype: 'chathistory',
-                reference: 'chathistory',
-                flex: 3
-            }]
-        },{
-            hidden: false,
+            xtype: 'chatvideowall',
+            hidden: true,
+            bodyPadding: 6,
+            minHeight: 300,
+            flex: 1
+        },
+        {
             layout: {
                 type: 'box',
-                vertical: true,
+                vertical: false,
                 align: 'stretch'
             },
-            flex:1,
-            items:[{
-                bodyPadding: 20,
-                items:{
-                    // html: '<div style="text-align:center;"><img src="/resources/images/BlankAvatar.png" style="height:250px;" /><br></div>',
-                    style: 'display: block; background-color:#eeeeee; background-image: url(https://static.opentok.com/webrtc/v2.6.0/images/rtc/audioonly-silhouette.svg); background-position: center bottom; background-repeat: no-repeat; background-size: auto 76%;',
-                    xtype:'container',
-                    layout:'fit',
-                    minHeight: 200,
-                    reference: 'you'
+            flex:4,
+            items:[
+                {
+                    layout: {
+                        type: 'box',
+                        vertical: true,
+                        align: 'stretch'
+                    },
+                    flex: 4,
+                    bodyPadding: 6,
+                    items: [
+                        {
+                            xtype: 'chatinfo',
+                            bodyPadding: 6,
+                            hidden: false
+                        }, {
+                            xtype: 'chathistory',
+                            reference: 'chathistory',
+                            flex: 2
+                        }
+                    ]
                 },
-
-                bbar:[
                 {
-                    iconCls: 'x-fa fa-phone',
-                    bind:{
-                        disabled: '{inCall}'
+                    hidden: false,
+                    layout: {
+                        type: 'box',
+                        vertical: true,
+                        align: 'stretch'
                     },
-                    listeners: {
-                        click: 'onCallRoom'
-                    }
-                },{
-                    iconCls: 'x-fa fa-stop',
-                    bind:{
-                        disabled: '{!inCall}'
-                    },
-                    listeners: {
-                        click: 'onEndCall'
-                    }
-                },'->',
-                {
-                    iconCls: 'x-fa fa-video-camera',
-                    bind:{
-                        disabled: '{!inCall}'
-                    },
-                    listeners: {
-                        click: 'onPublishVideoToggle'
-                    }
-                },{
-                    iconCls: 'x-fa fa-microphone',
-                    bind:{
-                        disabled: '{!inCall}'
-                    },
-                    listeners: {
-                        click: 'onPublishAudioToggle'
-                    }
+                    flex: 1,
+                    items: [
+                        {
+                            items: {
+                                style: 'display: block; background-color:#eeeeee; background-image: url(https://static.opentok.com/webrtc/v2.6.0/images/rtc/audioonly-silhouette.svg); background-position: center bottom; background-repeat: no-repeat; background-size: auto 76%;',
+                                xtype: 'container',
+                                layout: 'fit',
+                                minHeight: 180,
+                                reference: 'you'
+                            },
+                            bodyPadding: 6,
+                            bbar: [
+                                {
+                                    iconCls: 'x-fa fa-phone',
+                                    bind: {
+                                        disabled: '{inCall}'
+                                    },
+                                    listeners: {
+                                        click: 'onCallRoom'
+                                    }
+                                }, {
+                                    iconCls: 'x-fa fa-stop',
+                                    bind: {
+                                        disabled: '{!inCall}'
+                                    },
+                                    listeners: {
+                                        click: 'onEndCall'
+                                    }
+                                }, '->',
+                                {
+                                    iconCls: 'x-fa fa-video-camera',
+                                    bind: {
+                                        disabled: '{!inCall}'
+                                    },
+                                    listeners: {
+                                        click: 'onPublishVideoToggle'
+                                    }
+                                }, {
+                                    iconCls: 'x-fa fa-microphone',
+                                    bind: {
+                                        disabled: '{!inCall}'
+                                    },
+                                    listeners: {
+                                        click: 'onPublishAudioToggle'
+                                    }
+                                }
+                            ]
+                        }, {
+                            title: 'Members',
+                            collapsable: true,
+                            xtype: 'chatmembers',
+                            iconCls: 'x-fa fa-group fa-lg',
+                            flex: 1
+                        }, {
+                            title: 'Files',
+                            hidden: true,
+                            reference: 'chatfiles',
+                            // xtype: 'chatattachments',
+                            iconCls: 'x-fa fa-paperclip',
+                            flex: 1
+                        }
+                    ]
                 }
-                ]
-            },{
-                title: 'Members',
-                collapsable: true,
-                xtype: 'chatmembers',
-                iconCls: 'x-fa fa-group fa-lg',
-                flex: 1
-            },{
-                title: 'Files',
-                hidden: true,
-                reference: 'chatfiles',
-                // xtype: 'chatattachments',
-                iconCls: 'x-fa fa-paperclip',
-                flex: 1
-            }]
+            ]
         }
     ]
 

@@ -5,10 +5,12 @@ Ext.define('WebRTC.view.chat.VideoWall', {
     requires: ['Ext.media.Video'],
 
     autoscroll: 'true',
-    // bodyPadding: 20,
     itemId: 'remotestreams',
+    bodyStyle: 'background-color: #cacaca;',
     layout: {
         type: 'box',
+        pack: 'center',
+        align: 'middle',
         vertical: false
     },
 

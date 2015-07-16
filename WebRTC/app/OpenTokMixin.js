@@ -49,14 +49,18 @@ Ext.define('WebRTC.OpenTokMixin', {
             remotestreams = view.down('#remotestreams'),
             them = view.down('#them');
 
+        if(remotestreams.isHidden()){
+            remotestreams.show()
+        }
+
         var newly = remotestreams.add({
             xtype: 'panel',
             bodyPadding: 3,
             itemId: this.getSafeStreamCmpId(event.stream.id),
             html:'<div id="' + event.stream.id + '"></div>',
             flex: 1,
-            minHeight: 200,
-            width: 300
+            minHeight: 250,
+            maxWidth: 400
         });
 
         var subscriber = session.subscribe(event.stream, event.stream.id , {
@@ -74,10 +78,15 @@ Ext.define('WebRTC.OpenTokMixin', {
     },
 
     onOTStreamDestroyed: function (event) {
-        var deadCmp = this.getView().down('#' + this.getSafeStreamCmpId(event.stream.id) );
+        var deadCmp = this.getView().down('#' + this.getSafeStreamCmpId(event.stream.id)),
+            view = this.getView(),
+            remotestreams = view.down('#remotestreams');
         console.log(deadCmp);
         if(deadCmp){
             deadCmp.destroy();
+            if(!remotestreams.items.length){
+                remotestreams.hide();
+            }
         }
     },
 
