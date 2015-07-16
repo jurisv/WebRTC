@@ -38,6 +38,9 @@ Ext.define('WebRTC.OpenTokMixin', {
         tab.getController().roomMemberRemove(id);
     },
 
+    getSafeStreamCmpId:function(streamId){
+        return 'stream' + streamId.replace(/-/g,'');
+    },
 
     onOTStreamCreated: function (event) {
           var OT = WebRTC.app.getController('WebRTC.controller.OpenTok'),
@@ -48,12 +51,16 @@ Ext.define('WebRTC.OpenTokMixin', {
 
         var newly = remotestreams.add({
             xtype: 'panel',
+            bodyPadding: 3,
+            itemId: this.getSafeStreamCmpId(event.stream.id),
+            html:'<div id="' + event.stream.id + '"></div>',
             flex: 1,
-            layout: 'fit'
+            minHeight: 200,
+            width: 300
         });
 
-        var subscriber = session.subscribe(event.stream, newly.id , {
-            insertMode: 'replace',
+        var subscriber = session.subscribe(event.stream, event.stream.id , {
+            /// insertMode: 'append',
             style: {
             audioLevelDisplayMode: 'auto'
             //   backgroundImageURI : '/resources/images/BlankAvatar.png'
@@ -67,6 +74,11 @@ Ext.define('WebRTC.OpenTokMixin', {
     },
 
     onOTStreamDestroyed: function (event) {
+        var deadCmp = this.getView().down('#' + this.getSafeStreamCmpId(event.stream.id) );
+        console.log(deadCmp);
+        if(deadCmp){
+            deadCmp.destroy();
+        }
     },
 
 

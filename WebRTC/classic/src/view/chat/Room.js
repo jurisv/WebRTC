@@ -24,12 +24,12 @@ Ext.define('WebRTC.view.chat.Room', {
         stores:{
             messages: {
                 model:'WebRTC.model.chat.Message',
-                storeId: 'roomMessages',
+                // storeId: 'roomMessages',
                 autoLoad: true
             },
             members: {
                 model:'WebRTC.model.chat.RoomMember',
-                storeId: 'roomMembers',
+                // storeId: 'roomMembers',
                 autoLoad: true
             }
         }
@@ -44,12 +44,20 @@ Ext.define('WebRTC.view.chat.Room', {
             bodyPadding: 25,
             flex:2,
             layout: {
-              type: 'vbox',
+              type: 'box',
+              vertical: true,
               align: 'stretch'
             },
             items: [
             {
-                xtype: 'chatinfo'
+                xtype: 'chatinfo',
+                hidden: true
+            },{
+                // title: 'Videos',
+                // iconCls: 'x-fa fa-video-camera fa-lg',
+                xtype: 'chatvideowall',
+                minHeight: 200,
+                flex: 1
             },{
                 xtype: 'chathistory',
                 reference: 'chathistory',
@@ -58,7 +66,8 @@ Ext.define('WebRTC.view.chat.Room', {
         },{
             hidden: false,
             layout: {
-                type: 'vbox',
+                type: 'box',
+                vertical: true,
                 align: 'stretch'
             },
             flex:1,
@@ -73,7 +82,8 @@ Ext.define('WebRTC.view.chat.Room', {
                     reference: 'you'
                 },
 
-                bbar:[{
+                bbar:[
+                {
                     iconCls: 'x-fa fa-phone',
                     bind:{
                         disabled: '{inCall}'
@@ -113,11 +123,6 @@ Ext.define('WebRTC.view.chat.Room', {
                 collapsable: true,
                 xtype: 'chatmembers',
                 iconCls: 'x-fa fa-group fa-lg',
-                flex: 1
-            },{
-                title: 'Videos',
-                iconCls: 'x-fa fa-video-camera fa-lg',
-                xtype: 'chatvideowall',
                 flex: 1
             },{
                 title: 'Files',

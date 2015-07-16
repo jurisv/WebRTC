@@ -181,6 +181,9 @@ Ext.define('WebRTC.controller.OpenTok', {
         var me = this,
             session = me.getSessionById(sessionId);
 
+        //can only publish one video per room
+        if(!session.localPublisher) {
+
             session.localPublisher = OT.initPublisher(element, {
                 insertMode: 'append',
                 // fitMode:'contain',
@@ -190,23 +193,24 @@ Ext.define('WebRTC.controller.OpenTok', {
             });
 
 
-        /*var movingAvg = null;
-        session.localPublisher.on('audioLevelUpdated', function(event) {
-            if (movingAvg === null || movingAvg <= event.audioLevel) {
-                movingAvg = event.audioLevel;
-            } else {
-                movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
-            }
+            /*var movingAvg = null;
+             session.localPublisher.on('audioLevelUpdated', function(event) {
+             if (movingAvg === null || movingAvg <= event.audioLevel) {
+             movingAvg = event.audioLevel;
+             } else {
+             movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
+             }
 
-            // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
-            var logLevel = (Math.log(movingAvg) / Math.LN10) / 1.5 + 1;
-            logLevel = Math.min(Math.max(logLevel, 0), 1);
-            // console.log(logLevel);
-            // document.getElementById('publisherMeter').value = logLevel;
-        });*/
+             // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
+             var logLevel = (Math.log(movingAvg) / Math.LN10) / 1.5 + 1;
+             logLevel = Math.min(Math.max(logLevel, 0), 1);
+             // console.log(logLevel);
+             // document.getElementById('publisherMeter').value = logLevel;
+             });*/
 
 
-        session.publish(session.localPublisher);
+            session.publish(session.localPublisher);
+        }
 
     },
 
@@ -217,6 +221,7 @@ Ext.define('WebRTC.controller.OpenTok', {
             session = me.getSessionById(sessionId);
 
         session.unpublish(session.localPublisher);
+        session.localPublisher = null;
     },
 
     onShowVideo: function(sessionId){
