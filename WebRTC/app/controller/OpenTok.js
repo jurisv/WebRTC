@@ -61,7 +61,7 @@ Ext.define('WebRTC.controller.OpenTok', {
     },
 
 
-    onSessionCreate: function(component, data){
+    onSessionCreate: function(component, data, name){
 
         if (OT.checkSystemRequirements() != 1) {
             me.unmetRequirements();
@@ -86,7 +86,7 @@ Ext.define('WebRTC.controller.OpenTok', {
             Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').add(session);
 
 
-            me.getConnectionToken(session.get('session'), sessionId);
+            me.getConnectionToken(session.get('session'), sessionId, name);
 
         }
 
@@ -102,12 +102,12 @@ Ext.define('WebRTC.controller.OpenTok', {
     },
 
 
-    getConnectionToken: function(session, sessionId){
+    getConnectionToken: function(session, sessionId, name){
         Ext.Ajax.request({
             url: '/data/token/' + sessionId,
             params: {
                 role: 'publisher',
-                name: Ext.util.Cookies.get('user')
+                name: name
             },
             success: function(response){
                 //set session info on video room

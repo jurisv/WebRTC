@@ -9,20 +9,38 @@ Ext.define('WebRTC.controller.SocketIO', {
     listen: {
         controller: {
             '*': {
-                // roomselect: 'onSessionCreate',
-                // chatmessage: 'onChatEmit'
+                startsockets: 'onStartSockets'
             }
         }
     },
-    init: function()
-    {
+
+    onStartSockets: function() {
+
+        console.log('sockets started');
+
+
+        //global socket events
+        this.socket = io();
+
+        /*
+        *   Namespaced events:
+        *   By default when we connect to a namespace it will emit
+        */
+        this.rooms = io.connect('/rooms');
+        this.bindRooms();
+
+
+    },
+
+    bindRooms: function() {
         var me= this;
-
-        // Yes, yes I know socket is a global; deal with it.
-        socket = io();
-
-        socket.on('rooms', function(rooms){
-            me.fireEvent('roomschanged',rooms)
+        this.rooms.on('all', function(rooms){
+            console.log('all rooms');
+            me.fireEvent('roomschanged',rooms);
         });
+
+        console.log('rooms bound');
+
     }
+
 });

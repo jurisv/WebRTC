@@ -46,7 +46,7 @@ Ext.define('WebRTC.view.chat.RoomController', {
             store = this.getViewModel().getStore('messages'),
             list = me.lookupReference('historylist'),
             timestamp = new Date().toISOString(),
-            name = Ext.util.Cookies.get('user'),
+            name = me.getViewModel().get('name'),
             id = timestamp,
             sessionId = this.getViewModel().get('room.sessionId'),
             message = me.lookupReference('chattext');

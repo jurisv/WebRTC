@@ -7,7 +7,7 @@ module.exports = function(server) {
 
     io.on('connection', function(socket) {
     	// the primary socket at '/'
-        console.log('Connection');
+        console.log('Socket Connection:' + socket.id);
     });
 
     var rooms = require('./rooms.ws.js')(io);

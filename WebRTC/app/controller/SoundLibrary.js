@@ -35,8 +35,13 @@ Ext.define('WebRTC.controller.SoundLibrary', {
             if(startAt){
                 audio.currentTime = startAt;
             }
+            // todo: this needs finishing and testing
             if(duration){
-               //  audio.currentTime = startAt;
+                audio.on('timeupdate', function () {
+                    if (this.currentTime >= ( startAt + duration) ){
+                        this.pause();
+                    }
+                })
             }
             audio.play();
         }

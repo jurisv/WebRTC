@@ -4,7 +4,8 @@ Ext.define('WebRTC.view.main.Viewport', {
 
     requires: [
         'Ext.plugin.Viewport',
-        'Ext.window.MessageBox'
+        'Ext.window.MessageBox',
+        'WebRTC.model.User'
     ],
 
     controller: 'mainviewport',
@@ -21,6 +22,10 @@ Ext.define('WebRTC.view.main.Viewport', {
             },
             globalusers: {
                 model: 'WebRTC.model.chat.RoomMember',
+                autoLoad: true
+            },
+            users: {
+                model: 'WebRTC.model.User',
                 autoLoad: true
             }
         },

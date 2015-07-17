@@ -37,24 +37,34 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     init: function() {
          var me = this,
-             user = Ext.util.Cookies.get('user');
+             userCookie = Ext.util.Cookies.get('user'),
+             user,
+             store = Ext.create('Ext.data.Store',{
+                 model: 'WebRTC.model.User',
+                 autoLoad: true
+             });
 
         // Use this area to run function to launch screen instantly
         // this.onSettingsUserSelect();
         // return;
 
 
-         if(!user || 1==1){
+         if(!userCookie){
              Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
                  if(value) {
                      //set the persons name
                      var expires = new Date("October 13, 2095 11:13:00"),
-                         newUser = value;
+                         newUser = Ext.create('WebRTC.model.User',{
+                             name: value
+                         });
+
                      Ext.util.Cookies.clear('user');
 
-                     me.getViewModel().set('name', value);
+                     newUser.save();
 
-                     Ext.util.Cookies.set('user',newUser, expires);
+                     me.getViewModel().set('name', newUser.get('name') );
+
+                     Ext.util.Cookies.set('user', JSON.stringify(newUser) , expires);
 
                    /*  Ext.toast({
                          html: newUser + ' give us a moment while we set things up.',
@@ -64,18 +74,29 @@ Ext.define('WebRTC.view.main.ViewportController', {
                      });
                     */
 
-                    me.selectFirstRoom();
+                    me.fireEvent('startsockets');
+                    Ext.defer(function() {
+                         me.selectFirstRoom();
+                    }, 1200);
 
                  }
              });
          }else{
+             user =  JSON.parse(userCookie) ;
+             me.getViewModel().set('name', user.data.name );
+
              Ext.toast({
-                 html: 'Glad to see you again ' + user + '.',
+                 html: 'Glad to see you again ' + user.data.name  + '.',
                  title: 'Welcome Back',
                  width: 400,
                  align: 't'
              });
-              me.selectFirstRoom();
+
+             me.fireEvent('startsockets');
+             Ext.defer(function() {
+                 me.selectFirstRoom();
+             }, 1200);
+
          }
     },
 
@@ -133,6 +154,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
             roomtabs = this.lookupReference('roomtabs'),
             id = record.get('id'),
             tab = me.getRoomTabById(id),
+            name = me.getViewModel().get('name'),
             room;
 
         if(!record) return false;
@@ -160,7 +182,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
             Ext.resumeLayouts(true);
 
             // Notify TokBox in this case
-            me.fireEvent('joinroom',tab, record.data);
+            me.fireEvent('joinroom', tab, record.data, name);
         }
         roomtabs.setActiveTab(tab);
 

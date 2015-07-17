@@ -64,14 +64,11 @@ var data = {
                         res.status(200).send(module.exports.wrapresponse(module.exports._rooms,module.exports._rooms.length) );
                     }
 
-                    //now watch for changes
+                    //now watch for changes and update cache
                     rooms.on('value', function(childSnapshot, prevChildName) {
                         if (childSnapshot.val() && childSnapshot.val() != undefined){
                             var data = childSnapshot.val();
                             module.exports._rooms = data;
-                            var roomsIo = App.io;
-                            roomsIo.emit('rooms',data);
-                            console.log('rooms changed');
                         }
                     });
                 }
