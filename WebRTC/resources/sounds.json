@@ -1,0 +1,12 @@
+{
+	"data": [
+		{
+			"id": "none"
+		},
+		{
+			"id": "whistle",
+			"mp3": "resources/audioaudio/whistle.mp3",
+			"ogg": "resources/audioaudio/whistle.ogg"
+		}
+	]
+}

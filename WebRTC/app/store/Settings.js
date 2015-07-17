@@ -1,0 +1,46 @@
+Ext.define('WebRTC.store.Settings', {
+    extend: 'Ext.data.Store',
+
+    model: 'WebRTC.model.Config',
+
+    autoLoad: true,
+    autoSync: true,
+
+    statics: {
+        DEFAULTS: {
+            'chat-sound': 'whistle'
+        }
+    },
+
+
+    proxy: {
+        type: 'localstorage',
+        id: 'connect-configs'
+    },
+
+    constructor: function () {
+        var me = this;
+
+        
+
+        me.callParent(arguments);
+        me.on('load', me.applyDefaultSettings, me);
+    },
+
+    applyDefaultSettings: function () {
+        var me = this,
+            defaults = me.statics().DEFAULTS;
+
+        Ext.Object.each(defaults, function(key, value){
+            console.log('checking default settings')
+            var current = me.getById(key);
+            if (!current) {
+                console.log('adding '+ key +' default setting')
+                me.create({key: key, value: value});
+            }
+        })
+        
+
+    }
+
+});

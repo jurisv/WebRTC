@@ -1,5 +1,5 @@
 $app-name:  dynamic( 'WebRTC' );
-$image-search-path: '/Volumes/Data/Sencha/BradSchaferGit/WebRTC/WebRTC/build/development/WebRTC/classic/resources';
+$image-search-path: '/Users/mfierro/tmp/WebRTC/WebRTC/build/development/WebRTC/classic/resources';
 $theme-name:  dynamic( 'theme-triton' );
 $include-ext-abstractcomponent: dynamic(true);;
 $include-ext-abstractcontainer: dynamic(true);;
@@ -964,27 +964,27 @@ $include-webrtc-opentokmixin: dynamic(true);;
 $include-webrtc-soundlibrary: dynamic(true);;
 $include-webrtc-controller-opentok: dynamic(true);;
 $include-webrtc-controller-socketio: dynamic(true);;
+$include-webrtc-controller-soundlibrary: dynamic(true);;
 $include-webrtc-model-config: dynamic(true);;
-$include-webrtc-model-contact: dynamic(true);;
 $include-webrtc-model-file: dynamic(true);;
-$include-webrtc-model-profile: dynamic(true);;
-$include-webrtc-model-room: dynamic(true);;
-$include-webrtc-model-roommember: dynamic(true);;
-$include-webrtc-model-roommessage: dynamic(true);;
-$include-webrtc-store-members: dynamic(true);;
-$include-webrtc-store-messages: dynamic(true);;
-$include-webrtc-store-personnel: dynamic(true);;
-$include-webrtc-view-chat-chatroom: dynamic(true);;
-$include-webrtc-view-chat-chatroomcontroller: dynamic(true);;
+$include-webrtc-model-chat-message: dynamic(true);;
+$include-webrtc-model-chat-room: dynamic(true);;
+$include-webrtc-model-chat-roommember: dynamic(true);;
+$include-webrtc-model-opentok-session: dynamic(true);;
+$include-webrtc-store-chat-members: dynamic(true);;
+$include-webrtc-store-opentok-sessions: dynamic(true);;
 $include-webrtc-view-chat-history: dynamic(true);;
+$include-webrtc-view-chat-info: dynamic(true);;
 $include-webrtc-view-chat-members: dynamic(true);;
+$include-webrtc-view-chat-room: dynamic(true);;
+$include-webrtc-view-chat-roomcontroller: dynamic(true);;
+$include-webrtc-view-chat-roomform: dynamic(true);;
 $include-webrtc-view-chat-rooms: dynamic(true);;
 $include-webrtc-view-chat-videowall: dynamic(true);;
-$include-webrtc-view-main-list: dynamic(true);;
-$include-webrtc-view-main-mainmodel: dynamic(true);;
-$include-webrtc-view-main-usermedia: dynamic(true);;
 $include-webrtc-view-main-viewport: dynamic(true);;
 $include-webrtc-view-main-viewportcontroller: dynamic(true);;
+$include-webrtc-view-settings-admin: dynamic(true);;
+$include-webrtc-view-settings-user: dynamic(true);;
 
 
 /* ======================== ETC ======================== */

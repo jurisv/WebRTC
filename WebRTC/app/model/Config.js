@@ -6,15 +6,10 @@
  */
 Ext.define('WebRTC.model.Config', {
     extend: 'Ext.data.Model',
-    config: {
-        idProperty: 'key',
-        fields: [
-            { name: 'key',    type: 'string' },
-            { name: 'value',  type: 'string' }
-        ],
-        proxy: {
-            type: 'localstorage',
-            id: 'connect-configs'
-        }
-    }
+    
+    idProperty: 'key',
+    fields: [
+        { name: 'key',    type: 'string' },
+        { name: 'value',  type: 'string' }
+    ]
 });

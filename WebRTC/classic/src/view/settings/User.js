@@ -2,6 +2,28 @@ Ext.define('WebRTC.view.settings.User', {
     extend: 'Ext.form.Panel',
     xtype: 'settingsuser',
 
+    requires: [
+        'WebRTC.view.settings.UserController'
+    ],
+
+    controller: 'settingsuser',
+    viewModel: {
+        stores: {
+            sounds: {
+                autoLoad: true,
+                fields: ['id', 'wav', 'mp3', 'ogg'],
+                proxy: {
+                    type: 'ajax',
+                    url: 'resources/sounds.json',
+                    reader: {
+                        type: 'json',
+                        rootProperty: 'data'
+                    }
+                }
+            }
+        }
+    },
+
     bodyPadding: 10,
     autoScroll: true,
 
@@ -29,7 +51,7 @@ Ext.define('WebRTC.view.settings.User', {
             ]
         },{
             xtype: 'fieldset',
-            title: 'Profile',
+            title: 'FB Profile',
             defaults:{
                 anchor: '100%'
             },
@@ -46,6 +68,25 @@ Ext.define('WebRTC.view.settings.User', {
                     name: 'FBSecretKey'
                 }
             ]
+        },{
+            xtype: 'fieldset',
+            title: 'Sounds',
+            defaults:{
+                anchor: '100%'
+            },
+            items: [
+                {
+                    xtype: 'combobox',
+                    bind: {
+                        store: '{sounds}'
+                    },
+                    fieldLabel: 'Chat Sound',
+                    queryMode: 'local',
+                    displayField: 'id',
+                    valueField: 'id',
+                    name: 'chat-sound'
+                }
+            ]
         }
     ],
 
@@ -60,7 +101,8 @@ Ext.define('WebRTC.view.settings.User', {
         {
             iconCls: 'x-fa fa-thumbs-o-up',
             action:'ok',
-            text:'OK'
+            text:'OK',
+            handler: 'saveSettings'
         }
     ]
 
