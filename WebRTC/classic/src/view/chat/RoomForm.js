@@ -5,6 +5,8 @@ Ext.define('WebRTC.view.chat.RoomForm', {
     bodyPadding: 10,
     autoScroll: true,
 
+    defaultFocus: 'textfield [name=name]',
+    defaultButton: 'okButton',
 
 
     items: [
@@ -40,7 +42,9 @@ Ext.define('WebRTC.view.chat.RoomForm', {
         ,'->',
         {
             iconCls: 'x-fa fa-thumbs-o-up',
+            reference: 'okButton',
             action:'ok',
+            formBind: true,
             text:'OK'
         }
     ]

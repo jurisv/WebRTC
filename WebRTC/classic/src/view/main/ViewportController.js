@@ -19,9 +19,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
             }
         },
         component:{
-            'chatrooms':{
-//             activate: 'onActivate',
-//             deactivate: 'onDeactivate'
+            'chatroomform button[action=ok]':{
+               click: 'onRoomFormOkClick'
             },
             'chatrooms dataview':{
              //   afterrender: 'selectFirstRoom'
@@ -29,11 +28,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }
     },
 
-    //this doesn't seem to init the listeners although it should?
-   /* constructor: function (config) {
-        this.mixins.opentok.constructor.call(this, config);
-    },
-    */
 
     init: function() {
          var me = this,
@@ -64,6 +58,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
                      me.getViewModel().set('name', newUser.get('name') );
 
+                     me.getViewModel().set('user', newUser);
+
                      Ext.util.Cookies.set('user', JSON.stringify(newUser) , expires);
 
                    /*  Ext.toast({
@@ -83,14 +79,16 @@ Ext.define('WebRTC.view.main.ViewportController', {
              });
          }else{
              user =  JSON.parse(userCookie) ;
+             me.getViewModel().set('user', user);
+
              me.getViewModel().set('name', user.data.name );
 
-             Ext.toast({
+            /* Ext.toast({
                  html: 'Glad to see you again ' + user.data.name  + '.',
                  title: 'Welcome Back',
                  width: 400,
                  align: 't'
-             });
+             });*/
 
              me.fireEvent('startsockets');
              Ext.defer(function() {
@@ -232,6 +230,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }
     },
 
+
     onSettingsUserSelect: function(){
         Ext.create('Ext.window.Window', {
             title: 'User Settings',
@@ -260,6 +259,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
             }
         }).show();
+    },
+
+
+    onRoomFormOkClick: function(button) {
+        var form = button.up('form');
+        this.fireEvent('addroom', form.getValues() );
     }
 
-})
+});

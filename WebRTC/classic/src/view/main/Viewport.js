@@ -12,7 +12,8 @@ Ext.define('WebRTC.view.main.Viewport', {
 
     viewModel:{
         data: {
-            name: null,                     // set by prompt
+            name: null,                     // set cookie on init
+            user: null,                     // set cookie on init
             room: null                      // ?? perhaps delete
         },
         stores: {

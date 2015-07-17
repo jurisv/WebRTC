@@ -10,8 +10,10 @@ Ext.define('WebRTC.model.User', {
     identifier: 'uuid', //creates a uuid and assisgns it to the id field
 
     proxy: {
-        type: 'localstorage',
-        id: 'webrtc-users'
+        type: 'memory',
+        reader: {
+            type: 'json'
+        }
     },
 
     fields: [

@@ -2,6 +2,7 @@ Ext.define('WebRTC.view.chat.RoomController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.chatroom',
 
+
     roomMemberAdd: function(member){
         var store = this.getViewModel().getStore('members');
         store.add(member);

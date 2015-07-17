@@ -1,7 +1,9 @@
 Ext.define('WebRTC.model.chat.Room', {
     extend: 'Ext.data.Model',
+    requires: ['WebRTC.data.proxy.SocketIO'],
     idProperty: 'id',
     identifier: 'uuid', //creates a uuid and assisgns it to the id field
+
     fields: [
         { name: 'id', type: 'string'  },
         { name: 'sessionId', type: 'string'  },  //Tokbox SessionId
@@ -16,20 +18,24 @@ Ext.define('WebRTC.model.chat.Room', {
         }},
         { name: 'xmpp_name', type: 'string'  },    // The associated XMPP client
         { name: 'num_participants', type: 'string' },
-        { name: 'unread_messages',  type: 'int', defaultValue: 0     },
-        { name: 'isRoom',    type: 'boolean', defaultValue: true  },
+        { name: 'unread_messages',  type: 'int', defaultValue: 0 },
+        { name: 'isRoom',    type: 'boolean', defaultValue: true },
         { name: 'joined',    type: 'boolean', defaultValue: false }
     ],
+
     hasMany:[
         { model: 'WebRTC.model.chat.RoomMember', name: 'members' },
         { model: 'WebRTC.model.chat.Message', name: 'messages' }
     ],
+
     proxy: {
-        type: 'memory',
+        type: 'socketio',
+        // type: 'memory',
         // url : '/data/rooms',
         reader: {
             type: 'json'
             // rootProperty: 'data'
         }
     }
+
 });

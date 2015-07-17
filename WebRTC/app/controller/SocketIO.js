@@ -10,6 +10,7 @@ Ext.define('WebRTC.controller.SocketIO', {
         controller: {
             '*': {
                 startsockets: 'onStartSockets'
+                // addRoom: 'onAddRoom'
             }
         }
     },
