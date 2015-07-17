@@ -29,7 +29,8 @@ Ext.define('WebRTC.store.Settings', {
 
     applyDefaultSettings: function () {
         var me = this,
-            defaults = me.statics().DEFAULTS;
+            defaults = me.statics().DEFAULTS,
+            applied = false;
 
         Ext.Object.each(defaults, function(key, value){
             console.log('checking default settings')
@@ -37,8 +38,11 @@ Ext.define('WebRTC.store.Settings', {
             if (!current) {
                 console.log('adding '+ key +' default setting')
                 me.create({key: key, value: value});
+                applied = true;
             }
-        })
+        });
+
+        if (applied) me.reload();
         
 
     }
