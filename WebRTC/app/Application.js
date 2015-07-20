@@ -14,7 +14,6 @@ Ext.define('WebRTC.Application', {
 
     controllers:[
       'OpenTok',
-      'SocketIO',
       'SoundLibrary'
     ],
 

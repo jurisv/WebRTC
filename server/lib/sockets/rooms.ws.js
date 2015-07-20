@@ -6,46 +6,36 @@ module.exports = function(io) {
     if(!io.rooms){
         io.rooms = io.of('/rooms');
 
-        function dispatchAll(socket) {
-            roomsDB.getAll(function(err, data) {
-                if (err) throw err;
-                io.of('/rooms').emit('all', data);
-            });
-        }
-
         io.rooms.on('connection', function(socket) {
 
-            socket.on('getAll', function() {
-                dispatchAll(socket);
-            });
-
-            socket.on('read', function(data) {
-                io.rooms.emit('read', 'read done');
-            });
-
-            socket.on('save', function(room) {
-                roomsDB.save(room, function(err, data) {
+            socket.on('read', function(config,callback) {
+                roomsDB.read(config,function(err, data) {
                     if (err) throw err;
-                    dispatchAll(socket);
+                    callback(null,true,data);  //options, success, response
                 });
             });
 
-            socket.on('update', function(data) {
-                roomsDB.update(data, function(err, data) {
+            socket.on('create', function(config,callback) {
+                roomsDB.create(config,function(err, data) {
                     if (err) throw err;
-                    dispatchAll(socket);
+                    callback(null,true,data);  //options, success, response
                 });
             });
 
-            socket.on('delete', function(data) {
-                roomsDB.delete(data.id, function(err, data) {
+            socket.on('update', function(config,callback) {
+                roomsDB.create(config,function(err, data) {
                     if (err) throw err;
-                    dispatchAll(socket);
+                    callback(null,true,data);  //options, success, response
                 });
             });
 
-            // On connection send all the rooms, to save one round trip
-            dispatchAll(socket);
+            socket.on('delete', function(config,callback) {
+                roomsDB.create(config,function(err, data) {
+                    if (err) throw err;
+                    callback(null,true,data);  //options, success, response
+                });
+            });
+
         });
 
 

@@ -43,24 +43,73 @@ var rooms = {
         }
     },
 
-    save: function(room, callback) {
-      //  db.rooms.insert(room, callback);
+    read: function(config,callback){
+        var me = this;
+        if(me._rooms.length == 0){
+
+            me._roomsRef =  me._baseRef.child('rooms');
+
+            me._roomsRef.once('value', function(childSnapshot, prevChildName) {
+                if (childSnapshot.val() && childSnapshot.val() != undefined){
+
+                    var data = childSnapshot.val();
+                    me._rooms = data;
+                    callback(null,data);
+
+                    //now watch and emit changes
+                    me._roomsRef.on('value', function(childSnapshot, prevChildName) {
+                        if (childSnapshot.val() && childSnapshot.val() != undefined){
+                            var data = childSnapshot.val();
+                            me._rooms = data;
+                            App.io.of('/rooms').emit('all', data);
+                        }
+                    });
+                }
+            });
+
+        }else{
+            callback(null,me._rooms);
+        }
     },
 
-    update: function(room, callback) {
-        /*
-        db.rooms.update({
-            id: room.id
-        }, room, {}, callback);
-        */
+    create: function(config,callback){
+      var me = this,
+          records = config.records;
+
+         if(records instanceof Array){
+             records.forEach(function(item) {
+                 me._baseRef.child('rooms/' + item.id).update(item);
+             });
+         }else{
+             me._baseRef.child('rooms/' + config.records.id).update(config.records);
+         }
+
     },
 
-    delete: function(id, callback) {
-        /*
-        db.rooms.remove({
-            id: id
-        }, '', callback);
-        */
+    update: function(config,callback){
+        var me = this,
+            records = config.records;
+
+        if(records instanceof Array){
+            records.forEach(function(item) {
+                me._baseRef.child('rooms/' + item.id).update(item);
+            });
+        }else{
+            me._baseRef.child('rooms/' + config.records.id).update(config.records);
+        }
+    },
+
+    delete: function(config,callback){
+        var me = this,
+            records = config.records;
+
+        if(records instanceof Array){
+            records.forEach(function(item) {
+                me._baseRef.child('rooms/' + item.id).remove();
+            });
+        }else{
+            me._baseRef.child('rooms/' + config.records.id).remove();
+        }
     }
 };
  

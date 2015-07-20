@@ -75,7 +75,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
                      });
                     */
 
-                    me.fireEvent('startsockets');
                     Ext.defer(function() {
                          me.selectFirstRoom();
                     }, 1200);
@@ -95,7 +94,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
                  align: 't'
              });*/
 
-             me.fireEvent('startsockets');
              Ext.defer(function() {
                  me.selectFirstRoom();
              }, 1200);
@@ -268,8 +266,13 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
 
     onRoomFormOkClick: function(button) {
-        var form = button.up('form');
-        this.fireEvent('addroom', form.getValues() );
+        var form = button.up('form'),
+            data = form.getValues(),
+            store = this.getViewModel().getStore('rooms');
+        store.add(data);
+        store.sync();
+
+        // this.fireEvent('addroom', form.getValues() );
     }
 
 });
