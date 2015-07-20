@@ -27,8 +27,8 @@ Ext.define('WebRTC.controller.SocketIO', {
         *   Namespaced events:
         *   By default when we connect to a namespace it will emit
         */
-        this.rooms = io.connect('/rooms');
-        this.bindRooms();
+        // this.rooms = io.connect('/rooms');
+        // this.bindRooms();
 
 
     },

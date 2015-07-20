@@ -19,6 +19,10 @@ module.exports = function(io) {
                 dispatchAll(socket);
             });
 
+            socket.on('read', function(data) {
+                io.rooms.emit('read', 'read done');
+            });
+
             socket.on('save', function(room) {
                 roomsDB.save(room, function(err, data) {
                     if (err) throw err;

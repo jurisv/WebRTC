@@ -25,6 +25,11 @@ Ext.define('WebRTC.view.main.ViewportController', {
             'chatrooms dataview':{
              //   afterrender: 'selectFirstRoom'
             }
+        },
+        global: {
+            '*':{
+                roomschanged: 'onRoomsChanged'
+            }
         }
     },
 
