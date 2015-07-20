@@ -33,10 +33,12 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         //use api to to emit
         Ext.Object.each(me.__proto__.config.api, function(key, value){
             console.log('adding '+ key +' emitter on ' + value);
-            var myKey = key;
-            me[value] = function ( operation, callback, scope, value) {
-               var key = myKey;
-               me.doEmitApi (key, operation, value);
+            var myKey = key,
+                myValue = value;
+            me[value] = function ( operation, callback, scope) {
+               var key = myKey,
+                   value = myValue;
+               me.doEmitApi (key, operation, callback, scope, value);
             };
         });
 
@@ -46,12 +48,24 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
 
     doListenApi: function (key, data){
         console.log('heard key of  '+ key +' data ' + data );
-        if(key =='all'){
-            this.fireEvent('roomschanged',data);
+
+        switch (key){
+            case 'read':
+                break;
+            case 'update':
+                break;
+            case 'delete':
+                break;
+            case 'create':
+                break;
+            case 'all':
+                this.fireEvent('roomschanged',data);
+                break;
         }
+
     },
 
-    doEmitApi: function (key, operation, value){
+    doEmitApi: function (key, operation, callback, scope, value){
        console.log('emitting key of  '+ key );
        this.socket.emit(key, value);
     }
