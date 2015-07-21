@@ -11,7 +11,7 @@
 		{
 			"id": "notification",
 			"mp3": "resources/audio/NewNotification21.mp3",
-			"ogg": "resources/audio/NewNotification21.ogg"
+			"wav": "resources/audio/NewNotification21.wav"
 		}		
 	]
 }
