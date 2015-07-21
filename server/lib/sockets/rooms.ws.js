@@ -18,29 +18,25 @@ module.exports = function(io) {
             socket.on('create', function(config,callback) {
                 roomsDB.create(config,function(err, data) {
                     if (err) throw err;
-                    callback(null,true,data);  //options, success, response
+                    callback(null,true,data);
                 });
             });
 
             socket.on('update', function(config,callback) {
                 roomsDB.create(config,function(err, data) {
                     if (err) throw err;
-                    callback(null,true,data);  //options, success, response
+                    callback(null,true,data);
                 });
             });
 
             socket.on('delete', function(config,callback) {
                 roomsDB.create(config,function(err, data) {
                     if (err) throw err;
-                    callback(null,true,data);  //options, success, response
+                    callback(null,true,data);
                 });
             });
 
         });
-
-
-
-
 
     }
 

@@ -14,6 +14,18 @@ var rooms = {
     _baseRef: new firebase("https://senchartc.firebaseio.com/"),
     _rooms: [],
 
+    getOpenTokSessionId: function(callback){
+        var otApiKey = App.get('otAPIKEY'),
+            otApiSecret = App.get('otAPISECRET'),
+            opentok = new OpenTok(otApiKey, otApiSecret);
+
+        opentok.createSession(function(err, session) {
+            if (err) return console.log(err);
+                callback(null,session.sessionId );
+            }
+        );
+    },
+
     getAll: function(callback) {
         var me = this;
         if(me._rooms.length == 0){
@@ -78,10 +90,20 @@ var rooms = {
 
          if(records instanceof Array){
              records.forEach(function(item) {
-                 me._baseRef.child('rooms/' + item.id).update(item);
+                 me.getOpenTokSessionId(function(err,sessionId){
+                     item.records.sessionId = sessionId;
+                     item.records.apiKey = App.get('otAPIKEY');
+                     me._baseRef.child('rooms/' + item.id).update(item);
+                     callback(null,item.records);
+                 });
              });
          }else{
-             me._baseRef.child('rooms/' + config.records.id).update(config.records);
+             me.getOpenTokSessionId(function(err,sessionId){
+                 config.records.sessionId = sessionId;
+                 config.records.apiKey = App.get('otAPIKEY');
+                 me._baseRef.child('rooms/' + config.records.id).update(config.records);
+                 callback(null,config.records);
+             });
          }
 
     },
@@ -93,9 +115,11 @@ var rooms = {
         if(records instanceof Array){
             records.forEach(function(item) {
                 me._baseRef.child('rooms/' + item.id).update(item);
+                callback(null,item.records);
             });
         }else{
             me._baseRef.child('rooms/' + config.records.id).update(config.records);
+            callback(null,config.records);
         }
     },
 
@@ -106,9 +130,11 @@ var rooms = {
         if(records instanceof Array){
             records.forEach(function(item) {
                 me._baseRef.child('rooms/' + item.id).remove();
+                callback(null,null);
             });
         }else{
             me._baseRef.child('rooms/' + config.records.id).remove();
+            callback(null,null);
         }
     }
 };
