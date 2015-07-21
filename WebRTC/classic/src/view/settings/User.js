@@ -7,22 +7,22 @@ Ext.define('WebRTC.view.settings.User', {
     ],
 
     controller: 'settingsuser',
-    viewModel: {
-        stores: {
-            sounds: {
-                autoLoad: true,
-                fields: ['id', 'wav', 'mp3', 'ogg'],
-                proxy: {
-                    type: 'ajax',
-                    url: 'resources/sounds.json',
-                    reader: {
-                        type: 'json',
-                        rootProperty: 'data'
-                    }
-                }
-            }
-        }
-    },
+    // viewModel: {
+    //     stores: {
+    //         sounds: {
+    //             autoLoad: true,
+    //             fields: ['id', 'wav', 'mp3', 'ogg'],
+    //             proxy: {
+    //                 type: 'ajax',
+    //                 url: 'resources/sounds.json',
+    //                 reader: {
+    //                     type: 'json',
+    //                     rootProperty: 'data'
+    //                 }
+    //             }
+    //         }
+    //     }
+    // },
 
     bodyPadding: 10,
     autoScroll: true,
@@ -77,9 +77,10 @@ Ext.define('WebRTC.view.settings.User', {
             items: [
                 {
                     xtype: 'combobox',
-                    bind: {
-                        store: '{sounds}'
-                    },
+                    store: 'Sounds',
+                    // bind: {
+                    //     store: '{sounds}'
+                    // },
                     fieldLabel: 'Chat Sound',
                     queryMode: 'local',
                     displayField: 'id',

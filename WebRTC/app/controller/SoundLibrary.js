@@ -5,7 +5,13 @@
 Ext.define('WebRTC.controller.SoundLibrary', {
     extend: 'Ext.app.Controller',
     alias: 'controller.soundlibrary',
+
     id: 'opentok',
+
+    refs: {
+        soundLibrary: '#soundlibrary'
+    },
+
     listen: {
         controller: {
             '*': {
@@ -21,16 +27,28 @@ Ext.define('WebRTC.controller.SoundLibrary', {
 
     init: function(){
         //create the list of audio files needed for event sounds.
-        Ext.create('WebRTC.SoundLibrary');
+        Ext.create('WebRTC.SoundLibrary', {
+            itemId: 'soundlibrary'
+        });
     },
 
-    initSounds: function(){
-        //create the list of audio files needed for event sounds.
-        Ext.create('WebRTC.SoundLibrary');
-    },
+    // initSounds: function(){
+    //     //create the list of audio files needed for event sounds.
+    //     Ext.create('WebRTC.SoundLibrary');
+    // },
 
-    onPlaysound: function(sound,startAt,duration){
-        var audio = Ext.getElementById('x-soundlibrary-' + sound);
+    onPlaysound: function(soundId,startAt,duration){
+        var settings  = Ext.getStore('Settings'),
+            sound = settings.getById(soundId),
+            sounds = Ext.getStore('Sounds'),
+            soundLibrary = this.getSoundLibrary(),
+            audio;
+
+        if (!sound || sound.get('value') === 'none') return;
+
+        soundLibrary.setData(sounds.getById(sound.get('value')));
+
+        audio = soundLibrary.getMedia().dom;
         if(audio){
             if(startAt){
                 audio.currentTime = startAt;

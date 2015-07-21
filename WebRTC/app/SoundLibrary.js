@@ -14,6 +14,10 @@ Ext.define('WebRTC.SoundLibrary', {
              '<source src="{wav}"></source>' +
              '<source src="{ogg}"></source>' +
              '</audio>' +
-         '</tpl>'
+         '</tpl>',
+
+    getMedia: function () {
+        return this.el.down('audio');
+    }
 
 });
