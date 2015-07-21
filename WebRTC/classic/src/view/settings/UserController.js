@@ -23,6 +23,8 @@ Ext.define('WebRTC.view.settings.UserController', {
         // saving only chat-sound so far
         var key = 'chat-sound';
         settings.getById(key).set('value', data[key]);
+
+        view.up('window').close(); //TODO: Maybe settings.User has to be a window itself
     }   
 
 

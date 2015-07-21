@@ -2,10 +2,6 @@ Ext.define('WebRTC.SoundLibrary', {
     extend: 'Ext.Component',
     xtype: 'soundlibrary',
 
-    data: [
-        {id: 'whistle', mp3: 'resources/audio/whistle.mp3', wav: null, ogg:'resources/audio/whistle.ogg'}
-    ],
-
     renderTo: Ext.getBody(),
 
     tpl: '<tpl for=".">' +

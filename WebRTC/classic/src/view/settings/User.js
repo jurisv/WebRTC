@@ -30,45 +30,47 @@ Ext.define('WebRTC.view.settings.User', {
 
 
     items: [
+        // {
+        //     xtype: 'fieldset',
+        //     title: 'Authorization',
+        //     defaults:{
+        //         anchor: '100%'
+        //     },
+        //     items: [
+        //         {
+        //             xtype:'textfield',
+        //             fieldLabel: 'ApiKey',
+        //             name: 'OTApiKey'
+        //         },
+        //         {
+        //             xtype:'textfield',
+        //             fieldLabel: 'SecretKey',
+        //             inputType: 'password',
+        //             name: 'OTSecretKey'
+        //         }
+        //     ]
+        // },
+        // {
+        //     xtype: 'fieldset',
+        //     title: 'FB Profile',
+        //     defaults:{
+        //         anchor: '100%'
+        //     },
+        //     items: [
+        //         {
+        //             xtype:'textfield',
+        //             fieldLabel: 'ApiKey',
+        //             name: 'FBApiKey'
+        //         },
+        //         {
+        //             xtype:'textfield',
+        //             fieldLabel: 'SecretKey',
+        //             inputType: 'password',
+        //             name: 'FBSecretKey'
+        //         }
+        //     ]
+        // },
         {
-            xtype: 'fieldset',
-            title: 'Authorization',
-            defaults:{
-                anchor: '100%'
-            },
-            items: [
-                {
-                    xtype:'textfield',
-                    fieldLabel: 'ApiKey',
-                    name: 'OTApiKey'
-                },
-                {
-                    xtype:'textfield',
-                    fieldLabel: 'SecretKey',
-                    inputType: 'password',
-                    name: 'OTSecretKey'
-                }
-            ]
-        },{
-            xtype: 'fieldset',
-            title: 'FB Profile',
-            defaults:{
-                anchor: '100%'
-            },
-            items: [
-                {
-                    xtype:'textfield',
-                    fieldLabel: 'ApiKey',
-                    name: 'FBApiKey'
-                },
-                {
-                    xtype:'textfield',
-                    fieldLabel: 'SecretKey',
-                    inputType: 'password',
-                    name: 'FBSecretKey'
-                }
-            ]
-        },{
             xtype: 'fieldset',
             title: 'Sounds',
             defaults:{

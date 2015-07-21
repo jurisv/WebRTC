@@ -26,27 +26,36 @@ Ext.define('WebRTC.controller.SoundLibrary', {
     },
 
     init: function(){
-        //create the list of audio files needed for event sounds.
+        var sound = this._getSoundById('chat-sound');
+
         Ext.create('WebRTC.SoundLibrary', {
-            itemId: 'soundlibrary'
+            itemId: 'soundlibrary',
+            data: sound
         });
     },
 
-    // initSounds: function(){
-    //     //create the list of audio files needed for event sounds.
-    //     Ext.create('WebRTC.SoundLibrary');
-    // },
-
-    onPlaysound: function(soundId,startAt,duration){
+    _getSoundById: function (soundId) {
         var settings  = Ext.getStore('Settings'),
             sound = settings.getById(soundId),
             sounds = Ext.getStore('Sounds'),
+            value;
+
+            if (sound) {
+                value = sound.get('value')
+            }
+
+            return (value && value !== "none") ? sounds.getById(value) : undefined;
+    },
+
+
+    onPlaysound: function(soundId,startAt,duration){
+        var sound = this._getSoundById(soundId),
             soundLibrary = this.getSoundLibrary(),
             audio;
 
-        if (!sound || sound.get('value') === 'none') return;
+        if (!sound) return;
 
-        soundLibrary.setData(sounds.getById(sound.get('value')));
+        soundLibrary.setData(sound);
 
         audio = soundLibrary.getMedia().dom;
         if(audio){

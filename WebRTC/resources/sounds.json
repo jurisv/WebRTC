@@ -7,6 +7,11 @@
 			"id": "whistle",
 			"mp3": "resources/audio/whistle.mp3",
 			"ogg": "resources/audio/whistle.ogg"
-		}
+		},
+		{
+			"id": "notification",
+			"mp3": "resources/audio/NewNotification21.mp3",
+			"ogg": "resources/audio/NewNotification21.ogg"
+		}		
 	]
 }
