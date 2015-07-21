@@ -2,11 +2,9 @@ Ext.define('WebRTC.model.chat.RoomMember', {
     extend: 'Ext.data.Model',
     config:{
         fields: [
-            'id',
-            'name',
-            'isBroadcasting',
-            'email',
-            'phone'
+            { name: 'user_id' /* , reference: 'user' */},
+            { name: 'isBroadcasting', type: 'boolean', defaultValue: false},
+            { name: 'name', type: 'string'  }
         ],
         hasMany:[
             { model: 'WebRTC.model.chat.Message', name: 'messages' }

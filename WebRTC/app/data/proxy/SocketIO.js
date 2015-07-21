@@ -22,19 +22,6 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         binary: false,
 
         /**
-         * @cfg {Object} [headers]
-         * Any headers to add to the Ajax request.
-         *
-         * example:
-         *
-         *     proxy: {
-         *         headers: {'Content-Type': "text/plain" }
-         *         ...
-         *     }
-         */
-        headers: undefined,
-
-        /**
          * @cfg {Boolean} paramsAsJson `true` to have any request parameters sent as {@link Ext.data.Connection#method-request jsonData}
          * where they can be parsed from the raw request. By default, parameters are sent via the
          * {@link Ext.data.Connection#method-request params} property. **Note**: This setting does not apply when the
@@ -42,37 +29,6 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
          * that is used when sending requests.
          */
         paramsAsJson: false,
-
-        /**
-         * @cfg {Boolean} withCredentials
-         * This configuration is sometimes necessary when using cross-origin resource sharing.
-         * @accessor
-         */
-        withCredentials: false,
-
-        /**
-         * @cfg {Boolean} useDefaultXhrHeader
-         * Set this to false to not send the default Xhr header (X-Requested-With) with every request.
-         * This should be set to false when making CORS (cross-domain) requests.
-         * @accessor
-         */
-        useDefaultXhrHeader: true,
-
-        /**
-         * @cfg {String} username
-         * Most oData feeds require basic HTTP authentication. This configuration allows
-         * you to specify the username.
-         * @accessor
-         */
-        username: null,
-
-        /**
-         * @cfg {String} password
-         * Most oData feeds require basic HTTP authentication. This configuration allows
-         * you to specify the password.
-         * @accessor
-         */
-        password: null,
 
         /**
          * @cfg {Object} actionMethods
@@ -85,7 +41,36 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
             read   : 'GET',
             update : 'POST',
             destroy: 'POST'
-        }
+        },
+
+        withCredentials: false,
+
+        secure: false,
+
+        //if a custom port is required, otherwise use current server port
+        port: null,
+
+        connectTimeout: 10000,
+
+        tryMultipleTransports: true,
+
+        reconnect: true,
+
+        reconnectionDelay: 500,
+
+        reconnectionLimit: Infinity,
+
+        maxReconnectionAttempts: Infinity,
+
+        syncDisconnectOnUnload: false,
+
+        autoConnect: true,
+
+        forceNewConnection: false,
+
+        groups: null,
+
+        uuid: null
     },
 
     doRequest: function(operation) {
@@ -101,13 +86,9 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
 
         request.setConfig({
             binary              : me.getBinary(),
-            headers             : me.getHeaders(),
-            timeout             : me.getTimeout(),
             scope               : me,
             callback            : me.createRequestCallback(request, operation),
-            method              : method,
-            useDefaultXhrHeader : me.getUseDefaultXhrHeader(),
-            disableCaching      : false // explicitly set it to false, ServerProxy handles caching
+            method              : method
         });
 
         if (method.toUpperCase() !== 'GET' && me.getParamsAsJson()) {
@@ -142,6 +123,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
     sendRequest: function(request) {
         var me = this,
             config = request.config,
+            cfg = me.config,
             data ={
                 params: config.params,
                 records: request._jsonData
@@ -149,7 +131,19 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         //make sure we're connected
         if(!this.socket){
             //this is a namespaced socket
-            me.socket = io.connect(me.url);
+            me.socket = io.connect(me.url,{
+                secure: cfg.secure,
+                port: cfg.port,
+                'connect timeout': cfg.connectTimeout,
+                'try multiple transports': cfg.tryMultipleTransports,
+                'reconnect': cfg.reconnect,
+                'reconnection delay': cfg.reconnectionDelay,
+                'reconnection limit': cfg.reconnectionLimit,
+                'max reconnection attempts': cfg.maxReconnectionAttempts,
+                'sync disconnect on unload': cfg.syncDisconnectOnUnload,
+                'auto connect': cfg.autoConnect,
+                'force new connection': cfg.forceNewConnection
+            });
             me.setupSocketPush();
         }
 

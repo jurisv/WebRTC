@@ -19,14 +19,15 @@ Ext.define('WebRTC.model.chat.Room', {
         { name: 'xmpp_name', type: 'string'  },    // The associated XMPP client
         { name: 'num_participants', type: 'string' },
         { name: 'unread_messages',  type: 'int', defaultValue: 0 },
+        { name: 'isPrivate', type: 'boolean', defaultValue: false },
         { name: 'isRoom',    type: 'boolean', defaultValue: true },
         { name: 'joined',    type: 'boolean', defaultValue: false }
     ],
 
     hasMany:[
-        { model: 'WebRTC.model.chat.RoomMember', name: 'members' },
-        { model: 'WebRTC.model.chat.Message', name: 'messages' }
+        { model: 'WebRTC.model.chat.RoomMember', name: 'members' }
     ],
+
 
     proxy: {
         type: 'socketio',
