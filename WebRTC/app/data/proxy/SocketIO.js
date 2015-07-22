@@ -111,7 +111,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
             request.setUsername(me.getUsername());
             request.setPassword(me.getPassword());
         }
-        return me.sendRequest(request);
+        return me.sendRequest(request,operation);
     },
 
     /**
@@ -120,7 +120,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
      * @return {Ext.data.Request} The request
      * @private
      */
-    sendRequest: function(request) {
+    sendRequest: function(request,operation) {
         var me = this,
             config = request.config,
             cfg = me.config,
@@ -144,7 +144,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
                 'auto connect': cfg.autoConnect,
                 'force new connection': cfg.forceNewConnection
             });
-            me.setupSocketPush();
+            me.setupSocketPush(request,operation);
         }
 
         me.socket.emit(config.action, data, config.callback);
@@ -208,7 +208,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
     },
 
 
-    setupSocketPush: function(){
+    setupSocketPush: function(request,operation){
         //use api to to listen
         var me = this;
 
@@ -222,6 +222,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         });
         me.socket.on ('child_changed', function (data) {
             console.log('changed room: ' + data.id);
+            // me.processResponse(true, operation, request, data);
             me.fireEvent('child_changed',data);
         });
         me.socket.on ('child_moved', function (data) {
