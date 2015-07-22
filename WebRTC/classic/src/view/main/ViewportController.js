@@ -30,7 +30,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
         },
         global: {
             '*':{
-                roomschanged: 'onRoomsChanged'
+                roomschanged: 'onRoomsChanged',
+                child_changed : function(){ console.log('caught it') }
             }
         }
     },

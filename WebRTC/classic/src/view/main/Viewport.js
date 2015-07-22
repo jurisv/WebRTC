@@ -20,20 +20,6 @@ Ext.define('WebRTC.view.main.Viewport', {
             rooms: {
                 model: 'WebRTC.model.chat.Room',
                 storeId: 'rooms',
-                proxy: {
-                    type: 'socketio',
-                    // type: 'memory',
-                    url : '/rooms',
-                    reader: {
-                        type: 'json',
-                        rootProperty: 'data'
-                    },
-                    listeners:{
-                        datachanged: function(data){
-                            console.log('I changed');
-                        }
-                    }
-                },
                 autoLoad: true
             },
             globalusers: {

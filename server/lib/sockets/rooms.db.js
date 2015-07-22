@@ -55,12 +55,13 @@ var rooms = {
         }
     },
 
-    bindFirebase: function(){
+    bindFirebase: function(io){
         var me = this;
-        if(me._rooms.length == 0) {
+        if(!io._roomsRef) {
 
-            me._roomsRef = me._baseRef.child('rooms');
+            io._roomsRef = me._baseRef.child('rooms');
 
+            /*
             me._roomsRef.on('value', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
@@ -70,40 +71,34 @@ var rooms = {
                     App.io.of('/rooms').emit('datachanged', me._rooms);
                 }
             });
-            me._roomsRef.on('child_added', function (childSnapshot, prevChildName) {
+            */
+
+            io._roomsRef.on('child_added', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
-                    me._rooms = Object.keys(data).map(function (k) {
-                        return data[k]
-                    });
-                    App.io.of('/rooms').emit('child_added', me._rooms);
+
+                    App.io.of('/rooms').emit('child_added', data);
                 }
             });
-            me._roomsRef.on('child_removed', function (childSnapshot, prevChildName) {
+            io._roomsRef.on('child_removed', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
-                    me._rooms = Object.keys(data).map(function (k) {
-                        return data[k]
-                    });
-                    App.io.of('/rooms').emit('child_removed', me._rooms);
+
+                    App.io.of('/rooms').emit('child_removed', data);
                 }
             });
-            me._roomsRef.on('child_changed', function (childSnapshot, prevChildName) {
+            io._roomsRef.on('child_changed', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
-                    me._rooms = Object.keys(data).map(function (k) {
-                        return data[k]
-                    });
-                    App.io.of('/rooms').emit('child_changed', me._rooms);
+
+                    App.io.of('/rooms').emit('child_changed', data);
                 }
             });
-            me._roomsRef.on('child_moved', function (childSnapshot, prevChildName) {
+            io._roomsRef.on('child_moved', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
-                    me._rooms = Object.keys(data).map(function (k) {
-                        return data[k]
-                    });
-                    App.io.of('/rooms').emit('child_moved', me._rooms);
+
+                    App.io.of('/rooms').emit('child_moved', data);
                 }
             });
         }
@@ -111,18 +106,15 @@ var rooms = {
 
     read: function(config,callback){
         var me = this;
-        if(me._rooms.length == 0){
-            me._roomsRef =  me._baseRef.child('rooms');
-            me._roomsRef.once('value', function(childSnapshot, prevChildName) {
-                if (childSnapshot.val() && childSnapshot.val() != undefined){
-                    var data = childSnapshot.val();
-                    me._rooms = Object.keys(data).map(function(k) { return data[k] });
-                    callback(null,me._rooms);
-                }
-            });
-        }else{
-            callback(null,me._rooms);
-        }
+
+        me._baseRef.child('rooms/').once('value', function(childSnapshot, prevChildName) {
+            if (childSnapshot.val() && childSnapshot.val() != undefined){
+                var data = childSnapshot.val(),
+                arrayRooms = Object.keys(data).map(function(k) { return data[k] });
+                callback(null,arrayRooms);
+            }
+         });
+
     },
 
     create: function(config,callback){

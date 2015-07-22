@@ -1,6 +1,5 @@
 Ext.define('WebRTC.model.chat.Room', {
     extend: 'Ext.data.Model',
-    requires: ['WebRTC.data.proxy.SocketIO'],
     idProperty: 'id',
     identifier: 'uuid', //creates a uuid and assisgns it to the id field
 
@@ -27,7 +26,15 @@ Ext.define('WebRTC.model.chat.Room', {
 
     hasMany:[
         { model: 'WebRTC.model.chat.RoomMember', name: 'members' }
-    ]
+    ],
+    proxy: {
+        type: 'socketio',
+        url : '/rooms',
+        reader: {
+            type: 'json',
+            rootProperty: 'data'
+        }
+    }
 
 });
 

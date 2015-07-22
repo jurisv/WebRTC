@@ -7,10 +7,10 @@ module.exports = function(io) {
     if(!io.rooms){
         io.rooms = io.of('/rooms');
 
-        io.rooms.on('connection', function(socket) {
+        //once connected setup firebase listeners
+        roomsDB.bindFirebase(io);
 
-            //once connected setup firebase listeners
-            roomsDB.bindFirebase();
+        io.rooms.on('connection', function(socket) {
 
             socket.on('read', function(config,callback) {
                 roomsDB.read(config,function(err, data) {

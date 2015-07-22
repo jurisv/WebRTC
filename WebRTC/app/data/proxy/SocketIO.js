@@ -213,93 +213,22 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         var me = this;
 
         me.socket.on ('child_added', function (data) {
-            console.log('new' + data);
+            console.log('new' + data.id);
             me.fireEvent('child_added',data);
         });
         me.socket.on ('child_removed', function (data) {
-            console.log('deleted' + data);
+            console.log('deleted' + data.id);
             me.fireEvent('child_removed',data);
         });
         me.socket.on ('child_changed', function (data) {
-            console.log('changed' + data);
+            console.log('changed' + data.id);
             me.fireEvent('child_changed',data);
         });
         me.socket.on ('child_moved', function (data) {
-            console.log('moved' + data);
+            console.log('moved' + data.id);
             me.fireEvent('child_moved',data);
         });
     }
-
-
-    /*config: {
-     url:'',
-     api: {
-     all: 'all',
-     create: 'create' ,
-     read: 'read' ,
-     update: 'update' ,
-     destroy: 'destroy'
-     }
-     },
-
-     constructor: function(config){
-     var me = this;
-
-     me.initConfig (config);
-     me.callParent(arguments);
-
-     //this is a namespaced socket that mimics api methods
-     me.socket = io.connect(me.url);
-
-     //use api to to listen
-     Ext.Object.each(me.__proto__.config.api, function(key, value){
-     console.log('adding '+ key +' listener on ' + value);
-     me.socket.on (value, function (data) {
-     var myKey = key;
-     me.doListenApi (myKey, data);
-     });
-     });
-
-     //use api to to emit
-     Ext.Object.each(me.__proto__.config.api, function(key, value){
-     console.log('adding '+ key +' emitter on ' + value);
-     var myKey = key,
-     myValue = value;
-     me[value] = function ( operation, callback, scope) {
-     var key = myKey,
-     value = myValue;
-     me.doEmitApi (key, operation, callback, scope, value);
-     };
-     });
-
-     return me;
-
-     },
-
-    doListenApi: function (key, data){
-        console.log('heard key of  '+ key +' data ' + data );
-
-        switch (key){
-            case 'read':
-                break;
-            case 'update':
-                break;
-            case 'delete':
-                break;
-            case 'create':
-                break;
-            case 'all':
-                this.fireEvent('roomschanged',data);
-                break;
-        }
-
-    },
-
-    doEmitApi: function (key, operation, callback, scope, value){
-       console.log('emitting key of  '+ key );
-       this.socket.emit(key, value);
-    }
-     */
 
 });
 
