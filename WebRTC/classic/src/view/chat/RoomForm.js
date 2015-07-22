@@ -7,7 +7,9 @@ Ext.define('WebRTC.view.chat.RoomForm', {
 
     defaultFocus: 'textfield [name=name]',
     defaultButton: 'okButton',
-
+    defaults:{
+        anchor: '100%'
+    },
 
     items: [
         {
@@ -18,17 +20,29 @@ Ext.define('WebRTC.view.chat.RoomForm', {
             },
             items: [
                 {
+                    xtype:'hiddenfield',
+                    name: 'id',
+                    bind: '{theRoom.id}'
+                },{
                     xtype:'textfield',
                     fieldLabel: 'Room Name',
-                    name: 'name'
+                    name: 'name',
+                    bind: '{theRoom.name}'
                 },
                 {
                     xtype:'checkboxfield',
                     boxLabel  : 'Private',
                     name      : 'private',
+                    bind: '{theRoom.isPrivate}',
                     inputValue: '1'
                 }
             ]
+        },{
+            xtype:'textfield',
+            fieldLabel: 'OpenTok SessionId',
+            name: 'sessionId',
+            disabled: true,
+            bind: '{theRoom.id}'
         }
     ],
 

@@ -7,6 +7,7 @@ Ext.define('WebRTC.model.chat.Room', {
     fields: [
         { name: 'id', type: 'string'  },
         { name: 'sessionId', type: 'string'  },  //Tokbox SessionId
+        { name: 'apiKey', type: 'number'  },  //Tokbox apiKey
         { name: 'name', type: 'string'  },
         { name: 'jid', type: 'string'  },
         { name: 'topic', type: 'string'  },
@@ -26,17 +27,9 @@ Ext.define('WebRTC.model.chat.Room', {
 
     hasMany:[
         { model: 'WebRTC.model.chat.RoomMember', name: 'members' }
-    ],
-
-
-    proxy: {
-        type: 'socketio',
-        // type: 'memory',
-        url : '/rooms',
-        reader: {
-            type: 'json'
-            // rootProperty: 'data'
-        }
-    }
+    ]
 
 });
+
+// 1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4
+// 1_MX40NTI1NDI2Mn5-MTQzNDE0MDE2ODcxN35Vb0xRRkdSQmRtbzZUR1JyeUhvMUhRSjN-fg

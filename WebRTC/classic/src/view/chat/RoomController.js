@@ -69,24 +69,55 @@ Ext.define('WebRTC.view.chat.RoomController', {
         me.fireEvent('chatmessage', sessionId, chat.data);
     },
 
-
-    onCallRoom: function(){
+    onAudioCallRoom: function(button){
         var you = this.lookupReference('you'),
             sessionId = this.getViewModel().get('room.sessionId');
 
-        this.getViewModel().set('inCall', true);
-        this.getViewModel().set('showingCamera', true);
+        if( !this.getViewModel().get('inAudioCall') ){
+            this.getViewModel().set('inAudioCall', true);
+            this.getViewModel().set('showingCamera', false);
 
-        this.fireEvent('callroom', sessionId, you.id );
+            this.fireEvent('callroom', {sessionId: sessionId, element: you.id, video: false} );
+        }else{
+            this.onEndAudioCall(button);
+        }
 
     },
 
-    onEndCall: function(){
+    onVideoCallRoom: function(button){
         var you = this.lookupReference('you'),
             sessionId = this.getViewModel().get('room.sessionId');
 
-        this.getViewModel().set('inCall', false);
-        this.getViewModel().set('showingCamera', false);
+        if( !this.getViewModel().get('inVideoCall') ){
+            this.getViewModel().set('inVideoCall', true);
+            this.getViewModel().set('showingCamera', true);
+
+            this.fireEvent('callroom',  {sessionId: sessionId, element: you.id, video: true} );
+        }else{
+            this.onEndVideoCall(button);
+        }
+    },
+
+
+    onEndAudioCall: function(button){
+        var you = this.lookupReference('you'),
+            sessionId = this.getViewModel().get('room.sessionId');
+
+        this.getViewModel().set('inAudioCall', false);
+        this.getViewModel().set('useCamera', true);
+        this.getViewModel().set('useMic',true);
+
+        this.fireEvent('endcall', sessionId, you.id );
+
+    },
+
+    onEndVideoCall: function(button){
+        var you = this.lookupReference('you'),
+            sessionId = this.getViewModel().get('room.sessionId');
+
+        this.getViewModel().set('inVideoCall', false);
+        this.getViewModel().set('useCamera', true);
+        this.getViewModel().set('useMic',true);
 
         this.fireEvent('endcall', sessionId, you.id );
 
@@ -99,11 +130,9 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
         if( this.getViewModel().get('useMic') ){
             this.getViewModel().set('useMic',false);
-            button.setIconCls('x-fa fa-microphone-slash');
             this.fireEvent('hidePublisherAudio', sessionId);
         }else{
             this.getViewModel().set('useMic',true);
-            button.setIconCls('x-fa fa-microphone');
             this.fireEvent('showPublisherAudio', sessionId);
         }
 
@@ -115,11 +144,9 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
         if( this.getViewModel().get('useCamera') ){
             this.getViewModel().set('useCamera',false);
-            button.setIconCls('x-fa fa-ban');
             this.fireEvent('hidePublisherVideo', sessionId);
         }else{
             this.getViewModel().set('useCamera',true);
-            button.setIconCls('x-fa fa-video-camera');
             this.fireEvent('showPublisherVideo', sessionId);
         }
 

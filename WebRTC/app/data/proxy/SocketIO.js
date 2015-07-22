@@ -210,12 +210,23 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
 
     setupSocketPush: function(){
         //use api to to listen
-        Ext.Object.each(this.getApi(), function(key, value){
-            console.log('adding '+ key +' listener on ' + value);
-            me.socket.on (value, function (data) {
-                var myKey = key;
-                me.doListenApi (myKey, data);
-            });
+        var me = this;
+
+        me.socket.on ('child_added', function (data) {
+            console.log('new' + data);
+            me.fireEvent('child_added',data);
+        });
+        me.socket.on ('child_removed', function (data) {
+            console.log('deleted' + data);
+            me.fireEvent('child_removed',data);
+        });
+        me.socket.on ('child_changed', function (data) {
+            console.log('changed' + data);
+            me.fireEvent('child_changed',data);
+        });
+        me.socket.on ('child_moved', function (data) {
+            console.log('moved' + data);
+            me.fireEvent('child_moved',data);
         });
     }
 

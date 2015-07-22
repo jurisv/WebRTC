@@ -22,8 +22,10 @@ Ext.define('WebRTC.view.main.ViewportController', {
             'chatroomform button[action=ok]':{
                click: 'onRoomFormOkClick'
             },
-            'chatrooms dataview':{
-             //   afterrender: 'selectFirstRoom'
+            'chatroom':{
+                activate: 'onRoomActivate',
+                deactivate: 'onRoomDeactivate',
+                close: 'onRoomClose'
             }
         },
         global: {
@@ -47,7 +49,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
         // this.onSettingsUserSelect();
         // return;
 
-        if (Ext.browser.is.Safari || Ext.browser.is.Firefox || Ext.browser.is.IE ) {
+        if (Ext.browser.is.Safari  || Ext.browser.is.IE ) {
             Ext.toast({
                 html: 'We recommend Chrome for the best experience.',
                 title: 'Unsupported',
@@ -146,18 +148,45 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRoomEdit: function(){
+        var record = this.lookupReference('roomscombo').getSelection();
+
         Ext.create('Ext.window.Window', {
             title: 'Edit Room',
             iconCls: 'x-fa fa-plus-square fa-lg',
-            height: 250,
+            height: 400,
             width: 800,
             layout: 'fit',
+            resizable: true,
+            modal: true,
+            viewModel:{
+                data:{
+                    theRoom: record
+                }
+            },
             items: {
                 xtype: 'chatroomform',
                 border: false
 
             }
         }).show();
+
+
+    },
+
+    onRoomRemove: function(){
+        var record = this.lookupReference('roomscombo').getSelection();
+
+        if(record){
+            var store = this.getViewModel().getStore('rooms');
+            // theRecord = this.getViewModel().getStore('rooms').findBy(record);
+            this.getViewModel().getStore('rooms').remove(record);
+            Ext.Msg.wait('Removing', 'Removing room...');
+            store.sync({
+                scope: this,
+                callback: this.onComplete
+            });
+        }
+
     },
 
     onRoomSelect: function(view,record){
@@ -205,8 +234,16 @@ Ext.define('WebRTC.view.main.ViewportController', {
         this.lookupReference('homerooms').down('dataview').getStore().loadData(rooms);
     },
 
-    onDeactivate: function(){
-        alert('deactivate');
+    onRoomActivate: function(){
+        console.log('Activate');
+    },
+
+    onRoomDeactivate: function(){
+        console.log('deactivate');
+    },
+
+    onRoomClose: function(){
+        console.log('close');
     },
 
     onActivate: function(){
@@ -276,13 +313,46 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
 
     onRoomFormOkClick: function(button) {
-        var form = button.up('form'),
+        var window = button.up('window'),
+            form = window.down('form'),
             data = form.getValues(),
             store = this.getViewModel().getStore('rooms');
-        store.add(data);
-        store.sync();
 
-        // this.fireEvent('addroom', form.getValues() );
+        if (form.isValid()) {
+
+            //If there is no view model created then it is new otherwise the model has the record
+            if ( window.getViewModel() )
+            {
+                var record = window.getViewModel().get('theRoom');
+                Ext.Msg.wait('Saving', 'Saving room...');
+                form.up('window').close();
+                record.save({
+                    scope: this,
+                    callback: this.onComplete
+                });
+
+            } else {
+                Ext.Msg.wait('Creating', 'Creating room...');
+                store.add(data);
+                form.up('window').close();
+                store.sync({
+                    scope: this,
+                    callback: this.onComplete
+                });
+            }
+        }
+    },
+
+    onComplete: function() {
+        var title = Ext.Msg.getTitle();
+        Ext.Msg.hide();
+
+        Ext.toast({
+            title: title,
+            html:  'Finished successfully',
+            align: 't',
+            bodyPadding: 10
+        });
     }
 
 });

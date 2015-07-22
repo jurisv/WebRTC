@@ -19,6 +19,21 @@ Ext.define('WebRTC.view.main.Viewport', {
         stores: {
             rooms: {
                 model: 'WebRTC.model.chat.Room',
+                storeId: 'rooms',
+                proxy: {
+                    type: 'socketio',
+                    // type: 'memory',
+                    url : '/rooms',
+                    reader: {
+                        type: 'json',
+                        rootProperty: 'data'
+                    },
+                    listeners:{
+                        datachanged: function(data){
+                            console.log('I changed');
+                        }
+                    }
+                },
                 autoLoad: true
             },
             globalusers: {
@@ -73,6 +88,15 @@ Ext.define('WebRTC.view.main.Viewport', {
             valueField: 'id',
             listeners: {
                 select: 'onRoomSelect'
+            }
+        },{
+            iconCls: 'x-fa fa-trash-o',
+            plain: true,
+            bind:{
+                disabled: '{!isRoomSelected}'
+            },
+            listeners: {
+                click: 'onRoomRemove'
             }
         }
         ,'->',

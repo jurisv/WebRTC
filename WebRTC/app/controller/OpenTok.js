@@ -177,18 +177,20 @@ Ext.define('WebRTC.controller.OpenTok', {
 
 
 
-    onCallRoom: function(sessionId, element){
+    onCallRoom: function(params){
         var me = this,
-            session = me.getSessionById(sessionId);
+            session = me.getSessionById(params.sessionId);
 
         //can only publish one video per room
         if(!session.localPublisher) {
 
-            session.localPublisher = OT.initPublisher(element, {
+            session.localPublisher = OT.initPublisher(params.element, {
                 insertMode: 'append',
                 // fitMode:'contain',
                 width: '100%',
                 height: '100%',
+                publishAudio: true,
+                publishVideo : params.video,
                 showControls: false
             });
 
@@ -210,10 +212,10 @@ Ext.define('WebRTC.controller.OpenTok', {
 
 
             session.publish(session.localPublisher);
+            // session.localPublisher.publishVideo(params.video);
         }
 
     },
-
 
 
     onUnpublish: function(sessionId, element){

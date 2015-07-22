@@ -12,7 +12,8 @@ Ext.define('WebRTC.view.chat.Room', {
 
     viewModel : {
         data: {
-            inCall: false,
+            inAudioCall: false,
+            inVideoCall: false,
             useMic: true,
             useCamera: true,
             room: {
@@ -35,6 +36,43 @@ Ext.define('WebRTC.view.chat.Room', {
             feeds:{
                 model:'WebRTC.model.chat.Message',
                 autoLoad: true
+            }
+        },
+        formulas:{
+            audioCallIcon: function(get){
+                if(get('inAudioCall')){
+                   return 'x-fa fa-stop';
+                }else{
+                   return 'x-fa fa-phone';
+                }
+            },
+            videoCallIcon: function(get){
+                if(get('inVideoCall')){
+                    return 'x-fa fa-stop';
+                }else{
+                    return 'x-fa fa-video-camera';
+                }
+            },
+            audioToggleIcon: function(get){
+                if(get('useMic')){
+                    return 'x-fa fa-microphone';
+                }else{
+                    return 'x-fa fa-microphone-slash';
+                }
+            },
+            videoToggleIcon: function(get){
+                if(get('useCamera')){
+                    return 'x-fa fa-eye';
+                }else{
+                    return 'x-fa fa-ban';
+                }
+            },
+            isMicDisabled: function(get){
+                if(get('inAudioCall') || get('inVideoCall')){
+                    return false;
+                }else{
+                    return true;
+                }
             }
         }
     },
@@ -99,26 +137,29 @@ Ext.define('WebRTC.view.chat.Room', {
                             bodyPadding: 6,
                             bbar: [
                                 {
-                                    iconCls: 'x-fa fa-phone',
                                     bind: {
-                                        disabled: '{inCall}'
+                                        disabled: '{inVideoCall}',
+                                        iconCls: '{audioCallIcon}'
                                     },
                                     listeners: {
-                                        click: 'onCallRoom'
+                                        click: 'onAudioCallRoom'
                                     }
-                                }, {
-                                    iconCls: 'x-fa fa-stop',
-                                    bind: {
-                                        disabled: '{!inCall}'
-                                    },
-                                    listeners: {
-                                        click: 'onEndCall'
-                                    }
-                                }, '->',
+                                },
                                 {
-                                    iconCls: 'x-fa fa-video-camera',
                                     bind: {
-                                        disabled: '{!inCall}'
+                                        disabled: '{inAudioCall}',
+                                        iconCls: '{videoCallIcon}'
+                                    },
+                                    listeners: {
+                                        click: 'onVideoCallRoom'
+                                    }
+                                }
+                                , '->',
+                                {
+                                    iconCls: 'x-fa fa-eye',
+                                    bind: {
+                                        disabled: '{!inVideoCall}',
+                                        iconCls: '{videoToggleIcon}'
                                     },
                                     listeners: {
                                         click: 'onPublishVideoToggle'
@@ -126,7 +167,8 @@ Ext.define('WebRTC.view.chat.Room', {
                                 }, {
                                     iconCls: 'x-fa fa-microphone',
                                     bind: {
-                                        disabled: '{!inCall}'
+                                        disabled: '{isMicDisabled}',
+                                        iconCls: '{audioToggleIcon}'
                                     },
                                     listeners: {
                                         click: 'onPublishAudioToggle'
