@@ -228,6 +228,8 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
                 operation: operation,
                 proxy: me
             });
+            //hack for now...
+            Ext.ComponentQuery.query('chatroom')[0].fireEvent('roomschanged');
             // me.fireEvent('endprocessresponse', me, data, operation);
             // me.processResponse(true, operation, request, data);
             // me.fireEvent('child_changed',data);

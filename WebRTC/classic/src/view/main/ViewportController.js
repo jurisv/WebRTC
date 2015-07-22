@@ -13,9 +13,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 streamdestroyed : 'onOTStreamDestroyed',
                 sessionconnected : 'onOTSessionConnected',
                 sessiondisconnect : 'onOTSessionDestroyed'
-            },
-            'socketio':{
-                roomschanged: 'onRoomsChanged'
             }
         },
         component:{
@@ -26,12 +23,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 activate: 'onRoomActivate',
                 deactivate: 'onRoomDeactivate',
                 close: 'onRoomClose'
-            }
-        },
-        global: {
+            },
             '*':{
-                roomschanged: 'onRoomsChanged',
-                child_changed : function(){ console.log('caught it') }
+                roomschanged: 'onRoomsChanged'
             }
         }
     },
@@ -232,7 +226,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRoomsChanged: function(rooms){
-        this.lookupReference('homerooms').down('dataview').getStore().loadData(rooms);
+        this.getViewModel().getStore('rooms').load();
     },
 
     onRoomActivate: function(){
