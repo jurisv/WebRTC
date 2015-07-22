@@ -144,7 +144,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
                 'auto connect': cfg.autoConnect,
                 'force new connection': cfg.forceNewConnection
             });
-            me.setupSocketPush(request,operation);
+            me.setupSocketPush();
         }
 
         me.socket.emit(config.action, data, config.callback);
@@ -208,7 +208,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
     },
 
 
-    setupSocketPush: function(request,operation){
+    setupSocketPush: function(){
         //use api to to listen
         var me = this;
 
@@ -222,8 +222,15 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         });
         me.socket.on ('child_changed', function (data) {
             console.log('changed room: ' + data.id);
+            var operation = me.createOperation('update', {});
+            var request = Ext.create('Ext.data.Request',{
+                action: 'update',
+                operation: operation,
+                proxy: me
+            });
+            // me.fireEvent('endprocessresponse', me, data, operation);
             // me.processResponse(true, operation, request, data);
-            me.fireEvent('child_changed',data);
+            // me.fireEvent('child_changed',data);
         });
         me.socket.on ('child_moved', function (data) {
             console.log('moved room: ' + data.id);
