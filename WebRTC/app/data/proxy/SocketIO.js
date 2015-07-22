@@ -213,19 +213,19 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         var me = this;
 
         me.socket.on ('child_added', function (data) {
-            console.log('new' + data.id);
+            console.log('new room: ' + data.id);
             me.fireEvent('child_added',data);
         });
         me.socket.on ('child_removed', function (data) {
-            console.log('deleted' + data.id);
+            console.log('deleted room: ' + data.id);
             me.fireEvent('child_removed',data);
         });
         me.socket.on ('child_changed', function (data) {
-            console.log('changed' + data.id);
+            console.log('changed room: ' + data.id);
             me.fireEvent('child_changed',data);
         });
         me.socket.on ('child_moved', function (data) {
-            console.log('moved' + data.id);
+            console.log('moved room: ' + data.id);
             me.fireEvent('child_moved',data);
         });
     }
