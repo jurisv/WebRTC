@@ -268,9 +268,18 @@ Ext.define('WebRTC.controller.OpenTok', {
         var me = this,
             session = me.getSessionById(sessionId);
 
-        console.log('room resumed ' + sessionId);
-        // Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').getAt(0).get('session').localSubscriptions[0].subscribeToVideo(false)
-
+        Ext.each(session.localSubscriptions,function(subscriber){
+            subscriber.subscribeToAudio(true);
+        });
+        if(session.localPublisher){
+            var stream = session.localPublisher.stream;
+            if(stream.hadAudio){
+                session.localPublisher.publishAudio(true);
+            }
+            if(stream.hadVideo){
+                session.localPublisher.publishVideo(true);
+            }
+        }
     },
 
 
@@ -278,8 +287,20 @@ Ext.define('WebRTC.controller.OpenTok', {
         var me = this,
             session = me.getSessionById(sessionId);
 
-        console.log('room paused ' + sessionId);
-
+        Ext.each(session.localSubscriptions,function(subscriber){
+            subscriber.subscribeToAudio(false);
+        });
+        if(session.localPublisher){
+            var stream = session.localPublisher.stream;
+            if(stream.hasAudio){
+                stream.hadAudio = stream.hasAudio;
+                session.localPublisher.publishAudio(false);
+            }
+            if(stream.hasVideo){
+                stream.hadVideo = stream.hasVideo;
+                session.localPublisher.publishVideo(false);
+            }
+        }
     },
 
     onCloseRoom: function(sessionId){

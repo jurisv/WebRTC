@@ -4,9 +4,12 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
 
     roomMemberAdd: function(member){
-        var store = this.getViewModel().getStore('members');
+        var store = this.getViewModel().getStore('members'),
+            userId = this.getViewModel().get('user').id;
         store.add(member);
-        this.fireEvent('playsound','enter-sound');
+        if(userId != member.id){
+            this.fireEvent('playsound','enter-sound');
+        }
     },
 
     roomMemberRemove: function(id){
@@ -37,6 +40,7 @@ Ext.define('WebRTC.view.chat.RoomController', {
         message.set({mine:false});
 
         store.add(chat);
+
 
         this.fireEvent('playsound','chat-sound');
     },

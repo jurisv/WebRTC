@@ -195,14 +195,15 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRoomSelect: function(view,record){
+
+        if(!record) return false;
+
         var me = this,
             roomtabs = this.lookupReference('roomtabs'),
             id = record.get('id'),
             tab = me.getRoomTabById(id),
             name = me.getViewModel().get('name'),
             room;
-
-        if(!record) return false;
 
         //set main active room
         me.getViewModel().set('room',record.data);
