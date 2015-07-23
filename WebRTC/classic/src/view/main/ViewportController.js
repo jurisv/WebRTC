@@ -222,14 +222,14 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }
 
         roomtabs.setActiveTab(tab);
-        combo.reset();
+        // combo.reset();
 
 
 
     },
 
     onRoomsChanged: function(rooms){
-        this.getViewModel().getStore('rooms').load();
+        // this.getViewModel().getStore('rooms').load();
     },
 
     onRoomActivate: function(){

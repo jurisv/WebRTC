@@ -2,6 +2,8 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
     extend: 'Ext.data.proxy.Server' ,
     alias: 'proxy.socketio' ,
 
+    requires: ['WebRTC.data.operation.ReadPush'],
+
     // Keep a default copy of the action methods here. Ideally could just null
     // out actionMethods and just check if it exists & has a property, otherwise
     // fallback to the default. But at the moment it's defined as a public property,
@@ -128,6 +130,8 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
                 params: config.params,
                 records: request._jsonData
             };
+
+console.log('sendRequest')            
         //make sure we're connected
         if(!this.socket){
             //this is a namespaced socket
@@ -144,7 +148,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
                 'auto connect': cfg.autoConnect,
                 'force new connection': cfg.forceNewConnection
             });
-            me.setupSocketPush();
+            me.setupSocketPush(operation);
         }
 
         me.socket.emit(config.action, data, config.callback);
@@ -195,9 +199,10 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         var me = this;
 
         return function(options, success, response) {
-            if (request === me.lastRequest) {
-                me.lastRequest = null;
-            }
+            // if (request === me.lastRequest) {
+            //     me.lastRequest = null;
+            // }
+            console.log('cbk', response, request, operation)
             me.processResponse(success, operation, request, response);
         };
     },
@@ -208,13 +213,27 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
     },
 
 
-    setupSocketPush: function(){
+    setupSocketPush: function(op){
         //use api to to listen
-        var me = this;
+        var me = this,
+            operationCfg = Ext.apply(op.initialConfig, {
+                addRecords: true
+            });
 
         me.socket.on ('child_added', function (data) {
             console.log('new room: ' + data.id);
-            me.fireEvent('child_added',data);
+            var operation = me.createOperation('readpush', operationCfg);
+            var request = Ext.create('Ext.data.Request',{
+                action: 'read',
+                operation: operation,
+                proxy: me
+            });
+            var response = {
+                data:[data],
+                sucess: true,
+                total: 1
+            };            
+            me.processResponse(true, operation, request, response);
         });
         me.socket.on ('child_removed', function (data) {
             console.log('deleted room: ' + data.id);
@@ -222,17 +241,18 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         });
         me.socket.on ('child_changed', function (data) {
             console.log('changed room: ' + data.id);
-            var operation = me.createOperation('update', {});
+            var operation = me.createOperation('readpush', operationCfg);
             var request = Ext.create('Ext.data.Request',{
-                action: 'update',
+                action: 'read',
                 operation: operation,
                 proxy: me
             });
-            //hack for now...
-            Ext.ComponentQuery.query('chatroom')[0].fireEvent('roomschanged');
-            // me.fireEvent('endprocessresponse', me, data, operation);
-            // me.processResponse(true, operation, request, data);
-            // me.fireEvent('child_changed',data);
+            var response = {
+                data:[data],
+                sucess: true,
+                total: 1
+            };
+            me.processResponse(true, operation, request, response);            
         });
         me.socket.on ('child_moved', function (data) {
             console.log('moved room: ' + data.id);
@@ -241,4 +261,3 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
     }
 
 });
-
