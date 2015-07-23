@@ -20,6 +20,12 @@ Ext.define('WebRTC.view.main.Viewport', {
             rooms: {
                 model: 'WebRTC.model.chat.Room',
                 storeId: 'rooms',
+                sorters: 'name',
+                filters: [
+                    function(item) {
+                        return !item.get('isPrivate');
+                    }
+                ],
                 autoLoad: true
             },
             globalusers: {

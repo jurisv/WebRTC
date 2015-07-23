@@ -113,7 +113,28 @@ Ext.define('WebRTC.view.settings.User', {
                     name: 'leave-sound'
                 }
             ]
+        },
+        {
+            xtype: 'fieldset',
+            title: 'Room Preferences',
+            defaults:{
+                anchor: '100%',
+                labelWidth: 180
+            },
+            items: [{
+                xtype: 'combobox',
+                fieldLabel: 'Launch Room',
+                bind:{
+                    store: '{rooms}'
+                },
+                queryMode: 'local',
+                displayField: 'name',
+                valueField: 'id',
+                name: 'launchroom'
+
+            }]
         }
+
     ],
 
     bbar:[

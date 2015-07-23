@@ -8,7 +8,8 @@ Ext.define('WebRTC.view.chat.RoomForm', {
     defaultFocus: 'textfield [name=name]',
     defaultButton: 'okButton',
     defaults:{
-        anchor: '100%'
+        anchor: '100%',
+        labelWidth: 200
     },
 
     items: [
