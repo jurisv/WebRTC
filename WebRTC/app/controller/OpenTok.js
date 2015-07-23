@@ -10,6 +10,9 @@ Ext.define('WebRTC.controller.OpenTok', {
         controller: {
             '*': {
                 joinroom: 'onSessionCreate',
+                pauseroom: 'onPauseRoom',
+                resumeroom: 'onResumeRoom',
+                closeroom: 'onCloseRoom',
                 callroom: 'onCallRoom',
                 endcall: 'onUnpublish',
                 chatmessage: 'onChatEmit',
@@ -88,10 +91,10 @@ Ext.define('WebRTC.controller.OpenTok', {
             //store the session in an store to make it public
             Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').add(session);
 
-
-            me.getConnectionToken(session.get('session'), sessionId, name);
-
         }
+
+        // either initial or reOpening room we need to connect to server
+        me.getConnectionToken(session.get('session'), sessionId, name);
 
         //set component session & connection so we can look for it later
         if(!component.sessionId){
@@ -257,6 +260,32 @@ Ext.define('WebRTC.controller.OpenTok', {
             session = me.getSessionById(sessionId);
 
         session.localPublisher.publishAudio(false);
+    },
+
+
+
+    onResumeRoom: function(sessionId){
+        var me = this,
+            session = me.getSessionById(sessionId);
+
+        console.log('room resumed ' + sessionId);
+        // Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').getAt(0).get('session').localSubscriptions[0].subscribeToVideo(false)
+
+    },
+
+
+    onPauseRoom: function(sessionId){
+        var me = this,
+            session = me.getSessionById(sessionId);
+
+        console.log('room paused ' + sessionId);
+
+    },
+
+    onCloseRoom: function(sessionId){
+        var me = this,
+            session = me.getSessionById(sessionId);
+        session.disconnect();
     },
 
     /*

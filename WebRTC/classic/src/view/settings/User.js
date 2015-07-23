@@ -74,7 +74,8 @@ Ext.define('WebRTC.view.settings.User', {
             xtype: 'fieldset',
             title: 'Sounds',
             defaults:{
-                anchor: '100%'
+                anchor: '100%',
+                labelWidth: 180
             },
             items: [
                 {
@@ -88,6 +89,28 @@ Ext.define('WebRTC.view.settings.User', {
                     displayField: 'id',
                     valueField: 'id',
                     name: 'chat-sound'
+                },{
+                    xtype: 'combobox',
+                    store: 'Sounds',
+                    // bind: {
+                    //     store: '{sounds}'
+                    // },
+                    fieldLabel: 'Enter Room Sound',
+                    queryMode: 'local',
+                    displayField: 'id',
+                    valueField: 'id',
+                    name: 'enter-sound'
+                },{
+                    xtype: 'combobox',
+                    store: 'Sounds',
+                    // bind: {
+                    //     store: '{sounds}'
+                    // },
+                    fieldLabel: 'Leave Room Sound',
+                    queryMode: 'local',
+                    displayField: 'id',
+                    valueField: 'id',
+                    name: 'leave-sound'
                 }
             ]
         }

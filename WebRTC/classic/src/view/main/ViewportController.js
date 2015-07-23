@@ -187,6 +187,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
     onRoomSelect: function(view,record){
         var me = this,
             roomtabs = this.lookupReference('roomtabs'),
+            combo = this.lookupReference('roomscombo'),
             id = record.get('id'),
             tab = me.getRoomTabById(id),
             name = me.getViewModel().get('name'),
@@ -219,7 +220,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
             // Notify TokBox in this case
             me.fireEvent('joinroom', tab, record.data, name);
         }
+
         roomtabs.setActiveTab(tab);
+        combo.reset();
 
 
 
@@ -230,16 +233,18 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRoomActivate: function(){
-        console.log('Activate');
+        var sessionId = this.getViewModel().get('room').sessionId;
+        this.fireEvent('resumeroom',sessionId);
     },
 
     onRoomDeactivate: function(){
-        // Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').getAt(0).get('session').localSubscriptions[0].subscribeToVideo(false)
-        console.log('deactivate');
+        var sessionId = this.getViewModel().get('room').sessionId;
+        this.fireEvent('pauseroom',sessionId);
     },
 
     onRoomClose: function(){
-        console.log('close');
+        var sessionId = this.getViewModel().get('room').sessionId;
+        this.fireEvent('closeroom',sessionId);
     },
 
     onActivate: function(){
@@ -281,8 +286,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
         Ext.create('Ext.window.Window', {
             title: 'User Settings',
             iconCls: 'x-fa fa-user fa-lg',
-            height: 200,
-            width: 400,
+            height: 300,
+            width: 600,
             layout: 'fit',
             items: {
                 xtype: 'settingsuser',

@@ -8,7 +8,9 @@ Ext.define('WebRTC.store.Settings', {
 
     statics: {
         DEFAULTS: {
-            'chat-sound': 'whistle'
+            'chat-sound': 'notification',
+            'enter-sound': 'IncomingSignal011',
+            'leave-sound': 'IncomingSignal012'
         }
     },
 
@@ -33,10 +35,10 @@ Ext.define('WebRTC.store.Settings', {
             applied = false;
 
         Ext.Object.each(defaults, function(key, value){
-            console.log('checking default settings')
+            // console.log('checking default settings');
             var current = me.getById(key);
             if (!current) {
-                console.log('adding '+ key +' default setting')
+                // console.log('adding '+ key +' default setting');
                 me.create({key: key, value: value});
                 applied = true;
             }
