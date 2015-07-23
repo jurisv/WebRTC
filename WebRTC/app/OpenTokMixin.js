@@ -63,7 +63,7 @@ Ext.define('WebRTC.OpenTokMixin', {
             maxWidth: 400
         });
 
-        var subscriber = session.subscribe(event.stream, event.stream.id , {
+        var subscription = session.subscribe(event.stream, event.stream.id , {
             /// insertMode: 'append',
             style: {
             audioLevelDisplayMode: 'auto'
@@ -74,6 +74,11 @@ Ext.define('WebRTC.OpenTokMixin', {
            height: '100%',
            showControls: true
         });
+
+        // put all the subsriptions into an array for us to walk-through and manipulate if needed
+        // for example when changing rooms, mute all...
+        session.localSubscriptions.push(subscription);
+
 
     },
 

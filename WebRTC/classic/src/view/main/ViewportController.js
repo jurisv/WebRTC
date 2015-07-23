@@ -234,6 +234,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRoomDeactivate: function(){
+        // Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').getAt(0).get('session').localSubscriptions[0].subscribeToVideo(false)
         console.log('deactivate');
     },
 

@@ -82,6 +82,9 @@ Ext.define('WebRTC.controller.OpenTok', {
             //create the event bindings prior to adding to the store
             me.bindSessionEvents(session.get('session'));
 
+            //create an empty array to store subscriptions into for bulk manipulation
+            session.get('session').localSubscriptions = [];
+
             //store the session in an store to make it public
             Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').add(session);
 

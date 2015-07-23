@@ -10,5 +10,8 @@ Ext.define('WebRTC.model.opentok.Session', {
         reader: {
             type: 'json'
         }
-    }
+    },
+    hasMany:[
+        { model: 'WebRTC.model.opentok.Subscriber', name: 'subscribers' }
+    ]
 });
