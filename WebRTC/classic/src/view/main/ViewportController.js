@@ -112,17 +112,27 @@ Ext.define('WebRTC.view.main.ViewportController', {
         var selection,
             combo = this.lookupReference('roomscombo'),
             list = this.getView().down('chatrooms').down('dataview'),
+            settings = Ext.getStore('Settings'),
+            currentLaunchRoom = settings.getById('launchroom').get('value'),
             store = list.getStore();
+
 
 
         if (store && store.getCount()) {
             selection = list.getSelection();
             if (!selection || !selection.length) {
                 Ext.Function.defer(function(){
-                   combo.select(store.getAt(0));
-                   list.getSelectionModel().select(0)
+                   if(currentLaunchRoom){
+                       var record = store.getById(currentLaunchRoom);
+                       combo.select(record);
+                       //not sure why this event isn't getting fired
+                       combo.fireEvent('select',combo,record);
+                   }else{
+                        combo.select(store.getAt(0));
+                        // list.getSelectionModel().select(0)
+                   }
                 },
-                100);
+                500);
             }
         }
     },
@@ -187,7 +197,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
     onRoomSelect: function(view,record){
         var me = this,
             roomtabs = this.lookupReference('roomtabs'),
-            combo = this.lookupReference('roomscombo'),
             id = record.get('id'),
             tab = me.getRoomTabById(id),
             name = me.getViewModel().get('name'),
@@ -222,9 +231,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }
 
         roomtabs.setActiveTab(tab);
-        // combo.reset();
-
-
 
     },
 
@@ -232,24 +238,31 @@ Ext.define('WebRTC.view.main.ViewportController', {
         // this.getViewModel().getStore('rooms').load();
     },
 
-    onRoomActivate: function(){
-        var sessionId = this.getViewModel().get('room').sessionId;
+    onRoomActivate: function(tab){
+        var id = tab.getViewModel().get('room').id,
+            sessionId = tab.getViewModel().get('room').sessionId,
+            combo = this.lookupReference('roomscombo');
+        combo.suspendEvent('select');
+        combo.select(id);
+        combo.resumeEvent('select');
+
         this.fireEvent('resumeroom',sessionId);
     },
 
-    onRoomDeactivate: function(){
-        var sessionId = this.getViewModel().get('room').sessionId;
+    onRoomDeactivate: function(tab){
+        var sessionId = tab.getViewModel().get('room').sessionId;
         this.fireEvent('pauseroom',sessionId);
     },
 
-    onRoomClose: function(){
-        var sessionId = this.getViewModel().get('room').sessionId;
+    onRoomClose: function(tab){
+        var sessionId = tab.getViewModel().get('room').sessionId,
+            combo = this.lookupReference('roomscombo');
+        combo.reset();
         this.fireEvent('closeroom',sessionId);
     },
 
-    onActivate: function(){
-        alert('deactivate');
-    },
+
+
 
     getRoomTabById: function(id){
         var roomtabs = this.lookupReference('roomtabs');

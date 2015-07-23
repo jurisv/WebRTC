@@ -8,6 +8,7 @@ Ext.define('WebRTC.store.Settings', {
 
     statics: {
         DEFAULTS: {
+            'launchroom': null,
             'chat-sound': 'notification',
             'enter-sound': 'IncomingSignal011',
             'leave-sound': 'IncomingSignal012'

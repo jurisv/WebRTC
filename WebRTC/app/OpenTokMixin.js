@@ -100,19 +100,26 @@ Ext.define('WebRTC.OpenTokMixin', {
     },
 
     onOTSessionDestroyed: function(event){
-        var id = event.connection.connectionId,
-            tab = this.getRoomBySessionId(event.target.sessionId);
+        var type = event.type;
 
-        tab.getController().roomMemberRemove(id);
+        if(type == 'sessionDisconnected'){
+            return;
+        }else if(type == 'sessionDisconnected'){
+            var id = event.connection.connectionId,
+                tab = this.getRoomBySessionId(event.target.sessionId);
 
-        if (event.reason == "networkDisconnected") {
-            Ext.toast({
-                html: 'Your network connection terminated.',
-                title: 'Offline',
-                width: 400,
-                align: 't'
-            });
+            tab.getController().roomMemberRemove(id);
+
+            if (event.reason == "networkDisconnected") {
+                Ext.toast({
+                    html: 'Your network connection terminated.',
+                    title: 'Offline',
+                    width: 400,
+                    align: 't'
+                });
+            }
         }
+
     },
 
 

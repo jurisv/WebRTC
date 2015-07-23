@@ -14,11 +14,16 @@ Ext.define('WebRTC.view.settings.UserController', {
             currentEnterSound = settings.getById('enter-sound').get('value'),
             soundEnterCombo = view.down('combo[name=enter-sound]'),
             currentLeaveSound = settings.getById('leave-sound').get('value'),
-            soundLeaveCombo = view.down('combo[name=leave-sound]');
+            soundLeaveCombo = view.down('combo[name=leave-sound]'),
+            currentLaunchRoom = settings.getById('launchroom').get('value'),
+            LaunchCombo = view.down('combo[name=launchroom]');
 
         soundChatCombo.setValue(currentChatSound);
         soundEnterCombo.setValue(currentEnterSound);
         soundLeaveCombo.setValue(currentLeaveSound);
+
+        LaunchCombo.setValue(currentLaunchRoom);
+
     },
 
     saveSettings: function () {
@@ -35,6 +40,10 @@ Ext.define('WebRTC.view.settings.UserController', {
 
         key = 'leave-sound';
         settings.getById(key).set('value', data[key]);
+
+        key = 'launchroom';
+        settings.getById(key).set('value', data[key]);
+
 
         view.up('window').close(); //TODO: Maybe settings.User has to be a window itself
     }   
