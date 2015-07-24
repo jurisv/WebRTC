@@ -208,7 +208,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
             room;
 
         //set main active room
-        me.getViewModel().set('room',record.data);
+        me.getViewModel().set('room',record.data); // hmmmm TODO: review
 
         //only add one
         if (!tab) {
@@ -217,13 +217,15 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 closable: true,
                 iconCls: 'x-fa fa-comments',
                 roomId: id,
-                viewModel:{
-                    data: {
-                        room: record.data
-                    }
-                },
+                // viewModel:{
+                //     data: {
+                //         room: record.data
+                //     }
+                // },
                 flex: 1
             };
+
+
 
             Ext.suspendLayouts();
             tab = roomtabs.insert(0, room);
@@ -233,6 +235,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
             me.fireEvent('joinroom', tab, record.data, name);
         }
 
+        tab.getViewModel().set('room', record);
         roomtabs.setActiveTab(tab);
 
     },
@@ -243,7 +246,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     onRoomActivate: function(tab){
         var id = tab.getViewModel().get('room').id,
-            sessionId = tab.getViewModel().get('room').sessionId,
+            sessionId = tab.getViewModel().get('room').get('sessionId'),
             combo = this.lookupReference('roomscombo');
         combo.suspendEvent('select');
         combo.select(id);
@@ -253,12 +256,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRoomDeactivate: function(tab){
-        var sessionId = tab.getViewModel().get('room').sessionId;
+        var sessionId = tab.getViewModel().get('room').get('sessionId');
         this.fireEvent('pauseroom',sessionId);
     },
 
     onRoomClose: function(tab){
-        var sessionId = tab.getViewModel().get('room').sessionId,
+        var sessionId = tab.getViewModel().get('room').get('sessionId'),
             combo = this.lookupReference('roomscombo');
         combo.reset();
         this.fireEvent('closeroom',sessionId);

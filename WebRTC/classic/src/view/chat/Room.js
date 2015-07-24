@@ -16,10 +16,13 @@ Ext.define('WebRTC.view.chat.Room', {
             inVideoCall: false,
             useMic: true,
             useCamera: true,
+        },
+        links: {
             room: {
                 type: 'WebRTC.model.chat.Room',
                 create: true
             }
+
         },
         // todo: remove messages and members and place as associated data stores of the room model.
         stores:{
