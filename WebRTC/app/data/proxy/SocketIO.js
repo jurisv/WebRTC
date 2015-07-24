@@ -131,7 +131,6 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
                 records: request._jsonData
             };
 
-console.log('sendRequest')            
         //make sure we're connected
         if(!this.socket){
             //this is a namespaced socket
@@ -199,10 +198,9 @@ console.log('sendRequest')
         var me = this;
 
         return function(options, success, response) {
-            // if (request === me.lastRequest) {
-            //     me.lastRequest = null;
-            // }
-            console.log('cbk', response, request, operation)
+            if (request === me.lastRequest) {
+                me.lastRequest = null;
+            }
             me.processResponse(success, operation, request, response);
         };
     },
@@ -213,6 +211,17 @@ console.log('sendRequest')
     },
 
 
+    getPushedDataAsResponse: function (data) {
+        // TODO: data from server is returned as object. We need to make this 
+        // consistent with the load operation. we are wrapping the object as 
+        // a data array.
+        return {
+            data:[data],
+            sucess: true,
+            total: 1
+        };  
+    },
+
     setupSocketPush: function(op){
         //use api to to listen
         var me = this,
@@ -220,43 +229,62 @@ console.log('sendRequest')
                 addRecords: true
             });
 
+        // READ
         me.socket.on ('child_added', function (data) {
-            console.log('new room: ' + data.id);
             var operation = me.createOperation('readpush', operationCfg);
             var request = Ext.create('Ext.data.Request',{
                 action: 'read',
                 operation: operation,
                 proxy: me
             });
-            var response = {
-                data:[data],
-                sucess: true,
-                total: 1
-            };            
+            var response =  me.getPushedDataAsResponse(data);
             me.processResponse(true, operation, request, response);
         });
+
+        // REMOVE
         me.socket.on ('child_removed', function (data) {
-            console.log('deleted room: ' + data.id);
-            me.fireEvent('child_removed',data);
+            var operation = me.createOperation('destroypush', Ext.apply(operationCfg, {
+                internalCallback: operationCfg.internalScope['onProxyWrite'],
+                callback: function (records, operation, success) {
+                    var store = this;
+                    store.data.remove(records);
+                    store.onProxyWrite(operation);
+                },
+                scope: operationCfg.internalScope
+
+            }));
+            var request = Ext.create('Ext.data.Request',{
+                action: 'destroy',
+                operation: operation,
+                proxy: me
+            });
+            var response =  me.getPushedDataAsResponse(data);
+            me.processResponse(true, operation, request, response);   
+
         });
+
+        //UPDATE
         me.socket.on ('child_changed', function (data) {
-            console.log('changed room: ' + data.id);
-            var operation = me.createOperation('readpush', operationCfg);
+            var operation = me.createOperation('readpush', Ext.apply(operationCfg, {
+                callback: function (records, operation, success) {
+                    var store = this;
+                    store.onProxyWrite(operation);
+                },
+                scope: operationCfg.internalScope
+            }));
+
             var request = Ext.create('Ext.data.Request',{
                 action: 'read',
                 operation: operation,
                 proxy: me
             });
-            var response = {
-                data:[data],
-                sucess: true,
-                total: 1
-            };
+            var response =  me.getPushedDataAsResponse(data);
             me.processResponse(true, operation, request, response);            
         });
+
+
         me.socket.on ('child_moved', function (data) {
-            console.log('moved room: ' + data.id);
-            me.fireEvent('child_moved',data);
+            console.warn('MOVED NOT IMPL IN PROXY moved room: ' + data.id);
         });
     }
 

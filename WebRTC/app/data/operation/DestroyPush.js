@@ -1,11 +1,31 @@
-Ext.define('WebRTC.data.operation.ReadPush', {
-    extend: 'Ext.data.operation.Read',
-    alias: 'data.operation.readpush',
+Ext.define('WebRTC.data.operation.Destroy', {
+    extend: 'Ext.data.operation.Destroy',
+    alias: 'data.operation.destroypush',
     
-    action: 'read',
+    action: 'destroy',
 
-    isReadOperation: true,
+    isDestroyOperation: true,
 
+    order: 30,
+
+    foreignKeyDirection: -1,
+
+    // config: {
+    //     addRecords: false
+    // },
+
+    doProcess: function( resultSet, request, response ) {
+        var clientRecords = resultSet.getRecords(),
+            clientLen = clientRecords.length,
+            i;
+        
+        for (i = 0; i < clientLen; ++i) {
+            clientRecords[i].setErased();
+        }
+
+        this.setRecords(clientRecords);
+    },
+    
     triggerCallbacks: function() {
         var me = this,
             callback = me.getInternalCallback();
@@ -24,5 +44,5 @@ Ext.define('WebRTC.data.operation.ReadPush', {
             me.setCallback(null);
             me.setScope(null);
         }
-    }    
+    } 
 });
