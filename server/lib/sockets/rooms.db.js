@@ -77,28 +77,28 @@ var rooms = {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
 
-                    App.io.of('/rooms').emit('child_added', data);
+                    App.io.of('/rooms').emit('child_added', io.wrapresponse(data, data.length));
                 }
             });
             io._roomsRef.on('child_removed', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
 
-                    App.io.of('/rooms').emit('child_removed', data);
+                    App.io.of('/rooms').emit('child_removed',io.wrapresponse(data, data.length));
                 }
             });
             io._roomsRef.on('child_changed', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
 
-                    App.io.of('/rooms').emit('child_changed', data);
+                    App.io.of('/rooms').emit('child_changed', io.wrapresponse(data, data.length));
                 }
             });
             io._roomsRef.on('child_moved', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
 
-                    App.io.of('/rooms').emit('child_moved', data);
+                    App.io.of('/rooms').emit('child_moved', io.wrapresponse(data, data.length));
                 }
             });
         }
