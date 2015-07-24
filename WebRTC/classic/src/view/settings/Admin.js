@@ -5,7 +5,8 @@ Ext.define('WebRTC.view.settings.Admin', {
     bodyPadding: 10,
     autoScroll: true,
 
-
+    defaultFocus: 'textfield [name=otApiKey]',
+    defaultButton: 'okButton',
 
     items: [
         {
@@ -18,13 +19,17 @@ Ext.define('WebRTC.view.settings.Admin', {
                 {
                     xtype:'textfield',
                     fieldLabel: 'ApiKey',
-                    name: 'OTApiKey'
+                    publishes: ['value'],
+                    // name: 'serviceprovider.opentok.ApiKey',
+                    // reference: 'serviceprovider.opentok.ApiKey',
+                    bind: '{theData.serviceprovider.opentok.ApiKey}'
                 },
                 {
                     xtype:'textfield',
                     fieldLabel: 'SecretKey',
                     inputType: 'password',
-                    name: 'OTSecretKey'
+                    name: 'otSecretKey',
+                    bind: '{theData.otSecretKey}'
                 }
             ]
         },{
@@ -36,14 +41,21 @@ Ext.define('WebRTC.view.settings.Admin', {
             items: [
                 {
                     xtype:'textfield',
+                    fieldLabel: 'Base URL',
+                    name: 'fbUrl',
+                    bind: '{theData.fbUrl}'
+                },{
+                    xtype:'textfield',
                     fieldLabel: 'ApiKey',
-                    name: 'FBApiKey'
+                    name: 'fbApiKey',
+                    bind: '{theData.serviceprovider.firebase.ApiKey}'
                 },
                 {
                     xtype:'textfield',
                     fieldLabel: 'SecretKey',
                     inputType: 'password',
-                    name: 'FBSecretKey'
+                    name: 'fbSecretKey',
+                    bind: '{theData.fbSecretKey}'
                 }
             ]
         }
@@ -60,6 +72,7 @@ Ext.define('WebRTC.view.settings.Admin', {
         {
             iconCls: 'x-fa fa-thumbs-o-up',
             action:'ok',
+            reference: 'okButton',
             text:'OK'
         }
     ]

@@ -24,21 +24,43 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 deactivate: 'onRoomDeactivate',
                 close: 'onRoomClose'
             },
-            '*':{
-                roomschanged: 'onRoomsChanged'
+            'settingsadmin button[action=ok]':{
+                click: 'onSettingsAdminOkClick'
             }
         }
     },
 
 
     init: function() {
-         var me = this,
-             userCookie = Ext.util.Cookies.get('user'),
-             user,
-             store = Ext.create('Ext.data.Store',{
-                 model: 'WebRTC.model.User',
-                 autoLoad: true
-             });
+        var me = this;
+         me.checkSetup()
+    },
+
+    checkSetup: function(){
+        var me= this,
+            settings;
+
+        //Theres only one setting but the REST API needs and id.
+        WebRTC.model.AdminSettings.load(0,{
+            success: function(record,opertion){
+                if( 1 == 0 && !record['serviceprovider']){
+                    me.onSettingsAdminSelect(record);
+                }else{
+                    me.authenticate();
+                }
+            }
+        });
+
+    },
+
+    authenticate: function(){
+        var me = this,
+            userCookie = Ext.util.Cookies.get('user'),
+            user,
+            store = Ext.create('Ext.data.Store',{
+                model: 'WebRTC.model.User',
+                autoLoad: true
+            });
 
         // Use this area to run function to launch screen instantly
         // this.onSettingsUserSelect();
@@ -55,57 +77,57 @@ Ext.define('WebRTC.view.main.ViewportController', {
             return true;
         }
 
-         if(!userCookie){
-             Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
-                 if(value) {
-                     //set the persons name
-                     var expires = new Date("October 13, 2095 11:13:00"),
-                         newUser = Ext.create('WebRTC.model.User',{
-                             name: value
-                         });
+        if(!userCookie){
+            Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
+                if(value) {
+                    //set the persons name
+                    var expires = new Date("October 13, 2095 11:13:00"),
+                        newUser = Ext.create('WebRTC.model.User',{
+                            name: value
+                        });
 
-                     Ext.util.Cookies.clear('user');
+                    Ext.util.Cookies.clear('user');
 
-                     newUser.save();
+                    newUser.save();
 
-                     me.getViewModel().set('name', newUser.get('name') );
+                    me.getViewModel().set('name', newUser.get('name') );
 
-                     me.getViewModel().set('user', newUser);
+                    me.getViewModel().set('user', newUser);
 
-                     Ext.util.Cookies.set('user', JSON.stringify(newUser) , expires);
+                    Ext.util.Cookies.set('user', JSON.stringify(newUser) , expires);
 
-                   /*  Ext.toast({
-                         html: newUser + ' give us a moment while we set things up.',
-                         title: 'Welcome',
-                         width: 400,
-                         align: 't'
+                    /*  Ext.toast({
+                     html: newUser + ' give us a moment while we set things up.',
+                     title: 'Welcome',
+                     width: 400,
+                     align: 't'
                      });
-                    */
+                     */
 
                     Ext.defer(function() {
-                         me.selectFirstRoom();
+                        me.selectFirstRoom();
                     }, 1200);
 
-                 }
-             });
-         }else{
-             user =  JSON.parse(userCookie) ;
-             me.getViewModel().set('user', user);
+                }
+            });
+        }else{
+            user =  JSON.parse(userCookie) ;
+            me.getViewModel().set('user', user);
 
-             me.getViewModel().set('name', user.data.name );
+            me.getViewModel().set('name', user.data.name );
 
             /* Ext.toast({
-                 html: 'Glad to see you again ' + user.data.name  + '.',
-                 title: 'Welcome Back',
-                 width: 400,
-                 align: 't'
+             html: 'Glad to see you again ' + user.data.name  + '.',
+             title: 'Welcome Back',
+             width: 400,
+             align: 't'
              });*/
 
-             Ext.defer(function() {
-                 me.selectFirstRoom();
-             }, 1200);
+            Ext.defer(function() {
+                me.selectFirstRoom();
+            }, 1200);
 
-         }
+        }
     },
 
     selectFirstRoom: function () {
@@ -311,13 +333,21 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }).show();
     },
 
-    onSettingsAdminSelect: function(){
+    onSettingsAdminSelect: function(record){
         Ext.create('Ext.window.Window', {
             title: 'Admin Settings',
             iconCls: 'x-fa fa-gear fa-lg',
-            height: 400,
+            height: 500,
             width: 400,
             layout: 'fit',
+            modal: true,
+            viewModel:{
+                // type: 'WebRTC.model.AdminSettings',
+                data:{
+                    theData: record,
+                    deep: true
+                }
+            },
             items: {
                 xtype: 'settingsadmin',
                 border: false
@@ -326,6 +356,46 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }).show();
     },
 
+    onSettingsAdminOkClick: function(button){
+
+        var me = this,
+            window = button.up('window'),
+            form = window.down('form'),
+            data = form.getValues();
+
+        if (form.isValid()) {
+
+            Ext.Msg.wait('Saving', 'Saving initial settings...');
+            var record = window.getViewModel().data.theData;
+            record.save({
+                scope: this,
+                callback: this.onComplete
+            });
+            form.up('window').close();
+
+           /* Ext.Ajax.request({
+                url: '/config/0',
+                params: {
+                    data: JSON.stringify(data)
+                },
+                success: function(response, opts) {
+                    var obj = Ext.decode(response.responseText);
+                    if(!obj['apiKey']){
+                        me.onSettingsAdminSelect();
+                    }else{
+                        me.authenticate();
+                    }
+                },
+
+                failure: function(response, opts) {
+                    console.log('server-side failure with status code ' + response.status);
+                }
+            });
+            */
+        }
+
+
+    },
 
     onRoomFormOkClick: function(button) {
         var window = button.up('window'),

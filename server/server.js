@@ -16,21 +16,40 @@ var fs = require('fs'),                         // file system
     environment, port, protocol,
     store, pub_path;
 
-var app = module.exports = require('express')();        // Setup express app
-var http = require('http').Server(app);                 // http on top of express for websocket handling
-// var data = require('./lib/data').init(app);          // routes for data packages
-var data = require('./lib/data/stores.js');             // routes for data packages
-var io = require('./lib/sockets')(http);                // seperate module for all websocket requests
-
-//app.use(data());
-
-nconf.env().file({file: path.join(__dirname, 'server-config.json')});   // path to config JSON
-environment = global.App.mode = process.env.NODE_ENV || 'production';   // default to production
+nconf.argv().env().file({file: path.join(__dirname, 'server-config.json')});   // path to config JSON
+environment = global.App.mode = nconf.get("NODE_ENV") || 'production';   // default to production
 ServerConfig = nconf.get("ServerConfig-" + environment);                // load server config JSON
+
+var app = module.exports = require('express')();        // Setup express app
+
+//to parse form body
+app.use(bodyparser());
+
 
 // GLOBAL: make the express app global
 global.App = app;
+global.App.config = nconf;     //all configs
+global.App.ServerConfig = ServerConfig; //this config
+
+var http = require('http').Server(app);                 // http on top of express for websocket handling
+// var data = require('./lib/data')(app);                  // routes for data packages
+var data = require('./lib/data/stores.js');             // routes for data packages
+var io = require('./lib/sockets')(http);                // seperate module for all websocket requests
+
+
 global.App.io = io;
+
+//common function to standardize JSON to Ext.
+global.App.wrapresponse = function  (data){
+    var response = [].concat(data);
+    return {
+        "success": true,
+        "message": "Successful",
+        "total": response.length,
+        "timestamp": new Date(),
+        "data" : response
+    }
+};
 
 // simple logger placing first and using next()
 // allows this to run as well as other matching methods.
@@ -58,38 +77,59 @@ if(ServerConfig.enableCompression){
 //static routes for files using webRoot based on production or development environments
 app.use(express.static(path.join(__dirname, ServerConfig.webRoot)));
 
-//to parse form body
-app.use(bodyparser());
 
 //Route all data related calls as a single route with an id or not
 app.route('/data/:store/:id')
-.get(function(req, res, id) {
-var store = 'get'+ req.params.store;
-data[store](req,res, req.params.id);
-})
-.post(function(req, res, id) {
-var store = 'add'+ req.params.store;
-data[store](req,res, req.params.id);
-})
-.put(function(req, res, id) {
-var store = 'set'+ req.params.store;
-data[store](req,res, req.params.id);
-});
+    .get(function(req, res, id) {
+        var store = 'get'+ req.params.store;
+        data[store](req,res, req.params.id);
+    })
+    .post(function(req, res, id) {
+        var store = 'add'+ req.params.store;
+        data[store](req,res, req.params.id);
+    })
+    .put(function(req, res, id) {
+        var store = 'set'+ req.params.store;
+        data[store](req,res, req.params.id);
+    });
 
 app.route('/data/:store')
-.get(function(req, res) {
-var store = 'get'+ req.params.store;
-data[store](req,res);
-})
-.post(function(req, res) {
-var store = 'add'+ req.params.store;
-data[store](req,res);
-})
-.put(function(req, res) {
-var store = 'set'+ req.params.store;
-data[store](req,res);
-});
+    .get(function(req, res) {
+        var store = 'get'+ req.params.store;
+        data[store](req,res);
+    })
+    .post(function(req, res) {
+        var store = 'add'+ req.params.store;
+        data[store](req,res);
+    })
+    .put(function(req, res) {
+        var store = 'set'+ req.params.store;
+        data[store](req,res);
+    });
 
+//There's only one config but the REST UI sends an id so just ignore it.
+app.route('/config/:id')
+    .get(function(req, res) {
+        var config = global.App.config.get('adminsettings'),
+            data;
+
+        //Get only sends public data
+        data=config;
+
+        res.status(200).send(data);
+    })
+    .post(function(req, res) {
+        var data = JSON.parse(req.body.data),
+            config = global.App.config.get('adminsettings');
+        if(!config.serviceprovider.firebase.Url && data){
+            global.App.config.set('adminsettings:serviceprovider:firebase:Url', data).save();
+        }
+        res.status(200).send(data);
+    })
+    .put(function(req, res) {
+        var store = 'set'+ req.params.store;
+        data[store](req,res);
+    });
 
 
 //Development routes to include packages, override, and Ext Library
@@ -147,9 +187,7 @@ app.use(function(req, res){
 });
 
 
-//setup default opentok cred for app
-app.set('otSessionId', ServerConfig.otDefaultSessionId);
-app.set('otAPIKEY', ServerConfig.otAPIKEY);
-app.set('otAPISECRET', ServerConfig.otAPISECRET);
+
+
 
 http.listen(port);

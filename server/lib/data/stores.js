@@ -1,46 +1,45 @@
 var firebase = require('firebase'), //npm install firebase
 firebaseTokenGenerator = require("firebase-token-generator"),  //creates a user token for remote access
-tokenGenerator = new firebaseTokenGenerator(process.env.FIREBASE_SKEY || ''),  //secret key set in environmnet variable : do not hardcode
+tokenGenerator = new firebaseTokenGenerator(global.App.config.get('adminsettings').serviceprovider.firebase.SecretKey || ''),  //secret key set in environmnet variable : do not hardcode
 tokenExpires = new Date("01/01/2025").getTime(), // (new Date().getTime() / 1000)+(4 * 7 * 24 * 60 * 60), // in four weeks
 OpenTok = require('opentok'); // OpenTok WebRTC service calls  http://www.tokbox.com
 
 var data = {
 
-    baseRef: new firebase("https://senchartc.firebaseio.com/"),
+    baseRef: new firebase(global.App.config.get('adminsettings').serviceprovider.firebase.Url),
 
     firebaseToken: tokenGenerator.createToken(
         {tokenBy: "NodeServerToken"},  //Arbitrary info to pass along into the user token object
         {admin: true, expires: tokenExpires}
     ),
 
-    wrapresponse: function  (data,total){
-        var response = [].concat(data);
-        return {
-                "success": true,
-                "message": "Successful",
-                "total": response.length,
-                "timestamp": new Date(),
-                "data" : response
-        }
-    },
 
     _getToken: function (req, res, id){
         var session = id,
-            role = req.body['role'] || 'publisher',
-            name = req.body['name'] || 'anonymous',
-            otApiKey = App.get('otAPIKEY'),
-            otApiSecret = App.get('otAPISECRET'),
-            opentok = new OpenTok(otApiKey, otApiSecret),
-            token = opentok.generateToken(session,{
-                  role :       role,
-                 // expireTime : tokenExpires,
-                  data :       'name=' + name
-            }),
-            data = {
-                apiKey: process.env.OPENTOK_APIKEY || '',
-                sessionId: session,
-                token: token
-            };
+            ApiKey = global.App.config.get('adminsettings').serviceprovider.opentok.ApiKey,
+            ApiSecret = global.App.config.get('adminsettings').serviceprovider.opentok.SecretKey,
+            opentok = new OpenTok(ApiKey, ApiSecret),
+            role, name, token, data;
+
+        if(req.body){
+            role = req.body['role'] || 'publisher';
+            name = req.body['name'] || 'anonymous';
+        }else{
+            role = 'publisher';
+            name = 'anonymous';
+        }
+
+        token = opentok.generateToken(session,{
+              role :       role,
+             // expireTime : tokenExpires,
+              data :       'name=' + name
+        });
+
+        data = {
+            apiKey: ApiKey || '',
+            sessionId: session,
+            token: token
+        };
         //send the global app sessionId setup during startup
         res.status(200).send(data);
     },
@@ -62,7 +61,7 @@ var data = {
                     var data = childSnapshot.val();
                     module.exports._rooms = data;
                     if(res){
-                        res.status(200).send(module.exports.wrapresponse(module.exports._rooms,module.exports._rooms.length) );
+                        res.status(200).send(global.App.wrapresponse(module.exports._rooms) );
                     }
 
                     //now watch for changes and update cache
@@ -78,18 +77,18 @@ var data = {
 
 
         }else{
-            res.status(200).send(module.exports.wrapresponse(module.exports._rooms,module.exports._rooms.length) );
+            res.status(200).send(global.App.wrapresponse(module.exports._rooms) );
         }
 
     },
     //for AJAX
     addglobal: function(req, res, id){
-        this._getToken(req, res, App.get('otSessionId'))
+        this._getToken(req, res, global.App.ServerConfig['otDefaultSessionId'])
     },
 
     //a global room that's always up
     getglobal: function(req, res){
-        this._getToken(req, res, App.get('otSessionId'))
+        this._getToken(req, res, global.App.ServerConfig['otDefaultSessionId'])
     },
 
     //a token for a room

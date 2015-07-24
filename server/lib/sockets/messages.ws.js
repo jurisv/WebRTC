@@ -16,28 +16,28 @@ module.exports = function(io) {
             socket.on('read', function(config,callback) {
                 DB.read(config,function(err, data) {
                     if (err) throw err;
-                    callback(null,true, io.wrapresponse(data, data.length) );  //options, success, response
+                    callback(null,true, global.App.wrapresponse(data) );  //options, success, response
                 });
             });
 
             socket.on('create', function(config,callback) {
                 DB.create(config,function(err, data) {
                     if (err) throw err;
-                    callback(null,true, io.wrapresponse(data, data.length) );
+                    callback(null,true, global.App.wrapresponse(data) );
                 });
             });
 
             socket.on('update', function(config,callback) {
                 DB.update(config,function(err, data) {
                     if (err) throw err;
-                    callback(null,true,io.wrapresponse(data, data.length));
+                    callback(null,true,global.App.wrapresponse(data));
                 });
             });
 
             socket.on('destroy', function(config,callback) {
                 DB.delete(config,function(err, data) {
                     if (err) throw err;
-                    callback(null,true,io.wrapresponse(data, data.length));
+                    callback(null,true,global.App.wrapresponse(data));
                 });
             });
 

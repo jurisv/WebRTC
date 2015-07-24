@@ -1,2 +1,2 @@
 // @tag full-page
-// @require /Users/mfierro/tmp/WebRTC/WebRTC/app.js
+// @require /Volumes/Data/Sencha/BradSchaferGit/WebRTC/WebRTC/app.js

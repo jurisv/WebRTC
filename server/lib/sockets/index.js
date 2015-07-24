@@ -10,17 +10,6 @@ module.exports = function(server) {
         console.log('Socket Connection:' + socket.id);
     });
 
-    io.wrapresponse = function  (data,total){
-        var response = [].concat(data);
-        return {
-            "success": true,
-            "message": "Successful",
-            "total": response.length,
-            "timestamp": new Date(),
-            "data" : response
-        }
-    };
-
     var rooms = require('./rooms.ws.js')(io);
     var messages = require('./messages.ws.js')(io);
 

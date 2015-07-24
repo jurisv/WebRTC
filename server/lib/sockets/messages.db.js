@@ -1,6 +1,6 @@
 var firebase = require('firebase'), //npm install firebase
     firebaseTokenGenerator = require("firebase-token-generator"),  //creates a user token for remote access
-    tokenGenerator = new firebaseTokenGenerator(process.env.FIREBASE_SKEY || ''),  //secret key set in environmnet variable : do not hardcode
+    tokenGenerator = new firebaseTokenGenerator(global.App.config.get('adminsettings').serviceprovider.firebase.SecretKey || ''),  //secret key set in environmnet variable : do not hardcode
     tokenExpires = new Date("01/01/2025").getTime(), // (new Date().getTime() / 1000)+(4 * 7 * 24 * 60 * 60), // in four weeks
 
     OpenTok = require('opentok'); // OpenTok WebRTC service calls  http://www.tokbox.com
@@ -11,13 +11,13 @@ var messages = {
         {admin: true, expires: tokenExpires}
     ),
 
-    _baseRef: new firebase("https://senchartc.firebaseio.com/"),
+    _baseRef: new firebase(global.App.config.get('adminsettings').serviceprovider.firebase.Url),
     _messages: [],
 
     getOpenTokSessionId: function(callback){
-        var otApiKey = App.get('otAPIKEY'),
-            otApiSecret = App.get('otAPISECRET'),
-            opentok = new OpenTok(otApiKey, otApiSecret);
+        var ApiKey = global.App.config.get('adminsettings').serviceprovider.opentok.ApiKey,
+            ApiSecret = global.App.config.get('adminsettings').serviceprovider.opentok.ApiKey,
+            opentok = new OpenTok(ApiKey, ApiSecret);
 
         opentok.createSession(function(err, session) {
                 if (err) return console.log(err);
@@ -77,28 +77,28 @@ var messages = {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
 
-                    App.io.of('/messages').emit('child_added', io.wrapresponse(data, data.length));
+                    App.io.of('/messages').emit('child_added', global.App.wrapresponse(data));
                 }
             });
             io._messagesRef.on('child_removed', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
 
-                    App.io.of('/messages').emit('child_removed', io.wrapresponse(data, data.length));
+                    App.io.of('/messages').emit('child_removed', global.App.wrapresponse(data));
                 }
             });
             io._messagesRef.on('child_changed', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
 
-                    App.io.of('/messages').emit('child_changed', io.wrapresponse(data, data.length));
+                    App.io.of('/messages').emit('child_changed', global.App.wrapresponse(data));
                 }
             });
             io._messagesRef.on('child_moved', function (childSnapshot, prevChildName) {
                 if (childSnapshot.val() && childSnapshot.val() != undefined) {
                     var data = childSnapshot.val();
 
-                    App.io.of('/messages').emit('child_moved', io.wrapresponse(data, data.length));
+                    App.io.of('/messages').emit('child_moved', global.App.wrapresponse(data));
                 }
             });
         }
