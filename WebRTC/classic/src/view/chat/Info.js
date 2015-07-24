@@ -3,7 +3,10 @@ Ext.define('WebRTC.view.chat.Info', {
     xtype: 'chatinfo',
 
     bind : {
-        data : '{room}'
+        data : {
+            bindTo:'{room}',
+            deep: true
+        }
     },
     tpl: [
         '<div class="room-data">',

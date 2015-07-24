@@ -217,11 +217,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 closable: true,
                 iconCls: 'x-fa fa-comments',
                 roomId: id,
-                // viewModel:{
-                //     data: {
-                //         room: record.data
-                //     }
-                // },
                 flex: 1
             };
 
