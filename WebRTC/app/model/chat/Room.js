@@ -25,7 +25,8 @@ Ext.define('WebRTC.model.chat.Room', {
     ],
 
     hasMany:[
-        { model: 'WebRTC.model.chat.RoomMember', name: 'members' }
+        { model: 'WebRTC.model.chat.RoomMember', name: 'members' },
+        { model: 'WebRTC.model.chat.Message', name: 'messages' }
     ],
     proxy: {
         type: 'socketio',

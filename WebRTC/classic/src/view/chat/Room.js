@@ -25,12 +25,11 @@ Ext.define('WebRTC.view.chat.Room', {
         stores:{
             messages: {
                 model:'WebRTC.model.chat.Message',
-                // storeId: 'roomMessages',
+                autoSync: true,
                 autoLoad: true
             },
             members: {
                 model:'WebRTC.model.chat.RoomMember',
-                // storeId: 'roomMembers',
                 autoLoad: true
             },
             feeds:{

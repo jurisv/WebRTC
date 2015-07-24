@@ -7,9 +7,9 @@ Ext.define('WebRTC.view.chat.RoomController', {
         var store = this.getViewModel().getStore('members'),
             userId = this.getViewModel().get('user').id;
         store.add(member);
-        if(userId != member.id){
+        // if(userId != member.id){
             this.fireEvent('playsound','enter-sound');
-        }
+        // }
     },
 
     roomMemberRemove: function(id){
@@ -35,12 +35,14 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
     chatReceived: function(chat){
         var store = this.getViewModel().getStore('messages'),
+            list = this.lookupReference('historylist'),
             message = Ext.create('WebRTC.model.chat.Message',chat);
 
         message.set({mine:false});
 
         store.add(chat);
-
+        store.sync();
+        list.scrollBy(0, 999999, true);
 
         this.fireEvent('playsound','chat-sound');
     },
@@ -52,7 +54,6 @@ Ext.define('WebRTC.view.chat.RoomController', {
             list = me.lookupReference('historylist'),
             timestamp = new Date().toISOString(),
             name = me.getViewModel().get('name'),
-            id = timestamp,
             sessionId = this.getViewModel().get('room.sessionId'),
             message = me.lookupReference('chattext');
 
@@ -60,14 +61,14 @@ Ext.define('WebRTC.view.chat.RoomController', {
             message: message.getValue(),
             mine: true,
             from: this.getViewModel().get('name'),
-            date: timestamp,
-            id: id
+            date: timestamp
         });
 
         message.focus(false,200);
         message.setValue('');
 
         store.add(chat);
+        store.sync();
         list.scrollBy(0, 999999, true);
 
         me.fireEvent('chatmessage', sessionId, chat.data);

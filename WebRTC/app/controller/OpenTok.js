@@ -91,10 +91,11 @@ Ext.define('WebRTC.controller.OpenTok', {
             //store the session in an store to make it public
             Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').add(session);
 
+            // either initial or reOpening room we need to connect to server
+            me.getConnectionToken(session.get('session'), sessionId, name);
+
         }
 
-        // either initial or reOpening room we need to connect to server
-        me.getConnectionToken(session.get('session'), sessionId, name);
 
         //set component session & connection so we can look for it later
         if(!component.sessionId){

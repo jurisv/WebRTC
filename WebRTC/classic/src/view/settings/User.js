@@ -7,25 +7,8 @@ Ext.define('WebRTC.view.settings.User', {
     ],
 
     controller: 'settingsuser',
-    // viewModel: {
-    //     stores: {
-    //         sounds: {
-    //             autoLoad: true,
-    //             fields: ['id', 'wav', 'mp3', 'ogg'],
-    //             proxy: {
-    //                 type: 'ajax',
-    //                 url: 'resources/sounds.json',
-    //                 reader: {
-    //                     type: 'json',
-    //                     rootProperty: 'data'
-    //                 }
-    //             }
-    //         }
-    //     }
-    // },
-
     bodyPadding: 10,
-    autoScroll: true,
+    scrollable: true,
 
 
 
@@ -81,9 +64,6 @@ Ext.define('WebRTC.view.settings.User', {
                 {
                     xtype: 'combobox',
                     store: 'Sounds',
-                    // bind: {
-                    //     store: '{sounds}'
-                    // },
                     fieldLabel: 'Chat Sound',
                     queryMode: 'local',
                     displayField: 'id',
@@ -92,9 +72,6 @@ Ext.define('WebRTC.view.settings.User', {
                 },{
                     xtype: 'combobox',
                     store: 'Sounds',
-                    // bind: {
-                    //     store: '{sounds}'
-                    // },
                     fieldLabel: 'Enter Room Sound',
                     queryMode: 'local',
                     displayField: 'id',
@@ -103,9 +80,6 @@ Ext.define('WebRTC.view.settings.User', {
                 },{
                     xtype: 'combobox',
                     store: 'Sounds',
-                    // bind: {
-                    //     store: '{sounds}'
-                    // },
                     fieldLabel: 'Leave Room Sound',
                     queryMode: 'local',
                     displayField: 'id',
@@ -129,6 +103,7 @@ Ext.define('WebRTC.view.settings.User', {
                 },
                 queryMode: 'local',
                 displayField: 'name',
+                valueNotFoundText: 'Room No Longer Found',
                 valueField: 'id',
                 name: 'launchroom'
 

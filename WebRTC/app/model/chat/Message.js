@@ -1,8 +1,12 @@
 Ext.define('WebRTC.model.chat.Message', {
     extend: 'Ext.data.Model',
+    idProperty: 'id',
+    identifier: 'uuid', //creates a uuid and assisgns it to the id field
+
     config: {
         fields: [
             { name: 'id', type: 'string'},
+            { name: 'room_id', reference: 'Room' },
             { name: 'timeid', type: 'string',
               depends: [ 'date' ],
               convert: function(value, record){
@@ -39,9 +43,12 @@ Ext.define('WebRTC.model.chat.Message', {
         hasMany: { model: 'WebRTC.model.File', name: 'attachments' }
     },
     proxy: {
+        // type: 'socketio',
         type: 'memory',
+        url : '/messages',
         reader: {
-            type: 'json'
+            type: 'json',
+            rootProperty: 'data'
         }
     }
 });

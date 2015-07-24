@@ -11,6 +11,7 @@ module.exports = function(server) {
     });
 
     var rooms = require('./rooms.ws.js')(io);
+    var messages = require('./messages.ws.js')(io);
 
     return io;
 };

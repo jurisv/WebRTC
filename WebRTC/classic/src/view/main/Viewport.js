@@ -77,6 +77,8 @@ Ext.define('WebRTC.view.main.Viewport', {
             },
             queryMode: 'local',
             displayField: 'name',
+            valueNotFoundText: '',
+            emptyText: 'select a room...',
             valueField: 'id',
             listeners: {
                 select: 'onRoomSelect'

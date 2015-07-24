@@ -128,8 +128,10 @@ Ext.define('WebRTC.view.main.ViewportController', {
                        //not sure why this event isn't getting fired
                        combo.fireEvent('select',combo,record);
                    }else{
-                        combo.select(store.getAt(0));
+                        // combo.select(store.getAt(0));
                         // list.getSelectionModel().select(0)
+                        //not sure why this event isn't getting fired
+                        // combo.fireEvent('select',combo,record);
                    }
                 },
                 500);
@@ -300,7 +302,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
         Ext.create('Ext.window.Window', {
             title: 'User Settings',
             iconCls: 'x-fa fa-user fa-lg',
-            height: 300,
+            height: 400,
             width: 600,
             layout: 'fit',
             items: {
