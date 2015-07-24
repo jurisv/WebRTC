@@ -212,14 +212,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
 
 
     getPushedDataAsResponse: function (data) {
-        // TODO: data from server is returned as object. We need to make this 
-        // consistent with the load operation. we are wrapping the object as 
-        // a data array.
-        return {
-            data:[data],
-            sucess: true,
-            total: 1
-        };  
+        return data;
     },
 
     setupSocketPush: function(op){

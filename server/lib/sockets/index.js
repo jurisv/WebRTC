@@ -11,12 +11,13 @@ module.exports = function(server) {
     });
 
     io.wrapresponse = function  (data,total){
+        var response = [].concat(data);
         return {
             "success": true,
             "message": "Successful",
-            "total": total,
+            "total": response.length,
             "timestamp": new Date(),
-            "data" : data
+            "data" : response
         }
     };
 
