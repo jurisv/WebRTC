@@ -6,6 +6,11 @@ Ext.define('WebRTC.data.operation.ReadPush', {
 
     isReadOperation: true,
 
+    config: {
+        addRecords: true
+    },
+
+
     triggerCallbacks: function() {
         var me = this,
             callback = me.getInternalCallback();

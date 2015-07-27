@@ -31,6 +31,11 @@ Ext.define('WebRTC.model.chat.Room', {
     proxy: {
         type: 'socketio',
         url : '/rooms',
+        apiEvents: {
+            read: 'child_added',
+            update: 'child_changed',
+            destroy: 'child_removed'
+        },
         reader: {
             type: 'json',
             rootProperty: 'data'

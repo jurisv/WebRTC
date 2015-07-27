@@ -76,7 +76,14 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
 
         groups: null,
 
-        uuid: null
+        uuid: null,
+
+        apiEvents: {
+            create: 'read',
+            read: 'read',
+            update: 'update',
+            destroy: 'destroy'
+        }
     },
 
     doRequest: function(operation) {
@@ -222,14 +229,12 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
     setupSocketPush: function(op){
         //use api to to listen
         var me = this,
-            operationCfg = op.initialConfig;
+            operationCfg = op.initialConfig,
+            apiEvents = me.getApiEvents();
 
         // READ
-        me.socket.on ('child_added', function (data) {
-            var operation = me.createOperation('readpush', Ext.apply(op.initialConfig, {
-                    addRecords: true
-                })
-            );
+        me.socket.on (apiEvents['read'], function (data) {
+            var operation = me.createOperation('readpush', operationCfg);
             var request = Ext.create('Ext.data.Request',{
                 action: 'read',
                 operation: operation,
@@ -240,7 +245,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         });
 
         // REMOVE
-        me.socket.on ('child_removed', function (data) {
+        me.socket.on (apiEvents['destroy'], function (data) {
             var operation = me.createOperation('destroypush', Ext.apply(operationCfg, {
                 internalCallback: operationCfg.internalScope['onProxyWrite']
             }));
@@ -255,7 +260,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         });
 
         //UPDATE
-        me.socket.on ('child_changed', function (data) {
+        me.socket.on (apiEvents['update'], function (data) {
             var operation = me.createOperation('updatepush', Ext.apply(operationCfg, {
                 internalCallback: operationCfg.internalScope['onProxyWrite']
             }));
@@ -267,11 +272,6 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
             });
             var response =  me.getPushedDataAsResponse(data);
             me.processResponse(true, operation, request, response);            
-        });
-
-
-        me.socket.on ('child_moved', function (data) {
-            console.warn('MOVED NOT IMPL IN PROXY moved room: ' + data.id);
         });
     }
 
