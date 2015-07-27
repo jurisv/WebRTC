@@ -1,15 +1,13 @@
-Ext.define('WebRTC.data.operation.DestroyPush', {
-    extend: 'Ext.data.operation.Destroy',
-    alias: 'data.operation.destroypush',
+Ext.define('WebRTC.data.operation.UpdatePush', {
+    extend: 'Ext.data.operation.Update',
+    alias: 'data.operation.updatepush',
     
-    action: 'destroy',
+    action: 'update',
 
-    isDestroyOperation: true,
+    isUpdateOperation: true,
 
-    order: 30,
-
-    foreignKeyDirection: -1,
-
+    order: 20,
+    
     doProcess: function( resultSet, request, response ) {
         var records = resultSet.getRecords(),
             len = records.length,
@@ -23,13 +21,12 @@ Ext.define('WebRTC.data.operation.DestroyPush', {
             clientRecords.push(store.getById(records[i][idProperty]));
         }
 
-        store.data.remove(clientRecords);
-
         this.setRecords(clientRecords);
-
         this.callParent(arguments);
+
     },
-    
+
+
     triggerCallbacks: function() {
         var me = this,
             callback = me.getInternalCallback();
@@ -48,5 +45,5 @@ Ext.define('WebRTC.data.operation.DestroyPush', {
             me.setCallback(null);
             me.setScope(null);
         }
-    } 
+    }    
 });

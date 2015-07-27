@@ -2,7 +2,11 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
     extend: 'Ext.data.proxy.Server' ,
     alias: 'proxy.socketio' ,
 
-    requires: ['WebRTC.data.operation.ReadPush'],
+    requires: [
+        'WebRTC.data.operation.DestroyPush',
+        'WebRTC.data.operation.ReadPush',
+        'WebRTC.data.operation.UpdatePush'
+    ],
 
     // Keep a default copy of the action methods here. Ideally could just null
     // out actionMethods and just check if it exists & has a property, otherwise
@@ -218,13 +222,14 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
     setupSocketPush: function(op){
         //use api to to listen
         var me = this,
-            operationCfg = Ext.apply(op.initialConfig, {
-                addRecords: true
-            });
+            operationCfg = op.initialConfig;
 
         // READ
         me.socket.on ('child_added', function (data) {
-            var operation = me.createOperation('readpush', operationCfg);
+            var operation = me.createOperation('readpush', Ext.apply(op.initialConfig, {
+                    addRecords: true
+                })
+            );
             var request = Ext.create('Ext.data.Request',{
                 action: 'read',
                 operation: operation,
@@ -237,14 +242,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         // REMOVE
         me.socket.on ('child_removed', function (data) {
             var operation = me.createOperation('destroypush', Ext.apply(operationCfg, {
-                internalCallback: operationCfg.internalScope['onProxyWrite'],
-                callback: function (records, operation, success) {
-                    var store = this;
-                    store.data.remove(records);
-                    store.onProxyWrite(operation);
-                },
-                scope: operationCfg.internalScope
-
+                internalCallback: operationCfg.internalScope['onProxyWrite']
             }));
             var request = Ext.create('Ext.data.Request',{
                 action: 'destroy',
@@ -258,16 +256,12 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
 
         //UPDATE
         me.socket.on ('child_changed', function (data) {
-            var operation = me.createOperation('readpush', Ext.apply(operationCfg, {
-                callback: function (records, operation, success) {
-                    var store = this;
-                    store.onProxyWrite(operation);
-                },
-                scope: operationCfg.internalScope
+            var operation = me.createOperation('updatepush', Ext.apply(operationCfg, {
+                internalCallback: operationCfg.internalScope['onProxyWrite']
             }));
 
             var request = Ext.create('Ext.data.Request',{
-                action: 'read',
+                action: 'update',
                 operation: operation,
                 proxy: me
             });
