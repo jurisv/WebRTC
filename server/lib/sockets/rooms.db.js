@@ -119,13 +119,14 @@ var rooms = {
 
     create: function(config,callback){
       var me = this,
+          ApiKey = global.App.config.get('adminsettings').serviceprovider.opentok.ApiKey,
           records = config.records;
 
          if(records instanceof Array){
              records.forEach(function(item) {
                  me.getOpenTokSessionId(function(err,sessionId){
                      item.records.sessionId = sessionId;
-                     item.records.apiKey = App.get('otAPIKEY');
+                     item.records.apiKey = ApiKey;
                      me._baseRef.child('rooms/' + item.id).update(item);
                      callback(null,[item.records]);
                  });
@@ -133,7 +134,7 @@ var rooms = {
          }else{
              me.getOpenTokSessionId(function(err,sessionId){
                  config.records.sessionId = sessionId;
-                 config.records.apiKey = App.get('otAPIKEY');
+                 config.records.apiKey = ApiKey;
                  me._baseRef.child('rooms/' + config.records.id).update(config.records);
                  callback(null, [config.records]);
              });

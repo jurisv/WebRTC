@@ -9,8 +9,8 @@ Ext.define('WebRTC.model.AdminSettings', {
     // identifier: 'uuid', //creates a uuid and assisgns it to the id field
     fields: [
         { name: 'id',    type: 'string' },
-        { name: 'serviceprovider' },
-        { name: 'otApiKey',    type: 'string', mapping: 'data.serviceprovider.opentok.SecretKey'     },
+        { name: 'serviceprovider' }
+//        { name: 'otApiKey',    type: 'string', mapping: 'data.serviceprovider.opentok.SecretKey'     }
 //        { name: 'otSecretKey',  type: 'string', mapping: function(data) {  return data.serviceprovider.opentok.SecretKey; }   },
 //        { name: 'fbApiKey',  type: 'string', mapping: function(data) {  return data.serviceprovider.firebase.ApiKey; }   },
 //        { name: 'fbSecretKey',  type: 'string', mapping: function(data) {  return data.serviceprovider.firebase.SecretKey; }  },
@@ -21,8 +21,7 @@ Ext.define('WebRTC.model.AdminSettings', {
         url : '/config',
         writer:{
             type: 'json',
-            writeAllFields: true,
-            nameProperty: 'mapping'
+            writeAllFields: true
         }
     }
 });
