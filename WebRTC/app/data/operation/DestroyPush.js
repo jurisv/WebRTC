@@ -16,16 +16,22 @@ Ext.define('WebRTC.data.operation.DestroyPush', {
             store = this.getInternalScope(),
             idProperty = store.getModel().idProperty,
             clientRecords = [],
-            i;
+            clientRec, i;
 
 
         for (i = 0; i < len; ++i) {
-            clientRecords.push(store.getById(records[i][idProperty]));
+            clientRec = store.getById(records[i][idProperty]);
+            // if we remove the record locally, it won't be pressent in the store anymore
+            if (clientRec) {
+                clientRecords.push(clientRec);    
+            }
+            
         }
-
-        store.data.remove(clientRecords);
-
-        this.setRecords(clientRecords);
+        
+        if (clientRecords.length) {
+            store.data.remove(clientRecords);
+            this.setRecords(clientRecords);
+        }
 
         this.callParent(arguments);
     },

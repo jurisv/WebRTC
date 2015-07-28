@@ -237,7 +237,9 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
 
         // READ
         me.socket.on (apiEvents['read'], function (data) {
-            var operation = me.createOperation('readpush', operationCfg);
+            var operation = me.createOperation('readpush', Ext.apply(operationCfg, {
+                addRecords: true
+            }));
             var request = Ext.create('Ext.data.Request',{
                 action: 'read',
                 operation: operation,
