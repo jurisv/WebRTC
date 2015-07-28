@@ -42,9 +42,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
         //Theres only one setting but the REST API needs and id.
         WebRTC.model.AdminSettings.load(0,{
-            success: function(record,opertion){
-                if( 1 == 0 && !record['serviceprovider']){
-                    me.onSettingsAdminSelect(record);
+            success: function(record,operation){
+                if( !record.get('otApiKey') ){
+                    me.onSettingsAdminSelect();
                 }else{
                     me.authenticate();
                 }
@@ -94,7 +94,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
                     me.getViewModel().set('user', newUser);
 
-                    Ext.util.Cookies.set('user', JSON.stringify(newUser) , expires);
+                    Ext.util.Cookies.set('user', JSON.stringify( newUser.data ) , expires);
 
                     /*  Ext.toast({
                      html: newUser + ' give us a moment while we set things up.',
@@ -114,7 +114,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
             user =  JSON.parse(userCookie) ;
             me.getViewModel().set('user', user);
 
-            me.getViewModel().set('name', user.data.name );
+            me.getViewModel().set('name', user.name );
 
             /* Ext.toast({
              html: 'Glad to see you again ' + user.data.name  + '.',
@@ -333,25 +333,35 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }).show();
     },
 
-    onSettingsAdminSelect: function(record){
-        Ext.create('Ext.window.Window', {
-            title: 'Admin Settings',
-            iconCls: 'x-fa fa-gear fa-lg',
-            height: 500,
-            width: 400,
-            layout: 'fit',
-            modal: true,
-            items: {
-                xtype: 'settingsadmin',
-                viewModel:{
-                    data:{
-                         adminSettings: record
+    onSettingsAdminSelect: function(){
+
+        var me = this;
+
+        //Theres only one setting but the REST API needs and id.
+        WebRTC.model.AdminSettings.load(0,{
+            success: function(record,operation){
+
+                Ext.create('Ext.window.Window', {
+                    title: 'Admin Settings',
+                    iconCls: 'x-fa fa-gear fa-lg',
+                    height: 500,
+                    width: 400,
+                    layout: 'fit',
+                    modal: true,
+                    items: {
+                        xtype: 'settingsadmin',
+                        viewModel:{
+                            data:{
+                                adminSettings: record
+                            }
+                        },
+                        border: false
+
                     }
-                 },
-                border: false
+                }).show();
 
             }
-        }).show();
+        });
     },
 
     onSettingsAdminOkClick: function(button){
@@ -360,6 +370,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
             window = button.up('window'),
             form = window.down('form'),
             data = form.getValues();
+
 
         if (form.isValid()) {
 
@@ -370,26 +381,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 callback: this.onComplete
             });
             form.up('window').close();
-
-           /* Ext.Ajax.request({
-                url: '/config/0',
-                params: {
-                    data: JSON.stringify(data)
-                },
-                success: function(response, opts) {
-                    var obj = Ext.decode(response.responseText);
-                    if(!obj['apiKey']){
-                        me.onSettingsAdminSelect();
-                    }else{
-                        me.authenticate();
-                    }
-                },
-
-                failure: function(response, opts) {
-                    console.log('server-side failure with status code ' + response.status);
-                }
-            });
-            */
         }
 
 
@@ -436,6 +427,23 @@ Ext.define('WebRTC.view.main.ViewportController', {
             align: 't',
             bodyPadding: 10
         });
+    },
+
+    onLogoClick: function(record){
+        Ext.create('Ext.window.Window', {
+            title: 'About',
+            iconCls: 'x-fa fa-info-circle fa-lg',
+            height: 500,
+            width: 600,
+            layout: 'fit',
+            modal: true,
+            items: {
+                xtype: 'panel',
+                html: '<h1>Branding Goes Here</h1>',
+                border: false
+
+            }
+        }).show();
     }
 
 });

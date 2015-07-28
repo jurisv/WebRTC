@@ -55,12 +55,6 @@ Ext.define('WebRTC.view.main.Viewport', {
 
     tbar:[
         {
-            style:'background-image: url(/resources/images/TokBoxIcon.png) !important; background-size: 30px 30px; background-repeat: no-repeat;',
-            plain: true,
-            listeners: {
-                click: 'onRoomAdd'
-            }
-        },{
             iconCls: 'x-fa fa-plus-square',
             plain: true,
             listeners: {
@@ -116,7 +110,14 @@ Ext.define('WebRTC.view.main.Viewport', {
                 hidden: '{isAdmin}'
             },
             handler: 'onSettingsAdminSelect'
+        },{
+            style:'background-image: url(/resources/images/TokBoxIcon.png) !important; background-size: 29px 29px; background-repeat: no-repeat; ',
+            plain: true,
+            listeners: {
+                click: 'onLogoClick'
+            }
         }
+
     ],
 
 

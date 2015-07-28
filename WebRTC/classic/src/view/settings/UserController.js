@@ -26,6 +26,11 @@ Ext.define('WebRTC.view.settings.UserController', {
 
     },
 
+    signOut: function () {
+        Ext.util.Cookies.clear('user');
+        window.location.href=window.location.href;
+    },
+
     saveSettings: function () {
         var view = this.getView(),
             data = view.getForm().getFieldValues(),

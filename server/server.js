@@ -32,7 +32,7 @@ global.App.config = nconf;     //all configs
 global.App.ServerConfig = ServerConfig; //this config
 
 var http = require('http').Server(app);                 // http on top of express for websocket handling
-// var data = require('./lib/data')(app);                  // routes for data packages
+// var data = require('./lib/data')(app);               // routes for data packages
 var data = require('./lib/data/stores.js');             // routes for data packages
 var io = require('./lib/sockets')(http);                // seperate module for all websocket requests
 
@@ -61,22 +61,6 @@ if(ServerConfig.logAllCalls) {
     });
 }
 
-//port and protocol settings
-app.set('port', ServerConfig.port | 8000);
-app.set('protocol', ServerConfig.protocol || 'http');
-port = app.get('port');
-protocol = app.get('protocol');
-pub_path = path.join(__dirname, ServerConfig.webRoot);
-
-//server side compression of assets
-if(ServerConfig.enableCompression){
-   var compress = require('compression');
-   app.use(compress());
-}
-
-//static routes for files using webRoot based on production or development environments
-app.use(express.static(path.join(__dirname, ServerConfig.webRoot)));
-
 
 //Route all data related calls as a single route with an id or not
 app.route('/data/:store/:id')
@@ -91,6 +75,10 @@ app.route('/data/:store/:id')
     .put(function(req, res, id) {
         var store = 'set'+ req.params.store;
         data[store](req,res, req.params.id);
+    })
+    .delete(function(req, res) {
+        var store = 'delete'+ req.params.store;
+        data[store](req,res);
     });
 
 app.route('/data/:store')
@@ -105,6 +93,10 @@ app.route('/data/:store')
     .put(function(req, res) {
         var store = 'set'+ req.params.store;
         data[store](req,res);
+    })
+    .delete(function(req, res) {
+        var store = 'delete'+ req.params.store;
+        data[store](req,res);
     });
 
 //There's only one config but the REST UI sends an id so just ignore it.
@@ -116,20 +108,65 @@ app.route('/config/:id')
         //Get only sends public data
         data=config;
 
-        res.status(200).send(data);
+        res.status(200).send(global.App.wrapresponse(data));
     })
     .post(function(req, res) {
-        var data = JSON.parse(req.body.data),
+        var data = req.body; // JSON.parse(req.body.data),
             config = global.App.config.get('adminsettings');
         if(!config.serviceprovider.firebase.Url && data){
-            global.App.config.set('adminsettings:serviceprovider:firebase:Url', data).save();
+            global.App.config
+                .set('adminsettings:serviceprovider:opentok:ApiKey', data.otApiKey)
+                .set('adminsettings:serviceprovider:opentok:SecretKey', data.otSecretKey)
+                .set('adminsettings:serviceprovider:firebase:Url', data.fbURL)
+                .set('adminsettings:serviceprovider:firebase:ApiKey', data.fbApiKey)
+                .set('adminsettings:serviceprovider:firebase:SecretKey', data.fbSecretKey)
+                .save();
         }
-        res.status(200).send(data);
+        res.status(200).send(global.App.wrapresponse(data));
     })
     .put(function(req, res) {
-        var store = 'set'+ req.params.store;
-        data[store](req,res);
+        var data = req.body; //JSON.parse(req.body.data);
+
+        //deep mapped
+        global.App.config.set('adminsettings:serviceprovider:opentok:ApiKey', data.otApiKey);
+        global.App.config.set('adminsettings:serviceprovider:opentok:SecretKey', data.otSecretKey);
+        global.App.config.set('adminsettings:serviceprovider:firebase:Url', data.fbUrl);
+        global.App.config.set('adminsettings:serviceprovider:firebase:ApiKey', data.fbApiKey);
+        global.App.config.set('adminsettings:serviceprovider:firebase:SecretKey', data.fbSecretKey);
+
+        //flatmapped
+        global.App.config.set('adminsettings:otApiKey', data.otApiKey);
+        global.App.config.set('adminsettings:otSecretKey', data.otSecretKey);
+        global.App.config.set('adminsettings:fbUrl', data.fbUrl);
+        global.App.config.set('adminsettings:fbApiKey', data.fbApiKey);
+        global.App.config.set('adminsettings:fbSecretKey', data.fbSecretKey);
+
+        global.App.config.save();
+
+        res.status(200).send(global.App.wrapresponse(data));
+    })
+    .delete(function(req, res) {
+        var data = JSON.parse(req.body.data);
+        res.status(200).send(global.App.wrapresponse(data));
     });
+
+
+//port and protocol settings
+app.set('port', ServerConfig.port | 8000);
+app.set('protocol', ServerConfig.protocol || 'http');
+port = app.get('port');
+protocol = app.get('protocol');
+pub_path = path.join(__dirname, ServerConfig.webRoot);
+
+//server side compression of assets
+if(ServerConfig.enableCompression){
+    var compress = require('compression');
+    app.use(compress());
+}
+
+//static routes for files using webRoot based on production or development environments
+app.use(express.static(path.join(__dirname, ServerConfig.webRoot)));
+
 
 
 //Development routes to include packages, override, and Ext Library

@@ -50,6 +50,8 @@ Ext.define('WebRTC.controller.OpenTok', {
         var me = this;
         session.on({
             'signal:chat': Ext.bind(me.onChatReceived,me),
+            archiveStarted: Ext.bind(me.onArchiveStarted,me),
+            archiveStopped: Ext.bind(me.onArchiveStopped,me),
             connectionCreated: Ext.bind(me.onConnectionCreated,me),
             connectionDestroyed: function connectionDestroyedHandler (event) {
                 me.fireEvent('connectiondestroyed',event);
@@ -341,7 +343,16 @@ Ext.define('WebRTC.controller.OpenTok', {
                 // controller.getView().down('videoroom').getViewModel().set('otSessionInfo', sessionInfo );
             }
         });
+    },
+
+    onArchiveStarted: function(event){
+        this.fireEvent('archivestarted',event);
+    },
+
+    onArchiveStopped: function(event){
+        this.fireEvent('archivestopped',event);
     }
+
 
 
 

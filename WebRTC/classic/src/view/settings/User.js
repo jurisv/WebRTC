@@ -114,10 +114,10 @@ Ext.define('WebRTC.view.settings.User', {
 
     bbar:[
         {
-            iconCls: 'x-fa fa-thumbs-o-down',
+            iconCls: 'x-fa fa-sign-out',
             action:'cancel',
-            hidden: true,
-            text:'Cancel'
+            text:'Sign Out',
+            handler: 'signOut'
         }
         ,'->',
         {
