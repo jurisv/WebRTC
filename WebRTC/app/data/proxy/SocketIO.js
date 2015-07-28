@@ -78,10 +78,13 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
 
         uuid: null,
 
+        /**
+         * @cfg {Object} apiEvents
+         * Mapping of events name from socketio to push data from server.
+         */
         apiEvents: {
-            create: 'read',
-            read: 'read',
-            update: 'update',
+            read   : 'read',
+            update : 'update',
             destroy: 'destroy'
         }
     },
