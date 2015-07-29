@@ -5,6 +5,7 @@
  */
 Ext.define('WebRTC.model.AdminSettings', {
     extend: 'Ext.data.Model',
+    requires: ['Ext.data.proxy.Rest'],
     idProperty: 'id',
     // identifier: 'uuid', //creates a uuid and assisgns it to the id field
     fields: [

@@ -9,7 +9,7 @@ Ext.application({
     extend: 'WebRTC.Application',
 
     requires: [
-        'WebRTC.*'
+         'WebRTC.*'
     ],
 
     // The name of the initial view to create. With the classic toolkit this class

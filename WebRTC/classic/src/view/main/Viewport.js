@@ -102,7 +102,7 @@ Ext.define('WebRTC.view.main.Viewport', {
             {
                 xtype: 'tabpanel',
                 flex:3,
-                deferredRender: false,
+                deferredRender: true,
                 items:[
                 {
                     title: 'Rooms',
