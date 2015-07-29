@@ -269,9 +269,10 @@ Ext.define('WebRTC.view.main.ViewportController', {
         var id = tab.getViewModel().get('room').id,
             sessionId = tab.getViewModel().get('room').get('sessionId'),
             combo = this.lookupReference('roomscombo');
-        combo.suspendEvent('select');
+
+        // combo.suspendEvent('select');
         combo.select(id);
-        combo.resumeEvent('select');
+        // combo.resumeEvent('select');
 
         this.fireEvent('resumeroom',sessionId);
     },
@@ -355,6 +356,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
                     items: {
                         xtype: 'settingsadmin',
                         viewModel:{
+                            type: 'settingsadmin',
                             data:{
                                 adminSettings: record
                             }

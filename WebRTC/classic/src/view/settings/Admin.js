@@ -48,7 +48,7 @@ Ext.define('WebRTC.view.settings.Admin', {
                     xtype:'textfield',
                     fieldLabel: 'ApiKey',
                     name: 'fbApiKey',
-                    bind: '{adminSettings.fbApiKey}' //'{adminSettings.serviceprovider.firebase.ApiKey}'
+                    bind: '{adminSettings.serviceprovider.firebase.ApiKey}' // '{adminSettings.fbApiKey}'
                 },
                 {
                     xtype:'textfield',
