@@ -3,6 +3,8 @@ Ext.define('WebRTC.model.chat.Room', {
     idProperty: 'id',
     identifier: 'uuid', //creates a uuid and assisgns it to the id field
 
+    requires: ['Ext.data.identifier.Uuid'],
+
     fields: [
         { name: 'id', type: 'string'  },
         { name: 'sessionId', type: 'string'  },  //Tokbox SessionId

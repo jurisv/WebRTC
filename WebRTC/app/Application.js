@@ -18,7 +18,7 @@ Ext.define('WebRTC.Application', {
     ],
 
     stores:[
-        'WebRTC.store.opentok.Sessions',
+        'opentok.Sessions',
         'Settings',
         'Sounds'
     ],
