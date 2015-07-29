@@ -14,16 +14,20 @@ Ext.define('WebRTC.data.operation.UpdatePush', {
             store = this.getInternalScope(),
             idProperty = store.getModel().idProperty,
             clientRecords = [],
-            i;
-
+            clientRec, i;
 
         for (i = 0; i < len; ++i) {
-            clientRecords.push(store.getById(records[i][idProperty]));
+            clientRec = store.getById(records[i][idProperty]);
+            if (clientRec) {
+                clientRecords.push(clientRec);
+            }
+        }
+        
+        if (clientRecords.length) {
+            this.setRecords(clientRecords);
         }
 
-        this.setRecords(clientRecords);
         this.callParent(arguments);
-
     },
 
 
