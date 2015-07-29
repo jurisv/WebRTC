@@ -5,46 +5,15 @@ Ext.define('WebRTC.view.main.Viewport', {
     requires: [
         'Ext.plugin.Viewport',
         'Ext.window.MessageBox',
-        'WebRTC.model.User'
+        'WebRTC.model.User',
+        'WebRTC.view.main.ViewportController',
+        'WebRTC.view.main.ViewportModel'
     ],
 
     controller: 'mainviewport',
 
-    viewModel:{
-        data: {
-            name: null,                     // set cookie on init
-            user: null,                     // set cookie on init
-            room: null                      // ?? perhaps delete
-        },
-        stores: {
-            rooms: {
-                model: 'WebRTC.model.chat.Room',
-                storeId: 'rooms',
-                sorters: 'name',
-                filters: [
-                    function(item) {
-                        return !item.get('isPrivate');
-                    }
-                ],
-                autoLoad: true
-            },
-            globalusers: {
-                model: 'WebRTC.model.chat.RoomMember',
-                autoLoad: true
-            },
-            users: {
-                model: 'WebRTC.model.User',
-                autoLoad: true
-            }
-        },
-        formulas: {
-            isAdmin: function (get) {
-                return get('name') != 'admin' ;    //shows config button if name is admin
-            },
-            isRoomSelected: function (get) {
-                return get('room') != null ;    //edit allowed only when selected
-            }
-        }
+    viewModel: { 
+        type: 'mainviewport'
     },
 
     flex: 1,
