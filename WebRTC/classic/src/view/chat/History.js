@@ -9,9 +9,9 @@ Ext.define('WebRTC.view.chat.History', {
         xtype: 'dataview',
         reference: 'historylist',
         autoScroll: true,
-        /*bind: {
+        bind: {
             store: '{messages}'
-        },*/
+        },
         itemSelector: 'div.chat-wrap',
         tpl: [
             '<table cellspacing="0" cellpadding="8" width="100%">',

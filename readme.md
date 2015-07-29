@@ -1,5 +1,12 @@
-# A simple demonstration of WebRTC and the Sencha 6 Modern Framework. 
+# A simple demonstration of WebRTC powered by OpenTok and the Sencha Ext6 Framework. 
 ## Getting Started
+So you want to do peer-to-peer audio and video calls. Well there's a lot of behind the scenes 
+optimizations that are taken care of by using the OpenTok services. 
+
+You also want an extensible web framework that ties into your enterprise strategy. This is where ExtJs 6 excels. 
+
+Finally you would like something that handles data in real-time in both directions.. Make a change locally and your change is replicated to all connecte clients. New data changes are pushed directly to your client without reloading the page or even performing AJAX polling.
+
 There is both a development and production build of the WebRTC application. 
 In addition there is a node.js server that will serve up either a development or production version of the app. 
 The directory is controlled by an environment variable.

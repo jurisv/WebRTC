@@ -196,7 +196,7 @@
     ],
 
     /**
-     * Settings specific to classic toolkit builds.
+     * Settings specific to classic toolkisencha app regft builds.
      */
     "classic": {
         // "js": [
@@ -443,6 +443,7 @@
      * Extra resources to be copied along when build
      */
     "resources": [
+
     ],
 
     /**
