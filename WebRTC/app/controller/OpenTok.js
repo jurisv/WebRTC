@@ -36,7 +36,7 @@ Ext.define('WebRTC.controller.OpenTok', {
     },
 
     getSessionById: function(sessionId){
-        var session = Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').getById(sessionId);
+        var session = Ext.getStore('opentok.Sessions').getById(sessionId);
         if(session){
             return session.get('session');
 
@@ -91,7 +91,7 @@ Ext.define('WebRTC.controller.OpenTok', {
             session.get('session').localSubscriptions = [];
 
             //store the session in an store to make it public
-            Ext.StoreManager.lookup('WebRTC.store.opentok.Sessions').add(session);
+            Ext.getStore('opentok.Sessions').add(session);
 
             // either initial or reOpening room we need to connect to server
             me.getConnectionToken(session.get('session'), sessionId, name);
