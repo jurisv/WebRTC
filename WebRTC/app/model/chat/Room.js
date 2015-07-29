@@ -1,6 +1,7 @@
 Ext.define('WebRTC.model.chat.Room', {
     extend: 'Ext.data.Model',
     idProperty: 'id',
+    requires: ['Ext.data.identifier.Uuid'],
     identifier: 'uuid', //creates a uuid and assisgns it to the id field
 
     requires: ['Ext.data.identifier.Uuid'],

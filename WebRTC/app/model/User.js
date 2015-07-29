@@ -8,6 +8,7 @@ Ext.define('WebRTC.model.User', {
     extend: 'Ext.data.Model',
     idProperty: 'id',
     identifier: 'uuid', //creates a uuid and assisgns it to the id field
+    requires: ['Ext.data.identifier.Uuid'],
 
     proxy: {
         type: 'memory',
