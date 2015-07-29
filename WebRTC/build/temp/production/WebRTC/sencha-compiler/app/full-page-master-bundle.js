@@ -1,2 +1,2 @@
 // @tag full-page
-// @require /Users/brad/Data/Node/WebRTC/WebRTC/app.js
+// @require /Users/mfierro/tmp/WebRTC/WebRTC/app.js
