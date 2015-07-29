@@ -389,6 +389,7 @@
         "base": "${workspace.build.dir}/${build.environment}/${app.name}/${build.id}",
         "page": "../index.html",
         "manifest": "../${build.id}.json",
+        "resources": "../resources",
         "appCache": {
             "enable": false
         }
