@@ -24,16 +24,14 @@ Ext.define('WebRTC.view.settings.Admin', {
                     xtype:'textfield',
                     fieldLabel: 'ApiKey',
                     name: 'otApiKey',
-                    // twoWayBindable : ['value'],
-                    // publishes: ['value'],
-                    bind: '{adminSettings.otApiKey}' // '{adminSettings.serviceprovider.opentok.ApiKey}'
+                    bind: '{adminSettings.otApiKey}'
                 },
                 {
                     xtype:'textfield',
                     fieldLabel: 'SecretKey',
                     inputType: 'password',
                     name: 'otSecretKey',
-                    bind: '{adminSettings.otSecretKey}' //'{adminSettings.otSecretKey}'
+                    bind: '{adminSettings.otSecretKey}'
                 }
             ]
         },{
@@ -47,19 +45,19 @@ Ext.define('WebRTC.view.settings.Admin', {
                     xtype:'textfield',
                     fieldLabel: 'Base URL',
                     name: 'fbUrl',
-                    bind: '{adminSettings.fbUrl}' //'{adminSettings.fbUrl}'
+                    bind: '{adminSettings.fbUrl}'
                 },{
                     xtype:'textfield',
                     fieldLabel: 'ApiKey',
                     name: 'fbApiKey',
-                    bind: '{adminSettings.serviceprovider.firebase.ApiKey}' // '{adminSettings.fbApiKey}'
+                    bind: '{adminSettings.fbApiKey}'
                 },
                 {
                     xtype:'textfield',
                     fieldLabel: 'SecretKey',
                     inputType: 'password',
                     name: 'fbSecretKey',
-                    bind: '{adminSettings.fbSecretKey}' //'{adminSettings.fbSecretKey}'
+                    bind: '{adminSettings.fbSecretKey}'
                 }
             ]
         }

@@ -6,7 +6,7 @@ OpenTok = require('opentok'); // OpenTok WebRTC service calls  http://www.tokbox
 
 var data = {
 
-    baseRef: new firebase(global.App.config.get('adminsettings').serviceprovider.firebase.Url),
+    baseRef: new firebase( global.App.config.get('adminsettings').serviceprovider.firebase.Url ),
 
     firebaseToken: tokenGenerator.createToken(
         {tokenBy: "NodeServerToken"},  //Arbitrary info to pass along into the user token object

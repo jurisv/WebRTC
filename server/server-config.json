@@ -14,10 +14,7 @@
     "AccessControlAllowMethods": "GET,PUT,POST,DELETE,OPTIONS",
     "AccessControlAllowHeaders": "Origin, X-Requested-With, Content-Type, Accept",
     "AccessControlAllowCredentials": true,
-    "AccessControlMaxAge": 3600,
-    "otApiKey": "45254262",
-    "otSecretKey": "e5347229812c31502f93a0337b673ffcca9859ff",
-    "otDefaultSessionId": "1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4"
+    "AccessControlMaxAge": 3600
   },
   "ServerConfig-development": {
     "port": 8000,
@@ -34,17 +31,10 @@
     "AccessControlAllowMethods": "GET,PUT,POST,DELETE,OPTIONS",
     "AccessControlAllowHeaders": "Origin, X-Requested-With, Content-Type, Accept",
     "AccessControlAllowCredentials": true,
-    "AccessControlMaxAge": 3600,
-    "otApiKey": "45254262",
-    "otSecretKey": "e5347229812c31502f93a0337b673ffcca9859ff",
-    "otDefaultSessionId": "1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4"
+    "AccessControlMaxAge": 3600
   },
   "adminsettings": {
-    "otApiKey": "45254262",
-    "otSecretKey": "e5347229812c31502f93a0337b673ffcca9859ff",
-    "fbUrl": "senchartc.firebaseio.com",
-    "fbApiKey": "zxczxczxczxc",
-    "fbSecretKey": "tHpijj0fj6vVDxxFEqzZFYceZyjRr0oeFhGq1qD2",
+    "id": 0,
     "serviceprovider": {
       "opentok": {
         "ApiKey": "45254262",
@@ -52,15 +42,15 @@
       },
       "firebase": {
         "Url": "senchartc.firebaseio.com",
-        "ApiKey": "zxczxczxczxc",
+        "ApiKey": "123123",
         "SecretKey": "tHpijj0fj6vVDxxFEqzZFYceZyjRr0oeFhGq1qD2"
       }
     }
   },
-  "_adminsettings": {
+  "__dev_adminsettings": {
     "serviceprovider": {
       "opentok": {
-        "fbUrl": "senchartc.firebaseio.com",
+        "otDefaultSessionId": "1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4"
         "ApiKey": "45254262",
         "SecretKey": "e5347229812c31502f93a0337b673ffcca9859ff"
       },

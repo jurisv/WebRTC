@@ -114,35 +114,15 @@ app.route('/config/:id')
         var data = req.body; // JSON.parse(req.body.data),
             config = global.App.config.get('adminsettings');
         if(!config.serviceprovider.firebase.Url && data){
-            global.App.config
-                .set('adminsettings:serviceprovider:opentok:ApiKey', data.otApiKey)
-                .set('adminsettings:serviceprovider:opentok:SecretKey', data.otSecretKey)
-                .set('adminsettings:serviceprovider:firebase:Url', data.fbURL)
-                .set('adminsettings:serviceprovider:firebase:ApiKey', data.fbApiKey)
-                .set('adminsettings:serviceprovider:firebase:SecretKey', data.fbSecretKey)
-                .save();
+            global.App.config.set('adminsettings', data);
+            global.App.config.save();
         }
         res.status(200).send(global.App.wrapresponse(data));
     })
     .put(function(req, res) {
-        var data = req.body; //JSON.parse(req.body.data);
-
-        //deep mapped
-        global.App.config.set('adminsettings:serviceprovider:opentok:ApiKey', data.otApiKey);
-        global.App.config.set('adminsettings:serviceprovider:opentok:SecretKey', data.otSecretKey);
-        global.App.config.set('adminsettings:serviceprovider:firebase:Url', data.fbUrl);
-        global.App.config.set('adminsettings:serviceprovider:firebase:ApiKey', data.fbApiKey);
-        global.App.config.set('adminsettings:serviceprovider:firebase:SecretKey', data.fbSecretKey);
-
-        //flatmapped
-        global.App.config.set('adminsettings:otApiKey', data.otApiKey);
-        global.App.config.set('adminsettings:otSecretKey', data.otSecretKey);
-        global.App.config.set('adminsettings:fbUrl', data.fbUrl);
-        global.App.config.set('adminsettings:fbApiKey', data.fbApiKey);
-        global.App.config.set('adminsettings:fbSecretKey', data.fbSecretKey);
-
+        var data = req.body;
+        global.App.config.set('adminsettings', data);
         global.App.config.save();
-
         res.status(200).send(global.App.wrapresponse(data));
     })
     .delete(function(req, res) {

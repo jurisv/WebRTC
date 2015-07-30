@@ -4,8 +4,6 @@ Ext.define('WebRTC.model.chat.Message', {
     requires: ['Ext.data.identifier.Uuid'],
     identifier: 'uuid', //creates a uuid and assisgns it to the id field
 
-    requires: ['Ext.data.identifier.Uuid'],
-
     config: {
         fields: [
             { name: 'id', type: 'string'},
