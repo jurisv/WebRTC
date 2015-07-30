@@ -50,7 +50,7 @@
   "__dev_adminsettings": {
     "serviceprovider": {
       "opentok": {
-        "otDefaultSessionId": "1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4"
+        "otDefaultSessionId": "1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4",
         "ApiKey": "45254262",
         "SecretKey": "e5347229812c31502f93a0337b673ffcca9859ff"
       },
