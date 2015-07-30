@@ -247,7 +247,11 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 flex: 1
             };
 
-
+            Ext.each(roomtabs.items.items, function(childPanel) {
+                var sessionId = childPanel.getViewModel().get('room').get('sessionId');
+                me.fireEvent('closeroom',sessionId);
+                roomtabs.remove(childPanel, true);
+            });
 
             // Ext.suspendLayouts();
             tab = roomtabs.insert(0, room);
@@ -255,8 +259,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
             // Notify TokBox in this case
             me.fireEvent('joinroom', tab, record.data, name);
-        }else{
-            alert('hmmm')
         }
 
         tab.getViewModel().set('room', record);
@@ -264,19 +266,19 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     },
 
-    onRoomsChanged: function(rooms){
-        // this.getViewModel().getStore('rooms').load();
-    },
 
     onRoomActivate: function(tab){
-        var id = tab.getViewModel().get('room').id,
+        var me = this,
+            id = tab.getViewModel().get('room').id,
             sessionId = tab.getViewModel().get('room').get('sessionId'),
             combo = this.lookupReference('roomscombo');
 
-        // combo.suspendEvent('select');
         combo.select(id);
-        // combo.resumeEvent('select');
 
+        var record = combo.getSelection(),
+            name = me.getViewModel().get('name');
+
+        //   this.fireEvent('joinroom',tab, record.data, name) ;
         this.fireEvent('resumeroom',sessionId);
     },
 

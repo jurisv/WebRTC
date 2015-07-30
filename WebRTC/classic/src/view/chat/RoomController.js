@@ -74,6 +74,7 @@ Ext.define('WebRTC.view.chat.RoomController', {
         me.fireEvent('chatmessage', sessionId, chat.data);
     },
 
+
     onAudioCallRoom: function(button){
         var you = this.lookupReference('you'),
             sessionId = this.getViewModel().get('room.sessionId');

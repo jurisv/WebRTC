@@ -14,6 +14,11 @@ Ext.define('WebRTC.OpenTokMixin', {
         return tab;
     },
 
+    getSafeStreamCmpId:function(streamId){
+        return 'stream' + streamId.replace(/-/g,'');
+    },
+
+
 
     onOTConnectionCreated: function(event){
         var data = event.connection.data,
@@ -38,19 +43,20 @@ Ext.define('WebRTC.OpenTokMixin', {
         tab.getController().roomMemberRemove(id);
     },
 
-    getSafeStreamCmpId:function(streamId){
-        return 'stream' + streamId.replace(/-/g,'');
-    },
+
 
     onOTStreamCreated: function (event) {
           var OT = WebRTC.app.getController('WebRTC.controller.OpenTok'),
             session = OT.getSessionById(event.target.sessionId),
-            view = this.getView(),
-            remotestreams = view.down('#remotestreams'),
-            them = view.down('#them');
+            tab = this.getRoomBySessionId(event.target.sessionId),
+            // view = this.getView(),
+            remotestreams = tab.down('#remotestreams'),
+            them = tab.down('#them');
 
-        if(remotestreams.isHidden()){
-            remotestreams.show()
+        if( this.lookupReference('roomtabs').getActiveTab().sessionId == tab.sessionId ){
+            if(remotestreams.isHidden()){
+                remotestreams.show()
+            }
         }
 
         var newly = remotestreams.add({
@@ -83,15 +89,28 @@ Ext.define('WebRTC.OpenTokMixin', {
     },
 
     onOTStreamDestroyed: function (event) {
-        var deadCmp = this.getView().down('#' + this.getSafeStreamCmpId(event.stream.id)),
-            view = this.getView(),
-            remotestreams = view.down('#remotestreams');
-        console.log(deadCmp);
-        if(deadCmp){
-            deadCmp.destroy();
-            if(!remotestreams.items.length){
-                remotestreams.hide();
+        var OT = WebRTC.app.getController('WebRTC.controller.OpenTok'),
+            session = OT.getSessionById(event.target.sessionId),
+            deadCmp = this.getView().down('#' + this.getSafeStreamCmpId(event.stream.id)),
+            tab = this.getRoomBySessionId(event.target.sessionId),
+            // view = this.getView(),
+            remotestreams = tab.down('#remotestreams');
+
+        // console.log(deadCmp);
+
+        if( this.lookupReference('roomtabs').getActiveTab().sessionId == tab.sessionId ){
+            if(deadCmp){
+                deadCmp.destroy();
+                if(!remotestreams.items.length){
+                    remotestreams.hide();
+                }
             }
+        }
+
+        // find the subscription and remove it.
+        var index = session.localSubscriptions.map(function(e) { return e.id; }).indexOf(event.stream.id);
+        if(index || index == 0 ){
+            session.localSubscriptions.splice(index, 1);
         }
     },
 
@@ -103,12 +122,11 @@ Ext.define('WebRTC.OpenTokMixin', {
         var type = event.type;
 
         if(type == 'sessionDisconnected'){
-            return;
-        }else if(type == 'sessionDisconnected'){
-            var id = event.connection.connectionId,
-                tab = this.getRoomBySessionId(event.target.sessionId);
+            var tab = this.getRoomBySessionId(event.target.sessionId);
 
-            tab.getController().roomMemberRemove(id);
+            if(tab){
+                tab.getController().roomMemberRemove(id);
+            }
 
             if (event.reason == "networkDisconnected") {
                 Ext.toast({
@@ -121,6 +139,7 @@ Ext.define('WebRTC.OpenTokMixin', {
         }
 
     },
+
 
 
     onOTChatReceived: function(event){

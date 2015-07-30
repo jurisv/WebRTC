@@ -67,6 +67,8 @@ Ext.define('WebRTC.controller.OpenTok', {
         });
     },
 
+
+
     onSessionCreate: function(component, data, name){
 
         if (OT.checkSystemRequirements() != 1) {
@@ -233,31 +235,40 @@ Ext.define('WebRTC.controller.OpenTok', {
         var me = this,
             session = me.getSessionById(sessionId);
 
-        session.unpublish(session.localPublisher);
+        if(session.localPublisher){
+            session.unpublish(session.localPublisher);
+        }
         session.localPublisher = null;
     },
 
     onShowVideo: function(sessionId){
         var me = this,
             session = me.getSessionById(sessionId);
-
-       session.localPublisher.publishVideo(true);
+        if(session.localPublisher) {
+            if( Ext.isFunction(session.localPublisher.publishVideo) ) {
+                session.localPublisher.publishVideo(true);
+            }
+        }
     },
 
     onHideVideo: function(sessionId){
         var me = this,
             session = me.getSessionById(sessionId);
-
-        session.localPublisher.publishVideo(false);
+        if(session.localPublisher) {
+            if( Ext.isFunction(session.localPublisher.publishVideo) ) {
+                session.localPublisher.publishVideo(false);
+            }
+        }
     },
-
 
 
     onShowAudio: function(sessionId){
         var me = this,
             session = me.getSessionById(sessionId);
         if(session.localPublisher){
-            session.localPublisher.publishAudio(true);
+            if( Ext.isFunction(session.localPublisher.publishAudio) ) {
+                session.localPublisher.publishAudio(true);
+            }
         }
     },
 
@@ -265,10 +276,14 @@ Ext.define('WebRTC.controller.OpenTok', {
         var me = this,
             session = me.getSessionById(sessionId);
         if(session.localPublisher){
-            session.localPublisher.publishAudio(false);
+            if( Ext.isFunction(session.localPublisher.publishAudio) ) {
+                session.localPublisher.publishAudio(false);
+            }
         }
 
     },
+
+
 
     onResumeRoom: function(sessionId){
         var me = this,
@@ -276,22 +291,27 @@ Ext.define('WebRTC.controller.OpenTok', {
 
         if(session){
             Ext.each(session.localSubscriptions,function(subscriber){
-                subscriber.subscribeToAudio(true);
+                if(Ext.isFunction(subscriber.subscribeToAudio)){
+                    subscriber.subscribeToAudio(true);
+                }
             });
 
             if(session.localPublisher){
                 var stream = session.localPublisher.stream;
                 if(stream.hadAudio){
-                    session.localPublisher.publishAudio(true);
+                    if( Ext.isFunction(session.localPublisher.publishAudio) ) {
+                        session.localPublisher.publishAudio(true);
+                    }
                 }
                 if(stream.hadVideo){
-                    session.localPublisher.publishVideo(true);
+                    if( Ext.isFunction(session.localPublisher.publishVideo) ) {
+                       session.localPublisher.publishVideo(true);
+                    }
                 }
             }
         }
 
     },
-
 
     onPauseRoom: function(sessionId){
         var me = this,
@@ -299,18 +319,24 @@ Ext.define('WebRTC.controller.OpenTok', {
 
         if(session){
             Ext.each(session.localSubscriptions,function(subscriber){
-                subscriber.subscribeToAudio(false);
+                if(Ext.isFunction(subscriber.subscribeToAudio)) {
+                    subscriber.subscribeToAudio(false);
+                }
             });
 
             if(session.localPublisher){
                 var stream = session.localPublisher.stream;
                 if(stream.hasAudio){
                     stream.hadAudio = stream.hasAudio;
-                    session.localPublisher.publishAudio(false);
+                    if( Ext.isFunction(session.localPublisher.publishAudio) ) {
+                        session.localPublisher.publishAudio(false);
+                    }
                 }
                 if(stream.hasVideo){
                     stream.hadVideo = stream.hasVideo;
-                    session.localPublisher.publishVideo(false);
+                    if( Ext.isFunction(session.localPublisher.publishVideo) ) {
+                        session.localPublisher.publishVideo(false);
+                    }
                 }
             }
         }
@@ -321,6 +347,8 @@ Ext.define('WebRTC.controller.OpenTok', {
         //close out all the remaining session stuff.
         this.removeSession(sessionId);
     },
+
+
 
     removeSession: function(sessionId){
         var me = this,
