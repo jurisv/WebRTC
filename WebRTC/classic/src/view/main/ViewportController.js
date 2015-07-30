@@ -4,7 +4,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
     mixins: ['WebRTC.OpenTokMixin'],
 
     requires: [
-        'WebRTC.model.AdminSettings'
+        'WebRTC.model.AdminSettings',
+        'Ext.window.Toast'
     ],
 
     listen: {
