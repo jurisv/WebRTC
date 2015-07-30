@@ -8,6 +8,10 @@ Ext.define('WebRTC.view.settings.Admin', {
     defaultFocus: 'textfield [name=otApiKey]',
     defaultButton: 'okButton',
 
+    viewModel: {
+        type: 'settingsadmin'
+    },
+
     items: [
         {
             xtype: 'fieldset',

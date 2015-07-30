@@ -2,6 +2,12 @@ Ext.define('WebRTC.view.settings.AdminModel', {
     extend: 'Ext.app.ViewModel',
     alias: 'viewmodel.settingsadmin',
     data:{
-        adminSettings: null
+        __adminSettings: null
+    },
+    links: {
+        adminSettings: {
+            type: 'WebRTC.model.AdminSettings',
+            id: 0
+        }
     }
 });

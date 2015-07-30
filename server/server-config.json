@@ -43,7 +43,7 @@
     "otApiKey": "45254262",
     "otSecretKey": "e5347229812c31502f93a0337b673ffcca9859ff",
     "fbUrl": "senchartc.firebaseio.com",
-    "fbApiKey": "",
+    "fbApiKey": "zxczxczxczxc",
     "fbSecretKey": "tHpijj0fj6vVDxxFEqzZFYceZyjRr0oeFhGq1qD2",
     "serviceprovider": {
       "opentok": {
@@ -52,7 +52,7 @@
       },
       "firebase": {
         "Url": "senchartc.firebaseio.com",
-        "ApiKey": "",
+        "ApiKey": "zxczxczxczxc",
         "SecretKey": "tHpijj0fj6vVDxxFEqzZFYceZyjRr0oeFhGq1qD2"
       }
     }

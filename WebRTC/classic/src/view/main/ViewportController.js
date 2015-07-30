@@ -356,12 +356,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
                     modal: true,
                     items: {
                         xtype: 'settingsadmin',
-                        viewModel:{
-                            type: 'settingsadmin',
-                            data:{
-                                adminSettings: record
-                            }
-                        },
+
                         border: false
 
                     }
@@ -383,6 +378,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
             Ext.Msg.wait('Saving', 'Saving initial settings...');
             var record = form.getViewModel().data.adminSettings;
+
+            form.updateRecord(record);
+
             record.save({
                 scope: this,
                 callback: this.onComplete

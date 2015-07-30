@@ -20,13 +20,6 @@ Ext.define('WebRTC.view.chat.Room', {
 
     items: [
         {
-            xtype: 'chatvideowall',
-            hidden: true,
-            bodyPadding: 6,
-            minHeight: 300,
-            flex: 1
-        },
-        {
             layout: {
                 type: 'box',
                 vertical: false,
@@ -129,6 +122,13 @@ Ext.define('WebRTC.view.chat.Room', {
                     ]
                 }
             ]
+        },
+        {
+            xtype: 'chatvideowall',
+            hidden: true,
+            bodyPadding: 6,
+            minHeight: 300,
+            flex: 1
         }
     ]
 
