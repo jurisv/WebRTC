@@ -11,16 +11,16 @@ Ext.define('WebRTC.model.AdminSettings', {
     ],
 
     idProperty: 'id',
-    // identifier: 'uuid', //creates a uuid and assisgns it to the id field
+
     fields: [
-        { name: 'id',    type: 'string' },
-        { name: 'serviceprovider', mapping: 'data.serviceprovider'  },
-        { name: 'otApiKey',    type: 'string'}, // ,mapping: 'data.serviceprovider.opentok.SecretKey'     }
-        { name: 'otSecretKey',  type: 'string'}, // , mapping: function(data) {  return data.serviceprovider.opentok.SecretKey; }   },
-        { name: 'fbApiKey',  type: 'string'}, // , mapping: function(data) {  return data.serviceprovider.firebase.ApiKey; }   },
-        { name: 'fbSecretKey',  type: 'string'}, // , mapping: function(data) {  return data.serviceprovider.firebase.SecretKey; }  },
-        { name: 'fbUrl',  type: 'string'} // , mapping: function(data) {  return data.serviceprovider.firebase.Url; } }
+        'id',
+        { name: 'otApiKey',     mapping: 'serviceprovider.opentok.ApiKey'},
+        { name: 'otSecretKey',  mapping: 'serviceprovider.opentok.SecretKey'},
+        { name: 'fbApiKey',     mapping: 'serviceprovider.firebase.ApiKey'},
+        { name: 'fbSecretKey',  mapping: 'serviceprovider.firebase.SecretKey'},
+        { name: 'fbUrl',        mapping: 'serviceprovider.firebase.Url'}
     ],
+
     proxy: {
         type: 'rest',
         url : '/config',
@@ -30,7 +30,9 @@ Ext.define('WebRTC.model.AdminSettings', {
         },
         writer:{
             type: 'json',
-            writeAllFields: true
+            writeAllFields: true,
+            expandData: true,
+            nameProperty: 'mapping'
         }
     }
 });
