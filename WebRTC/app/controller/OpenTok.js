@@ -35,6 +35,8 @@ Ext.define('WebRTC.controller.OpenTok', {
 
     },
 
+
+
     getSessionById: function(sessionId){
         var session = Ext.getStore('opentok.Sessions').getById(sessionId);
         if(session){
@@ -64,7 +66,6 @@ Ext.define('WebRTC.controller.OpenTok', {
             }
         });
     },
-
 
     onSessionCreate: function(component, data, name){
 
@@ -109,6 +110,7 @@ Ext.define('WebRTC.controller.OpenTok', {
     onSessionConnected: function(event) {
         this.fireEvent('sessionconnected',event);
     },
+
 
 
     getConnectionToken: function(session, sessionId, name){
@@ -254,35 +256,40 @@ Ext.define('WebRTC.controller.OpenTok', {
     onShowAudio: function(sessionId){
         var me = this,
             session = me.getSessionById(sessionId);
-
-        session.localPublisher.publishAudio(true);
+        if(session.localPublisher){
+            session.localPublisher.publishAudio(true);
+        }
     },
 
     onHideAudio: function(sessionId){
         var me = this,
             session = me.getSessionById(sessionId);
+        if(session.localPublisher){
+            session.localPublisher.publishAudio(false);
+        }
 
-        session.localPublisher.publishAudio(false);
     },
-
-
 
     onResumeRoom: function(sessionId){
         var me = this,
             session = me.getSessionById(sessionId);
 
-        Ext.each(session.localSubscriptions,function(subscriber){
-            subscriber.subscribeToAudio(true);
-        });
-        if(session.localPublisher){
-            var stream = session.localPublisher.stream;
-            if(stream.hadAudio){
-                session.localPublisher.publishAudio(true);
-            }
-            if(stream.hadVideo){
-                session.localPublisher.publishVideo(true);
+        if(session){
+            Ext.each(session.localSubscriptions,function(subscriber){
+                subscriber.subscribeToAudio(true);
+            });
+
+            if(session.localPublisher){
+                var stream = session.localPublisher.stream;
+                if(stream.hadAudio){
+                    session.localPublisher.publishAudio(true);
+                }
+                if(stream.hadVideo){
+                    session.localPublisher.publishVideo(true);
+                }
             }
         }
+
     },
 
 
@@ -290,30 +297,56 @@ Ext.define('WebRTC.controller.OpenTok', {
         var me = this,
             session = me.getSessionById(sessionId);
 
-        Ext.each(session.localSubscriptions,function(subscriber){
-            subscriber.subscribeToAudio(false);
-        });
-        if(session.localPublisher){
-            var stream = session.localPublisher.stream;
-            if(stream.hasAudio){
-                stream.hadAudio = stream.hasAudio;
-                session.localPublisher.publishAudio(false);
-            }
-            if(stream.hasVideo){
-                stream.hadVideo = stream.hasVideo;
-                session.localPublisher.publishVideo(false);
+        if(session){
+            Ext.each(session.localSubscriptions,function(subscriber){
+                subscriber.subscribeToAudio(false);
+            });
+
+            if(session.localPublisher){
+                var stream = session.localPublisher.stream;
+                if(stream.hasAudio){
+                    stream.hadAudio = stream.hasAudio;
+                    session.localPublisher.publishAudio(false);
+                }
+                if(stream.hasVideo){
+                    stream.hadVideo = stream.hasVideo;
+                    session.localPublisher.publishVideo(false);
+                }
             }
         }
+
     },
 
     onCloseRoom: function(sessionId){
-        var me = this,
-            session = me.getSessionById(sessionId);
-        session.disconnect();
+        //close out all the remaining session stuff.
+        this.removeSession(sessionId);
     },
 
+    removeSession: function(sessionId){
+        var me = this,
+            session = Ext.getStore('opentok.Sessions').getById(sessionId);
+
+        if(session){
+            session.get('session').disconnect();
+            Ext.getStore('opentok.Sessions').remove(session);
+            Ext.getStore('opentok.Sessions').sync();
+        }
+    },
+
+
+
+    onArchiveStarted: function(event){
+        this.fireEvent('archivestarted',event);
+    },
+
+    onArchiveStopped: function(event){
+        this.fireEvent('archivestopped',event);
+    },
+
+
+
     /*
-    * some of this needs to get re-incorporated for startup
+    * some of this might need to get re-incorporated for startup for global users
     * */
     getGlobalSession: function(controller){
         var me=this;
@@ -343,15 +376,8 @@ Ext.define('WebRTC.controller.OpenTok', {
                 // controller.getView().down('videoroom').getViewModel().set('otSessionInfo', sessionInfo );
             }
         });
-    },
-
-    onArchiveStarted: function(event){
-        this.fireEvent('archivestarted',event);
-    },
-
-    onArchiveStopped: function(event){
-        this.fireEvent('archivestopped',event);
     }
+
 
 
 

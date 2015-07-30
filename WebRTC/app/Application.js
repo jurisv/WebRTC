@@ -9,7 +9,7 @@ Ext.define('WebRTC.Application', {
     name: 'WebRTC',
 
     requires: [
-        'Ext.window.Toast',
+//        'Ext.window.Toast',
         'WebRTC.*'
     ],
 

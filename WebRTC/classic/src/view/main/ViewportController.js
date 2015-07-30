@@ -27,7 +27,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
             'chatroom':{
                 activate: 'onRoomActivate',
                 deactivate: 'onRoomDeactivate',
-                close: 'onRoomClose'
+                beforeclose: 'onRoomClose'
             },
             'settingsadmin button[action=ok]':{
                 click: 'onSettingsAdminOkClick'
@@ -249,12 +249,14 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
 
 
-            Ext.suspendLayouts();
+            // Ext.suspendLayouts();
             tab = roomtabs.insert(0, room);
-            Ext.resumeLayouts(true);
+            // Ext.resumeLayouts(true);
 
             // Notify TokBox in this case
             me.fireEvent('joinroom', tab, record.data, name);
+        }else{
+            alert('hmmm')
         }
 
         tab.getViewModel().set('room', record);
@@ -426,12 +428,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
         var title = Ext.Msg.getTitle();
         Ext.Msg.hide();
 
-        Ext.toast({
+        /*Ext.toast({
             title: title,
             html:  'Finished successfully',
             align: 't',
             bodyPadding: 10
-        });
+        });*/
     },
 
     onLogoClick: function(record){
