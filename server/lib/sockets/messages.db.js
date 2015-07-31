@@ -112,6 +112,8 @@ var messages = {
                 var data = childSnapshot.val(),
                     arraymessages = Object.keys(data).map(function(k) { return data[k] });
                 callback(null,arraymessages);
+            }else{
+                callback(null,[]);
             }
         });
 

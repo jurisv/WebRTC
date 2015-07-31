@@ -112,6 +112,8 @@ var rooms = {
                 var data = childSnapshot.val(),
                 arrayRooms = Object.keys(data).map(function(k) { return data[k] });
                 callback(null,arrayRooms);
+            }else{
+                callback(null,[]);
             }
          });
 
