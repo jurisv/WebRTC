@@ -138,10 +138,10 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
      * @private
      */
     sendRequest: function(request,operation) {
-        var me = this,
+        var me     = this,
             config = request.config,
-            cfg = me.config,
-            data ={
+            cfg    = me.config,
+            data   = {
                 params: config.params,
                 records: request.getJsonData()
             };

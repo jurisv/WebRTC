@@ -3,27 +3,39 @@ Ext.define('WebRTC.model.chat.Message', {
     idProperty: 'id',
     requires: ['Ext.data.identifier.Uuid'],
     identifier: 'uuid', //creates a uuid and assisgns it to the id field
-    config: {
-        fields: [
-            { name: 'id', type: 'string'},
-            { name: 'roomid', type: 'string' },
-            { name: 'timeid', type: 'string',
-              depends: [ 'date' ],
-              convert: function(value, record){
-                var date = record.get('date');
+    
+    fields: [
+        'id',
+        'roomid',
+        { 
+            name: 'timeid', type: 'string',
+            depends: [ 'date' ],
+            convert: function(value, record){
+                var date = new Date(record.get('date'));
                 return Ext.Date.format(date, 'd-m-Y-H-i-s');
-            }},
-            { name: 'message', type: 'string'  },
-            { name: 'from', type: 'string'  },
-            { name: 'mine', type: 'boolean', persist :false, defaultValue: false },
-            { name: 'user', type: 'object'  },
-            { name: 'date', type: 'date' },
-            { name: 'shortDate',
-              type: 'string',
-              depends: [ 'date' ],
-              calculate: function(record){
+            }
+        },
+        'message',
+        'from',
+        { 
+            name: 'mine', 
+            type: 'boolean', 
+            persist :false, 
+            defaultValue: false
+        },
+        'user',
+        { 
+            name: 'date',
+            // type: 'date',
+            // dateFormat: '' 
+        },
+        { 
+            name: 'shortDate',
+            type: 'string',
+            depends: [ 'date' ],
+            calculate: function(data){
                 var now = new Date(),
-                    date = record.date,
+                    date = new Date(data.date),
                     days = parseInt((now.getTime() - date.getTime())/(24*3600*1000)),
                     sameDay = parseInt(Ext.Date.format(date, 'dm')) == parseInt(Ext.Date.format(now, 'dm'));
 
@@ -36,10 +48,12 @@ Ext.define('WebRTC.model.chat.Message', {
                 else{
                     return Ext.Date.format(date, 'M j');
                 }
-            }}
-        ],
-        hasMany: { model: 'WebRTC.model.File', name: 'attachments' }
-    },
+            }
+        }
+    ],
+
+    // hasMany: { model: 'WebRTC.model.File', name: 'attachments' },
+    
     proxy: {
         // type: 'memory',
         type: 'socketio',
