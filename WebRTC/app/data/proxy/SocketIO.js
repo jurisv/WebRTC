@@ -127,6 +127,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
             request.setUsername(me.getUsername());
             request.setPassword(me.getPassword());
         }
+
         return me.sendRequest(request,operation);
     },
 
@@ -142,7 +143,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
             cfg = me.config,
             data ={
                 params: config.params,
-                records: request._jsonData
+                records: request.getJsonData()
             };
 
         //make sure we're connected

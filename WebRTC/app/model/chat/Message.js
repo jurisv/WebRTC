@@ -55,6 +55,10 @@ Ext.define('WebRTC.model.chat.Message', {
         reader: {
             type: 'json',
             rootProperty: 'data'
+        },
+        writer: {
+            type: 'json',
+            writeAllFields: true
         }
     }
 });
