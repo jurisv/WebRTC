@@ -261,9 +261,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
         tab.getViewModel().set('room', record);
         tab.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
-        // tab.getViewModel().getStore('messages').setAutoLoad(true);
-        tab.getViewModel().getStore('messages').load();
-
 
         roomtabs.setActiveTab(tab);
 
