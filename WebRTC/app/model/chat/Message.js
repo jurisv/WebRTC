@@ -3,11 +3,10 @@ Ext.define('WebRTC.model.chat.Message', {
     idProperty: 'id',
     requires: ['Ext.data.identifier.Uuid'],
     identifier: 'uuid', //creates a uuid and assisgns it to the id field
-
     config: {
         fields: [
             { name: 'id', type: 'string'},
-            { name: 'room_id', reference: 'Room' },
+            { name: 'roomid', type: 'string' },
             { name: 'timeid', type: 'string',
               depends: [ 'date' ],
               convert: function(value, record){
@@ -16,10 +15,8 @@ Ext.define('WebRTC.model.chat.Message', {
             }},
             { name: 'message', type: 'string'  },
             { name: 'from', type: 'string'  },
-            { name: 'mine', type: 'boolean' },
+            { name: 'mine', type: 'boolean', persist :false, defaultValue: false },
             { name: 'user', type: 'object'  },
-
-
             { name: 'date', type: 'date' },
             { name: 'shortDate',
               type: 'string',
@@ -44,9 +41,17 @@ Ext.define('WebRTC.model.chat.Message', {
         hasMany: { model: 'WebRTC.model.File', name: 'attachments' }
     },
     proxy: {
-        // type: 'socketio',
-        type: 'memory',
+        // type: 'memory',
+        type: 'socketio',
         url : '/messages',
+        extraParams: {
+            room: null
+        },
+        apiEvents: {
+            read: 'child_added',
+            update: 'child_changed',
+            destroy: 'child_removed'
+        },
         reader: {
             type: 'json',
             rootProperty: 'data'

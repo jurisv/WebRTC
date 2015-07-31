@@ -234,8 +234,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
             name = me.getViewModel().get('name'),
             room;
 
-        //set main active room
-        me.getViewModel().set('room',record.data); // hmmmm TODO: review
 
         //only add one
         if (!tab) {
@@ -262,6 +260,11 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }
 
         tab.getViewModel().set('room', record);
+        tab.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
+        // tab.getViewModel().getStore('messages').setAutoLoad(true);
+        tab.getViewModel().getStore('messages').load();
+
+
         roomtabs.setActiveTab(tab);
 
     },
@@ -430,12 +433,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
         var title = Ext.Msg.getTitle();
         Ext.Msg.hide();
 
-        /*Ext.toast({
+        Ext.toast({
             title: title,
             html:  'Finished successfully',
             align: 't',
             bodyPadding: 10
-        });*/
+        });
     },
 
     onLogoClick: function(record){

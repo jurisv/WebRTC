@@ -18,16 +18,12 @@ Ext.define('WebRTC.view.chat.RoomModel', {
     // todo: remove messages and members and place as associated data stores of the room model.
     stores:{
         messages: {
-            model:'WebRTC.model.chat.Message',
+            model: 'WebRTC.model.chat.Message',
             autoSync: true,
             autoLoad: true
         },
         members: {
             model:'WebRTC.model.chat.RoomMember',
-            autoLoad: true
-        },
-        feeds:{
-            model:'WebRTC.model.chat.Message',
             autoLoad: true
         }
     },

@@ -11,7 +11,7 @@ var messages = {
         {admin: true, expires: tokenExpires}
     ),
 
-    _baseRef: new firebase(global.App.config.get('adminsettings').serviceprovider.firebase.Url),
+    _baseRef: new firebase( global.App.config.get('adminsettings').serviceprovider.firebase.Url ),
     _messages: [],
 
     getOpenTokSessionId: function(callback){
@@ -107,7 +107,7 @@ var messages = {
     read: function(config,callback){
         var me = this;
 
-        me._baseRef.child('messages/').once('value', function(childSnapshot, prevChildName) {
+        me._baseRef.child('messages/' + config.params.room ).once('value', function(childSnapshot, prevChildName) {
             if (childSnapshot.val() && childSnapshot.val() != undefined){
                 var data = childSnapshot.val(),
                     arraymessages = Object.keys(data).map(function(k) { return data[k] });
@@ -123,11 +123,11 @@ var messages = {
 
         if(records instanceof Array){
             records.forEach(function(item) {
-                me._baseRef.child('messages/' + item.id).update(item);
+                me._baseRef.child('messages/' + config.params.room + '/' + item.id).update(item);
                 callback(null,[item.records]);
             });
         }else{
-            me._baseRef.child('messages/' + config.records.id).update(config.records);
+            me._baseRef.child('messages/' + config.params.room + '/' + config.records.id).update(config.records);
             callback(null, [config.records]);
         }
 
@@ -139,11 +139,11 @@ var messages = {
 
         if(records instanceof Array){
             records.forEach(function(item) {
-                me._baseRef.child('messages/' + item.id).update(item);
+                me._baseRef.child('messages/' + config.params.room + '/' + item.id).update(item);
                 callback(null,[item.records]);
             });
         }else{
-            me._baseRef.child('messages/' + config.records.id).update(config.records);
+            me._baseRef.child('messages/' + config.params.room + '/' + config.records.id).update(config.records);
             callback(null,[config.records]);
         }
     },
@@ -154,11 +154,11 @@ var messages = {
 
         if(records instanceof Array){
             records.forEach(function(item) {
-                me._baseRef.child('messages/' + item.id).remove();
+                me._baseRef.child('messages/'  + config.params.room + '/' + item.id).remove();
                 callback(null,item);
             });
         }else{
-            me._baseRef.child('messages/' + config.records.id).remove();
+            me._baseRef.child('messages/'  + config.params.room + '/' + config.records.id).remove();
             callback(null,records);
         }
     }

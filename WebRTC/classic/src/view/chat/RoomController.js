@@ -54,11 +54,13 @@ Ext.define('WebRTC.view.chat.RoomController', {
             list = me.lookupReference('historylist'),
             timestamp = new Date().toISOString(),
             name = me.getViewModel().get('name'),
+            roomId = me.getViewModel().get('id'),
             sessionId = this.getViewModel().get('room.sessionId'),
             message = me.lookupReference('chattext');
 
         chat = Ext.create('WebRTC.model.chat.Message',{
             message: message.getValue(),
+            roomid: roomId,
             mine: true,
             from: this.getViewModel().get('name'),
             date: timestamp
