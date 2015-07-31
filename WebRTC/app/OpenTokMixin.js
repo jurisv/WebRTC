@@ -24,7 +24,8 @@ Ext.define('WebRTC.OpenTokMixin', {
         var data = event.connection.data,
             sessionId = event.target.sessionId,
             tab = this.getRoomBySessionId(sessionId),
-            name = eval('{' + data.replace('=',':"') + '"}');
+            chunks = data.split('='),
+            name = chunks[1];
 
         if(tab){
             var member = Ext.create('WebRTC.model.chat.RoomMember',{
