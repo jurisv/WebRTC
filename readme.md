@@ -2,10 +2,16 @@
 ## Overview
 So you want to do peer-to-peer audio and video calls. 
 
-What you might not be aware of is that there are a lot of behind the scenes 
-optimizations that are taken care of by using the <a href="http://tokbox.com/" target="_new">TokBox</a> services. 
+Your thinking WebRTC is the way to go. We agree.
 
-You also want an extensible web framework that ties into your enterprise strategy. This is where <a href="http://www.sencha.com/" target="_new">Sencha ExtJs</a> excels. 
+However, WebRTC with more than two people can get complicated. 
+
+But don't worry. 
+
+All that complexity of the behind the scenes optimizations for multi-node video streams are taken care of by using the <a href="http://tokbox.com/" target="_new">TokBox</a> services. 
+
+
+You'll also want an extensible web framework that ties into your enterprise strategy. This is where <a href="http://www.sencha.com/" target="_new">Sencha ExtJs</a> excels. 
 
 Finally you would like something that can handle data in real-time in both directions. You want to make a change locally and have your change is replicated to all connected clients. 
 
@@ -22,6 +28,14 @@ Currently IOS and Android mobile browsers are not supported. Neither are many ol
 ## Screenshots
 ## Getting Started
 ### Step 1. Get your OpenTok Api Key
+You'll need an API key from tokbox. It's free for a trial so <a href="https://dashboard.tokbox.com/users/sign_up"  target="_new">signup</a> from the tokbox home page.
+
+Once your signed in you will need to goto your dashboard and get an ApiKey and ApiSecretKey.
+
+The screen should look something like this:
+
+<img src="../WebRTC/resources/images/TokBoxApi.png" border=0 width=400 />
+
 ### Step 2. Get your Firebase Api Key
 If you need to sign up start here. <a href="https://www.firebase.com/signup/" target="_new">https://www.firebase.com/signup/</a>
 
