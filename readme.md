@@ -34,12 +34,21 @@ Once your signed in you will need to goto your dashboard and get an ApiKey and A
 
 The screen should look something like this:
 
-<img src="/WebRTC/resources/images/TokBoxApi.png" border=0 width=400 />
+<img src="/WebRTC/resources/images/TokBoxApi.png" border=0 width=600 />
 
 ### Step 2. Get your Firebase Api Key
-If you need to sign up start here. <a href="https://www.firebase.com/signup/" target="_new">https://www.firebase.com/signup/</a>
+If you need to sign up start here. <a href="https://www.firebase.com/signup/" target="_new">https://www.firebase.com/signup/</a> a free trial should work as well.
+
+You will then need to get your secret key and URL for this Firebase.
+
+The screen should look something like this:
+
+<img src="/WebRTC/resources/images/FirebaseApi.png" border=0 width=600 />
 
 ### Step 3. Start Server & Initial Setup
+
+
+
 ### Step 4. Login
 ### Step 5. Create First Room & Invite Others
 ### Step 6. Startup a video / audio chat
