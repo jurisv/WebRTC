@@ -442,13 +442,13 @@ Ext.define('WebRTC.view.main.ViewportController', {
         Ext.create('Ext.window.Window', {
             title: 'About',
             iconCls: 'x-fa fa-info-circle fa-lg',
-            height: 500,
+            height: 640,
             width: 600,
             layout: 'fit',
             modal: true,
             items: {
                 xtype: 'panel',
-                html: '<h1>Branding Goes Here</h1>',
+                html: '<a href="http://www.sencha.com/" target="_blank" ><img src="/resources/images/About.png" border=0 ></a> ',
                 border: false
 
             }

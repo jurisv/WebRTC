@@ -7,6 +7,7 @@ Ext.define('WebRTC.view.chat.History', {
 
     items: [{
         xtype: 'dataview',
+        loadMask: false,
         reference: 'historylist',
         autoScroll: true,
         bind: {
