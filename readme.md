@@ -43,7 +43,7 @@ You will then need to get your secret key and URL for this Firebase.
 
 The screen should look something like this:
 
-<img src="/WebRTC/resources/images/FirebaseApi.png" border=0 width=600 />
+<img src="/WebRTC/resources/images/FireBaseApi.png" border=0 width=600 />
 
 ### Step 3. Start Server & Initial Setup
 
