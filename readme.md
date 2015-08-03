@@ -1,4 +1,4 @@
-# A simple demonstration of <a href="http://http://www.webrtc.org/" target="_new">WebRTC</a> powered by OpenTok and the Sencha Ext6 Framework. 
+# A simple demonstration of <a href="http://http://www.webrtc.org/" target="_new">WebRTC</a> powered by OpenTok and the <a href="http://www.sencha.com/" target="_new">Sencha</a> ExtJs 6 Framework. 
 ## Overview
 So you want to do peer-to-peer audio and video calls. 
 
@@ -26,7 +26,21 @@ This demonstration example requires <a href="http://nodejs.org/" target="_new">n
 Currently IOS and Android mobile browsers are not supported. Neither are many older browsers, Safari or Internet Explorer.
 
 ## Screenshots
-## Getting Started
+
+
+## PRE REQUISITES
+First you will need to:
+<ol>
+<li>Make sure <a href="https://nodejs.org/download/">node.js</a> is installed.
+<li>Make sure you have <a href="http://www.sencha.com/" target="_new">Sencha Framework and Sencha CMD</a> installed.
+<li>Clone this repository to your local machine.
+<li>Get an OpenTok account.
+<li>Get a Firebase Account.
+</ol>
+
+
+
+
 ### Step 1. Get your OpenTok Api Key
 You'll need an API key from tokbox. It's free for a trial so <a href="https://dashboard.tokbox.com/users/sign_up"  target="_new">signup</a> from the tokbox home page.
 
@@ -46,6 +60,20 @@ The screen should look something like this:
 <img src="/WebRTC/resources/images/FireBaseApi.png" border=0 width=600 />
 
 ### Step 3. Start Server & Initial Setup
+
+Once you have node installed, your Api Keys and URL and the Sencha Framework and CMD installed its time to get the server running.
+
+Using your terminal navigate to the folder for this repository and navigate to the 'server' sub-directory.
+
+-use the path to your node server-
+
+From here we wil start the server..
+
+type: /usr/local/bin/node server.js  
+
+The server is set to startup on port 8000. So lets navigate there and make sure we see the app.
+
+<a href="http://localhost:8000/" target="_new">http://localhost:8000/</a>
 
 
 
