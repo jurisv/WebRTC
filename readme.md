@@ -69,7 +69,7 @@ Using your terminal navigate to the folder for this repository and navigate to t
 
 From here we wil start the server in development mode. This is done by setting the an environment variable.
 
-type:  NODE_ENV=development /usr/local/bin/node server.js  
+type: <code> NODE_ENV=development /usr/local/bin/node server.js  </code>
 
 The server is set to startup on port 8000. So lets navigate there and make sure we see the app.
 
