@@ -67,19 +67,72 @@ Using your terminal navigate to the folder for this repository and navigate to t
 
 -use the path to your node server-
 
-From here we wil start the server..
+From here we wil start the server in development mode. This is done by setting the an environment variable.
 
-type: /usr/local/bin/node server.js  
+type:  NODE_ENV=development /usr/local/bin/node server.js  
 
 The server is set to startup on port 8000. So lets navigate there and make sure we see the app.
 
 <a href="http://localhost:8000/" target="_new">http://localhost:8000/</a>
 
+On your initial startup you should see an administrative setup screen like this:
 
+<img src="/WebRTC/resources/images/DefaultSettings.png" border=0 width=600 />
+
+Replace the Base URL with your Firebase URL, fill in all the other fields and then hit OK.
+ 
+In order to have these settings saved to your filesystem you will want to restart your node server now.
+
+Use the same development mode startup and then reload your browser.
+
+This time you should see a prompt for a login.
 
 ### Step 4. Login
+
+Once your settings have been saved and the server restarted all new users will receive a login screen like this:
+
+<img src="/WebRTC/resources/images/Login.png" border=0 width=600 />
+
+Use any name you want. If you need to change your administrative settings then you will want to login as 'admin'.
+
+Using the 'admin' login will provide a settings button for you to change your server settings.
+
+
 ### Step 5. Create First Room & Invite Others
+
+In order to chat and do video conferences you will need to create a room.
+
+To do that you can press the new room button in the top navigation. You should then see a form like this:
+
+<img src="/WebRTC/resources/images/NewRoom.png" border=0 width=600 />
+
+Private rooms are not visible in the room selector. Lets create a public room to start.
+
+If you are running locally and don't have a URL you will need to give people the IP address where your name service is running.
+
+Share your IP address ( with port 8000 ) and have someone join you in your new room.
+
 ### Step 6. Startup a video / audio chat
+
+Now that you can join rooms; you can see and hear others in the room if they are broadcasting.
+
+To broadcast to the room, decide how you want to broadcast Audio Only or Video. 
+
+If you choose video you can later decide to hide your video and still use audio. If you choose audio, at no time will your video be sent.
+
+Click either the 'call' or 'camera' icons below your avatar silhouette.
+
+Now you will need to give permission to access the camera and microphone. Granting access should look something like this:
+
+<img src="/WebRTC/resources/images/AllowAccess.png" border=0 width=600 />
+
+Grant access and you you should see your camera feed replace the avatar. Now when new people join they will see your video at the bottom of their screen like this:
+
+
+<img src="/WebRTC/resources/images/AllowAccess.png" border=0 width=600 />
+
+Congrats. You are now running secure peer-to-peer video conferencing. What you do with it is up to you... 
+
 ## What does this repository include?
 
 ### On the client side
