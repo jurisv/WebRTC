@@ -34,7 +34,7 @@ Once your signed in you will need to goto your dashboard and get an ApiKey and A
 
 The screen should look something like this:
 
-<img src="../WebRTC/resources/images/TokBoxApi.png" border=0 width=400 />
+<img src="/WebRTC/resources/images/TokBoxApi.png" border=0 width=400 />
 
 ### Step 2. Get your Firebase Api Key
 If you need to sign up start here. <a href="https://www.firebase.com/signup/" target="_new">https://www.firebase.com/signup/</a>
