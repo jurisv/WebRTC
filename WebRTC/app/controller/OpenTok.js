@@ -235,10 +235,11 @@ Ext.define('WebRTC.controller.OpenTok', {
         var me = this,
             session = me.getSessionById(sessionId);
 
-        if(session.localPublisher){
+        if(session && session.localPublisher){
             session.unpublish(session.localPublisher);
+            session.localPublisher = null;
         }
-        session.localPublisher = null;
+
     },
 
     onShowVideo: function(sessionId){
@@ -344,6 +345,8 @@ Ext.define('WebRTC.controller.OpenTok', {
     },
 
     onCloseRoom: function(sessionId){
+        //stop broadcasting if we were when we closed
+        this.onUnpublish(sessionId);
         //close out all the remaining session stuff.
         this.removeSession(sessionId);
     },
@@ -355,6 +358,7 @@ Ext.define('WebRTC.controller.OpenTok', {
             session = Ext.getStore('opentok.Sessions').getById(sessionId);
 
         if(session){
+            session.get('session').off();
             session.get('session').disconnect();
             Ext.getStore('opentok.Sessions').remove(session);
             Ext.getStore('opentok.Sessions').sync();

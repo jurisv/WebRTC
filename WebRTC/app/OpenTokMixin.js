@@ -116,8 +116,7 @@ Ext.define('WebRTC.OpenTokMixin', {
     },
 
 
-    onOTSessionConnected: function(event){
-    },
+    onOTSessionConnected: function(event){},
 
     onOTSessionDestroyed: function(event){
         var type = event.type;
