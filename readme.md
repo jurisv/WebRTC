@@ -129,7 +129,7 @@ Now you will need to give permission to access the camera and microphone. Granti
 Grant access and you you should see your camera feed replace the avatar. Now when new people join they will see your video at the bottom of their screen like this:
 
 
-<img src="/WebRTC/resources/images/AllowAccess.png" border=0 width=600 />
+<img src="/WebRTC/resources/images/VideoRoom.png" border=0 width=600 />
 
 Congrats. You are now running secure peer-to-peer video conferencing. What you do with it is up to you... 
 
