@@ -21,14 +21,30 @@ Ext.define('WebRTC.view.chat.History', {
             '<td width="125" style="font-weight:100;border-bottom: solid 1px #eee;">',
             '{from}',
             '</td><td style="font-weight:400;border-bottom: solid 1px #eee;">',
-            '{message}',
+            // '{message}',
+            '{[this.formatMessage(values.message)]}',
             '</td><td width="100" style="font-weight:400;border-bottom: solid 1px #eee;text-align:right;">',
             '{shortDate}',
             '</td>',
             '</tr>',
             '</tpl>',
-            '</table>'
+            '</table>',
+            {
+                formatMessage: function (message) {
+                    var matcher = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/ig;
+                    
+                    function anchorTag(match) {
+                        var url = match;
+                        if (!Ext.String.startsWith(match, 'http', true)) {
+                            url = 'http://'+match;
+                        }
 
+                        return '<a href='+url+' target="_blank">'+match+'</a>'
+                    }
+
+                    return message.replace(matcher, anchorTag);
+                }
+            }
         ]
     }],
 
