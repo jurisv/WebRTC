@@ -180,11 +180,11 @@
             "bundle": true
         },{
             //this is a remotely grabbed, locally cached tokbox WebRTC session management client library
-            "path": "http://static.opentok.com/v2/js/opentok.min.js",
+            "path": "//static.opentok.com/v2/js/opentok.min.js",
             "remote": true
         },{
             //this is a remotely grabbed, locally cached socket.io client library - fallback for chat if no webRTC Support
-            "path": "https://cdn.socket.io/socket.io-1.2.0.js",
+            "path": "//cdn.socket.io/socket.io-1.2.0.js",
             "remote": true
         }
         /*,{
