@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "A node server demo of ExtJS 6 and WebRTC",
   "main": "server.js",
+  "subdomain": "sencha-webrtc",
   "repository": {
     "type": "git",
     "url": "https://github.com/bradschafer/WebRTC.git"
