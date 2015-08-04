@@ -5,7 +5,6 @@ if(!global.App){
 }
 
 var fs = require('fs'),                         // file system
-    path = require('path'),                     // path joining library
     bodyparser = require('body-parser'),        // used for POST and QueryString Parsing
     nconf = require('nconf'),                   // node config Key/Value pairs
     express = require('express'),               // The web routing engine and framework
@@ -16,7 +15,7 @@ var fs = require('fs'),                         // file system
     environment, port, protocol,
     store, pub_path;
 
-nconf.argv().env().file({file: path.join(__dirname, 'server-config.json')});   // path to config JSON
+nconf.argv().env().file( __dirname + '/server-config.json');   // path to config JSON
 environment = global.App.mode = nconf.get("NODE_ENV") || 'production';   // default to production
 ServerConfig = nconf.get("ServerConfig-" + environment);                // load server config JSON
 
@@ -136,7 +135,7 @@ app.set('port', ServerConfig.port | 8000);
 app.set('protocol', ServerConfig.protocol || 'http');
 port = app.get('port');
 protocol = app.get('protocol');
-pub_path = path.join(__dirname, ServerConfig.webRoot);
+pub_path = __dirname + '/' + ServerConfig.webRoot;
 
 //server side compression of assets
 if(ServerConfig.enableCompression){
@@ -145,7 +144,7 @@ if(ServerConfig.enableCompression){
 }
 
 //static routes for files using webRoot based on production or development environments
-app.use(express.static(path.join(__dirname, ServerConfig.webRoot)));
+app.use(express.static(__dirname + '/' + ServerConfig.webRoot) );
 
 
 
