@@ -1,4 +1,7 @@
 # A simple demonstration of <a href="http://http://www.webrtc.org/" target="_new">WebRTC</a> powered by OpenTok and the <a href="http://www.sencha.com/" target="_new">Sencha</a> ExtJs 6 Framework. 
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 ## Overview
 So you want to do peer-to-peer audio and video calls. 
 
