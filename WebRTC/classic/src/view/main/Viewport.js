@@ -134,6 +134,7 @@ Ext.define('WebRTC.view.main.Viewport', {
     },
         {
             xtype: 'tabpanel',
+            tabPosition: 'bottom',
             reference: 'roomtabs',
             flex:4,
             items:[]

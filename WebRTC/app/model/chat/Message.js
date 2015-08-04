@@ -25,7 +25,7 @@ Ext.define('WebRTC.model.chat.Message', {
         },
         'user',
         { 
-            name: 'date',
+            name: 'date'
             // type: 'date',
             // dateFormat: '' 
         },
