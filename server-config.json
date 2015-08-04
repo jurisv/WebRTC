@@ -1,0 +1,79 @@
+{
+  "ServerConfig-production": {
+    "port": 8000,
+    "protocol": "https",
+    "logger": "default",
+    "logAllCalls": false,
+    "enableCompression": true,
+    "webRoot": "/public",
+    "enableSessions": false,
+    "sessionSecret1": "123",
+    "sessionSecret2": "1234",
+    "enableCORS": false,
+    "AccessControlAllowOrigin": "*",
+    "AccessControlAllowMethods": "GET,PUT,POST,DELETE,OPTIONS",
+    "AccessControlAllowHeaders": "Origin, X-Requested-With, Content-Type, Accept",
+    "AccessControlAllowCredentials": true,
+    "AccessControlMaxAge": 3600
+  },
+  "ServerConfig-development": {
+    "port": 8000,
+    "protocol": "http",
+    "logger": "dev",
+    "logAllCalls": true,
+    "enableCompression": true,
+    "webRoot": "/WebRTC",
+    "enableSessions": false,
+    "sessionSecret1": "123",
+    "sessionSecret2": "1234",
+    "enableCORS": false,
+    "AccessControlAllowOrigin": "*",
+    "AccessControlAllowMethods": "GET,PUT,POST,DELETE,OPTIONS",
+    "AccessControlAllowHeaders": "Origin, X-Requested-With, Content-Type, Accept",
+    "AccessControlAllowCredentials": true,
+    "AccessControlMaxAge": 3600
+  },
+  "adminsettings": {
+    "id": 0,
+    "serviceprovider": {
+      "opentok": {
+        "otDefaultSessionId": "1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4",
+        "ApiKey": "45254262",
+        "SecretKey": "e5347229812c31502f93a0337b673ffcca9859ff"
+      },
+      "firebase": {
+        "Url": "senchartc.firebaseio.com",
+        "ApiKey": "123123",
+        "SecretKey": "tHpijj0fj6vVDxxFEqzZFYceZyjRr0oeFhGq1qD2"
+      }
+    }
+  },
+  "__init_adminsettings": {
+    "id": 0,
+    "serviceprovider": {
+      "opentok": {
+        "ApiKey": "",
+        "SecretKey": ""
+      },
+      "firebase": {
+        "Url": "",
+        "ApiKey": "senchartc.firebaseio.com",
+        "SecretKey": ""
+      }
+    }
+  },
+  "__dev_adminsettings": {
+    "serviceprovider": {
+      "opentok": {
+        "otDefaultSessionId": "1_MX40NTI1NDI2Mn5-MTQzMzk1NTY3NDMyMn5Xd0FpdUFYSEdFaVUwaVY4M3ZTS3RyT2p-UH4",
+        "ApiKey": "45254262",
+        "SecretKey": "e5347229812c31502f93a0337b673ffcca9859ff"
+      },
+      "firebase": {
+        "Url": "senchartc.firebaseio.com",
+        "ApiKey": "123123",
+        "SecretKey": "tHpijj0fj6vVDxxFEqzZFYceZyjRr0oeFhGq1qD2"
+      }
+    }
+  }
+}
