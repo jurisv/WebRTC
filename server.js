@@ -5,7 +5,7 @@ if(!global.App){
 }
 
 var fs = require('fs'),                         // file system
-    bodyparser = require('body-parser'),        // used for POST and QueryString Parsing
+    bodyParser = require('body-parser'),        // used for POST and QueryString Parsing
     nconf = require('nconf'),                   // node config Key/Value pairs
     express = require('express'),               // The web routing engine and framework
     moment = require('moment'),                 // moment is a friendly time library
@@ -22,8 +22,9 @@ ServerConfig = nconf.get("ServerConfig-" + environment);                // load 
 var app = module.exports = require('express')();        // Setup express app
 
 //to parse form body
-app.use(bodyparser());
-
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 // GLOBAL: make the express app global
 global.App = app;
