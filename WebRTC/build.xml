@@ -40,8 +40,8 @@
     -->
 
     <target name="-after-build">
-        <delete dir="${basedir}/../server/public"/>
-        <copy todir="${basedir}/../server/public">
+        <delete dir="${basedir}/../public"/>
+        <copy todir="${basedir}/../public">
             <fileset dir="${build.dir}"/>
         </copy>
     </target>
