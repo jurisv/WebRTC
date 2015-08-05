@@ -36,6 +36,10 @@ var http = require('http').Server(app);                 // http on top of expres
 var data = require('./lib/data/stores.js');             // routes for data packages
 var io = require('./lib/sockets')(http);                // seperate module for all websocket requests
 
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
 
 global.App.io = io;
 
