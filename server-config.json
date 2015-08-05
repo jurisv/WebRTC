@@ -1,6 +1,6 @@
 {
   "ServerConfig-production": {
-    "port": 80,
+    "port": 8000,
     "protocol": "https",
     "logger": "default",
     "logAllCalls": false,
