@@ -23,9 +23,10 @@ ServerConfig = nconf.get("ServerConfig-" + environment);        // load server c
 var app = module.exports = require('express')();        // Setup express app
 
 //to parse form body
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+// in latest body-parser use like bellow.
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // GLOBAL: make the express app global
 global.App = app;
@@ -33,7 +34,11 @@ global.App.config = nconf;     //all configs
 global.App.ServerConfig = ServerConfig; //this config
 
 var http = require('http').Server(app);                 // http on top of express for websocket handling
-var data = require('./lib/data/stores.js');             // routes for data packages
+
+
+if(global.App.config.get('adminsettings')['serviceprovider'] != undefined){
+    var data = require('./lib/data/stores.js');             // routes for data packages
+}
 
 //common function to standardize JSON to Ext.
 global.App.wrapresponse = function  (data){
@@ -191,6 +196,8 @@ app.use(function(req, res){
 
 http.listen(process.env.PORT || port);
 
-var io = require('./lib/sockets')(http);                // seperate module for all websocket requests
-global.App.io = io;
+if(global.App.config.get('adminsettings')['serviceprovider'] != undefined){
+    var io = require('./lib/sockets')(http);                // seperate module for all websocket requests
+    global.App.io = io;
+}
 

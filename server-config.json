@@ -50,20 +50,6 @@
       }
     }
   },
-  "__init_adminsettings": {
-    "id": 0,
-    "serviceprovider": {
-      "opentok": {
-        "ApiKey": "",
-        "SecretKey": ""
-      },
-      "firebase": {
-        "Url": "",
-        "ApiKey": "senchartc.firebaseio.com",
-        "SecretKey": ""
-      }
-    }
-  },
   "__dev_adminsettings": {
     "serviceprovider": {
       "opentok": {
