@@ -28,10 +28,13 @@ Ext.define('WebRTC.controller.SoundLibrary', {
     init: function(){
         var sound = this._getSoundById('chat-sound');
 
-        Ext.create('WebRTC.SoundLibrary', {
-            itemId: 'soundlibrary',
-            data: sound
+        Ext.onReady(function(){
+            Ext.create('WebRTC.SoundLibrary', {
+                itemId: 'soundlibrary',
+                data: sound
+            });
         });
+
     },
 
     _getSoundById: function (soundId) {
