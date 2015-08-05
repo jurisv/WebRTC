@@ -34,13 +34,13 @@ Ext.define('WebRTC.view.chat.RoomController', {
     },
 
     chatReceived: function(chat){
-        var list = this.lookupReference('historylist');
-            // store = this.getViewModel().getStore('messages'),
+        var list = this.lookupReference('historylist'),
+             store = this.getViewModel().getStore('messages');
             // message = Ext.create('WebRTC.model.chat.Message',chat);
 
         // message.set({mine:false});
 
-        // store.add(chat);
+         store.add(chat);
         // store.sync();
         list.scrollBy(0, 999999, true);
 
