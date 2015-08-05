@@ -17,7 +17,7 @@ var fs = require('fs'),                         // file system
     store;
 
 nconf.argv().env().file( __dirname + '/server-config.json');    // path to config JSON
-environment = global.App.mode = nconf.get("NODE_ENV");          // default to development
+environment = global.App.mode = nconf.get("NODE_ENV") || 'development';          // default to development
 ServerConfig = nconf.get("ServerConfig-" + environment);        // load server config JSON
 
 var app = module.exports = require('express')();        // Setup express app
