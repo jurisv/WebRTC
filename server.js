@@ -11,13 +11,14 @@ var fs = require('fs'),                         // file system
     moment = require('moment'),                 // moment is a friendly time library
     ejs = require('ejs'),                       // ejs is a template engine for JSON to HTML
 
-    ServerConfig, ExtDirectConfig,              // variables for later use
-    environment, port, protocol,
-    store, pub_path;
+    ServerConfig,
+    port,
+    protocol,
+    store;
 
-nconf.argv().env().file( __dirname + '/server-config.json');   // path to config JSON
-environment = global.App.mode = nconf.get("NODE_ENV") || 'production';   // default to production
-ServerConfig = nconf.get("ServerConfig-" + environment);                // load server config JSON
+nconf.argv().env().file( __dirname + '/server-config.json');    // path to config JSON
+environment = global.App.mode = nconf.get("NODE_ENV");          // default to development
+ServerConfig = nconf.get("ServerConfig-" + environment);        // load server config JSON
 
 var app = module.exports = require('express')();        // Setup express app
 
@@ -32,7 +33,6 @@ global.App.config = nconf;     //all configs
 global.App.ServerConfig = ServerConfig; //this config
 
 var http = require('http').Server(app);                 // http on top of express for websocket handling
-// var data = require('./lib/data')(app);               // routes for data packages
 var data = require('./lib/data/stores.js');             // routes for data packages
 
 //common function to standardize JSON to Ext.
@@ -128,31 +128,20 @@ app.route('/config/:id')
 
 
 //port and protocol settings
-app.set('port', ServerConfig.port | 8000);
+app.set('port', ServerConfig.port || 8000);
 app.set('protocol', ServerConfig.protocol || 'http');
 port = app.get('port');
 protocol = app.get('protocol');
-pub_path = __dirname + '/' + ServerConfig.webRoot;
+
+
+
+app.use(express.static( __dirname  + ServerConfig.webRoot));
 
 //server side compression of assets
 if(ServerConfig.enableCompression){
     var compress = require('compression');
     app.use(compress());
 }
-
-//static routes for files using webRoot based on production or development environments
-app.use(express.static(__dirname + '/' + ServerConfig.webRoot) );
-
-
-
-//Development routes to include packages, override, and Ext Library
-if(process.env.NODE_ENV == 'development'){
-  //  app.use(express.static('Overrides', __dirname + '/admin/overrides/' ));
-  //  app.use(express.static('Ext6', __dirname + '/WebRTC/ext/' ));
-}
-
-
-
 
 
 //CORS Supports
