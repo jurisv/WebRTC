@@ -4,9 +4,9 @@
  *
  * TODO - Replace this content of this view to suite the needs of your application.
  */
-Ext.define('WebRTC.src.view.main.ViewportController', {
+Ext.define('WebRTC.view.main.ViewportController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.main',
+    alias: 'controller.viewport',
 
     init: function() {
          var me = this;
@@ -111,8 +111,54 @@ Ext.define('WebRTC.src.view.main.ViewportController', {
             ]
         });
         return menu;
-    }
+    },
 
+
+
+    onRoomSelect: function(view,record){
+
+        if(!record) return false;
+
+        var me = this,
+            roomtabs = this.lookupReference('roomtabs'),
+            id = record.get('id'),
+            tab = me.getRoomTabById(id),
+            name = me.getViewModel().get('name'),
+            room;
+
+
+        //only add one
+        if (!tab) {
+            room = {
+                xtype: 'chatroom',
+                closable: true,
+                iconCls: 'x-fa fa-comments',
+                roomId: id,
+                flex: 1
+            };
+
+            Ext.each(roomtabs.items.items, function(childPanel) {
+                var sessionId = childPanel.getViewModel().get('room').get('sessionId');
+                me.fireEvent('closeroom',sessionId);
+                roomtabs.remove(childPanel, true);
+            });
+
+            // Ext.suspendLayouts();
+            tab = roomtabs.insert(0, room);
+            // Ext.resumeLayouts(true);
+
+
+        }
+
+        // Notify TokBox in this case
+        me.fireEvent('joinroom', tab, record.data, name);
+
+        tab.getViewModel().set('room', record);
+        tab.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
+
+        roomtabs.setActiveTab(tab);
+
+    }
 
 
 });
