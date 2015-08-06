@@ -107,7 +107,22 @@ app.route('/config/:id')
             data;
 
         //Get only sends public data
-        data=config;
+        //data=config;
+
+        //For demo don't send live keys
+        data={
+            "serviceprovider": {
+            "opentok": {
+                "otDefaultSessionId": "",
+                "ApiKey": "yourkeyhere",
+                "SecretKey": "yoursecrethere"
+            },
+            "firebase": {
+                "Url": "replacewithyoururl",
+                "ApiKey": "yourkeyhere",
+                "SecretKey": "yoursecrethere"
+            }
+        }};
 
         res.status(200).send(global.App.wrapresponse(data));
     })
@@ -122,8 +137,11 @@ app.route('/config/:id')
     })
     .put(function(req, res) {
         var data = req.body;
-        global.App.config.set('adminsettings', data);
-        global.App.config.save();
+
+        //for demo don't save
+        // global.App.config.set('adminsettings', data);
+        // global.App.config.save();
+
         res.status(200).send(global.App.wrapresponse(data));
     })
     .delete(function(req, res) {
