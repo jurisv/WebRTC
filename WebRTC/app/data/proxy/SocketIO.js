@@ -144,7 +144,8 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
             data   = {
                 params: config.params,
                 records: request.getJsonData()
-            };
+            },
+            query = 'params=' + JSON.stringify(config.params);
 
         //make sure we're connected
         if(!this.socket){
@@ -152,6 +153,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
             me.socket = io.connect(me.url,{
                 secure: cfg.secure,
                 port: cfg.port,
+                // query: query,   //test to see if we can send params in the connection
                 'connect timeout': cfg.connectTimeout,
                 'try multiple transports': cfg.tryMultipleTransports,
                 'reconnect': cfg.reconnect,

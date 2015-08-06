@@ -184,7 +184,7 @@
             "remote": true
         },{
             //this is a remotely grabbed, locally cached socket.io client library - fallback for chat if no webRTC Support
-            "path": "//cdn.socket.io/socket.io-1.2.0.js",
+            "path": "//cdn.socket.io/socket.io-1.3.6.js",
             "remote": true
         }
         /*,{
