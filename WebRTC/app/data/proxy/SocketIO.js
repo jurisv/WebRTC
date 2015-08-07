@@ -150,20 +150,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         //make sure we're connected
         if(!this.socket){
             //this is a namespaced socket
-            me.socket = io.connect(me.url,{
-                secure: cfg.secure,
-                port: cfg.port,
-                // query: query,   //test to see if we can send params in the connection
-                'connect timeout': cfg.connectTimeout,
-                'try multiple transports': cfg.tryMultipleTransports,
-                'reconnect': cfg.reconnect,
-                'reconnection delay': cfg.reconnectionDelay,
-                'reconnection limit': cfg.reconnectionLimit,
-                'max reconnection attempts': cfg.maxReconnectionAttempts,
-                'sync disconnect on unload': cfg.syncDisconnectOnUnload,
-                'auto connect': cfg.autoConnect,
-                'force new connection': cfg.forceNewConnection
-            });
+            me.socket = io.connect();
             me.setupSocketPush(operation);
         }
 
