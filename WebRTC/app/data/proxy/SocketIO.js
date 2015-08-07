@@ -54,7 +54,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         secure: false,
 
         //if a custom port is required, otherwise use current server port
-        port: null,
+        port: location.port,
 
         connectTimeout: 10000,
 
@@ -150,7 +150,7 @@ Ext.define ('WebRTC.data.proxy.SocketIO', {
         //make sure we're connected
         if(!this.socket){
             //this is a namespaced socket
-            me.socket = io.connect();
+            me.socket = io.connect(location.origin + me.url);
             me.setupSocketPush(operation);
         }
 

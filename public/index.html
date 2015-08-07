@@ -94,7 +94,6 @@ b.assetConfig.path+" with hash "+c.assetConfig.hash+" . This asset will be uncac
 a.updatedAssetsReady=!0;if(a.updatedManifest){for(;0<a.removedAssets.length;)b=a.removedAssets.pop(),b.uncache();for(a.updatedManifest&&a.updatedManifest.cache();0<a.updatedAssets.length;)b=a.updatedAssets.pop(),b.cache()}a.notifyUpdateReady()},notifyUpdateReady:function(){if("checking"!==a.appCacheState&&a.updatedAssetsReady&&("updated"===a.appCacheState||a.updatedManifest))a.appUpdate={updated:!0,app:"updated"===a.appCacheState,manifest:a.updatedManifest&&a.updatedManifest.exportContent()},a.fireAppUpdate()},
 fireAppUpdate:function(){Ext.GlobalEvents&&Ext.defer(function(){Ext.GlobalEvents.fireEvent("appupdate",a.appUpdate)},100)},checksum:function(a,c){if(!a||!c)return!1;var d=!0,e=c.length,f=a.substring(0,1);"/"==f?a.substring(2,e+2)!==c&&(d=!1):"f"==f?a.substring(10,e+10)!==c&&(d=!1):"."==f&&a.substring(1,e+1)!==c&&(d=!1);return d},parseResult:function(a){var c={};(a.exception||0===a.status)&&!j.env.phantom?c.error=!0:200<=a.status&&300>a.status||304===a.status||j.env.phantom||0===a.status&&0<a.content.length?
 c.content=a.content:c.error=!0;return c}};return a}();Ext.manifest=Ext.manifest||"bootstrap";Ext.Microloader.run();</script>
-    <!-- This is provided locally by the server for socket -->
 
 
 </head>

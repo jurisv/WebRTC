@@ -1,60 +1,34 @@
-//Set up common namespace for the application
-//As this is the global namespace, it will be available across all modules
-if(!global.App){
-    global.App = {};
-}
-
 var fs = require('fs'),                         // file system
     bodyParser = require('body-parser'),        // used for POST and QueryString Parsing
     nconf = require('nconf'),                   // node config Key/Value pairs
     express = require('express'),               // The web routing engine and framework
     moment = require('moment'),                 // moment is a friendly time library
     ejs = require('ejs'),                       // ejs is a template engine for JSON to HTML
+    wrap = require('./lib/wrapjsonresponse.js'),
 
-    ServerConfig,
-    port,
-    protocol,
-    store;
+    data,
+    firebase,
+    serverConfig;
 
 nconf.argv().env().file( __dirname + '/server-config.json');    // path to config JSON
-environment = global.App.mode = nconf.get("NODE_ENV") || 'development';          // default to development
-ServerConfig = nconf.get("ServerConfig-" + environment);        // load server config JSON
+serverConfig = nconf.get("ServerConfig-" + (process.env.NODE_ENV || 'development') );        // load environment config
 
-var app = module.exports = require('express')();        // Setup express app
+var app = module.exports = require('express')();                      // Setup express app
 
 //to parse form body
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-// in latest body-parser use like bellow.
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// GLOBAL: make the express app global
-global.App = app;
-global.App.config = nconf;     //all configs
-global.App.ServerConfig = ServerConfig; //this config
+firebase = require('./lib/firebase.db.js')(nconf);                    // connect to firebase
 
-var http = require('http').Server(app);                 // http on top of express for websocket handling
-
-
-if(global.App.config.get('adminsettings')['serviceprovider'] != undefined){
-    var data = require('./lib/data/stores.js');             // routes for data packages
+if(nconf.get('adminsettings')['serviceprovider'] != undefined){
+  data = require('./lib/data')(nconf,firebase);             // load data package for routes
 }
 
-//common function to standardize JSON to Ext.
-global.App.wrapresponse = function  (data){
-    var response = [].concat(data);
-    return {
-        "success": true,
-        "message": "Successful",
-        "total": response.length,
-        "timestamp": new Date(),
-        "data" : response
-    }
-};
 
 // simple logger placing first and using next()
 // allows this to run as well as other matching methods.
-if(ServerConfig.logAllCalls) {
+if(serverConfig.logAllCalls) {
     app.use(function (req, res, next) {
         console.log('%s %s', req.method, req.url);
         // logger.info('%s %s', req.method, req.url);
@@ -103,13 +77,14 @@ app.route('/data/:store')
 //There's only one config but the REST UI sends an id so just ignore it.
 app.route('/config/:id')
     .get(function(req, res) {
-        var config = global.App.config.get('adminsettings'),
+        var config = nconf.get('adminsettings'),
             data;
 
         //Get only sends public data
-        //data=config;
+        data=config;
 
-        //For demo don't send live keys
+        // For demo don't send live keys
+        // todo: remove later
         data={
             "serviceprovider": {
             "opentok": {
@@ -124,58 +99,48 @@ app.route('/config/:id')
             }
         }};
 
-        res.status(200).send(global.App.wrapresponse(data));
+        res.status(200).send(wrap(data));
     })
     .post(function(req, res) {
-        var data = req.body; // JSON.parse(req.body.data),
-            config = global.App.config.get('adminsettings');
+        var data = req.body, // JSON.parse(req.body.data),
+            config = nconf.get('adminsettings');
         if(!config.serviceprovider.firebase.Url && data){
-            global.App.config.set('adminsettings', data);
-            global.App.config.save();
+            nconf.set('adminsettings', data);
+            nconf.save();
         }
-        res.status(200).send(global.App.wrapresponse(data));
+        res.status(200).send(wrap(data));
     })
     .put(function(req, res) {
         var data = req.body;
 
         //for demo don't save
-        // global.App.config.set('adminsettings', data);
-        // global.App.config.save();
+        // app.config.set('adminsettings', data);
+        // app.config.save();
 
-        res.status(200).send(global.App.wrapresponse(data));
+        res.status(200).send(wrap(data));
     })
     .delete(function(req, res) {
         var data = JSON.parse(req.body.data);
-        res.status(200).send(global.App.wrapresponse(data));
+        res.status(200).send(wrap(data));
     });
 
-
-//port and protocol settings
-app.set('port', ServerConfig.port || 8000);
-app.set('protocol', ServerConfig.protocol || 'http');
-port = app.get('port');
-protocol = app.get('protocol');
-
-
-
-app.use(express.static( __dirname  + ServerConfig.webRoot));
+app.use(express.static( __dirname  + serverConfig.webRoot));
 
 //server side compression of assets
-if(ServerConfig.enableCompression){
+if(serverConfig.enableCompression){
     var compress = require('compression');
     app.use(compress());
 }
 
 
 //CORS Supports
-if(ServerConfig.enableCORS){
-
+if(serverConfig.enableCORS){
     app.use( function(req, res, next) {
-        res.header('Access-Control-Allow-Origin', ServerConfig.AccessControlAllowOrigin); // allowed hosts
-        res.header('Access-Control-Allow-Methods', ServerConfig.AccessControlAllowMethods); // what methods should be allowed
-        res.header('Access-Control-Allow-Headers', ServerConfig.AccessControlAllowHeaders); //specify headers
-        res.header('Access-Control-Allow-Credentials', ServerConfig.AccessControlAllowCredentials); //include cookies as part of the request if set to true
-        res.header('Access-Control-Max-Age', ServerConfig.AccessControlMaxAge); //prevents from requesting OPTIONS with every server-side call (value in seconds)
+        res.header('Access-Control-Allow-Origin', serverConfig.AccessControlAllowOrigin); // allowed hosts
+        res.header('Access-Control-Allow-Methods', serverConfig.AccessControlAllowMethods); // what methods should be allowed
+        res.header('Access-Control-Allow-Headers', serverConfig.AccessControlAllowHeaders); //specify headers
+        res.header('Access-Control-Allow-Credentials', serverConfig.AccessControlAllowCredentials); //include cookies as part of the request if set to true
+        res.header('Access-Control-Max-Age', serverConfig.AccessControlMaxAge); //prevents from requesting OPTIONS with every server-side call (value in seconds)
 
         if (req.method === 'OPTIONS') {
             res.send(204);
@@ -201,7 +166,6 @@ app.use(function(err, req, res, next){
 // our custom JSON 404 middleware. Since it's placed last
 // it will be the last middleware called, if all others
 // invoke next() and do not respond.
-
 app.use(function(req, res){
  var template = fs.readFileSync(__dirname + '/views/404.html', 'utf8');
  var body = ejs.render(template, {
@@ -211,11 +175,10 @@ app.use(function(req, res){
   res.status(404).send(body) ;
 });
 
+var http = require('http').Server(app);                             // http on top of express for websocket handling
+http.listen(process.env.PORT || serverConfig.port);
 
-http.listen(process.env.PORT || port);
-
-if(global.App.config.get('adminsettings')['serviceprovider'] != undefined){
-    var io = require('./lib/sockets')(http);                // seperate module for all websocket requests
-    global.App.io = io;
+if(nconf.get('adminsettings')['serviceprovider'] != undefined){
+    http.io = require('./lib/sockets')(http, nconf, firebase);                // seperate module for all websocket requests
 }
 
