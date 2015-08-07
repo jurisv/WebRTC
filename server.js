@@ -19,10 +19,10 @@ var app = module.exports = require('express')();                      // Setup e
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-firebase = require('./lib/firebase.db.js')(nconf);                    // connect to firebase
+
 
 if(nconf.get('adminsettings')['serviceprovider'] != undefined){
-  data = require('./lib/data')(nconf,firebase);             // load data package for routes
+  data = require('./lib/data')(nconf);             // load data package for routes
 }
 
 
@@ -179,6 +179,6 @@ var http = require('http').Server(app);                             // http on t
 http.listen(process.env.PORT || serverConfig.port);
 
 if(nconf.get('adminsettings')['serviceprovider'] != undefined){
-    http.io = require('./lib/sockets')(http, nconf, firebase);                // seperate module for all websocket requests
+    require('./lib/sockets')(http, nconf);          // seperate module for all websocket requests
 }
 
