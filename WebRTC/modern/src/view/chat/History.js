@@ -3,18 +3,23 @@ Ext.define('WebRTC.view.chat.History', {
     xtype: 'chathistory',
 
     bodyPadding: 10,
-    layout:'fit',
+    layout:{
+        type:'vbox',
+        vertical: true
+    },
 
-    items: [{
+    items: [
+    {
         xtype: 'list',
         loadMask: false,
         reference: 'historylist',
         autoScroll: true,
+        flex:1,
         bind: {
             store: '{messages}'
         },
         itemSelector: 'div.chat-wrap',
-        tpl: [
+        itemTpl: [
             '<table cellspacing="0" cellpadding="8" width="100%">',
             '<tpl for=".">',
             '<tr>',
@@ -46,22 +51,30 @@ Ext.define('WebRTC.view.chat.History', {
                 }
             }
         ]
-    }],
-
-    bbar:[{
-        xtype:'textfield',
-        name:'text',
-        reference: 'chattext',
-        listeners: {
-            specialkey: 'onSpecialKey'
-        },
-        flex:1
     },{
-        iconCls: 'x-fa fa-smile-o',
-        plain: true,
-        listeners: {
-            click: 'chatSend'
-        }
-    }]
-
+        layout: {
+            type:'hbox',
+            vertical: false
+        },
+        height: 30,
+        items:[
+            {
+                xtype:'textfield',
+                flex:1,
+                name:'text',
+                reference: 'chattext',
+                listeners: {
+                    specialkey: 'onSpecialKey'
+                }
+            },{
+                xtype: 'button',
+                iconCls: 'x-fa fa-smile-o',
+                plain: true,
+                listeners: {
+                    tap: 'chatSend'
+                }
+            }
+        ]
+    }
+    ]
 });

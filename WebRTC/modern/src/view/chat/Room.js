@@ -14,12 +14,8 @@ Ext.define('WebRTC.view.chat.Room', {
         type: 'chatroom'
     },
 
-    bind : {
-        title : '{room.name}'
-    },
 
   items: [
-    /*
         {
             layout: {
                 type: 'box',
@@ -38,7 +34,7 @@ Ext.define('WebRTC.view.chat.Room', {
                     bodyPadding: 6,
                     items: [
                         {
-                            xtype: 'chatinfo',
+                            //xtype: 'chatinfo',
                             bodyPadding: 6,
                             hidden: false
                         }, {
@@ -131,7 +127,6 @@ Ext.define('WebRTC.view.chat.Room', {
             minHeight: 300,
             flex: 1
         }
-     */
     ]
 
 

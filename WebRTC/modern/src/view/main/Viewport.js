@@ -20,7 +20,7 @@ Ext.define('WebRTC.view.main.Viewport', {
         'Ext.Menu'
     ],
 
-    useTitleForBackButtonText: true,
+//    useTitleForBackButtonText: true,
 
     items: [
         {
@@ -29,13 +29,9 @@ Ext.define('WebRTC.view.main.Viewport', {
             fullscreen: true,
             reference: 'roomsgrid',
             itemTpl: '{name}',
-            // grouped: true,
             bind:{
                 store: '{rooms}'
             },
-            /*columns: [
-                { text: 'Name',  dataIndex: 'name', flex: 1}
-            ],*/
             listeners: {
                select: 'onRoomSelect'
             }

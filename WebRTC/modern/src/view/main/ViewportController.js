@@ -7,6 +7,32 @@
 Ext.define('WebRTC.view.main.ViewportController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.viewport',
+    mixins: ['WebRTC.OpenTokMixin'],
+
+    listen: {
+        controller: {
+            'opentok': {
+                chatreceived : 'onOTChatReceived',
+                connectioncreated : 'onOTConnectionCreated',
+                connectiondestroyed : 'onOTConnectionDestroyed',
+                streamcreated : 'onOTStreamCreated',
+                streamdestroyed : 'onOTStreamDestroyed',
+                sessionconnected : 'onOTSessionConnected',
+                sessiondisconnect : 'onOTSessionDestroyed'
+            }
+        },
+        component:{
+            'chatroomform button[action=ok]':{
+              //  click: 'onRoomFormOkClick'
+            },
+            'chatroom':{
+               // beforeclose: 'onRoomClose'
+            },
+            'settingsadmin button[action=ok]':{
+                //click: 'onSettingsAdminOkClick'
+            }
+        }
+    },
 
     init: function() {
          var me = this;
@@ -115,50 +141,34 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
 
 
-    onRoomSelect: function(view,record){
+    onRoomSelect: function(view,record) {
 
-        if(!record) return false;
+        if (!record) return false;
 
         var me = this,
-            roomtabs = this.lookupReference('roomtabs'),
+            navView = me.getView(),
             id = record.get('id'),
-            tab = me.getRoomTabById(id),
             name = me.getViewModel().get('name'),
             room;
 
 
-        //only add one
-        if (!tab) {
-            room = {
-                xtype: 'chatroom',
-                closable: true,
-                iconCls: 'x-fa fa-comments',
-                roomId: id,
-                flex: 1
-            };
+        room = Ext.create({
+            xtype: 'chatroom',
+            closable: true,
+            iconCls: 'x-fa fa-comments',
+            roomId: id,
+            flex: 1
+        });
 
-            Ext.each(roomtabs.items.items, function(childPanel) {
-                var sessionId = childPanel.getViewModel().get('room').get('sessionId');
-                me.fireEvent('closeroom',sessionId);
-                roomtabs.remove(childPanel, true);
-            });
+        navView.push(room);
 
-            // Ext.suspendLayouts();
-            tab = roomtabs.insert(0, room);
-            // Ext.resumeLayouts(true);
-
-
-        }
+        room.getViewModel().set('room', record);
+        room.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
 
         // Notify TokBox in this case
-        me.fireEvent('joinroom', tab, record.data, name);
+        me.fireEvent('joinroom', room, record.data, name);
 
-        tab.getViewModel().set('room', record);
-        tab.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
 
-        roomtabs.setActiveTab(tab);
 
     }
-
-
 });

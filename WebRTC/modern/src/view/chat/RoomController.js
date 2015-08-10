@@ -4,12 +4,9 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
 
     roomMemberAdd: function(member){
-        var store = this.getViewModel().getStore('members'),
-            userId = this.getViewModel().get('user').id;
+        var store = this.getViewModel().getStore('members');
         store.add(member);
-        // if(userId != member.id){
         this.fireEvent('playsound','enter-sound');
-        // }
     },
 
     roomMemberRemove: function(id){
@@ -71,7 +68,7 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
         store.add(chat);
         // store.sync();
-        list.scrollBy(0, 999999, true);
+        // list.scrollBy(0, 999999, true);
 
         me.fireEvent('chatmessage', sessionId, chat.data);
     },
