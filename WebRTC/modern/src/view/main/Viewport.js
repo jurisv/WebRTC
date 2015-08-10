@@ -22,33 +22,19 @@ Ext.define('WebRTC.view.main.Viewport', {
 
 //    useTitleForBackButtonText: true,
 
-    items: [
-        {
-            xtype: 'list',
-            title: 'Rooms',
-            fullscreen: true,
-            reference: 'roomsgrid',
-            itemTpl: '{name}',
-            bind:{
-                store: '{rooms}'
-            },
-            listeners: {
-               select: 'onRoomSelect'
-            }
-        },{
-            xtype: 'toolbar',
-            docked: 'bottom',
-            hidden: true,
-            items: [
-                {
-                    xtype: 'button',
-                    iconCls: 'x-fa fa-navicon',
-                    ui: 'plain',
-                    handler: 'onHamburgerClick'
-                }
-            ]
+    items: [{
+        xtype: 'list',
+        title: 'Rooms',
+        fullscreen: true,
+        reference: 'roomsgrid',
+        itemTpl: '{name}',
+        bind:{
+            store: '{rooms}'
+        },
+        listeners: {
+           select: 'onRoomSelect'
         }
-    ],
+    }],
 
     listeners:{
         show: 'onShow',

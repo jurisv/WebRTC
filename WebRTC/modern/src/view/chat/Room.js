@@ -14,11 +14,10 @@ Ext.define('WebRTC.view.chat.Room', {
         type: 'chatroom'
     },
 
-
-  items: [
+    items: [
         {
             layout: {
-                type: 'box',
+                type: 'hbox',
                 vertical: false,
                 align: 'stretch'
             },
@@ -26,7 +25,7 @@ Ext.define('WebRTC.view.chat.Room', {
             items:[
                 {
                     layout: {
-                        type: 'box',
+                        type: 'vbox',
                         vertical: true,
                         align: 'stretch'
                     },
@@ -34,9 +33,9 @@ Ext.define('WebRTC.view.chat.Room', {
                     bodyPadding: 6,
                     items: [
                         {
-                            //xtype: 'chatinfo',
+                            xtype: 'chatinfo',
                             bodyPadding: 6,
-                            hidden: false
+                            hidden: true
                         }, {
                             xtype: 'chathistory',
                             reference: 'chathistory',
@@ -47,61 +46,66 @@ Ext.define('WebRTC.view.chat.Room', {
                 {
                     hidden: false,
                     layout: {
-                        type: 'box',
+                        type: 'vbox',
                         vertical: true,
                         align: 'stretch'
                     },
                     flex: 1,
                     items: [
                         {
-                            items: {
+                            items:[{
                                 style: 'display: block; background-color:#eeeeee; background-image: url(https://static.opentok.com/webrtc/v2.6.0/images/rtc/audioonly-silhouette.svg); background-position: center bottom; background-repeat: no-repeat; background-size: auto 76%;',
                                 xtype: 'container',
                                 layout: 'fit',
                                 minHeight: 180,
                                 reference: 'you'
-                            },
-                            bodyPadding: 6,
-                            bbar: [
-                                {
-                                    bind: {
-                                        disabled: '{inVideoCall}',
-                                        iconCls: '{audioCallIcon}'
+                            },{
+                                xtype: 'toolbar',
+                                docked: 'bottom',
+                                items: [
+                                    {
+                                        bind: {
+                                            disabled: '{inVideoCall}',
+                                            iconCls: '{audioCallIcon}'
+                                        },
+                                        listeners: {
+                                            click: 'onAudioCallRoom'
+                                        }
                                     },
-                                    listeners: {
-                                        click: 'onAudioCallRoom'
-                                    }
-                                },
-                                {
-                                    bind: {
-                                        disabled: '{inAudioCall}',
-                                        iconCls: '{videoCallIcon}'
+                                    {
+                                        bind: {
+                                            disabled: '{inAudioCall}',
+                                            iconCls: '{videoCallIcon}'
+                                        },
+                                        listeners: {
+                                            click: 'onVideoCallRoom'
+                                        }
                                     },
-                                    listeners: {
-                                        click: 'onVideoCallRoom'
-                                    }
-                                }
-                                , '->',
-                                {
-                                    iconCls: 'x-fa fa-eye',
-                                    bind: {
-                                        disabled: '{!inVideoCall}',
-                                        iconCls: '{videoToggleIcon}'
+                                    {
+                                        xtype: 'spacer'
                                     },
-                                    listeners: {
-                                        click: 'onPublishVideoToggle'
+                                    {
+                                        iconCls: 'x-fa fa-eye',
+                                        bind: {
+                                            disabled: '{!inVideoCall}',
+                                            iconCls: '{videoToggleIcon}'
+                                        },
+                                        listeners: {
+                                            click: 'onPublishVideoToggle'
+                                        }
+                                    }, {
+                                        iconCls: 'x-fa fa-microphone',
+                                        bind: {
+                                            disabled: '{isMicDisabled}',
+                                            iconCls: '{audioToggleIcon}'
+                                        },
+                                        listeners: {
+                                            click: 'onPublishAudioToggle'
+                                        }
                                     }
-                                }, {
-                                    iconCls: 'x-fa fa-microphone',
-                                    bind: {
-                                        disabled: '{isMicDisabled}',
-                                        iconCls: '{audioToggleIcon}'
-                                    },
-                                    listeners: {
-                                        click: 'onPublishAudioToggle'
-                                    }
-                                }
-                            ]
+                                ]
+                            }],
+                            bodyPadding: 6
                         }, {
                             title: 'Members',
                             collapsable: true,

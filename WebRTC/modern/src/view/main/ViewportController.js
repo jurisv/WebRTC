@@ -36,6 +36,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     init: function() {
          var me = this;
+        me.checkSetup()
     },
 
     onShow: function(){
@@ -43,6 +44,105 @@ Ext.define('WebRTC.view.main.ViewportController', {
             side: 'left',
             reveal: true
         });
+    },
+
+
+    checkSetup: function(){
+        var me= this,
+            settings;
+
+        //Theres only one setting but the REST API needs and id.
+        WebRTC.model.AdminSettings.load(0,{
+            success: function(record,operation){
+                if( !record.get('otApiKey') ){
+                    me.onSettingsAdminSelect();
+                }else{
+                    me.authenticate();
+                }
+            }
+        });
+
+    },
+
+    authenticate: function(){
+        var me = this,
+            userStore = new Ext.util.LocalStorage({
+                id: 'userStorage'
+            }),
+            user,
+            store = Ext.create('Ext.data.Store',{
+                model: 'WebRTC.model.User',
+                autoLoad: true
+            });
+
+        // Use this area to run function to launch screen instantly
+        // this.onSettingsUserSelect();
+        // return;
+
+        if (Ext.browser.is.Safari  || Ext.browser.is.IE ) {
+            Ext.toast({
+                html: 'We recommend Chrome for the best experience.',
+                title: 'Unsupported',
+                width: 400,
+                align: 't'
+            });
+            this.disable();
+            return true;
+        }
+
+        if(!userStore.getItem('user')){
+            Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
+                if(value) {
+                    //set the persons name
+                    var expires = new Date("October 13, 2095 11:13:00"),
+                        newUser = Ext.create('WebRTC.model.User',{
+                            name: value
+                        });
+
+                    newUser.save();
+
+
+                    me.getViewModel().set('name', newUser.get('name') );
+
+                    me.getViewModel().set('user', newUser);
+
+                    userStore.clear();
+                    userStore.setItem('user', JSON.stringify( newUser.data ) );
+
+                    //Ext.util.Cookies.set('user', JSON.stringify( newUser.data ) , expires);
+
+                    /*  Ext.toast({
+                     html: newUser + ' give us a moment while we set things up.',
+                     title: 'Welcome',
+                     width: 400,
+                     align: 't'
+                     });
+                     */
+
+                    Ext.defer(function() {
+                       // me.selectFirstRoom();
+                    }, 1200);
+
+                }
+            });
+        }else{
+            user =  JSON.parse(userStore.getItem('user')) ;
+            me.getViewModel().set('user', user);
+
+            me.getViewModel().set('name', user.name );
+
+            /* Ext.toast({
+             html: 'Glad to see you again ' + user.data.name  + '.',
+             title: 'Welcome Back',
+             width: 400,
+             align: 't'
+             });*/
+
+            Ext.defer(function() {
+               // me.selectFirstRoom();
+            }, 1200);
+
+        }
     },
 
     getOTGlobalSession: function(){

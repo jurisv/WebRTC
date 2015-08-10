@@ -23,12 +23,12 @@ Ext.define('WebRTC.view.chat.History', {
             '<table cellspacing="0" cellpadding="8" width="100%">',
             '<tpl for=".">',
             '<tr>',
-            '<td width="125" style="font-weight:100;border-bottom: solid 1px #eee;">',
+            '<td width="125" style="font-weight:100;">',
             '{from}',
-            '</td><td style="font-weight:400;border-bottom: solid 1px #eee;">',
+            '</td><td style="font-weight:400;">',
             // '{message}',
             '{[this.formatMessage(values.message)]}',
-            '</td><td width="100" style="font-weight:400;border-bottom: solid 1px #eee;text-align:right;">',
+            '</td><td width="100" style="font-weight:400;text-align:right;">',
             '{shortDate}',
             '</td>',
             '</tr>',
@@ -52,29 +52,26 @@ Ext.define('WebRTC.view.chat.History', {
             }
         ]
     },{
-        layout: {
-            type:'hbox',
-            vertical: false
-        },
-        height: 30,
-        items:[
-            {
-                xtype:'textfield',
-                flex:1,
-                name:'text',
-                reference: 'chattext',
-                listeners: {
-                    specialkey: 'onSpecialKey'
+            xtype: 'toolbar',
+            docked: 'bottom',
+            items: [
+                {
+                    xtype:'textfield',
+                    flex:1,
+                    name:'text',
+                    reference: 'chattext',
+                    listeners: {
+                        specialkey: 'onSpecialKey'
+                    }
+                },{
+                    xtype: 'button',
+                    iconCls: 'x-fa fa-smile-o',
+                    plain: true,
+                    listeners: {
+                        tap: 'chatSend'
+                    }
                 }
-            },{
-                xtype: 'button',
-                iconCls: 'x-fa fa-smile-o',
-                plain: true,
-                listeners: {
-                    tap: 'chatSend'
-                }
-            }
-        ]
-    }
+            ]
+        }
     ]
 });
