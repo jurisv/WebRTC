@@ -25,8 +25,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
             'chatroomform button[action=ok]':{
               //  click: 'onRoomFormOkClick'
             },
-            'chatroom':{
-               // beforeclose: 'onRoomClose'
+            'app-main':{
+                activeitemchange: 'onRoomClose'
             },
             'settingsadmin button[action=ok]':{
                 //click: 'onSettingsAdminOkClick'
@@ -239,7 +239,13 @@ Ext.define('WebRTC.view.main.ViewportController', {
         return menu;
     },
 
-
+    onRoomClose: function(viewport,newItem,oldItem){
+        if(newItem.referenceKey == 'roomsgrid' ){
+            var sessionId = oldItem.sessionId;
+            this.fireEvent('closeroom',sessionId);
+            newItem.deselectAll();
+        }
+    },
 
     onRoomSelect: function(view,record) {
 
