@@ -46,14 +46,11 @@ Ext.define('WebRTC.OpenTokMixin', {
         var OT = WebRTC.app.getController('WebRTC.controller.OpenTok'),
             session = OT.getSessionById(event.target.sessionId),
             room = this.getRoomBySessionId(event.target.sessionId),
-        // view = this.getView(),
             remotestreams = room.down('#remotestreams'),
             them = room.down('#them');
 
-        if( this.lookupReference('roomtabs').getActiveTab().sessionId == room.sessionId ){
-            if(remotestreams.isHidden()){
-                remotestreams.show()
-            }
+        if(remotestreams.isHidden()){
+            remotestreams.show()
         }
 
         var newly = remotestreams.add({
@@ -92,14 +89,10 @@ Ext.define('WebRTC.OpenTokMixin', {
             room = this.getRoomBySessionId(event.target.sessionId),
             remotestreams = tab.down('#remotestreams');
 
-        // console.log(deadCmp);
-
-        if( this.lookupReference('roomtabs').getActiveTab().sessionId == room.sessionId ){
-            if(deadCmp){
-                deadCmp.destroy();
-                if(!remotestreams.items.length){
-                    remotestreams.hide();
-                }
+        if(deadCmp){
+            deadCmp.destroy();
+            if(!remotestreams.items.length){
+                remotestreams.hide();
             }
         }
 

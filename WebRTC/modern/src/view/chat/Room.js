@@ -3,7 +3,7 @@ Ext.define('WebRTC.view.chat.Room', {
     xtype: 'chatroom',
 
     layout: {
-        type: 'box',
+        type: 'vbox',
         vertical: true,
         align: 'stretch'
     },
@@ -69,7 +69,7 @@ Ext.define('WebRTC.view.chat.Room', {
                                             iconCls: '{audioCallIcon}'
                                         },
                                         listeners: {
-                                            click: 'onAudioCallRoom'
+                                            tap: 'onAudioCallRoom'
                                         }
                                     },
                                     {
@@ -78,7 +78,7 @@ Ext.define('WebRTC.view.chat.Room', {
                                             iconCls: '{videoCallIcon}'
                                         },
                                         listeners: {
-                                            click: 'onVideoCallRoom'
+                                            tap: 'onVideoCallRoom'
                                         }
                                     },
                                     {
@@ -91,7 +91,7 @@ Ext.define('WebRTC.view.chat.Room', {
                                             iconCls: '{videoToggleIcon}'
                                         },
                                         listeners: {
-                                            click: 'onPublishVideoToggle'
+                                            tap: 'onPublishVideoToggle'
                                         }
                                     }, {
                                         iconCls: 'x-fa fa-microphone',
@@ -100,7 +100,7 @@ Ext.define('WebRTC.view.chat.Room', {
                                             iconCls: '{audioToggleIcon}'
                                         },
                                         listeners: {
-                                            click: 'onPublishAudioToggle'
+                                            tap: 'onPublishAudioToggle'
                                         }
                                     }
                                 ]
