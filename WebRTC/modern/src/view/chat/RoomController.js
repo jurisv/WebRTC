@@ -82,7 +82,7 @@ Ext.define('WebRTC.view.chat.RoomController', {
             this.getViewModel().set('inAudioCall', true);
             this.getViewModel().set('showingCamera', false);
 
-            this.fireEvent('callroom', {sessionId: sessionId, element: you.id, video: false} );
+            this.fireEvent('callroom', {sessionId: sessionId, element: you, video: false} );
         }else{
             this.onEndAudioCall(button);
         }

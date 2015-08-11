@@ -57,7 +57,7 @@ Ext.define('WebRTC.view.chat.History', {
             items: [
                 {
                     xtype:'textfield',
-                    flex:1,
+                    // flex:1,
                     name:'text',
                     reference: 'chattext',
                     listeners: {

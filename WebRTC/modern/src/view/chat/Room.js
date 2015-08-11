@@ -3,8 +3,8 @@ Ext.define('WebRTC.view.chat.Room', {
     xtype: 'chatroom',
 
     layout: {
-        type: 'vbox',
-        vertical: true,
+        type: 'box',
+        orient: 'vertical',
         align: 'stretch'
     },
 
@@ -21,20 +21,18 @@ Ext.define('WebRTC.view.chat.Room', {
                 vertical: false,
                 align: 'stretch'
             },
-            flex:4,
+            flex:3,
             items:[
                 {
                     layout: {
-                        type: 'vbox',
-                        vertical: true,
+                        type: 'box',
+                        orient: 'vertical',
                         align: 'stretch'
                     },
                     flex: 4,
-                    bodyPadding: 6,
                     items: [
                         {
                             xtype: 'chatinfo',
-                            bodyPadding: 6,
                             hidden: true
                         }, {
                             xtype: 'chathistory',
@@ -46,8 +44,8 @@ Ext.define('WebRTC.view.chat.Room', {
                 {
                     hidden: false,
                     layout: {
-                        type: 'vbox',
-                        vertical: true,
+                        type: 'box',
+                        orient: 'vertical',
                         align: 'stretch'
                     },
                     flex: 1,
@@ -128,8 +126,8 @@ Ext.define('WebRTC.view.chat.Room', {
             xtype: 'chatvideowall',
             hidden: true,
             bodyPadding: 6,
-            minHeight: 300,
-            flex: 1
+            minHeight: 350,
+            flex: 2
         }
     ]
 

@@ -71,7 +71,7 @@ Ext.define('WebRTC.OpenTokMixin', {
             },
             // fitMode:'contain',
             width: '100%',
-            height: '100%',
+            height: 250,
             showControls: true
         });
 
@@ -87,7 +87,7 @@ Ext.define('WebRTC.OpenTokMixin', {
             session = OT.getSessionById(event.target.sessionId),
             deadCmp = this.getView().down('#' + this.getSafeStreamCmpId(event.stream.id)),
             room = this.getRoomBySessionId(event.target.sessionId),
-            remotestreams = tab.down('#remotestreams');
+            remotestreams =  this.getView().down('#remotestreams');
 
         if(deadCmp){
             deadCmp.destroy();

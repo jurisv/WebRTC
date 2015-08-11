@@ -200,8 +200,8 @@ Ext.define('WebRTC.controller.OpenTok', {
             session.localPublisher = OT.initPublisher(params.element, {
                 insertMode: 'append',
                 // fitMode:'contain',
-                width: '100%',
-                height: '100%',
+                // width: '100%',
+                // height: '100%',
                 publishAudio: true,
                 publishVideo : params.video,
                 showControls: false

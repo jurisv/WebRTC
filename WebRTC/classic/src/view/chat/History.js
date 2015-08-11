@@ -21,7 +21,6 @@ Ext.define('WebRTC.view.chat.History', {
             '<td width="125" style="font-weight:100;border-bottom: solid 1px #eee;">',
             '{from}',
             '</td><td style="font-weight:400;border-bottom: solid 1px #eee;">',
-            // '{message}',
             '{[this.formatMessage(values.message)]}',
             '</td><td width="100" style="font-weight:400;border-bottom: solid 1px #eee;text-align:right;">',
             '{shortDate}',
