@@ -38,7 +38,9 @@
     "webdriverio": "^2.4.5"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "start-dev": "NODE_ENV=development && npm start",
+    "start-prod": "NODE_ENV=production && npm start"
   },
   "engines": {
     "node": "0.12.x"
