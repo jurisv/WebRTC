@@ -18,11 +18,11 @@ Ext.define('WebRTC.view.chat.History', {
         bind: {
             store: '{messages}'
         },
-        itemSelector: 'div.chat-wrap',
+        itemSelector: 'tr.chat-wrap',
         itemTpl: [
             '<table cellspacing="0" cellpadding="8" width="100%">',
             '<tpl for=".">',
-            '<tr>',
+            '<tr class="chat-wrap">',
             '<td width="125" style="font-weight:100;">',
             '{from}',
             '</td><td style="font-weight:400;">',
