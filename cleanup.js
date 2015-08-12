@@ -1,16 +1,14 @@
 console.log('cleanup started');
 
-var nconf = require('nconf'),
-    config = nconf.argv().env().file( __dirname + '/server-config.json'),
-    firebase = require('firebase'), //npm install firebase
+var firebase = require('firebase'), //npm install firebase
     firebaseTokenGenerator = require("firebase-token-generator"),  //creates a user token for remote access
-    tokenGenerator = new firebaseTokenGenerator(config.get('adminsettings').serviceprovider.firebase.SecretKey),  //secret key set in environmnet variable : do not hardcode
+    tokenGenerator = new firebaseTokenGenerator(process.env.FirebaseSecret),  //secret key set in environmnet variable : do not hardcode
     tokenExpires = new Date("01/01/2025").getTime(), // (new Date().getTime() / 1000)+(4 * 7 * 24 * 60 * 60), // in four weeks
     firebaseToken = tokenGenerator.createToken(
         {uid: "1", username: 'admin'},
         {admin: true}
     ),
-    baseRef =  new firebase( config.get('adminsettings').serviceprovider.firebase.Url );
+    baseRef =  new firebase( process.env.FirebaseUrl );
 
 var baseRooms = {
     "355e25fe-b0ac-477d-8464-a7a4b39f1149":{"apiKey":"45254262","id":"355e25fe-b0ac-477d-8464-a7a4b39f1149","isPrivate":false,"isRoom":true,"jid":"","joined":false,"myJID":"/","name":"Default Room One","nickname":"","num_participants":"","owner":"","privacy":"","sessionId":"1_MX40NTI1NDI2Mn5-MTQzODM3NjAwNDc0NX5KQ3d0R2lzc2g2MGF3cmR3Mm9XSzRRR25-UH4","topic":"","unread_messages":0,"xmpp_name":""},
