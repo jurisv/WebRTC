@@ -71,16 +71,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
         // this.onSettingsUserSelect();
         // return;
 
-        if (Ext.browser.is.Safari  || Ext.browser.is.IE ) {
-            Ext.toast({
-                html: 'We recommend Chrome for the best experience.',
-                title: 'Unsupported',
-                width: 400,
-                align: 't'
-            });
-            this.disable();
-            return true;
-        }
 
         if(!userCookie){
             Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){

@@ -27,7 +27,7 @@ Ext.define('WebRTC.controller.OpenTok', {
 
     unmetRequirements: function(){
         Ext.toast({
-            html: 'Your browser does not support WebRTC at this time.',
+            html: 'Your browser does not support WebRTC at this time. You will not be able to do Audio/Video Conferences.',
             title: 'Not Supported',
             width: 400,
             align: 't'
@@ -72,7 +72,7 @@ Ext.define('WebRTC.controller.OpenTok', {
     onSessionCreate: function(component, data, name){
 
         if (OT.checkSystemRequirements() != 1) {
-            me.unmetRequirements();
+            this.unmetRequirements();
             return false;
         }
 
@@ -151,7 +151,10 @@ Ext.define('WebRTC.controller.OpenTok', {
 
 
     onChatEmit: function(sessionId,chat){
-        var me= this,
+        //If opentok supported and session is valid then use WebRTC signals
+        if (OT.checkSystemRequirements() == 1) {
+
+            var me= this,
             session = me.getSessionById(sessionId),
             showError = function(){
                 Ext.toast({
@@ -161,20 +164,20 @@ Ext.define('WebRTC.controller.OpenTok', {
                     align: 't'
                 })};
 
-
-        if(!session){
-            showError();
-        }else{
-            session.signal({
-                type: 'chat',
-                data: {
-                    chat: chat
-                }
-            }, function (error) {
-                if (error) {
-                    showError()
-                }
-            });
+            if (!session) {
+                showError();
+            } else {
+                session.signal({
+                    type: 'chat',
+                    data: {
+                        chat: chat
+                    }
+                }, function (error) {
+                    if (error) {
+                        showError()
+                    }
+                });
+            }
         }
     },
 
@@ -191,43 +194,45 @@ Ext.define('WebRTC.controller.OpenTok', {
 
 
     onCallRoom: function(params){
-        var me = this,
-            session = me.getSessionById(params.sessionId);
+        //If opentok supported and session is valid then use WebRTC signals
+        if (OT.checkSystemRequirements() == 1) {
+            var me = this,
+                session = me.getSessionById(params.sessionId);
 
-        //can only publish one video per room
-        if(!session.localPublisher) {
+            //can only publish one video per room
+            if (!session.localPublisher) {
 
-            session.localPublisher = OT.initPublisher(params.element, {
-                insertMode: 'append',
-                // fitMode:'contain',
-                // width: '100%',
-                // height: '100%',
-                publishAudio: true,
-                publishVideo : params.video,
-                showControls: false
-            });
-
-
-            /*var movingAvg = null;
-             session.localPublisher.on('audioLevelUpdated', function(event) {
-             if (movingAvg === null || movingAvg <= event.audioLevel) {
-             movingAvg = event.audioLevel;
-             } else {
-             movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
-             }
-
-             // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
-             var logLevel = (Math.log(movingAvg) / Math.LN10) / 1.5 + 1;
-             logLevel = Math.min(Math.max(logLevel, 0), 1);
-             // console.log(logLevel);
-             // document.getElementById('publisherMeter').value = logLevel;
-             });*/
+                session.localPublisher = OT.initPublisher(params.element, {
+                    insertMode: 'append',
+                    // fitMode:'contain',
+                    // width: '100%',
+                    // height: '100%',
+                    publishAudio: true,
+                    publishVideo: params.video,
+                    showControls: false
+                });
 
 
-            session.publish(session.localPublisher);
-            // session.localPublisher.publishVideo(params.video);
+                /*var movingAvg = null;
+                 session.localPublisher.on('audioLevelUpdated', function(event) {
+                 if (movingAvg === null || movingAvg <= event.audioLevel) {
+                 movingAvg = event.audioLevel;
+                 } else {
+                 movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
+                 }
+
+                 // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
+                 var logLevel = (Math.log(movingAvg) / Math.LN10) / 1.5 + 1;
+                 logLevel = Math.min(Math.max(logLevel, 0), 1);
+                 // console.log(logLevel);
+                 // document.getElementById('publisherMeter').value = logLevel;
+                 });*/
+
+
+                session.publish(session.localPublisher);
+                // session.localPublisher.publishVideo(params.video);
+            }
         }
-
     },
 
 
@@ -287,68 +292,75 @@ Ext.define('WebRTC.controller.OpenTok', {
 
 
     onResumeRoom: function(sessionId){
-        var me = this,
-            session = me.getSessionById(sessionId);
+        //If opentok supported and session is valid then use WebRTC signals
+        if (OT.checkSystemRequirements() == 1) {
+            var me = this,
+                session = me.getSessionById(sessionId);
 
-        if(session){
-            Ext.each(session.localSubscriptions,function(subscriber){
-                if(Ext.isFunction(subscriber.subscribeToAudio)){
-                    subscriber.subscribeToAudio(true);
-                }
-            });
-
-            if(session.localPublisher){
-                var stream = session.localPublisher.stream;
-                if(stream.hadAudio){
-                    if( Ext.isFunction(session.localPublisher.publishAudio) ) {
-                        session.localPublisher.publishAudio(true);
+            if (session) {
+                Ext.each(session.localSubscriptions, function (subscriber) {
+                    if (Ext.isFunction(subscriber.subscribeToAudio)) {
+                        subscriber.subscribeToAudio(true);
                     }
-                }
-                if(stream.hadVideo){
-                    if( Ext.isFunction(session.localPublisher.publishVideo) ) {
-                       session.localPublisher.publishVideo(true);
+                });
+
+                if (session.localPublisher) {
+                    var stream = session.localPublisher.stream;
+                    if (stream.hadAudio) {
+                        if (Ext.isFunction(session.localPublisher.publishAudio)) {
+                            session.localPublisher.publishAudio(true);
+                        }
+                    }
+                    if (stream.hadVideo) {
+                        if (Ext.isFunction(session.localPublisher.publishVideo)) {
+                            session.localPublisher.publishVideo(true);
+                        }
                     }
                 }
             }
         }
-
     },
 
     onPauseRoom: function(sessionId){
-        var me = this,
-            session = me.getSessionById(sessionId);
+        //If opentok supported and session is valid then use WebRTC signals
+        if (OT.checkSystemRequirements() == 1) {
+            var me = this,
+                session = me.getSessionById(sessionId);
 
-        if(session){
-            Ext.each(session.localSubscriptions,function(subscriber){
-                if(Ext.isFunction(subscriber.subscribeToAudio)) {
-                    subscriber.subscribeToAudio(false);
-                }
-            });
-
-            if(session.localPublisher){
-                var stream = session.localPublisher.stream;
-                if(stream.hasAudio){
-                    stream.hadAudio = stream.hasAudio;
-                    if( Ext.isFunction(session.localPublisher.publishAudio) ) {
-                        session.localPublisher.publishAudio(false);
+            if (session) {
+                Ext.each(session.localSubscriptions, function (subscriber) {
+                    if (Ext.isFunction(subscriber.subscribeToAudio)) {
+                        subscriber.subscribeToAudio(false);
                     }
-                }
-                if(stream.hasVideo){
-                    stream.hadVideo = stream.hasVideo;
-                    if( Ext.isFunction(session.localPublisher.publishVideo) ) {
-                        session.localPublisher.publishVideo(false);
+                });
+
+                if (session.localPublisher) {
+                    var stream = session.localPublisher.stream;
+                    if (stream.hasAudio) {
+                        stream.hadAudio = stream.hasAudio;
+                        if (Ext.isFunction(session.localPublisher.publishAudio)) {
+                            session.localPublisher.publishAudio(false);
+                        }
+                    }
+                    if (stream.hasVideo) {
+                        stream.hadVideo = stream.hasVideo;
+                        if (Ext.isFunction(session.localPublisher.publishVideo)) {
+                            session.localPublisher.publishVideo(false);
+                        }
                     }
                 }
             }
         }
-
     },
 
     onCloseRoom: function(sessionId){
-        //stop broadcasting if we were when we closed
-        this.onUnpublish(sessionId);
-        //close out all the remaining session stuff.
-        this.removeSession(sessionId);
+        //If opentok supported and session is valid then use WebRTC signals
+        if (OT.checkSystemRequirements() == 1) {
+            //stop broadcasting if we were when we closed
+            this.onUnpublish(sessionId);
+            //close out all the remaining session stuff.
+            this.removeSession(sessionId);
+        }
     },
 
 

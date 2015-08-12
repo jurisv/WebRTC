@@ -51,15 +51,22 @@ Ext.define('WebRTC.view.chat.Room', {
                     flex: 1,
                     items: [
                         {
-                            items:[{
+                            items:[
+                            {
                                 style: 'display: block; background-color:#eeeeee; background-image: url(https://static.opentok.com/webrtc/v2.6.0/images/rtc/audioonly-silhouette.svg); background-position: center bottom; background-repeat: no-repeat; background-size: auto 76%;',
                                 xtype: 'container',
                                 layout: 'fit',
                                 minHeight: 180,
+                                bind:{
+                                    hidden: '{!isWebRTCSupported}'
+                                },
                                 reference: 'you'
                             },{
                                 xtype: 'toolbar',
                                 docked: 'bottom',
+                                bind:{
+                                    hidden: '{!isWebRTCSupported}'
+                                },
                                 items: [
                                     {
                                         bind: {

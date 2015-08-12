@@ -64,6 +64,9 @@ Ext.define('WebRTC.view.chat.Room', {
                                 minHeight: 180,
                                 reference: 'you'
                             },
+                            bind:{
+                                hidden: '{!isWebRTCSupported}'
+                            },
                             bodyPadding: 6,
                             bbar: [
                                 {
@@ -115,7 +118,6 @@ Ext.define('WebRTC.view.chat.Room', {
                             title: 'Files',
                             hidden: true,
                             reference: 'chatfiles',
-                            // xtype: 'chatattachments',
                             iconCls: 'x-fa fa-paperclip',
                             flex: 1
                         }

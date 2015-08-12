@@ -15,7 +15,6 @@ Ext.define('WebRTC.view.chat.RoomModel', {
         }
     },
 
-    // todo: remove messages and members and place as associated data stores of the room model.
     stores:{
         messages: {
             model: 'WebRTC.model.chat.Message',
@@ -65,6 +64,18 @@ Ext.define('WebRTC.view.chat.RoomModel', {
             }else{
                 return true;
             }
+        },
+        isWebRTCSupported: function(get){
+            if (Ext.browser.is.Safari  || Ext.browser.is.IE ) {
+                return false;
+            }else{
+                if( !!window.webkitRTCPeerConnection || !!window.mozRTCPeerConnection ) {
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+
         }
     }
 
