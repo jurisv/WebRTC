@@ -58,7 +58,7 @@ Ext.define('WebRTC.controller.SoundLibrary', {
 
         if (!sound) return;
 
-        soundLibrary.setData(sound);
+        soundLibrary.setData(sound.data);
 
         audio = soundLibrary.getMedia().dom;
         if(audio){
