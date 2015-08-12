@@ -1,0 +1,27 @@
+{
+	"data": [
+		{
+			"id": "none"
+		},
+		{
+			"id": "whistle",
+			"mp3": "static/audio/whistle.mp3",
+			"ogg": "static/audio/whistle.ogg"
+		},
+		{
+			"id": "notification",
+			"mp3": "static/audio/NewNotification21.mp3",
+			"wav": "static/audio/NewNotification21.wav"
+		},
+		{
+		  "id": "IncomingSignal011",
+		  "mp3": "static/audio/SFXIncomingSignal01-01.mp3",
+		  "wav": "static/audio/SFXIncomingSignal01-01.wav"
+		},
+		{
+		  "id": "IncomingSignal012",
+		  "mp3": "static/audio/SFXIncomingSignal01-02.mp3",
+		  "wav": "static/audio/SFXIncomingSignal01-02.wav"
+		}
+	]
+}
