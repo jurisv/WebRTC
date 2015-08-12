@@ -158,6 +158,10 @@ Ext.define('WebRTC.view.chat.RoomController', {
             this.fireEvent('showPublisherVideo', sessionId);
         }
 
+    },
+
+    onMessagesLoad: function(){
+        this.fireEvent('playsound','chat-sound');
     }
 
 });

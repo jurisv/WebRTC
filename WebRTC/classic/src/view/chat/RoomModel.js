@@ -22,7 +22,10 @@ Ext.define('WebRTC.view.chat.RoomModel', {
                 {property: 'date', diection: 'DESC'}
             ],
             autoSync: true,
-            autoLoad: true
+            autoLoad: true,
+            listeners: {
+                load: 'onMessagesLoad'
+            }
         },
         members: {
             model:'WebRTC.model.chat.RoomMember',
