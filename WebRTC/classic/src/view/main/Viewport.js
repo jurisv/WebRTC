@@ -80,7 +80,7 @@ Ext.define('WebRTC.view.main.Viewport', {
             },
             handler: 'onSettingsAdminSelect'
         },{
-            style:'background-image: url(/resources/images/TokBoxIcon.png) !important; background-size: 29px 29px; background-repeat: no-repeat; ',
+            style:'background-image: url(/static/images/TokBoxIcon.png) !important; background-size: 29px 29px; background-repeat: no-repeat; ',
             plain: true,
             listeners: {
                 click: 'onLogoClick'

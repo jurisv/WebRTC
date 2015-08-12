@@ -448,7 +448,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
             modal: true,
             items: {
                 xtype: 'panel',
-                html: '<a href="http://www.sencha.com/services/" target="_blank" ><img src="/resources/images/About.png" border=0 ></a> ',
+                html: '<a href="http://www.sencha.com/services/" target="_blank" ><img src="/static/images/About.png" border=0 ></a> ',
                 border: false
 
             }

@@ -5,7 +5,7 @@ Ext.define('WebRTC.store.Sounds', {
     fields: ['id', 'wav', 'mp3', 'ogg'],
     proxy: {
         type: 'ajax',
-        url: '/resources/sounds.json',
+        url: '/static/sounds.json',
         reader: {
             type: 'json',
             rootProperty: 'data'
