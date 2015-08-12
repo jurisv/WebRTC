@@ -30,10 +30,11 @@ Ext.define('WebRTC.OpenTokMixin', {
         if(tab){
             var member = Ext.create('WebRTC.model.chat.RoomMember',{
                 name: name,
+                user_id: event.connection.connectionId,
                 id: event.connection.connectionId
             });
 
-            tab.getController().roomMemberAdd(member);
+           tab.getController().roomMemberAdd(member);
         }
     },
 

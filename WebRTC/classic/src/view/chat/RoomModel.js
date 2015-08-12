@@ -29,6 +29,10 @@ Ext.define('WebRTC.view.chat.RoomModel', {
         },
         members: {
             model:'WebRTC.model.chat.RoomMember',
+            sorters:[
+                {property: 'name', diection: 'ASC'}
+            ],
+            autoSync: true,
             autoLoad: true
         }
     },

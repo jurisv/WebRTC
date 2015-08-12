@@ -1,21 +1,28 @@
 Ext.define('WebRTC.view.chat.Members', {
     extend: 'Ext.Panel',
     xtype: 'chatmembers',
-    autoScroll: true,
+
     bodyPadding: 10,
+    layout:'fit',
+
     items:[{
         xtype:'dataview',
+        autoScroll: true,
+        loadMask: false,
         bind:{
           store: '{members}'
         },
-        itemSelector: 'div.member-wrap',
+        itemSelector: 'tr.member-wrap',
         tpl: [
+            '<table cellspacing="0" cellpadding="8" width="100%">',
             '<tpl for=".">',
-            '<div style="margin-bottom: 10px;" class="member-wrap">',
+            '<tr class="member-wrap">',
+            '<td width="125" style="font-weight:100;border-bottom: solid 1px #eee;">',
             '<span class="x-fa fa-user" title="{name}"> </span> {name}',
-            '<br/>',
-            '</div>',
-            '</tpl>'
+            '</td>',
+            '</tr>',
+            '</tpl>',
+            '</table>'
         ]
     }]
 

@@ -241,9 +241,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 roomtabs.remove(childPanel, true);
             });
 
-            // Ext.suspendLayouts();
             tab = roomtabs.insert(0, room);
-            // Ext.resumeLayouts(true);
 
             // Notify TokBox in this case
             me.fireEvent('joinroom', tab, record.data, name);
@@ -251,6 +249,18 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
         tab.getViewModel().set('room', record);
         tab.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
+
+        /*
+        tab.getViewModel().getStore('members').getProxy().getExtraParams().room = id;
+
+        var member = Ext.create('WebRTC.model.chat.RoomMember',{
+            roomid: id,
+            user_id: this.getViewModel().get('user').id,
+            name: this.getViewModel().get('name')
+        });
+
+        tab.getController().roomMemberAdd(member);
+        */
 
         roomtabs.setActiveTab(tab);
 
@@ -268,19 +278,26 @@ Ext.define('WebRTC.view.main.ViewportController', {
         var record = combo.getSelection(),
             name = me.getViewModel().get('name');
 
-        //   this.fireEvent('joinroom',tab, record.data, name) ;
         this.fireEvent('resumeroom',sessionId);
     },
 
     onRoomDeactivate: function(tab){
-        var sessionId = tab.getViewModel().get('room').get('sessionId');
+        var sessionId = tab.getViewModel().get('room').get('sessionId'),
+            userId = this.getViewModel().get('user').id;
+
+        // tab.getController().roomMemberRemove(userId);
+
         this.fireEvent('pauseroom',sessionId);
     },
 
     onRoomClose: function(tab){
         var sessionId = tab.getViewModel().get('room').get('sessionId'),
+            userId = this.getViewModel().get('user').id,
             combo = this.lookupReference('roomscombo');
         combo.reset();
+
+       // tab.getController().roomMemberRemove(userId);
+
         this.fireEvent('closeroom',sessionId);
     },
 
