@@ -293,60 +293,59 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRoomEdit: function(){
-        var record = this.lookupReference('roomscombo').getSelection();
+        var me = this,
+            navView = me.getView(),
+            record = this.getViewModel().get('room'),
+            form = {
+                title: 'Edit Room',
+                iconCls: 'x-fa fa-plus-square fa-lg',
+                layout: 'fit',
+                viewModel:{
+                    data:{
+                        theRoom: record
+                    }
+                },
+                items: {
+                    xtype: 'chatroomform',
+                    border: false
 
-        Ext.create('Ext.window.Window', {
-            title: 'Edit Room',
-            iconCls: 'x-fa fa-plus-square fa-lg',
-            height: 400,
-            width: 800,
-            layout: 'fit',
-            resizable: true,
-            modal: true,
-            viewModel:{
-                data:{
-                    theRoom: record
                 }
-            },
-            items: {
-                xtype: 'chatroomform',
-                border: false
+            };
 
-            }
-        }).show();
-
-
+        navView.push(form);
     },
 
     onRoomRemove: function(){
-        var record = this.lookupReference('roomscombo').getSelection();
+        var record = this.getViewModel().get('room');
 
         if(record){
             var store = this.getViewModel().getStore('rooms');
-            // theRecord = this.getViewModel().getStore('rooms').findBy(record);
             this.getViewModel().getStore('rooms').remove(record);
-            Ext.Msg.wait('Removing', 'Removing room...');
+
             store.sync({
                 scope: this,
                 callback: this.onComplete
             });
+
+            this.getView().pop();
         }
 
     },
 
     onSettingsUserSelect: function(){
-        Ext.create('Ext.window.Window', {
-            title: 'User Settings',
-            iconCls: 'x-fa fa-user fa-lg',
-            height: 400,
-            width: 600,
-            layout: 'fit',
-            items: {
-                xtype: 'settingsuser',
-                border: false
+        var me = this,
+            navView = me.getView(),
+            form = {
+                title: 'User Settings',
+                iconCls: 'x-fa fa-user fa-lg',
+                layout: 'fit',
+                items: {
+                    xtype: 'settingsuser',
+                    border: false
 
-            }
-        }).show();
+                }
+            };
+        navView.push(form);
     },
 
     onSettingsAdminSelect: function(){
@@ -357,21 +356,20 @@ Ext.define('WebRTC.view.main.ViewportController', {
         WebRTC.model.AdminSettings.load(0,{
             success: function(record,operation){
 
-                Ext.create('Ext.window.Window', {
+                var navView = me.getView(),
+                    form = {
                     title: 'Admin Settings',
                     iconCls: 'x-fa fa-gear fa-lg',
-                    height: 500,
-                    width: 400,
                     layout: 'fit',
-                    modal: true,
                     items: {
                         xtype: 'settingsadmin',
 
                         border: false
 
                     }
-                }).show();
+                };
 
+                navView.push(form);
             }
         });
     },
@@ -379,14 +377,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
     onSettingsAdminOkClick: function(button){
 
         var me = this,
-            window = button.up('window'),
-            form = window.down('form'),
+            form = button.up('panel'),
             data = form.getValues();
 
 
-        if (form.isValid()) {
+        if ( 1==1 ) {
 
-            Ext.Msg.wait('Saving', 'Saving initial settings...');
             var record = form.getViewModel().data.adminSettings;
 
             form.updateRecord(record);
@@ -402,28 +398,25 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRoomFormOkClick: function(button) {
-        var window = button.up('window'),
-            form = window.down('form'),
+        var form = button.up('panel'),
             data = form.getValues(),
             store = this.getViewModel().getStore('rooms');
 
-        if (form.isValid()) {
+        if ( 1 == 1  ) {
 
             //If there is no view model created then it is new otherwise the model has the record
-            if ( window.getViewModel() )
+            if ( form.getViewModel() )
             {
-                var record = window.getViewModel().get('theRoom');
-                Ext.Msg.wait('Saving', 'Saving room...');
-                form.up('window').close();
+                var record = panel.getViewModel().get('theRoom');
+                button.up('navigationview').pop();
                 record.save({
                     scope: this,
                     callback: this.onComplete
                 });
 
             } else {
-                Ext.Msg.wait('Creating', 'Creating room...');
                 store.add(data);
-                form.up('window').close();
+                button.up('navigationview').pop();
                 store.sync({
                     scope: this,
                     callback: this.onComplete
@@ -433,32 +426,25 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onComplete: function() {
-        var title = Ext.Msg.getTitle();
-        Ext.Msg.hide();
 
-        Ext.toast({
-            title: title,
-            html:  'Finished successfully',
-            align: 't',
-            bodyPadding: 10
-        });
     },
 
     onLogoClick: function(record){
-        Ext.create('Ext.window.Window', {
-            title: 'About',
-            iconCls: 'x-fa fa-info-circle fa-lg',
-            height: 640,
-            width: 600,
-            layout: 'fit',
-            modal: true,
-            items: {
-                xtype: 'panel',
-                html: '<a href="http://www.sencha.com/services/" target="_blank" ><img src="/resources/images/About.png" border=0 ></a> ',
-                border: false
+        var me = this,
+            navView = me.getView(),
+            form = {
+                title: 'About',
+                iconCls: 'x-fa fa-info-circle fa-lg',
+                layout: 'fit',
+                items: {
+                    xtype: 'panel',
+                    html: '<a href="http://www.sencha.com/services/" target="_blank" ><img src="/resources/images/About.png" border=0 ></a> ',
+                    border: false
 
-            }
-        }).show();
+                }
+            };
+
+        navView.push(form);
     }
 
 });

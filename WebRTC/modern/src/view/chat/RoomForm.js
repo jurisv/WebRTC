@@ -26,13 +26,13 @@ Ext.define('WebRTC.view.chat.RoomForm', {
                     bind: '{theRoom.id}'
                 },{
                     xtype:'textfield',
-                    fieldLabel: 'Room Name',
+                    label: 'Room Name',
                     name: 'name',
                     bind: '{theRoom.name}'
                 },
                 {
                     xtype:'checkboxfield',
-                    boxLabel  : 'Private',
+                    label  : 'Private',
                     name      : 'private',
                     bind: '{theRoom.isPrivate}',
                     inputValue: '1'
@@ -40,8 +40,9 @@ Ext.define('WebRTC.view.chat.RoomForm', {
             ]
         },{
             xtype:'textfield',
-            fieldLabel: 'OpenTok SessionId',
+            label: 'OpenTok SessionId',
             name: 'sessionId',
+            hidden: true,
             disabled: true,
             bind: '{theRoom.id}'
         },{
@@ -63,11 +64,6 @@ Ext.define('WebRTC.view.chat.RoomForm', {
                     text:'OK'
                 }]
         }
-    ],
-
-
-    bbar:[
-
     ]
 
 });

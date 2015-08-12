@@ -39,6 +39,9 @@ Ext.define('WebRTC.view.main.ViewportModel', {
         },
         isRoomSelected: function (get) {
             return get('room') != null ;    //edit allowed only when selected
+        },
+        isDesktop: function(get){
+            return Ext.os.deviceType == 'Desktop'
         }
     }
 });
