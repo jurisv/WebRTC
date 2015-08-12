@@ -39,8 +39,8 @@
   },
   "scripts": {
     "start": "node server.js",
-    "start-dev": "NODE_ENV=development && npm start",
-    "start-prod": "NODE_ENV=production && npm start"
+    "start-dev": "NODE_ENV=development npm start",
+    "start-prod": "NODE_ENV=production npm start"
   },
   "engines": {
     "node": "0.12.x"
