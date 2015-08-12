@@ -23,13 +23,13 @@ Ext.define('WebRTC.view.main.ViewportController', {
         },
         component:{
             'chatroomform button[action=ok]':{
-              //  click: 'onRoomFormOkClick'
+              tap: 'onRoomFormOkClick'
             },
             'app-main':{
                 activeitemchange: 'onRoomClose'
             },
             'settingsadmin button[action=ok]':{
-                //click: 'onSettingsAdminOkClick'
+                tap: 'onSettingsAdminOkClick'
             }
         }
     },
@@ -243,6 +243,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
         if(newItem.referenceKey == 'roomsgrid' ){
             var sessionId = oldItem.sessionId;
             this.fireEvent('closeroom',sessionId);
+            this.getViewModel().set('room', null);
             newItem.deselectAll();
         }
     },
@@ -254,12 +255,14 @@ Ext.define('WebRTC.view.main.ViewportController', {
         var me = this,
             navView = me.getView(),
             id = record.get('id'),
+            roomName = record.get('name'),
             name = me.getViewModel().get('name'),
             room;
 
 
         room = Ext.create({
             xtype: 'chatroom',
+            title: roomName,
             closable: true,
             iconCls: 'x-fa fa-comments',
             roomId: id,
@@ -267,14 +270,205 @@ Ext.define('WebRTC.view.main.ViewportController', {
         });
 
         navView.push(room);
+        navView.getViewModel().set('room', record);
 
         room.getViewModel().set('room', record);
         room.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
+
+        // room.setBind({ title: '{room.name}'});
 
         // Notify TokBox in this case
         me.fireEvent('joinroom', room, record.data, name);
 
 
 
+    },
+
+    onRoomAdd: function(){
+        var me = this,
+            navView = me.getView(),
+            form = {
+                title: 'Add Room',
+                iconCls: 'x-fa fa-plus-square fa-lg',
+                layout: 'fit',
+                items: {
+                    xtype: 'chatroomform',
+                    border: false
+
+                }
+            };
+
+        navView.push(form);
+
+    },
+
+    onRoomEdit: function(){
+        var record = this.lookupReference('roomscombo').getSelection();
+
+        Ext.create('Ext.window.Window', {
+            title: 'Edit Room',
+            iconCls: 'x-fa fa-plus-square fa-lg',
+            height: 400,
+            width: 800,
+            layout: 'fit',
+            resizable: true,
+            modal: true,
+            viewModel:{
+                data:{
+                    theRoom: record
+                }
+            },
+            items: {
+                xtype: 'chatroomform',
+                border: false
+
+            }
+        }).show();
+
+
+    },
+
+    onRoomRemove: function(){
+        var record = this.lookupReference('roomscombo').getSelection();
+
+        if(record){
+            var store = this.getViewModel().getStore('rooms');
+            // theRecord = this.getViewModel().getStore('rooms').findBy(record);
+            this.getViewModel().getStore('rooms').remove(record);
+            Ext.Msg.wait('Removing', 'Removing room...');
+            store.sync({
+                scope: this,
+                callback: this.onComplete
+            });
+        }
+
+    },
+
+    onSettingsUserSelect: function(){
+        Ext.create('Ext.window.Window', {
+            title: 'User Settings',
+            iconCls: 'x-fa fa-user fa-lg',
+            height: 400,
+            width: 600,
+            layout: 'fit',
+            items: {
+                xtype: 'settingsuser',
+                border: false
+
+            }
+        }).show();
+    },
+
+    onSettingsAdminSelect: function(){
+
+        var me = this;
+
+        //Theres only one setting but the REST API needs and id.
+        WebRTC.model.AdminSettings.load(0,{
+            success: function(record,operation){
+
+                Ext.create('Ext.window.Window', {
+                    title: 'Admin Settings',
+                    iconCls: 'x-fa fa-gear fa-lg',
+                    height: 500,
+                    width: 400,
+                    layout: 'fit',
+                    modal: true,
+                    items: {
+                        xtype: 'settingsadmin',
+
+                        border: false
+
+                    }
+                }).show();
+
+            }
+        });
+    },
+
+    onSettingsAdminOkClick: function(button){
+
+        var me = this,
+            window = button.up('window'),
+            form = window.down('form'),
+            data = form.getValues();
+
+
+        if (form.isValid()) {
+
+            Ext.Msg.wait('Saving', 'Saving initial settings...');
+            var record = form.getViewModel().data.adminSettings;
+
+            form.updateRecord(record);
+
+            record.save({
+                scope: this,
+                callback: this.onComplete
+            });
+            form.up('window').close();
+        }
+
+
+    },
+
+    onRoomFormOkClick: function(button) {
+        var window = button.up('window'),
+            form = window.down('form'),
+            data = form.getValues(),
+            store = this.getViewModel().getStore('rooms');
+
+        if (form.isValid()) {
+
+            //If there is no view model created then it is new otherwise the model has the record
+            if ( window.getViewModel() )
+            {
+                var record = window.getViewModel().get('theRoom');
+                Ext.Msg.wait('Saving', 'Saving room...');
+                form.up('window').close();
+                record.save({
+                    scope: this,
+                    callback: this.onComplete
+                });
+
+            } else {
+                Ext.Msg.wait('Creating', 'Creating room...');
+                store.add(data);
+                form.up('window').close();
+                store.sync({
+                    scope: this,
+                    callback: this.onComplete
+                });
+            }
+        }
+    },
+
+    onComplete: function() {
+        var title = Ext.Msg.getTitle();
+        Ext.Msg.hide();
+
+        Ext.toast({
+            title: title,
+            html:  'Finished successfully',
+            align: 't',
+            bodyPadding: 10
+        });
+    },
+
+    onLogoClick: function(record){
+        Ext.create('Ext.window.Window', {
+            title: 'About',
+            iconCls: 'x-fa fa-info-circle fa-lg',
+            height: 640,
+            width: 600,
+            layout: 'fit',
+            modal: true,
+            items: {
+                xtype: 'panel',
+                html: '<a href="http://www.sencha.com/services/" target="_blank" ><img src="/resources/images/About.png" border=0 ></a> ',
+                border: false
+
+            }
+        }).show();
     }
+
 });
