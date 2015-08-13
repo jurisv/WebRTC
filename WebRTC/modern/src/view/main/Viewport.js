@@ -97,7 +97,7 @@ Ext.define('WebRTC.view.main.Viewport', {
             itemTpl: [
                 '<tpl for=".">',
                 '<div style="font-size:16px; margin-bottom: 10px;padding:10px;border-bottom: solid 1px #909090;" class="room-wrap">',
-                '<span class="x-fa fa-users fa-lg" title="{name}"> </span>{name}',
+                '<span class="x-fa fa-comments fa-lg" title="{name}"> </span>{name}',
                 '<br/>',
                 '</div>',
                 '</tpl>'

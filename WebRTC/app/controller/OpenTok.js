@@ -72,7 +72,7 @@ Ext.define('WebRTC.controller.OpenTok', {
     onSessionCreate: function(component, data, name){
 
         if (OT.checkSystemRequirements() != 1) {
-            this.unmetRequirements();
+           // this.unmetRequirements();
             return false;
         }
 
