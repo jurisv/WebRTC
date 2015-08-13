@@ -90,7 +90,7 @@ Ext.define('WebRTC.view.main.Viewport', {
             ]
         },
         {
-            xtype: 'list',
+            xtype: 'dataview',
             title: 'Rooms',
             reference: 'roomsgrid',
             itemSelector: 'div.room-wrap',
