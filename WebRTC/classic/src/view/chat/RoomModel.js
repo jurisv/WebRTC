@@ -33,7 +33,12 @@ Ext.define('WebRTC.view.chat.RoomModel', {
                 {property: 'name', diection: 'ASC'}
             ],
             autoSync: true,
-            autoLoad: true
+            autoLoad: true,
+            listeners: {
+                load: function(){
+                    console.log('roommembers loaded')
+                }
+            }
         }
     },
     formulas:{

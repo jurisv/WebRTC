@@ -5,16 +5,26 @@ Ext.define('WebRTC.view.main.ViewportModel', {
     data: {
         name: null,                     // set cookie on init
         user: null,                     // set cookie on init
-        room: null                      // ?? perhaps delete
+        room: null,
+        authToken: 'myAuthTokenHere'
     },
     stores: {
         rooms: {
             model: 'WebRTC.model.chat.Room',
             storeId: 'rooms',
             sorters: 'name',
-            grouper: {
-                groupFn: function(record) {
-                    return record.get('name')[0];
+            proxy: {
+                type: 'socketio',
+                url : '/rooms',
+                extraParams: '{getAuthToken}',
+                apiEvents: {
+                    read: 'child_added',
+                    update: 'child_changed',
+                    destroy: 'child_removed'
+                },
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data'
                 }
             },
             filters: [
@@ -42,6 +52,18 @@ Ext.define('WebRTC.view.main.ViewportModel', {
         },
         isDesktop: function(get){
             return Ext.os.deviceType == 'Desktop'
+        },
+        getAuthToken: function (get) {
+            if( get('authToken') ){
+                return {
+                    authToken: get('authToken')
+                };
+            }else{
+                // AuthToken not set could route to login code??
+                return {
+                    authToken: null
+                };
+            }
         }
     }
 });

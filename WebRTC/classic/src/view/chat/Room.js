@@ -74,6 +74,7 @@ Ext.define('WebRTC.view.chat.Room', {
                                         disabled: '{inVideoCall}',
                                         iconCls: '{audioCallIcon}'
                                     },
+                                    tooltip: 'Toggle Audio Pubish',
                                     listeners: {
                                         click: 'onAudioCallRoom'
                                     }
@@ -83,6 +84,7 @@ Ext.define('WebRTC.view.chat.Room', {
                                         disabled: '{inAudioCall}',
                                         iconCls: '{videoCallIcon}'
                                     },
+                                    tooltip: 'Toggle Video Pubish',
                                     listeners: {
                                         click: 'onVideoCallRoom'
                                     }
@@ -90,6 +92,7 @@ Ext.define('WebRTC.view.chat.Room', {
                                 , '->',
                                 {
                                     iconCls: 'x-fa fa-eye',
+                                    tooltip: 'Toggle Camera',
                                     bind: {
                                         disabled: '{!inVideoCall}',
                                         iconCls: '{videoToggleIcon}'
@@ -99,6 +102,7 @@ Ext.define('WebRTC.view.chat.Room', {
                                     }
                                 }, {
                                     iconCls: 'x-fa fa-microphone',
+                                    tooltip: 'Toggle Microphone',
                                     bind: {
                                         disabled: '{isMicDisabled}',
                                         iconCls: '{audioToggleIcon}'

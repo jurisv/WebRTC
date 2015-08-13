@@ -237,6 +237,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
             Ext.each(roomtabs.items.items, function(childPanel) {
                 var sessionId = childPanel.getViewModel().get('room').get('sessionId');
+                // childPanel.getViewModel().getStore('members').getProxy().socket.emit('leave',sessionId)
                 me.fireEvent('closeroom',sessionId);
                 roomtabs.remove(childPanel, true);
             });

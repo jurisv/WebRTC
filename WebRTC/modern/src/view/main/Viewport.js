@@ -20,7 +20,7 @@ Ext.define('WebRTC.view.main.Viewport', {
         'Ext.Menu'
     ],
 
-//    useTitleForBackButtonText: true,
+    // useTitleForBackButtonText: true,
 
     items: [{
             xtype : 'toolbar',
@@ -89,11 +89,19 @@ Ext.define('WebRTC.view.main.Viewport', {
     ]
     },
     {
-        xtype: 'list',
+        xtype: 'dataview',
         title: 'Rooms',
         fullscreen: true,
         reference: 'roomsgrid',
-        itemTpl: '{name}',
+        itemSelector: 'div.room-wrap',
+        itemTpl: [
+            '<tpl for=".">',
+            '<div style="font-size:16px; margin-bottom: 10px;padding:10px;border-bottom: solid 1px #909090;" class="room-wrap">',
+            '<span class="x-fa fa-users fa-lg" title="{name}"> </span>{name}',
+            '<br/>',
+            '</div>',
+            '</tpl>'
+        ],
         bind:{
             store: '{rooms}'
         },
