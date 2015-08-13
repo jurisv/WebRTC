@@ -12,6 +12,8 @@ Ext.define('WebRTC.Application', {
         'WebRTC.*'
     ],
 
+    defaultToken : 'home',
+
     controllers:[
       'OpenTok',
       'SoundLibrary'

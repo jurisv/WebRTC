@@ -8,6 +8,13 @@ Ext.define('WebRTC.view.main.ViewportController', {
         'Ext.window.Toast'
     ],
 
+    routes : {
+        'room/:id' : {
+            before  : 'onBeforeRoomRoute',
+            action  : 'onRoomRoute'
+        }
+    },
+
     listen: {
         controller: {
             'opentok': {
@@ -18,6 +25,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 streamdestroyed : 'onOTStreamDestroyed',
                 sessionconnected : 'onOTSessionConnected',
                 sessiondisconnect : 'onOTSessionDestroyed'
+            },
+            '#' : {
+                unmatchedroute : 'onUnmatchedRoute'
             }
         },
         component:{
@@ -251,6 +261,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
         tab.getViewModel().set('room', record);
         tab.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
 
+        this.redirectTo('room/' + id);
+
         /*
         tab.getViewModel().getStore('members').getProxy().getExtraParams().room = id;
 
@@ -461,6 +473,32 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
             }
         }).show();
+    },
+
+    onBeforeRoomRoute : function(id, action) {
+        console.log('check permission to route to room ' + id)
+        action.resume();
+
+        /*Ext.Ajax.request({
+            url     : '/security/user/' + id,
+            success : function() {
+                action.resume();
+            },
+            failure : function() {
+                action.stop();
+            }
+        });*/
+    },
+
+    onRoomRoute: function(id){
+        console.log('Route to room' + id)
+    },
+
+    onUnmatchedRoute:function(route){
+        var me = this;
+        var nextview  = window.location.hash.substring(1);
+        console.log(nextview);
+        //me.setCurrentView(nextview);
     }
 
 });
