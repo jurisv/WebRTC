@@ -6,7 +6,7 @@ Ext.define('WebRTC.view.main.ViewportModel', {
         name: null,                     // set cookie on init
         user: null,                     // set cookie on init
         room: null,
-        authToken: 'myAuthTokenHere'
+        authToken: 'myAuthTokenHere'    // This would be a user auth token like auth0 or  oAuth
     },
     stores: {
         rooms: {
@@ -56,7 +56,7 @@ Ext.define('WebRTC.view.main.ViewportModel', {
                     authToken: get('authToken')
                 };
             }else{
-                // AuthToken not set could route to login code??
+                // no AuthToken could route to login code??
                 return {
                     authToken: null
                 };

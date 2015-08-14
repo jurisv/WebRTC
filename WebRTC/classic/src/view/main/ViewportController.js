@@ -10,8 +10,19 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     routes : {
         'room/:id' : {
-            before  : 'onBeforeRoomRoute',
-            action  : 'onRoomRoute'
+            before  : 'onRouteBeforeRoom',
+            action  : 'onRouteRoom'
+        },
+        'token' : {
+            before  : 'onRouteBeforeToken',
+            action  : 'onRouteToken'
+        },
+        'user' : {
+            action  : 'onRouteUser'
+        },
+        'settings' : {
+            before  : 'onRouteBeforeSettings',
+            action  : 'onRouteSettings'
         }
     },
 
@@ -27,7 +38,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 sessiondisconnect : 'onOTSessionDestroyed'
             },
             '#' : {
-                unmatchedroute : 'onUnmatchedRoute'
+                unmatchedroute : 'onRouteUnmatched'
             }
         },
         component:{
@@ -135,6 +146,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }
     },
 
+
     selectFirstRoom: function () {
         var selection,
             combo = this.lookupReference('roomscombo'),
@@ -166,17 +178,27 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }
     },
 
+
     onRoomAdd: function(){
         Ext.create('Ext.window.Window', {
             title: 'Add Room',
             iconCls: 'x-fa fa-plus-square fa-lg',
-            height: 250,
+            height: 400,
             width: 800,
             layout: 'fit',
+            resizable: true,
+            modal: true,
+            viewModel:{
+                data:{
+                    theRoom: {
+                        id: null,
+                        isPrivate: false
+                    }
+                }
+            },
             items: {
                 xtype: 'chatroomform',
                 border: false
-
             }
         }).show();
     },
@@ -314,6 +336,36 @@ Ext.define('WebRTC.view.main.ViewportController', {
         this.fireEvent('closeroom',sessionId);
     },
 
+    onRoomFormOkClick: function(button) {
+        var window = button.up('window'),
+            form = window.down('form'),
+            data = form.getValues(),
+            store = this.getViewModel().getStore('rooms');
+
+        if (form.isValid()) {
+
+            //If there is no view model created then it is new otherwise the model has the record
+            if ( window.getViewModel().get('id') != null )
+            {
+                var record = window.getViewModel().get('theRoom');
+                Ext.Msg.wait('Saving', 'Saving room...');
+                form.up('window').close();
+                record.save({
+                    scope: this,
+                    callback: this.onComplete
+                });
+
+            } else {
+                Ext.Msg.wait('Creating', 'Creating room...');
+                store.add(data);
+                form.up('window').close();
+                store.sync({
+                    scope: this,
+                    callback: this.onComplete
+                });
+            }
+        }
+    },
 
 
 
@@ -362,6 +414,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
             }
         }).show();
     },
+
+
 
     onSettingsAdminSelect: function(){
 
@@ -415,36 +469,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     },
 
-    onRoomFormOkClick: function(button) {
-        var window = button.up('window'),
-            form = window.down('form'),
-            data = form.getValues(),
-            store = this.getViewModel().getStore('rooms');
-
-        if (form.isValid()) {
-
-            //If there is no view model created then it is new otherwise the model has the record
-            if ( window.getViewModel() )
-            {
-                var record = window.getViewModel().get('theRoom');
-                Ext.Msg.wait('Saving', 'Saving room...');
-                form.up('window').close();
-                record.save({
-                    scope: this,
-                    callback: this.onComplete
-                });
-
-            } else {
-                Ext.Msg.wait('Creating', 'Creating room...');
-                store.add(data);
-                form.up('window').close();
-                store.sync({
-                    scope: this,
-                    callback: this.onComplete
-                });
-            }
-        }
-    },
 
     onComplete: function() {
         var title = Ext.Msg.getTitle();
@@ -475,7 +499,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }).show();
     },
 
-    onBeforeRoomRoute : function(id, action) {
+    onRouteBeforeRoom : function(id, action) {
         console.log('check permission to route to room ' + id)
         action.resume();
 
@@ -490,15 +514,59 @@ Ext.define('WebRTC.view.main.ViewportController', {
         });*/
     },
 
-    onRoomRoute: function(id){
+    onRouteRoom: function(id){
         console.log('Route to room' + id)
     },
 
-    onUnmatchedRoute:function(route){
+    // this is where we can create a token for sharing the room
+    onShareRoom: function(){
+        Ext.Ajax.request({
+            url     : '/data/jwtsign/' + qs.pwd,
+
+            params: payload,
+
+            success : function(response) {
+                var roomInfo = JSON.parse(response.responseText);
+                action.resume();
+            },
+            failure : function() {
+                action.stop();
+            }
+        });
+    },
+
+
+    onRouteBeforeToken : function( action) {
+        var qs = Ext.Object.fromQueryString(location.search);
+
+        if(qs.token){
+            Ext.Msg.prompt('Password','Please enter password for this room',function(buttonId,value){
+                if(value) {
+                    Ext.Ajax.request({
+                        url     : '/data/jwtdecode/' + qs.token +'?pwd=' + value,
+                        success : function(response) {
+                            var roomInfo = JSON.parse(response.responseText);
+                            action.resume();
+                        },
+                        failure : function() {
+                            action.stop();
+                        }
+                    });
+                }
+            });
+        }else{
+            action.stop();
+        }
+    },
+
+    onRouteToken: function(id){
+        console.log('Route to room' + id)
+    },
+
+
+    onRouteUnmatched:function(route){
         var me = this;
-        var nextview  = window.location.hash.substring(1);
-        console.log(nextview);
-        //me.setCurrentView(nextview);
+        console.log('unmatched route' + route);
     }
 
 });
