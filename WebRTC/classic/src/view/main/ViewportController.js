@@ -13,9 +13,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
             before  : 'onRouteBeforeRoom',
             action  : 'onRouteRoom'
         },
-        'token' : {
+        'token/:id' : {
             before  : 'onRouteBeforeToken',
-            action  : 'onRouteToken'
+            action  : 'onRouteToken',
+            conditions : {
+                ':id' : '(.*)'
+            }
         },
         'user' : {
             action  : 'onRouteUser'
@@ -501,6 +504,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     onRouteBeforeRoom : function(id, action) {
         console.log('check permission to route to room ' + id)
+
         action.resume();
 
         /*Ext.Ajax.request({
@@ -516,6 +520,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     onRouteRoom: function(id){
         console.log('Route to room' + id)
+        this.redirectTo('room/' + id);
+
     },
 
     // this is where we can create a token for sharing the room
@@ -536,31 +542,35 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
 
-    onRouteBeforeToken : function( action) {
-        var qs = Ext.Object.fromQueryString(location.search);
+    onRouteBeforeToken : function(id, action) {
+        var me=this;
 
-        if(qs.token){
-            Ext.Msg.prompt('Password','Please enter password for this room',function(buttonId,value){
-                if(value) {
-                    Ext.Ajax.request({
-                        url     : '/data/jwtdecode/' + qs.token +'?pwd=' + value,
-                        success : function(response) {
-                            var roomInfo = JSON.parse(response.responseText);
-                            action.resume();
-                        },
-                        failure : function() {
-                            action.stop();
-                        }
-                    });
-                }
-            });
-        }else{
-            action.stop();
-        }
+        Ext.Msg.prompt('Password','Please enter password for this room',function(buttonId,value){
+            if(value) {
+                Ext.Ajax.request({
+                    url     : '/data/jwtdecode/' + id +'?pwd=' + value,
+                    success : function(response) {
+                        var store = me.getViewModel().getStore('rooms');
+
+                        me.tokenInfo = JSON.parse(response.responseText);
+                        //add the private room to the store.
+                        store.add(me.tokenInfo);
+                        action.resume();
+                    },
+                    failure : function(response) {
+                        // var error = JSON.parse(response.responseText);
+                        Ext.Msg.alert('Denied', 'The password entered is no longer valid');
+                        action.stop();
+                    }
+                });
+            }
+        });
+
     },
 
-    onRouteToken: function(id){
-        console.log('Route to room' + id)
+    onRouteToken: function(){
+       var id = this.tokenInfo.id;
+       this.onRouteRoom(id)
     },
 
 
