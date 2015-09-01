@@ -9,6 +9,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
     ],
 
     routes : {
+        'home' : {
+            action  : 'onRouteHome'
+        },
         'room/:id' : {
             before  : 'onRouteBeforeRoom',
             action  : 'onRouteRoom'
@@ -61,8 +64,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
 
     init: function() {
-        var me = this;
-         me.checkSetup()
+        // var me = this;
+        // me.checkSetup()
     },
 
     checkSetup: function(){
@@ -73,16 +76,28 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 if( !record.get('otApiKey') ){
                     me.onSettingsAdminSelect();
                 }else{
-                    me.authenticate(me.deferAndSelectFirst, me.handleUnauthorized);
+                    me.authenticate(
+                    function() {
+                        me.deferAndSelectFirst();
+                    },
+                    function(){
+                        me.handleUnauthorized();
+                    })
                 }
             }
         });
 
     },
 
-    handleUnauthorized: function(cmp){
-        var me = cmp || this;
-        me.authenticate(me.deferAndSelectFirst, me.handleUnauthorized);
+    handleUnauthorized: function(){
+        var me = this;
+        me.authenticate(
+        function() {
+            me.deferAndSelectFirst();
+        },
+        function(){
+            me.handleUnauthorized();
+        })
     },
 
     //must pass two routes as functions to run for success or failure
@@ -123,19 +138,16 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
                 }else{
                     if(failure && Ext.isFunction(failure)){
-                        failure(me);
+                        failure();
                     }else{
-                        me.handleUnauthorized(me);
+                        me.handleUnauthorized();
                     }
                 }
             });
         }else{
             user =  JSON.parse(userCookie) ;
             me.getViewModel().set('user', user);
-
             me.getViewModel().set('name', user.name );
-
-
             if(success && Ext.isFunction(success)){
                 success();
             }
@@ -145,7 +157,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     //due to latency in getting push of rooms
     deferAndSelectFirst: function(deferLength){
-        var me= this;
+        var me = this;
         Ext.defer(function() {
             me.selectFirstRoom();
         }, deferLength || 1200);
@@ -592,6 +604,10 @@ Ext.define('WebRTC.view.main.ViewportController', {
        this.onRouteRoom(id)
     },
 
+    onRouteHome: function(){
+            var me = this;
+            me.checkSetup()
+    },
 
     onRouteUnmatched:function(route){
         var me = this;
