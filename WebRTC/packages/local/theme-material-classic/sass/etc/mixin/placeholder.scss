@@ -1,0 +1,21 @@
+// Mixin for setting the text color of input text fields.
+// Using one rule with comma separated selector list is not working, therefore defining separate rules.
+@mixin placeholder($selector, $color) {
+    #{$selector}::-webkit-input-placeholder {
+        color: $color
+    }
+
+    #{$selector}::-moz-placeholder {
+        color: $color
+    }
+
+    /* Firefox 18- */
+    #{$selector}::-moz-placeholder {
+        color: $color
+    }
+
+    /* Firefox 19+ */
+    #{$selector}:-ms-input-placeholder {
+        color: $color
+    }
+}

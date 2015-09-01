@@ -1,0 +1,5 @@
+$list-bg-color: white;
+
+// use a gray without full opacity instead of $material-color-black-dividers since the bottom border
+// will change it's color when row is selected otherwise
+$list-item-border-color: #e0e0e0;

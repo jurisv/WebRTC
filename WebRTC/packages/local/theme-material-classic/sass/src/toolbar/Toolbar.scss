@@ -1,0 +1,56 @@
+@import 'FlexibleToolbar';
+
+@include extjs-toolbar-ui(
+    $ui: 'raised'
+    //$background-color: white,
+    //$background-gradient: white
+);
+
+.x-toolbar {
+    padding: 8px;
+
+    .x-box-inner {
+        overflow: initial;
+    }
+
+    .x-btn {
+        min-width: 88px;
+        min-height: 36px;
+
+        .x-btn-text {
+            min-height: 30px;
+        }
+    }
+
+    .x-btn-raised-toolbar-medium {
+        @extend .z-depth-1;
+
+
+        // Not working because of SDKTOOLS-1209:
+        //&,
+        //&.x-btn-over,
+        //&.x-btn-focus {
+        //    @extend .z-depth-1;
+        //    //@include box-shadow(0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12));
+        //}
+        //
+        //&.x-btn-pressed {
+        //    @extend .z-depth-1-half;
+        //}
+    }
+
+    .x-btn-raised-toolbar-medium.x-btn-over,
+    .x-btn-raised-toolbar-medium.x-btn-focus {
+        @extend .z-depth-1;
+    }
+
+    .x-btn-raised-toolbar-medium.x-btn-focus.x-btn-pressed,
+    .x-btn-raised-toolbar-medium.x-btn-pressed {
+        @include box-shadow(0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15));
+    }
+
+    //    &.x-btn-pressed {
+    //        @extend .z-depth-1-half;
+    //    }
+    //}
+}

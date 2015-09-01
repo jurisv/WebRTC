@@ -1,0 +1,109 @@
+// toolbar size and margin:
+// http://www.google.com/design/spec/layout/structure.html#structure-app-bar
+//
+// title size:
+// http://www.google.com/design/spec/style/typography.html#typography-styles
+//
+// line height:
+// http://www.google.com/design/spec/style/typography.html#typography-line-height
+
+
+@mixin material-toolbar-ui($ui-label, $background-color, $color, $shadow) {
+    .x-toolbar-#{$ui-label} {
+        @if $shadow {
+            @extend .z-depth-1;
+        }
+
+
+        .x-desktop &,
+        .x-tablet & {
+            height: 64px;
+            padding: 0 4px;
+
+            .x-title {
+                line-height: 64px !important;
+            }
+
+            .x-button {
+                margin: 8px;
+            }
+        }
+
+        .x-phone.x-portrait & {
+            height: 56px;
+            padding: 0;
+
+            .x-title {
+                line-height: 56px !important;
+            }
+
+            .x-button {
+                margin: 4px;
+            }
+        }
+
+        .x-phone.x-landscape & {
+            height: 48px;
+            padding: 0;
+
+            .x-title {
+                line-height: 48px !important;
+            }
+
+            .x-button {
+                margin: 4px;
+            }
+        }
+
+        background-color: $background-color;
+
+        border-bottom: 0 solid !important;
+
+        .x-title {
+            color: $color;
+            text-align: left;
+            line-height: 64px !important;
+
+            @if $ui-label == 'tall' {
+                font-size: 24px;
+                font-weight: normal;
+                margin: 0 24px;
+                margin-top: 64px;
+                padding: 0;
+            } @else {
+                font-size: 18px;
+                line-height: 18px;
+                font-weight: normal;
+            }
+        }
+
+        .x-button {
+            background: none;
+            border: none;
+            color: $color;
+
+            width: 48px;
+            height: 48px;
+            border-radius: 0;
+
+            .x-button-label {
+                font-size: 24px !important;
+                line-height: 26px;
+            }
+        }
+    }
+}
+
+@include material-toolbar-ui('default', $base-color, white, true);
+@include material-toolbar-ui('tall', $base-color, white, true);
+@include material-toolbar-ui('plain', transparent, $material-color-black, false);
+
+//.x-button-label {
+//    font-family: Material Design Iconic Font;
+//    font-weight: normal;
+//}
+
+.x-toolbar-footer {
+    background: none;
+    border: none !important;
+}

@@ -1,0 +1,74 @@
+.x-button.x-button-flat {
+    background: none;
+    border: none;
+    @include border-radius(2px);
+    text-transform: uppercase;
+    color: $base-color;
+    cursor: pointer;
+
+    height: 36px;
+    min-width: 88px;
+    margin-right: 6px !important;
+
+
+    .x-button-label {
+        // TODO: fix font-family
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    &:hover {
+        background: rgba(153, 153, 153, 0.2);
+    }
+
+    &.x-button-pressing {
+        background: rgba(153, 153, 153, 0.4);
+    }
+}
+
+.x-button .x-button-icon {
+    width: 24px;
+    height: 24px;
+
+    &:before {
+        line-height: 1em !important;
+    }
+}
+
+.x-button:not(.x-item-disabled) {
+    cursor: pointer;
+}
+
+.x-button.material-floating-action-button {
+    background: $floating-action-button-background-color;
+    border: none;
+
+    //.x-button-icon:before {
+    //    font-size: 24px;
+    //    line-height: 1em;
+    //    color: $material-icon-color-black-active;
+    //}
+
+    .x-button-label {
+        font-family: Material Design Iconic Font;
+        font-size: 24px;
+        line-height: 1;
+        font-weight: normal;
+        color: $material-icon-color-black-active;
+    }
+
+    @include border-radius(50%);
+
+    @include transition(box-shadow .3s ease-out);
+
+    @extend .z-depth-1;
+
+    //&:not(.x-btn-disabled):hover {
+    //    @extend .z-depth-1-half;
+    //}
+}
+
+// work-around for SDKTOOLS-1209
+.x-button.material-floating-action-button:not(.x-btn-disabled):hover {
+    @extend .z-depth-1-half;
+}

@@ -1,0 +1,33 @@
+$enable-font-awesome: dynamic(true);
+$include-button-uis: dynamic(false);
+$include-default-icons: dynamic(false);
+$include-pictos-font: dynamic(false);
+$enable-big: dynamic(false);
+
+// colors
+
+$base-color: #00bcd4;
+
+$material-color-black: rgba(0, 0, 0, 0.87); // text
+$material-color-black-secondary: rgba(0, 0, 0, 0.54); // secondary text and icons
+$material-color-black-hint: rgba(0, 0, 0, 0.26); // disabled and hint text
+$material-color-black-dividers: rgba(0, 0, 0, 0.12); // dividers
+
+// icon colors
+// http://www.google.com/design/spec/style/icons.html#icons-system-icons
+
+$material-icon-color-black-active: $material-color-black-secondary;
+$material-icon-color-black-inactive: $material-color-black-hint;
+
+// font
+
+$font-family: Roboto, sans-serif !default;
+$font-weight: 400 !default;
+$font-weight-bold: 400 !default;
+$font-size: 14px !default;
+$color: $material-color-black !default;
+
+// floating action button
+
+$floating-action-button-color: $material-icon-color-black-active !default;
+$floating-action-button-background-color: #eeff41 !default;

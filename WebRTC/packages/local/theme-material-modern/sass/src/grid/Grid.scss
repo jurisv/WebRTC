@@ -1,0 +1,71 @@
+.x-grid {
+    background-color: transparent !important;
+
+    .x-grid-inner {
+        background: white;
+        @include border-radius(2px);
+        @extend .z-depth-1;
+        //border: 1px solid $material-color-black-dividers;
+
+        .x-grid-scrollelement {
+            // make grid full width instead of the sum of all column fixed widths
+            width: 100% !important;
+        }
+    }
+
+    .x-grid-header-container {
+        border-width: 0;
+        background-color: transparent;
+        border-bottom: 1px solid $material-color-black-dividers;
+
+        .x-grid-column {
+            font-size: 12px;
+            font-weight: 500;
+            color: $material-color-black-secondary;
+            line-height: 56px;
+
+            border-width: 0;
+
+            padding: 0;
+            padding-right: 56px;
+
+            &:first-of-type {
+                padding-left: 16px;
+                padding-right: 24px;
+            }
+
+            &:last-of-type {
+                padding-right: 24px;
+            }
+        }
+    }
+
+    .x-grid-row {
+        border-color: $material-color-black-dividers;
+        cursor: pointer;
+
+        // make grid full width instead of the sum of all column fixed widths, default is width: 0
+        width: 100% !important;
+
+        opacity: 0;
+
+        &.x-grid-item-last {
+            border-color: transparent;
+        }
+    }
+
+    .x-grid-cell {
+        font-size: 13px;
+        padding: 0;
+        padding-right: 56px;
+
+        &:first-of-type {
+            padding-left: 16px;
+            padding-right: 24px;
+        }
+
+        &:last-of-type {
+            padding-right: 24px;
+        }
+    }
+}

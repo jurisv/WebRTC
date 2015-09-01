@@ -1,0 +1,82 @@
+.x-field-labeled {
+    margin-top: 28px;
+}
+
+.x-form-label {
+    position: absolute;
+    background: none;
+    text-shadow: none;
+    @include border-radius(0);
+    padding-left: 0;
+
+
+    //@include transition-duration(0);
+
+    span {
+        //@include transition-duration(0);
+
+        color: #9E9E9E;
+        font-size: 15px;
+        line-height: 1.5;
+        font-weight: normal;
+    }
+
+    // show label above input field if field is focused or not empty
+    .x-field-focused &,
+    .not-empty & {
+        @include transform(translateY(-19px));
+
+        span {
+            font-size: 12px;
+            line-height: 1em;
+            color: $base-color;
+        }
+    }
+
+    // only animate moving label when field is focused or when it had focus,
+    // but not when the initial value is set
+    .x-field-focus &,
+    .had-focus & {
+        @include transition-duration(0.2s);
+
+        span {
+            @include transition-duration(0.2s);
+        }
+    }
+}
+
+.x-field {
+    .x-input-el {
+        background-color: transparent;
+        border-bottom: 1px solid #9e9e9e;
+        padding: 8px 0;
+        font-size: 15px;
+        line-height: 1em;
+
+        // for some reason on iPad there's a border-radius shown, therefore make sure it's 0
+        border-radius: 0;
+    }
+
+    textarea.x-input-el {
+        line-height: 1.5em !important;
+
+        // prevent text getting too close to label when scrolling
+        padding-top: 0;
+        margin-top: 8px;
+
+        resize: none;
+    }
+}
+
+.x-field.x-field-focused .x-input-el {
+    @include transition-duration(0.2s);
+    
+    border-bottom: 1px solid $base-color;
+
+    // use shadow so that the form fields don't move as they would if we would increase the border size
+    @include box-shadow(0 1px 0 0 $base-color);
+}
+
+.x-field .x-clear-icon {
+    display: none;
+}

@@ -1,0 +1,77 @@
+.x-sheet {
+    padding: $sheet-padding;
+    @include border-radius(2px);
+    border: none;
+    background: white;
+
+    .x-sheet-inner {
+        padding: 0 24px 24px;
+
+        & > .x-container {
+            margin-bottom: 24px;
+        }
+    }
+
+    .x-toolbar-plain {
+        padding-left: 24px !important;
+
+        .x-title {
+            padding-left: 0;
+            margin-left: 0;
+        }
+    }
+
+    .x-toolbar-footer {
+        height: 48px;
+        border-top: 1px solid white !important;
+        //padding-right: 8px;
+        //padding-bottom: 8px;
+        padding: 2px;
+
+        &.border-top {
+            border-top: 1px solid rgba(0, 0, 0, 0.12) !important;
+        }
+    }
+}
+
+.material-drawer {
+    @include border-radius(0);
+    @extend .z-depth-1-half;
+
+    .x-toolbar.x-docked-top {
+        border-bottom: 1px solid $material-color-black-dividers !important;
+        padding-left: 0 !important;
+    }
+
+    .x-dock-body {
+        margin: 0;
+
+        .x-sheet-inner {
+            padding: 0;
+        }
+
+        .x-button {
+            background: none;
+            border: none;
+            @include border-radius(0);
+            margin: 0;
+            height: 48px;
+            padding: 0 24px;
+            color: $material-color-black;
+
+            .x-button-label {
+                text-align: left;
+                font-size: 16px;
+                font-weight: normal;
+            }
+
+            &:hover {
+                color: $base-color;
+            }
+
+            &:first-of-type {
+                margin-top: 8px;
+            }
+        }
+    }
+}

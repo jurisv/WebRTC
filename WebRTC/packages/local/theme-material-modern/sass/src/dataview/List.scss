@@ -1,0 +1,16 @@
+.x-list {
+    background: white;
+
+    .x-list-item {
+        opacity: 0;
+
+        &.x-list-item-first {
+            border-top: 2px solid white;
+        }
+
+        .x-list-item-body,
+        &.x-list-item-tpl .x-innerhtml {
+            padding: 16px;
+        }
+    }
+}
