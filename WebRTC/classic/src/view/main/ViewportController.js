@@ -66,23 +66,27 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     checkSetup: function(){
-        var me= this,
-            settings;
+        var me= this;
 
-        //Theres only one setting but the REST API needs and id.
-        WebRTC.model.AdminSettings.load(0,{
+       WebRTC.model.AdminSettings.load(0,{
             success: function(record,operation){
                 if( !record.get('otApiKey') ){
                     me.onSettingsAdminSelect();
                 }else{
-                    me.authenticate();
+                    me.authenticate(me.deferAndSelectFirst, me.handleUnauthorized);
                 }
             }
         });
 
     },
 
-    authenticate: function(){
+    handleUnauthorized: function(cmp){
+        var me = cmp || this;
+        me.authenticate(me.deferAndSelectFirst, me.handleUnauthorized);
+    },
+
+    //must pass two routes as functions to run for success or failure
+    authenticate: function(success,failure){
         var me = this,
             userCookie = Ext.util.Cookies.get('user'),
             user,
@@ -106,27 +110,23 @@ Ext.define('WebRTC.view.main.ViewportController', {
                         });
 
                     Ext.util.Cookies.clear('user');
-
                     newUser.save();
-
                     me.getViewModel().set('name', newUser.get('name') );
-
                     me.getViewModel().set('user', newUser);
-
                     Ext.util.Cookies.set('user', JSON.stringify( newUser.data ) , expires);
 
-                    /*  Ext.toast({
-                     html: newUser + ' give us a moment while we set things up.',
-                     title: 'Welcome',
-                     width: 400,
-                     align: 't'
-                     });
-                     */
 
-                    Ext.defer(function() {
-                        me.selectFirstRoom();
-                    }, 1200);
+                    if(success && Ext.isFunction(success)){
+                        success();
+                    }
 
+
+                }else{
+                    if(failure && Ext.isFunction(failure)){
+                        failure(me);
+                    }else{
+                        me.handleUnauthorized(me);
+                    }
                 }
             });
         }else{
@@ -135,20 +135,21 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
             me.getViewModel().set('name', user.name );
 
-            /* Ext.toast({
-             html: 'Glad to see you again ' + user.data.name  + '.',
-             title: 'Welcome Back',
-             width: 400,
-             align: 't'
-             });*/
 
-            Ext.defer(function() {
-                me.selectFirstRoom();
-            }, 1200);
+            if(success && Ext.isFunction(success)){
+                success();
+            }
 
         }
     },
 
+    //due to latency in getting push of rooms
+    deferAndSelectFirst: function(deferLength){
+        var me= this;
+        Ext.defer(function() {
+            me.selectFirstRoom();
+        }, deferLength || 1200);
+    },
 
     selectFirstRoom: function () {
         var selection,
@@ -503,24 +504,42 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRouteBeforeRoom : function(id, action) {
-        console.log('check permission to route to room ' + id)
+        var me = this;
 
-        action.resume();
+        me.authenticate(function(){
+            action.resume()
+        },function(){
+            action.stop();
+            me.handleUnauthorized();
+        });
 
-        /*Ext.Ajax.request({
-            url     : '/security/user/' + id,
-            success : function() {
-                action.resume();
-            },
-            failure : function() {
-                action.stop();
-            }
-        });*/
     },
 
     onRouteRoom: function(id){
-        console.log('Route to room' + id)
-        this.redirectTo('room/' + id);
+        var me = this,
+            combo = me.lookupReference('roomscombo');
+
+        //since the server pushes us rooms the using callback on load doesn't work
+        //a defer seems to work fine for now
+        Ext.Function.defer(function(){
+            var record = combo.store.getById(id);
+
+            if(record){
+                combo.select(record);
+                //not sure why this event isn't getting fired
+                combo.fireEvent('select',combo,record);
+            }else{
+                Ext.toast({
+                    html: 'We could not find the room provided.',
+                    title: 'Room not found',
+                    width: 400,
+                    align: 't'
+                });
+            }
+        },
+        1200);
+
+        me.redirectTo('room/' + id);
 
     },
 
