@@ -1,4 +1,4 @@
-Ext.define('WebRTC.store.Sounds', {
+Ext.define('soundlibrary.store.Sounds', {
     extend: 'Ext.data.Store',
 
     autoLoad: true,

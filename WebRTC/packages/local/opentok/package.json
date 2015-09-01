@@ -2,7 +2,7 @@
     /**
      * The name of the package.
      */
-    "name": "opentokrtc",
+    "name": "opentok",
 
     /**
      * Alternate names for this package.
@@ -28,7 +28,7 @@
      *
      *    "toolkit": "classic",
      */
-    "toolkit": "classic",
+     // "toolkit": "classic",
 
      /**
       * The author of the package.
@@ -36,7 +36,7 @@
       * Required only if you are distributing this package through a Sencha Cmd repository,
       * in which case it should match the name you assign to your local package repository.
       */
-    "creator": "anonymous",
+    "creator": "Brad Schafer",
 
     /**
      * A summarized description of this package.

@@ -1,11 +1,11 @@
-Ext.define ('WebRTC.data.proxy.SocketIO', {
+Ext.define ('Sencha.ux.data.proxy.SocketIO', {
     extend: 'Ext.data.proxy.Server' ,
     alias: 'proxy.socketio' ,
 
     requires: [
-        'WebRTC.data.operation.DestroyPush',
-        'WebRTC.data.operation.ReadPush',
-        'WebRTC.data.operation.UpdatePush'
+        'Sencha.ux.data.operation.DestroyPush',
+        'Sencha.ux.data.operation.ReadPush',
+        'Sencha.ux.data.operation.UpdatePush'
     ],
 
     // Keep a default copy of the action methods here. Ideally could just null

@@ -1,8 +1,8 @@
 /**
- * @class WebRTC.controller.OpenTok
+ * @class Sencha.ux.controller.OpenTok
  * @extend Ext.app.Controller
  */
-Ext.define('WebRTC.controller.OpenTok', {
+Ext.define('opentok.controller.OpenTok', {
     extend: 'Ext.app.Controller',
     alias: 'controller.opentok',
     id: 'opentok',
@@ -38,7 +38,7 @@ Ext.define('WebRTC.controller.OpenTok', {
 
 
     getSessionById: function(sessionId){
-        var session = Ext.getStore('opentok.Sessions').getById(sessionId);
+        var session = Ext.getStore('opentok.store.Sessions').getById(sessionId);
         if(session){
             return session.get('session');
 
@@ -94,7 +94,7 @@ Ext.define('WebRTC.controller.OpenTok', {
             session.get('session').localSubscriptions = [];
 
             //store the session in an store to make it public
-            Ext.getStore('opentok.Sessions').add(session);
+            Ext.getStore('opentok.store.Sessions').add(session);
 
             // either initial or reOpening room we need to connect to server
             me.getConnectionToken(session.get('session'), sessionId, name);
@@ -366,14 +366,14 @@ Ext.define('WebRTC.controller.OpenTok', {
 
 
     removeSession: function(sessionId){
-        var me = this,
-            session = Ext.getStore('opentok.Sessions').getById(sessionId);
+        var sessions = Ext.getStore('opentok.store.Sessions'),
+            session = sessions.getById(sessionId);
 
         if(session){
             session.get('session').off();
             session.get('session').disconnect();
-            Ext.getStore('opentok.Sessions').remove(session);
-            Ext.getStore('opentok.Sessions').sync();
+            sessions.remove(session);
+            sessions.sync();
         }
     },
 

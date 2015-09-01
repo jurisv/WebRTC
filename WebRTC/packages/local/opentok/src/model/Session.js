@@ -1,4 +1,4 @@
-Ext.define('WebRTC.model.opentok.Session', {
+Ext.define('opentok.model.Session', {
     extend: 'Ext.data.Model',
     alias: 'opentokSession',
     fields: [
@@ -12,6 +12,6 @@ Ext.define('WebRTC.model.opentok.Session', {
         }
     },
     hasMany:[
-        { model: 'WebRTC.model.opentok.Subscriber', name: 'subscribers' }
+        { model: 'opentok.model.Subscriber', name: 'subscribers' }
     ]
 });

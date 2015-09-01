@@ -15,14 +15,14 @@ Ext.define('WebRTC.Application', {
     defaultToken : 'home',
 
     controllers:[
-      'OpenTok',
-      'SoundLibrary'
+      'opentok.controller.OpenTok',
+      'soundlibrary.controller.SoundLibrary'
     ],
 
     stores:[
-        'opentok.Sessions',
+        'opentok.store.Sessions',
         'Settings',
-        'Sounds'
+        'soundlibrary.store.Sounds'
     ],
 
     onAppUpdate: function () {

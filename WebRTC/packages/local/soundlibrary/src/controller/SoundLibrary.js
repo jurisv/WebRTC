@@ -1,12 +1,12 @@
 /**
- * @class WebRTC.controller.SoundLibraryController
+ * @class soundlibrary.controller.SoundLibraryController
  * @extend Ext.app.Controller
  */
-Ext.define('WebRTC.controller.SoundLibrary', {
+Ext.define('soundlibrary.controller.SoundLibrary', {
     extend: 'Ext.app.Controller',
     alias: 'controller.soundlibrary',
 
-    id: 'opentok',
+    id: 'soundlibrary',
 
     refs: {
         soundLibrary: '#soundlibrary'
@@ -29,7 +29,7 @@ Ext.define('WebRTC.controller.SoundLibrary', {
         var sound = this._getSoundById('chat-sound');
 
         Ext.onReady(function(){
-            Ext.create('WebRTC.SoundLibrary', {
+            Ext.create('soundlibrary.base.SoundLibrary', {
                 itemId: 'soundlibrary',
                 data: sound
             });
@@ -40,7 +40,7 @@ Ext.define('WebRTC.controller.SoundLibrary', {
     _getSoundById: function (soundId) {
         var settings  = Ext.getStore('Settings'),
             sound = settings.getById(soundId),
-            sounds = Ext.getStore('Sounds'),
+            sounds = Ext.getStore('soundlibrary.store.Sounds'),
             value;
 
             if (sound) {

@@ -1,7 +1,7 @@
-Ext.define('WebRTC.store.opentok.Sessions', {
+Ext.define('opentok.store.Sessions', {
     extend: 'Ext.data.Store',
     alias: 'store.opentokSessions',
-    model:'WebRTC.model.opentok.Session',
+    model:'opentok.model.Session',
     autoLoad: true,
     proxy: {
         type: 'memory',

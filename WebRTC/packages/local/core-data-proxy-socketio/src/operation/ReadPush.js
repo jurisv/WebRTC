@@ -1,4 +1,4 @@
-Ext.define('WebRTC.data.operation.ReadPush', {
+Ext.define('Sencha.ux.data.operation.ReadPush', {
     extend: 'Ext.data.operation.Read',
     alias: 'data.operation.readpush',
     

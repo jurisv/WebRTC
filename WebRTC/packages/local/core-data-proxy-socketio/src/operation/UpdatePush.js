@@ -1,15 +1,13 @@
-Ext.define('WebRTC.data.operation.DestroyPush', {
-    extend: 'Ext.data.operation.Destroy',
-    alias: 'data.operation.destroypush',
+Ext.define('Sencha.ux.data.operation.UpdatePush', {
+    extend: 'Ext.data.operation.Update',
+    alias: 'data.operation.updatepush',
     
-    action: 'destroy',
+    action: 'update',
 
-    isDestroyOperation: true,
+    isUpdateOperation: true,
 
-    order: 30,
-
-    foreignKeyDirection: -1,
-
+    order: 20,
+    
     doProcess: function( resultSet, request, response ) {
         var records = resultSet.getRecords(),
             len = records.length,
@@ -18,24 +16,21 @@ Ext.define('WebRTC.data.operation.DestroyPush', {
             clientRecords = [],
             clientRec, i;
 
-
         for (i = 0; i < len; ++i) {
             clientRec = store.getById(records[i][idProperty]);
-            // if we remove the record locally, it won't be pressent in the store anymore
             if (clientRec) {
-                clientRecords.push(clientRec);    
+                clientRecords.push(clientRec);
             }
-            
         }
         
         if (clientRecords.length) {
-            store.data.remove(clientRecords);
             this.setRecords(clientRecords);
         }
 
         this.callParent(arguments);
     },
-    
+
+
     triggerCallbacks: function() {
         var me = this,
             callback = me.getInternalCallback();
@@ -54,5 +49,5 @@ Ext.define('WebRTC.data.operation.DestroyPush', {
             me.setCallback(null);
             me.setScope(null);
         }
-    } 
+    }    
 });

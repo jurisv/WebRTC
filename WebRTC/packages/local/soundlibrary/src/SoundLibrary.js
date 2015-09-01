@@ -1,4 +1,4 @@
-Ext.define('WebRTC.SoundLibrary', {
+Ext.define('soundlibrary.base.SoundLibrary', {
     extend: 'Ext.Component',
     xtype: 'soundlibrary',
 

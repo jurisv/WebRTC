@@ -50,14 +50,16 @@
      *
      * For example,
      *
-     *      "requires": [
+     *      "requires": [sencha
      *          "charts"
      *      ]
      */
     "requires": [
         "font-awesome",
         "ux",
-        "classic-media"
+        "opentok",
+        "soundlibrary",
+        "core-data-proxy-socketio"
     ],
 
     /**
@@ -182,17 +184,7 @@
             //this is a remotely grabbed, locally cached tokbox WebRTC session management client library
             "path": "//static.opentok.com/v2/js/opentok.min.js",
             "remote": true
-        },{
-            //this is a remotely grabbed, locally cached socket.io client library - fallback for chat if no webRTC Support
-            "path": "//cdn.socket.io/socket.io-1.3.6.js",
-            "remote": true
         }
-        /*,{
-            //this is a remotely grabbed, locally cached adapter to standardize the WebRTC calls
-            "path": "http://webrtc.github.io/samples/src/js/adapter.js",
-            "remote": true
-        }*/
-
     ],
 
     /**
@@ -528,10 +520,18 @@
             "toolkit": "classic",
             "theme": "theme-triton"
         },
+        "material-classic": {
+            "toolkit": "classic",
+            "theme": "theme-material-classic"
+        },
 
         "modern": {
             "toolkit": "modern",
             "theme": "theme-triton"
+        },
+        "material-modern": {
+            "toolkit": "modern",
+            "theme": "theme-material-modern"
         }
     },
     

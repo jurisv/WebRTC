@@ -1,4 +1,4 @@
-Ext.define('WebRTC.model.opentok.Subscriber', {
+Ext.define('opentok.model.Subscriber', {
     extend: 'Ext.data.Model',
     alias: 'opentokSubscriber',
     fields: [
