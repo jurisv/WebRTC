@@ -6,6 +6,9 @@ Ext.define('opentok.controller.OpenTok', {
     extend: 'Ext.app.Controller',
     alias: 'controller.opentok',
     id: 'opentok',
+    requires:[
+        'opentok.store.Sessions'
+    ],
     listen: {
         controller: {
             '*': {
@@ -24,6 +27,14 @@ Ext.define('opentok.controller.OpenTok', {
         }
     },
     publisher: null,
+
+    init: function(application) {
+
+        Ext.create('opentok.store.Sessions',{storeId:'opentok.store.Sessions'});
+
+    },
+
+
 
     unmetRequirements: function(){
         Ext.toast({

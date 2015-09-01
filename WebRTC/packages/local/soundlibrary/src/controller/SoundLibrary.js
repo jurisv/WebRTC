@@ -8,6 +8,10 @@ Ext.define('soundlibrary.controller.SoundLibrary', {
 
     id: 'soundlibrary',
 
+    requires:[
+        'soundlibrary.store.Sounds'
+    ],
+
     refs: {
         soundLibrary: '#soundlibrary'
     },
@@ -28,6 +32,8 @@ Ext.define('soundlibrary.controller.SoundLibrary', {
     init: function(){
         var sound = this._getSoundById('chat-sound');
 
+        Ext.create('soundlibrary.store.Sounds',{storeId:'soundlibrarySounds'});
+
         Ext.onReady(function(){
             Ext.create('soundlibrary.base.SoundLibrary', {
                 itemId: 'soundlibrary',
@@ -40,7 +46,7 @@ Ext.define('soundlibrary.controller.SoundLibrary', {
     _getSoundById: function (soundId) {
         var settings  = Ext.getStore('Settings'),
             sound = settings.getById(soundId),
-            sounds = Ext.getStore('soundlibrary.store.Sounds'),
+            sounds = Ext.getStore('soundlibrarySounds'),
             value;
 
             if (sound) {

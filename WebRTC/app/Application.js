@@ -8,9 +8,7 @@ Ext.define('WebRTC.Application', {
     
     name: 'WebRTC',
 
-    requires: [
-        'WebRTC.*'
-    ],
+    requires: ['WebRTC.*'],
 
     defaultToken : 'home',
 
@@ -19,11 +17,7 @@ Ext.define('WebRTC.Application', {
       'soundlibrary.controller.SoundLibrary'
     ],
 
-    stores:[
-        'opentok.store.Sessions',
-        'Settings',
-        'soundlibrary.store.Sounds'
-    ],
+    stores:['Settings'],
 
     onAppUpdate: function () {
         Ext.Msg.confirm('Application Update', 'This application has an update, reload?',

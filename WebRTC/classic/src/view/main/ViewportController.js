@@ -1,7 +1,7 @@
 Ext.define('WebRTC.view.main.ViewportController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.mainviewport',
-    mixins: ['WebRTC.OpenTokMixin'],
+    mixins: ['opentok.OpenTokMixin'],
 
     requires: [
         'WebRTC.model.AdminSettings',

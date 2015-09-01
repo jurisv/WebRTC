@@ -26,11 +26,14 @@
             if (s.match(/\bclassic\b/)) {
                 profile = 'classic';
             }
-            else if (s.match(/\bmaterial\b/)) {
+            else if (s.match(/\bmaterialclassic\b/)) {
                 profile = 'material-classic';
             }
             else if (s.match(/\bmodern\b/)) {
                 profile = 'modern';
+            }
+            else if (s.match(/\bmaterialmodern\b/)) {
+                profile = 'material-modern';
             }
             else {
                 profile = tags.desktop ? 'classic' : 'modern';  //typically desktop is classic but this app is all modern.
