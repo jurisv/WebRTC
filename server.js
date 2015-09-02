@@ -10,8 +10,13 @@ var fs = require('fs'),                         // file system
     firebase,
     serverConfig;
 
-nconf.argv().env().file( __dirname + '/server-config.json');    // path to config JSON
-serverConfig = nconf.get("ServerConfig-" + (process.env.NODE_ENV || 'development') );        // load environment config
+if(process.env.NODE_ENV == 'production'){
+    nconf.argv().env().file( __dirname + '/server-config.json');    // path to config JSON
+}else{
+    nconf.argv().env().file( __dirname + '/local-server-config.json');    // path to config JSON
+}
+serverConfig = nconf.get("ServerConfig");        // load environment config
+
 
 var app = module.exports = require('express')();                      // Setup express app
 
