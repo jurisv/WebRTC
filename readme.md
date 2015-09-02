@@ -1,4 +1,4 @@
-# A simple demonstration of <a href="http://http://www.webrtc.org/" target="_new">WebRTC</a> powered by OpenTok and the <a href="http://www.sencha.com/" target="_new">Sencha</a> ExtJs 6 Framework. 
+# A simple demonstration of <a href="http://http://www.webrtc.org/" target="_new">WebRTC</a> powered by OpenTok and the <a href="http://www.sencha.com/" target="_new">Sencha</a> Ext JS 6 Framework. 
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
@@ -14,19 +14,19 @@ But don't worry.
 All that complexity of the behind the scenes optimizations for multi-node video streams are taken care of by using the <a href="http://tokbox.com/" target="_new">TokBox</a> services. 
 
 
-You'll also want an extensible web framework that ties into your enterprise strategy. This is where <a href="http://www.sencha.com/" target="_new">Sencha ExtJs</a> excels. 
+You'll also want an extensible web framework that ties into your enterprise strategy. This is where <a href="http://www.sencha.com/" target="_new">Sencha Ext JS</a> excels. 
 
 Finally you would like something that can handle data in real-time in both directions. You want to make a change locally and have your change is replicated to all connected clients. 
 
 In addition you want changes that other participants are making to show up on your client.
 
-By using websockets and <a href="http://www.sencha.com/" target="_new">ExtJs 6</a> 'Data Binding' changes are pushed directly into your client without reloading the page or even performing AJAX polling.
+By using websockets and <a href="http://www.sencha.com/" target="_new">Ext JS 6</a> 'Data Binding' changes are pushed directly into your client without reloading the page or even performing AJAX polling.
 
-ExtJs is providing not only 'responsive' but many components of <a href="http://www.reactivemanifesto.org/" target="_new">'reactive design'</a> architecture as well. Note: Not all the components of reactive systems are present in this demo.
+Ext JS is providing not only 'responsive' but many components of <a href="http://www.reactivemanifesto.org/" target="_new">'reactive design'</a> architecture as well. Note: Not all the components of reactive systems are present in this demo.
 
 This demonstration example requires <a href="http://nodejs.org/" target="_new">node.js</a> some API keys from the providers and a WebRTC compatible browser (Chrome or Firefox on the desktop).
 
-Currently IOS and Android mobile browsers are not supported. Neither are many older browsers, Safari or Internet Explorer.
+Currently iOS and Android mobile browsers are not supported. Neither are many older browsers, Safari or Internet Explorer.
 
 ## Screenshots
 
@@ -139,7 +139,7 @@ Congrats. You are now running secure peer-to-peer video conferencing. What you d
 ## What does this repository include?
 
 ### On the client side
-Nearly all of the client side features are provided by the ExtJs 6 framework. The two notable additions are the <a href="http://tokbox.com/" target="_new">TokBox</a>  JS library and the Socket.io library.
+Nearly all of the client side features are provided by the Ext JS 6 framework. The two notable additions are the <a href="http://tokbox.com/" target="_new">TokBox</a>  JS library and the Socket.io library.
 
 ### On the server side
 The server is a node.js server running the Express middlewear. The Express app uses npm modules for <a href="http://tokbox.com/" target="_new">TokBox</a> , <a href="http://firebase.com/" target="_new">Firebase</a>  (for storage), <a href="http://socket.io/" target="_new">Socket.io</a> and a few other minor dependencies for compression, server configuration and other utilties. 
