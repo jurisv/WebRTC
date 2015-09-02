@@ -53,6 +53,8 @@ The screen should look something like this:
 
 <img src="/WebRTC/resources/images/TokBoxApi.png" border=0 width=600 />
 
+Add your ApiKey and ApiSecretKey to your `server-config.json` file in the `adminsettings.serviceprovider.opentok` section.
+
 ### Step 2. Get your Firebase Api Key
 If you need to sign up start here. <a href="https://www.firebase.com/signup/" target="_new">https://www.firebase.com/signup/</a> a free trial should work as well.
 
@@ -61,6 +63,8 @@ You will then need to get your secret key and URL for this Firebase.
 The screen should look something like this:
 
 <img src="/WebRTC/resources/images/FireBaseApi.png" border=0 width=600 />
+
+Add your secret key and URL to your `server-config.json` file in the `adminsettings.serviceprovider.firebase` section.
 
 ### Step 3. Start Server & Initial Setup
 
