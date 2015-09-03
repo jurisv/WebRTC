@@ -1,0 +1,401 @@
+// IMPORTED FROM MAIN VIEW
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+@mixin box-shadow($h-shadow,$v-shadow,$blur,$spread,$shadow-color) {
+  -webkit-box-shadow: $h-shadow $v-shadow $blur $spread $shadow-color;
+  -moz-box-shadow: $h-shadow $v-shadow $blur $spread $shadow-color;
+  -ms-box-shadow: $h-shadow $v-shadow $blur $spread $shadow-color;
+  box-shadow: $h-shadow $v-shadow $blur $spread $shadow-color;
+}
+*:focus {
+  outline:0 !important;
+}
+@mixin btn-border($background-color){
+  background-color: $background-color;
+  border-color: $background-color !important;
+  .x-btn-inner-default-toolbar-small{
+    color: $lightest-color;
+  }
+  &:hover{
+    .x-btn-inner-default-toolbar-small,.x-btn-inner-default-small{
+      color: $background-color;
+    }
+    .x-btn-icon-el-default-small,.x-btn-icon-el-default-toolbar-small{
+      color: $background-color;
+    }
+    background-color: transparent;
+  }
+}
+
+#sencha-logo{
+  background-color: $base-color;
+  height: 65px;
+  top:0;
+  .main-logo{
+    line-height: 65px;
+    img{
+      margin-left: 33px;
+      top: 9px;
+      position: relative;
+    }
+    span{
+      font-size: 13px;
+      color: $lightest-color;
+      margin-left: 14px;
+    }
+  }
+}
+
+.shadow-panel{
+  @include box-shadow(0px,2px,8px,0px,rgba(0,0,0,.15));
+}
+
+.x-tip-default{
+  padding: 0;
+  .x-tip-header-default{
+    padding: 10px 10px 0px 10px;
+  }
+  .x-tip-body-default{
+    padding:0 10px 10px 10px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .responsive-cell-container {
+    width:50% !important;
+    float:left;
+  }
+  .dashboard_wrapper .left_part {
+    width: 60% !important;
+    float:left;
+  }
+  .dashboard_wrapper .right_part {
+    width: 40% !important;
+    float:left;
+  }
+  .responsive-page-row .left-part,
+  .responsive-page-row .right-part {
+    width:50% !important;
+    float: left;
+  }
+}
+
+.dashboard-main-navigation{
+  .x-panel-body{
+    background: $panel-navigation-background-color;
+    .x-grid-item{
+      background: $panel-navigation-background-color;
+      color: $color;
+      &.x-grid-item-selected,
+      &.x-grid-item-focused,&.x-grid-item-over{
+        color: $lightest-color;
+        background: $panel-navigation-selected-color;
+        .x-tree-elbow-img{
+          color: $lightest-color;
+        }
+      }
+      .x-fa:before{
+        position:absolute;
+        top:22px;
+        left:30px;
+        font-size:16px;
+      }
+      &.x-grid-item-selected,&.x-grid-item-over{
+        .x-grid-cell-inner{
+          border-left-color: $base-color;
+        }
+      }
+      .x-grid-cell-inner{
+        line-height:48px;
+        border-left:5px solid transparent;
+        cursor:pointer;
+        .x-tree-node-text{
+          margin-left:30px;
+        }
+      }
+      .x-tree-elbow-img{
+        line-height:62px;
+        float:right;
+        color: $color;
+        &.x-tree-expander{
+          &:before{
+            content:'\f105';
+          }
+        }
+      }
+      .x-grid-tree-node-expanded{
+        .x-tree-elbow-img{
+          &.x-tree-expander{
+            &:before{
+              content:'\f107';
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.x-css-shadow{
+  box-shadow:none !important;
+}
+.sencha-dash-dash-headerbar {
+  padding:0 30px 0 0;
+  position:fixed;
+  width:100%;
+  z-index:10;
+  border:none;
+  .header-right-profile-image {
+    border-radius: 20px;
+  }
+}
+.top-english-button{
+  .x-btn-icon-el{
+    width:21px;
+    height:14px;
+  }
+}
+.collapsed{
+  .hot-icon,.new-icon{
+    &:after{
+      display:none;
+    }
+  }
+  .x-tree-elbow-img{
+    display:none;
+  }
+
+  .x-tree-node-text {
+    display:none;
+  }
+}
+.x-grid-cell{
+  position:relative;
+}
+.hot-icon,.new-icon{
+  &.hot-icon:after{
+    content: "HOT";
+    background:#e3495a;
+  }
+  &.new-icon:after{
+    content: "NEW";
+    background:$base-color;
+  }
+  &:after{
+    height: 18px;
+    width: 34px;
+    display: inline-block;
+    position: absolute;
+    top: 22px;
+    right: 18px;
+    text-align:center;
+    color: $lightest-color;
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 18px;
+  }
+
+}
+.sencha-dash-nav-popup {
+  position:absolute;
+  visibility: visible;
+  border:none;
+  .x-menu-item,.x-menu-item-link {
+    background-color: $panel-navigation-background-color;
+    color: $lightest-color;
+  }
+  .x-box-scroller-body-vertical{
+    margin: 0;
+    height: 100%;
+  }
+  .x-menu-item .x-menu-item-text-default {
+    color: $navigation-popup-item-color;
+  }
+  .x-menu-item-focus .x-menu-item-text-default {
+    color: $lightest-color;
+  }
+  .x-menu-item-focus, .x-menu-item-hover,.x-menu-item-active,.x-menu-item-default-hover,.x-menu-item-default-focus {
+    background-color: $navigation-popup-item-hover-background-color;
+  }
+
+}
+.toolbar-btn-shadow{
+  .x-btn-over{
+    background-color: $button-toolbar-hover-background-color;
+  }
+}
+.x-btn{
+  .x-frame-mr,.x-frame-ml,.x-frame-tl,.x-frame-tc,.x-frame-tr,.x-frame-bl,.x-frame-bc,.x-frame-br{
+    display:none;
+  }
+}
+/*
+.x-window-ml,.x-window-mr,.x-window-bc{
+	background:none;
+}*/
+
+/*
+.x-fa{
+  display: inline-block;
+  font: normal normal normal 14px/1 $font-family;
+  &:before {
+    font-family: FontAwesome;
+  }
+}
+*/
+
+
+// LOGIN FROM HERE DOWN
+
+.user-login-register-container{
+  .x-window-body {
+    background-image: url('/classic/resources/auth/lock-screen-background.jpg'),
+                      url('/packages/local/auth/resources/lock-screen-background.jpg')
+  ;
+    background-size:cover;
+    background-repeat:repeat;
+  }
+  &.x-window-default{
+    border: none;
+    border-radius: 0px;
+    padding: 0px;
+  }
+
+  .bluePanelCls{
+    background:$base-color;
+    color:$lightest-color;
+    line-height:24px;
+    .user-name-text{
+      font-size: 18px;
+      font-weight:bold;
+    }
+    .user-post-text{
+      font-size:14px;
+    }
+    .lockscreen-profile-img{
+      @include border-radius($circle-border-radius);
+    }
+  }
+  .x-form-text-default{
+    padding: 15px;
+  }
+
+  .lock-screen-login-button, .lock-screen-login-button .x-frame-mc{
+    @include btn-border($lock-screen-login-background-color);
+  }
+  .signin-facebook-button, .signin-facebook-button .x-frame-mc{
+    @include btn-border($social-facebook-btn-background);
+  }
+  .signin-create-account-button, .signin-create-account-button .x-frame-mc{
+    @include btn-border($lock-screen-create-account-background-color);
+  }
+  .x-btn-button{
+    text-align: left;
+    .x-btn-inner{
+      font-size:14px;
+      height:18px;
+    }
+  }
+  .register-page-back-button, .register-page-back-button .x-frame-mc{
+    background-color: $lightest-color;
+    border:none;
+    padding:5px 0 0 0;
+    .x-btn-inner-default-small{
+      padding : 0px;
+      height:20px;
+      color: $base-color;
+      &:hover{
+        text-decoration:underline;
+      }
+    }
+    &.x-btn-pressed.x-btn-default-small{
+      background-color: transparent;
+    }
+  }
+  .x-form-trigger{
+    text-align:right;
+    width:50px;
+  }
+  .password-trigger,.signin-email-trigger,.signin-password-trigger,.signin-envelope-trigger{
+    &:before{
+      top: 10px;
+      left:-18px;
+      position: relative;
+      color: $lock-screen-trigger-color;
+      font-size: 30px;
+    }
+
+    &.password-trigger:before,&.signin-password-trigger:before{
+      content: "\f023";
+    }
+    &.signin-email-trigger:before{
+      content: "\f007";
+    }
+    &.signin-envelope-trigger:before{
+      content: "\f0e0";
+    }
+  }
+  .seperator{
+    text-align: center;
+    color: $lock-screen-create-account-background-color;
+    font-family: "Open Sans";
+    display: inline-block;
+    background: $lightest-color;
+    position: relative;
+    z-index: 1;
+    padding: 0 8px;
+  }
+  .forgot-password{
+    line-height:32px;
+    color: $base-color;
+    text-decoration:none;
+    margin-left:5px;
+    &:hover{
+      text-decoration:underline;
+    }
+  }
+  .signin-facebook-button .x-fa{
+    color: $lightest-color;
+    font-size: 24px;
+    position: absolute;
+    right: 13px;
+  }
+  .lock-screen-login-button .x-fa{
+    color: $lightest-color;
+    font-size: 32px;
+    position: absolute;
+    right: 11px;
+    top:10px;
+    line-height: 16px;
+  }
+  .signin-create-account-button .x-fa {
+    color: $lightest-color;
+    font-size: 24px;
+    position: absolute;
+    right: 24px;
+    top:10px;
+  }
+  .login-form-wrap,.register-form-wrap,.password-reminder-wrap{
+    background: $lightest-color;
+  }
+
+  .outer-div{
+    width:100%;
+    text-align: center;
+    &:after{
+      content: " ";
+      width:100%;
+      height: 1px;
+      background-color: $blank-page-color ;
+      position:absolute;
+      left: 0;
+      top: 9px;
+    }
+  }
+}
+.x-mask.x-border-box{
+  height:auto !important;
+}

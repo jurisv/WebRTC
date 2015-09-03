@@ -6,6 +6,7 @@ Ext.define('WebRTC.view.main.ViewportModel', {
         name: null,                     // set cookie on init
         user: null,                     // set cookie on init
         room: null,
+        appTitle: 'Sencha WebRTC',      // Title used for auth package
         authToken: 'myAuthTokenHere'    // This would be a user auth token like auth0 or  oAuth
     },
     stores: {

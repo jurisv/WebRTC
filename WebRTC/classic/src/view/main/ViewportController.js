@@ -77,12 +77,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
                     me.onSettingsAdminSelect();
                 }else{
                     me.authenticate(
-                    function() {
-                        me.deferAndSelectFirst();
-                    },
-                    function(){
-                        me.handleUnauthorized();
-                    })
+                        function() {
+                            me.deferAndSelectFirst();
+                        },
+                        function(){
+                            me.handleUnauthorized();
+                        })
                 }
             }
         });
@@ -116,6 +116,26 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
 
         if(!userCookie){
+
+          /* me.fireEvent('authorize',{
+               success: success,
+               failure: failure
+           });*/
+
+
+           /* var vmdata=me.getViewModel().data;
+            if(vmdata.currentView) {
+                vmdata.currentView.destroy();
+            }
+
+            vmdata.currentView =  Ext.create('auth.view.auth.Login');
+
+            var mainCardPanel = me.getView();
+            mainCardPanel.add(vmdata.currentView);
+            */
+
+           // return;
+
             Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
                 if(value) {
                     //set the persons name
@@ -612,6 +632,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
     onRouteUnmatched:function(route){
         var me = this;
         console.log('unmatched route' + route);
+        window.location.hash = '#home';
     }
 
 });

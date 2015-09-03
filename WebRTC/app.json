@@ -55,11 +55,12 @@
      *      ]
      */
     "requires": [
+        "auth",
+        "core-data-proxy-socketio",
         "font-awesome",
-        "ux",
         "opentok",
         "soundlibrary",
-        "core-data-proxy-socketio"
+        "ux"
     ],
 
     /**
