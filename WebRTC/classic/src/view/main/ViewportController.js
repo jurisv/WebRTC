@@ -117,14 +117,14 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
         if(!userCookie){
 
-         /*  me.fireEvent('authorize',{
-               view: me.getView(),
+           me.fireEvent('authorize',{
                success: success,
                failure: failure
            });
-           return;*/
 
-            Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
+           return;
+
+            /*Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
                 if(value) {
                     //set the persons name
                     var expires = new Date("October 13, 2095 11:13:00"),
@@ -151,7 +151,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
                         me.handleUnauthorized();
                     }
                 }
-            });
+            });*/
 
 
         }else{
