@@ -2,7 +2,6 @@
  * @class auth.controller.Auth
  * @extend Ext.app.Controller
  *
- *  Description: This controller will only react to a valid authorize request from another controller's request to authorize.
  *
  */
 Ext.define('auth.controller.Auth', {
@@ -63,10 +62,6 @@ Ext.define('auth.controller.Auth', {
      */
     originalRoute: null,
 
-    /*
-     * the view passed in by the authorize request to place the auth items into typically the viewport.
-     */
-    authView: null,
 
     /*
      * the currently showing authorization view
@@ -94,7 +89,6 @@ Ext.define('auth.controller.Auth', {
 
          me.isAuthenticating = true;
          me.originalRoute = window.location.hash;
-         me.authView =request.view;
          me.onSuccess = request.success;
          me.onFailure = request.failure;
 
@@ -123,8 +117,6 @@ Ext.define('auth.controller.Auth', {
             me.currentView.destroy();
         }
 
-        me.authView = null;
-
         me.redirectTo(me.originalRoute);
         me.originalRoute = null;
 
@@ -138,6 +130,10 @@ Ext.define('auth.controller.Auth', {
             me.currentView.destroy();
         }
 
+        /*
+        * Creating these autoShow modal windows will take over the screen.
+        * Switching between them is the only option until the cleanupAuth is called.
+        */
         if(hash in me.validViews) {
             me.currentView = Ext.create("auth.view.authentication."+ me.validViews[hash].view);
         }

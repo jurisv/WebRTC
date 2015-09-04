@@ -51,10 +51,8 @@ Ext.define('WebRTC.overrides.Auth', {
     },
 
     login: function (data) {
-        var me = this;
-
-        debugger;
-
+        var me = this,
+            viewport = Ext.first('app-main');
         if(data){
             var expires = new Date("October 13, 2095 11:13:00"),
                 newUser = Ext.create('WebRTC.model.User', {
@@ -63,8 +61,8 @@ Ext.define('WebRTC.overrides.Auth', {
 
             Ext.util.Cookies.clear('user');
             newUser.save();
-            me.authView.getViewModel().set('name', newUser.get('name'));
-            me.authView.getViewModel().set('user', newUser);
+            viewport.getViewModel().set('name', newUser.get('name'));
+            viewport.getViewModel().set('user', newUser);
             Ext.util.Cookies.set('user', JSON.stringify(newUser.data), expires);
 
             me.cleanupAuth();
