@@ -117,24 +117,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
         if(!userCookie){
 
-          /* me.fireEvent('authorize',{
+           me.fireEvent('authorize',{
+               view: me.getView(),
                success: success,
                failure: failure
-           });*/
-
-
-           /* var vmdata=me.getViewModel().data;
-            if(vmdata.currentView) {
-                vmdata.currentView.destroy();
-            }
-
-            vmdata.currentView =  Ext.create('auth.view.auth.Login');
-
-            var mainCardPanel = me.getView();
-            mainCardPanel.add(vmdata.currentView);
-            */
-
-           // return;
+           });
+           return;
 
             Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
                 if(value) {
@@ -164,6 +152,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
                     }
                 }
             });
+
+
         }else{
             user =  JSON.parse(userCookie) ;
             me.getViewModel().set('user', user);

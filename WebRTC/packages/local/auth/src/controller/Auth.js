@@ -29,12 +29,29 @@ Ext.define('auth.controller.Auth', {
         }
     },
 
-    onAuthorize: function(request){
-        if(request.success){
+    onAuthorize: function(request){ //this request object needs : viewport , success , failure
+         var me = this,
+             viewport = request.view;
+
+         var vmdata = viewport.getViewModel().data;
+
+        if(vmdata.currentAuthView) {
+            vmdata.currentAuthView.destroy();
+         }
+
+         vmdata.currentAuthView =  Ext.create('auth.view.auth.Login');
+         vmdata.authSuccess = request.success;
+         vmdata.authFailure = request.failure;
+
+        viewport.add(vmdata.currentAuthView);
+
+
+        /*
+            if(request.success){
             if( Ext.isFunction(request.success)){
                 request.success();
             }
-        }
+        }*/
     },
 
     onRouteBeforeLogin: function () {
