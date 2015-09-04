@@ -117,12 +117,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
         if(!userCookie){
 
-           me.fireEvent('authorize',{
+         /*  me.fireEvent('authorize',{
                view: me.getView(),
                success: success,
                failure: failure
            });
-           return;
+           return;*/
 
             Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
                 if(value) {
