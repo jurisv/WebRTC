@@ -100,60 +100,21 @@ Ext.define('WebRTC.view.main.ViewportController', {
         })
     },
 
-    //must pass two routes as functions to run for success or failure
+
     authenticate: function(success,failure){
         var me = this,
             userCookie = Ext.util.Cookies.get('user'),
-            user,
-            store = Ext.create('Ext.data.Store',{
-                model: 'WebRTC.model.User',
-                autoLoad: true
-            });
+            user;
 
         // Use this area to run function to launch screen instantly
         // this.onSettingsUserSelect();
         // return;
 
-
         if(!userCookie){
-
            me.fireEvent('authorize',{
                success: success,
                failure: failure
            });
-
-           return;
-
-            /*Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
-                if(value) {
-                    //set the persons name
-                    var expires = new Date("October 13, 2095 11:13:00"),
-                        newUser = Ext.create('WebRTC.model.User',{
-                            name: value
-                        });
-
-                    Ext.util.Cookies.clear('user');
-                    newUser.save();
-                    me.getViewModel().set('name', newUser.get('name') );
-                    me.getViewModel().set('user', newUser);
-                    Ext.util.Cookies.set('user', JSON.stringify( newUser.data ) , expires);
-
-
-                    if(success && Ext.isFunction(success)){
-                        success();
-                    }
-
-
-                }else{
-                    if(failure && Ext.isFunction(failure)){
-                        failure();
-                    }else{
-                        me.handleUnauthorized();
-                    }
-                }
-            });*/
-
-
         }else{
             user =  JSON.parse(userCookie) ;
             me.getViewModel().set('user', user);
@@ -565,7 +526,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     },
 
-    // this is where we can create a token for sharing the room
+    /*
+    * This is where we can create a token for sharing the room
+    */
     onShareRoom: function(){
         Ext.Ajax.request({
             url     : '/data/jwtsign/' + qs.pwd,

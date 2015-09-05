@@ -96,19 +96,6 @@ Ext.define('auth.controller.Auth', {
 
     },
 
-    ensureAuthenticating: function(){
-        if(!this.isAuthenticating){
-            if(this.currentAuthView) {
-                this.currentAuthView.destroy();
-            }
-            console.warn('Authorization : No Operation Performed - No valid authorizing request');
-            return false;
-        }
-        //uses the current hash as the route and then load it into view
-        this.setCurrentView();
-        return true;
-    },
-
     cleanupAuth: function(request){
         var me = this;
         me.isAuthenticating = false;
@@ -117,7 +104,7 @@ Ext.define('auth.controller.Auth', {
             me.currentView.destroy();
         }
 
-        me.redirectTo(me.originalRoute);
+        me.redirectTo(me.originalRoute || '');
         me.originalRoute = null;
 
     },

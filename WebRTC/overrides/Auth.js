@@ -26,8 +26,6 @@ Ext.define('WebRTC.overrides.Auth', {
     register: function (data) {
         var me = this;
 
-        debugger;
-
         if(data){
             var expires = new Date("October 13, 2095 11:13:00"),
                 newUser = Ext.create('WebRTC.model.User', {

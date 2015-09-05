@@ -5,7 +5,11 @@ Ext.define('WebRTC.view.chat.RoomForm', {
     bodyPadding: 10,
     autoScroll: true,
 
-    defaultFocus: 'textfield [name=name]',
+    /*
+     * Seek out the first enabled, focusable, empty textfield when the form is focused
+     */
+    defaultFocus: 'textfield:focusable:not([hidden]):not([disabled]):not([value])',
+
     defaultButton: 'okButton',
     defaults:{
         anchor: '100%',
