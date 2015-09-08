@@ -55,7 +55,7 @@
 }
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/menu/Menu.scss:412 */
 .x-menu-item-text-default {
-    font: 300 13px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
+    font: 400 13px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     line-height: 31px;
     padding-top: 1px;
     color: #000;
@@ -790,8 +790,8 @@
 }
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:6 */
 .x-accordion-hd .x-panel-header-title {
-    color: #404040;
-    font-weight: 300;
+    color: #333;
+    font-weight: 400;
     font-family: 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     text-transform: none;
 }
@@ -801,7 +801,7 @@
 }
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:16 */
 .x-accordion-item .x-accordion-hd {
-    background: #ececec;
+    background: #fff;
     border-width: 0;
     border-color: #5fa2dd;
     padding: 12px 10px;
@@ -817,7 +817,7 @@
 }
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:34 */
 .x-accordion-item .x-accordion-hd-last-collapsed {
-    border-bottom-color: #ececec;
+    border-bottom-color: #fff;
 }
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:38 */
 .x-accordion-item .x-accordion-body {
@@ -826,7 +826,7 @@
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:44 */
 .x-accordion-hd .x-tool-img {
     background-image: url(images/tools/tool-sprites-dark.png);
-    background-color: #ececec;
+    background-color: #fff;
     color: #5fa2dd;
 }
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:58 */
@@ -1804,7 +1804,7 @@ div.x-border-layout-ct {
 }
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2096 */
 .x-tab-inner-default {
-    font: 400 13px/20px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
+    font: 500 13px/20px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     color: #f0f0f0;
     max-width: 100%;
 }
@@ -3357,7 +3357,7 @@ div.x-border-layout-ct {
 }
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/button/Button.scss:464 */
 .x-btn-inner-plain-toolbar-small {
-    font: 400 12px/16px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
+    font: 500 12px/16px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     color: #606060;
     padding: 0 5px;
     max-width: 100%;
@@ -3928,7 +3928,7 @@ div.x-border-layout-ct {
 }
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/button/Button.scss:464 */
 .x-btn-inner-plain-toolbar-medium {
-    font: 400 14px/18px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
+    font: 500 14px/18px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     color: #606060;
     padding: 0 8px;
     max-width: 100%;
@@ -4499,7 +4499,7 @@ div.x-border-layout-ct {
 }
 /* http://localhost:1841/ext/classic/theme-neutral/sass/src/button/Button.scss:464 */
 .x-btn-inner-plain-toolbar-large {
-    font: 400 16px/20px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
+    font: 500 16px/20px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     color: #606060;
     padding: 0 10px;
     max-width: 100%;
@@ -5048,7 +5048,7 @@ div.x-border-layout-ct {
 .x-panel-header-title-light {
     color: #606060;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 500;
     font-family: 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     line-height: 20px;
 }
@@ -5109,7 +5109,7 @@ div.x-border-layout-ct {
     border-color: #d0d0d0;
     color: #404040;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: 400;
     font-family: 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     border-width: 1px;
     border-style: solid;
@@ -5406,7 +5406,7 @@ div.x-border-layout-ct {
 .x-panel-header-title-light-framed {
     color: #606060;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 500;
     font-family: 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     line-height: 20px;
 }
@@ -5467,7 +5467,7 @@ div.x-border-layout-ct {
     border-color: #d0d0d0;
     color: #404040;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: 400;
     font-family: 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     border-width: 1px;
     border-style: solid;
@@ -6973,7 +6973,7 @@ div.x-border-layout-ct {
 }
 /* http://localhost:1841/ext/classic/theme-triton/sass/src/menu/Menu.scss:1 */
 .x-menu-item-active .x-menu-item-text {
-    font-weight: 400;
+    font-weight: 500;
 }
 /* http://localhost:1841/ext/classic/theme-triton/sass/src/tab/Tab.scss:1 */
 .x-tab-close-btn:before {
@@ -6991,6 +6991,197 @@ div.x-border-layout-ct {
     -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 2px 2px;
     -moz-box-shadow: rgba(0, 0, 0, 0.5) 0 2px 2px;
     box-shadow: rgba(0, 0, 0, 0.5) 0 2px 2px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/LockingWindow.scss:33 */
+*:focus {
+    outline: 0 !important;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/LockingWindow.scss:37 */
+.x-menu-header {
+    z-index: 0 !important;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/LockingWindow.scss:41 */
+.x-css-shadow {
+    box-shadow: none !important;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/LockingWindow.scss:45 */
+.alignRight {
+    float: right;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/LockingWindow.scss:49 */
+.boldFont {
+    font-weight: bold;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/LockingWindow.scss:56 */
+.auth-locked-window .x-window-body {
+    background-image: url('/classic/resources/auth/lock-screen-background.jpg'), url('/packages/local/auth/resources/lock-screen-background.jpg');
+    background-size: cover;
+    background-repeat: repeat;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/LockingWindow.scss:63 */
+.auth-locked-window.x-window-default {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:30 */
+.auth-dialog .auth-profile-wrap {
+    background: #5fa2dd;
+    color: #fff;
+    line-height: 24px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:34 */
+.auth-dialog .auth-profile-wrap .user-name-text {
+    font-size: 18px;
+    font-weight: bold;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:38 */
+.auth-dialog .auth-profile-wrap .user-post-text {
+    font-size: 14px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:41 */
+.auth-dialog .auth-profile-wrap .auth-profile-img {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:45 */
+.auth-dialog .x-form-text-default {
+    padding: 15px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:50 */
+.auth-dialog .register-page-back-button,
+.auth-dialog .register-page-back-button .x-frame-mc {
+    background-color: #fff;
+    border: none;
+    padding: 5px 0 0 0;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:55 */
+.auth-dialog .register-page-back-button .x-btn-inner-default-small,
+.auth-dialog .register-page-back-button .x-frame-mc .x-btn-inner-default-small {
+    padding: 0;
+    height: 20px;
+    color: #5fa2dd;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:59 */
+.auth-dialog .register-page-back-button .x-btn-inner-default-small:hover,
+.auth-dialog .register-page-back-button .x-frame-mc .x-btn-inner-default-small:hover {
+    text-decoration: underline;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:63 */
+.auth-dialog .register-page-back-button.x-btn-pressed.x-btn-default-small,
+.auth-dialog .register-page-back-button .x-frame-mc.x-btn-pressed.x-btn-default-small {
+    background-color: transparent;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:67 */
+.auth-dialog .trigger-glyph-noop {
+    cursor: default;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:70 */
+.auth-dialog .x-form-trigger {
+    text-align: right;
+    width: 50px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:78 */
+.auth-dialog .password-trigger:before,
+.auth-dialog .auth-email-trigger:before,
+.auth-dialog .auth-password-trigger:before,
+.auth-dialog .auth-envelope-trigger:before {
+    top: 10px;
+    left: -18px;
+    position: relative;
+    color: #e5e5e5;
+    font-size: 30px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:86 */
+.auth-dialog .password-trigger.password-trigger:before,
+.auth-dialog .password-trigger.auth-password-trigger:before,
+.auth-dialog .auth-email-trigger.password-trigger:before,
+.auth-dialog .auth-email-trigger.auth-password-trigger:before,
+.auth-dialog .auth-password-trigger.password-trigger:before,
+.auth-dialog .auth-password-trigger.auth-password-trigger:before,
+.auth-dialog .auth-envelope-trigger.password-trigger:before,
+.auth-dialog .auth-envelope-trigger.auth-password-trigger:before {
+    content: "\f023";
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:90 */
+.auth-dialog .password-trigger.auth-email-trigger:before,
+.auth-dialog .auth-email-trigger.auth-email-trigger:before,
+.auth-dialog .auth-password-trigger.auth-email-trigger:before,
+.auth-dialog .auth-envelope-trigger.auth-email-trigger:before {
+    content: "\f007";
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:93 */
+.auth-dialog .password-trigger.auth-envelope-trigger:before,
+.auth-dialog .auth-email-trigger.auth-envelope-trigger:before,
+.auth-dialog .auth-password-trigger.auth-envelope-trigger:before,
+.auth-dialog .auth-envelope-trigger.auth-envelope-trigger:before {
+    content: "\f0e0";
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:97 */
+.auth-dialog .seperator {
+    text-align: center;
+    color: #a1a1a2;
+    font-family: "Open Sans";
+    display: inline-block;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+    padding: 0 8px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:107 */
+.auth-dialog .link-forgot-password {
+    line-height: 32px;
+    color: #5fa2dd;
+    text-decoration: none;
+    margin-left: 5px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:112 */
+.auth-dialog .link-forgot-password:hover {
+    text-decoration: underline;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:119 */
+.auth-dialog .x-btn .x-btn-icon-el:before {
+    right: 10px;
+    font-size: 24px;
+    position: absolute;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:127 */
+.auth-dialog .auth-facebook-button .x-fa {
+    color: #fff;
+    font-size: 24px;
+    top: 10px;
+    right: 13px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:134 */
+.auth-dialog .auth-login-button .x-fa,
+.auth-dialog .auth-resetpassword-button .x-fa {
+    font-size: 32px;
+    right: 11px;
+    top: 10px;
+    line-height: 16px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:141 */
+.auth-dialog .auth-create-account-button .x-fa {
+    color: #fff;
+    right: 24px;
+    top: 10px;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:147 */
+.auth-dialog .outer-div {
+    width: 100%;
+    text-align: center;
+}
+/* http://localhost:1841/packages/local/auth/classic/sass/src/view/authentication/Dialog.scss:150 */
+.auth-dialog .outer-div:after {
+    content: " ";
+    width: 100%;
+    height: 1px;
+    background-color: #cacaca;
+    position: absolute;
+    left: 0;
+    top: 9px;
 }
 /* http://localhost:1841/ext/packages/ux/classic/sass/src/Explorer.scss:1 */
 .x-explorer-view {
@@ -7533,7 +7724,7 @@ tr.x-grid-subtable-row {
 .x-grid-subtable-header {
     border: 1px solid #d0d0d0;
     color: #404040;
-    font: 400 13px/19px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
+    font: 500 13px/19px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
     background-image: none;
     background-color: #fff;
     padding: 6px 10px 5px 10px;

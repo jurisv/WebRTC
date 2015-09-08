@@ -22,72 +22,7 @@ Ext.define('WebRTC.view.main.Viewport', {
         align: 'stretch'
     },
 
-    tbar:[
-        {
-            iconCls: 'x-fa fa-plus-square',
-            plain: true,
-            listeners: {
-                click: 'onRoomAdd'
-            }
-        },{
-            iconCls: 'x-fa fa-pencil',
-            plain: true,
-            bind:{
-                disabled: '{!isRoomSelected}'
-            },
-            listeners: {
-                click: 'onRoomEdit'
-            }
-        },{
-            xtype: 'combobox',
-            reference: 'roomscombo',
-            bind:{
-                store: '{rooms}'
-            },
-            queryMode: 'local',
-            displayField: 'name',
-            valueNotFoundText: '',
-            emptyText: 'select a room...',
-            valueField: 'id',
-            listeners: {
-                select: 'onRoomSelect'
-            }
-        },{
-            iconCls: 'x-fa fa-trash-o',
-            plain: true,
-            bind:{
-                disabled: '{!isRoomSelected}'
-            },
-            listeners: {
-                click: 'onRoomRemove'
-            }
-        }
-        ,'->',
-        {
-            iconCls: 'x-fa fa-user',
-            bind:{
-                text: '{name}'
-            },
-            handler: 'onSettingsUserSelect'
-        },
-        {
-            iconCls: 'x-fa fa-expand',
-            handler: 'onToggleFullScreen'
-        },{
-            iconCls: 'x-fa fa-gear',
-            bind:{
-                hidden: '{isAdmin}'
-            },
-            handler: 'onSettingsAdminSelect'
-        },{
-            style:'background-image: url(/static/images/TokBoxIcon.png) !important; background-size: 29px 29px; background-repeat: no-repeat; ',
-            plain: true,
-            listeners: {
-                click: 'onLogoClick'
-            }
-        }
 
-    ],
 
 
     items: [
@@ -134,6 +69,72 @@ Ext.define('WebRTC.view.main.Viewport', {
     },
         {
             xtype: 'tabpanel',
+            tbar:[
+                {
+                    iconCls: 'x-fa fa-plus-square',
+                    plain: true,
+                    listeners: {
+                        click: 'onRoomAdd'
+                    }
+                },{
+                    iconCls: 'x-fa fa-pencil',
+                    plain: true,
+                    bind:{
+                        disabled: '{!isRoomSelected}'
+                    },
+                    listeners: {
+                        click: 'onRoomEdit'
+                    }
+                },{
+                    xtype: 'combobox',
+                    reference: 'roomscombo',
+                    bind:{
+                        store: '{rooms}'
+                    },
+                    queryMode: 'local',
+                    displayField: 'name',
+                    valueNotFoundText: '',
+                    emptyText: 'select a room...',
+                    valueField: 'id',
+                    listeners: {
+                        select: 'onRoomSelect'
+                    }
+                },{
+                    iconCls: 'x-fa fa-trash-o',
+                    plain: true,
+                    bind:{
+                        disabled: '{!isRoomSelected}'
+                    },
+                    listeners: {
+                        click: 'onRoomRemove'
+                    }
+                }
+                ,'->',
+                {
+                    iconCls: 'x-fa fa-user',
+                    bind:{
+                        text: '{name}'
+                    },
+                    handler: 'onSettingsUserSelect'
+                },
+                {
+                    iconCls: 'x-fa fa-expand',
+                    handler: 'onToggleFullScreen'
+                },{
+                    iconCls: 'x-fa fa-gear',
+                    bind:{
+                        hidden: '{isAdmin}'
+                    },
+                    handler: 'onSettingsAdminSelect'
+                },{
+                    style:'background-image: url(/static/images/TokBoxIcon.png) !important; background-size: 29px 29px; background-repeat: no-repeat; ',
+                    plain: true,
+                    listeners: {
+                        click: 'onLogoClick'
+                    }
+                }
+
+            ],
             tabPosition: 'bottom',
             reference: 'roomtabs',
             flex:4,
