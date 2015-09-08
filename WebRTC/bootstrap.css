@@ -5,5 +5,9 @@
  * to the most recently built CSS file for the application to allow index.html
  * in the development directory to load properly (i.e., "dev mode").
  */
+<<<<<<< Updated upstream
 @import 'build/production/WebRTC/classic/resources/WebRTC-all.css';
+=======
+@import 'build/production/WebRTC/material-modern/resources/WebRTC-all.css';
+>>>>>>> Stashed changes
 
