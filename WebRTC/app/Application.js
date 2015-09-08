@@ -16,6 +16,7 @@ Ext.define('WebRTC.Application', {
       'opentok.controller.OpenTok',
       'soundlibrary.controller.SoundLibrary',
       'auth.controller.Auth'
+
     ],
 
     stores:['Settings'],

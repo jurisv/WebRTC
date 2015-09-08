@@ -4,10 +4,17 @@ Ext.define('auth.view.authentication.Register', {
 
     requires: [
         'auth.view.authentication.Dialog',
-        'Ext.button.Button',
-        'Ext.form.Label',
-        'Ext.form.field.Checkbox',
-        'Ext.form.field.Text'
+
+        /*
+        NOTE: Although register doesn't really require these they are placed here
+        to remove the dependency to look them up for the 'modern' toolkit
+        */
+        'auth.view.authentication.LockingWindow',
+        'auth.view.authentication.Login',
+        'auth.view.authentication.DeniedScreen',
+        'auth.view.authentication.LockScreen',
+        'auth.view.authentication.PasswordReset'
+
     ],
 
     title: 'User Registration',

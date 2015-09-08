@@ -7,7 +7,9 @@
 Ext.define('auth.controller.Auth', {
     extend: 'Ext.app.Controller',
     id: 'auth',
-
+    requires: [
+        'auth.view.authentication.Register'
+    ],
     routes : {
         'passwordreset' : {
              action  : 'setCurrentView'

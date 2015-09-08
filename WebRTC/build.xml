@@ -48,5 +48,4 @@
             <fileset dir="${build.dir}"/>
         </copy>
     </target>
-
 </project>

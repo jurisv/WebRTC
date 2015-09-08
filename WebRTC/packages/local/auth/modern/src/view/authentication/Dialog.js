@@ -9,7 +9,6 @@ Ext.define('auth.view.authentication.Dialog', {
 
     requires: [
         'auth.view.authentication.AuthenticationController',
-        'auth.view.authentication.AuthenticationModel',
         'Ext.form.Panel'
     ],
 

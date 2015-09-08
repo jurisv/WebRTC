@@ -7,10 +7,9 @@
 
     <title>Communicator</title>
 
-    
+
     <script type="text/javascript">
         var Ext = Ext || {}; // Ext namespace won't be defined yet...
-
         // This function is called by the Microloader after it has performed basic
         // device detection. The results are provided in the "tags" object. You can
         // use these tags here or even add custom tags. These can be used by platform
@@ -18,8 +17,7 @@
         //
         Ext.beforeLoad = function (tags) {
             var s = location.search,  // the query string (ex "?foo=1&bar")
-                profile;
-
+                    profile;
             // For testing look for "?classic" or "?modern" in the URL to override
             // device detection default.
             //
@@ -39,19 +37,17 @@
                 profile = tags.desktop ? 'classic' : 'modern';  //typically desktop is classic but this app is all modern.
                 //profile = tags.phone ? 'modern' : 'classic';
             }
-
             Ext.manifest = profile; // this name must match a build profile name
-
             // This function is called once the manifest is available but before
             // any data is pulled from it.
             //
             //return function (manifest) {
-                // peek at / modify the manifest object
+            // peek at / modify the manifest object
             //};
         };
     </script>
-    
-    
+
+
     <!-- The line below must be kept intact for Sencha Cmd to build your application -->
     <script id="microloader" data-app="2b952a57-508c-48f1-8814-7fe8853e6f99" type="text/javascript" src="bootstrap.js"></script>
 
