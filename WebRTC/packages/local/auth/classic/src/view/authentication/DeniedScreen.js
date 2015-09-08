@@ -1,6 +1,6 @@
 Ext.define('auth.view.authentication.DeniedScreen', {
     extend: 'auth.view.authentication.LockingWindow',
-    xtype: 'lockscreen',
+    xtype: 'deniedscreen',
 
     requires: [
         'auth.view.authentication.Dialog',
