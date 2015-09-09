@@ -80,7 +80,7 @@ Ext.define('WebRTC.view.main.Viewport', {
                     },
                     handler: 'onSettingsAdminSelect'
                 },{
-                    style:'background-image: url(/static/images/TokBoxIcon.png) !important; background-size: 29px 29px; background-repeat: no-repeat; ',
+                    iconCls: 'rtc-opentok-logo',
                     xtype: 'button',
                     plain: true,
                     listeners: {
@@ -95,12 +95,10 @@ Ext.define('WebRTC.view.main.Viewport', {
             reference: 'roomsgrid',
             itemSelector: 'div.room-wrap',
             itemTpl: [
-                '<tpl for=".">',
-                '<div style="font-size:16px; margin-bottom: 10px;padding:10px;border-bottom: solid 1px #909090;" class="room-wrap">',
+                '<div class="room-wrap">',
                 '<span class="x-fa fa-comments fa-lg" title="{name}"> </span>{name}',
                 '<br/>',
-                '</div>',
-                '</tpl>'
+                '</div>'
             ],
             bind:{
                 store: '{rooms}'

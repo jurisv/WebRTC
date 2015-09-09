@@ -9,49 +9,41 @@ Ext.define('WebRTC.view.chat.History', {
     },
 
     items: [
-    {
-        xtype: 'list',
-        loadMask: false,
-        reference: 'historylist',
-        autoScroll: true,
-        flex:1,
-        bind: {
-            store: '{messages}'
-        },
-        itemSelector: 'tr.chat-wrap',
-        itemTpl: [
-            '<table cellspacing="0" cellpadding="8" width="100%">',
-            '<tpl for=".">',
-            '<tr class="chat-wrap">',
-            '<td width="125" style="font-weight:100;">',
-            '{from}',
-            '</td><td style="font-weight:400;">',
-            // '{message}',
-            '{[this.formatMessage(values.message)]}',
-            '</td><td width="100" style="font-weight:400;text-align:right;">',
-            '{shortDate}',
-            '</td>',
-            '</tr>',
-            '</tpl>',
-            '</table>',
-            {
-                formatMessage: function (message) {
-                    var matcher = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/ig;
+        {
+            xtype: 'list',
+            loadMask: false,
+            reference: 'historylist',
+            autoScroll: true,
+            flex:1,
+            bind: {
+                store: '{messages}'
+            },
+            itemSelector: 'div.chat-wrap',
+            itemTpl: [
+                '<div class="chat-wrap">',
+                '<span class="from">{from}</span>',
+                '{[this.formatMessage(values.message)]}',
+                '<div class="short-date">{shortDate}</div>',
+                '</div>',
+                {
+                    formatMessage: function (message) {
+                        var matcher = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/ig;
 
-                    function anchorTag(match) {
-                        var url = match;
-                        if (!Ext.String.startsWith(match, 'http', true)) {
-                            url = 'http://'+match;
+                        function anchorTag(match) {
+                            var url = match;
+                            if (!Ext.String.startsWith(match, 'http', true)) {
+                                url = 'http://'+match;
+                            }
+
+                            return '<a href='+url+' target="_blank">'+match+'</a>'
                         }
 
-                        return '<a href='+url+' target="_blank">'+match+'</a>'
+                        return message.replace(matcher, anchorTag);
                     }
-
-                    return message.replace(matcher, anchorTag);
                 }
-            }
-        ]
-    },{
+            ]
+        },
+        {
             xtype: 'toolbar',
             docked: 'bottom',
             items: [

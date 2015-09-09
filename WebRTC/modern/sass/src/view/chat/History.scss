@@ -1,0 +1,19 @@
+.chat-wrap {
+
+    .from {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .short-date {
+        font-size: .6em;
+        text-align: right;
+        position: absolute;
+        top: 1.5em;
+        right: 0;        
+    }
+
+    .link {
+        font-weight: bold;
+    }
+}
