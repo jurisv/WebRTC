@@ -68,38 +68,48 @@ Ext.define('WebRTC.overrides.Auth', {
 
     login: function (btn,data) {
         var me = this,
-            viewport = Ext.first('app-main');
-        if (data) {
+            viewport = Ext.first('app-main'),
+            firebase = viewport.getViewModel().get('firebaseRef');
+        if (data && firebase) {
 
-            Ext.Ajax.request({
-                url: 'data/login',
-                params: data,
-                success: function (response, opts) {
-                    var obj = Ext.decode(response.responseText);
-                    if(obj.data && obj.data[0]){
-                        var uid = obj.data[0],
-                            expires = new Date("October 13, 2095 11:13:00");
+            firebase.authWithPassword({
+                email    : data.userid,
+                password : data.password
+            }, function(error, authData) {
+                if (error) {
+                    console.log("Login Failed!", error);
+                    me.cleanupAuth();
+                    if (Ext.isFunction(me.onFailure))
+                        me.onFailure();
+                } else {
+                    // console.log("Authenticated successfully with payload:", authData);
 
-                        WebRTC.model.User.load(uid,{
-                            success: function(record,operation){
-                                Ext.util.Cookies.clear('user');
-                                viewport.getViewModel().set('name', record.get('name'));
-                                viewport.getViewModel().set('user', record);
-                                Ext.util.Cookies.set('user', JSON.stringify(record.data), expires);
-                                me.cleanupAuth();
-                                if (Ext.isFunction(me.onSuccess)) {
-                                    me.onSuccess();
-                                }
+                    viewport.getViewModel().data.authData = authData;
+
+                    firebase.child('/users/' + authData.uid).on("value",
+                        function (snapshot) {
+
+                            var user = snapshot.val(),
+                                expires = new Date("October 13, 2095 11:13:00");
+
+                            Ext.util.Cookies.clear('user');
+
+                            viewport.getViewModel().set('name', user.fn);
+                            viewport.getViewModel().set('user', user);
+                            Ext.util.Cookies.set('user', JSON.stringify(user), expires);
+                            me.cleanupAuth();
+                            if (Ext.isFunction(me.onSuccess)) {
+                                me.onSuccess();
                             }
+
+                           // console.log( 'I got back:'+ snapshot.val());
+                        }, function (errorObject) {
+                            console.log("The read failed: " + errorObject.code);
                         });
-
-                    }
-                },
-
-                failure: function (response, opts) {
-                    console.log('server-side failure with status code ' + response.status);
                 }
             });
+
+
         }
         else{
                 me.cleanupAuth();

@@ -76,6 +76,11 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 if( !record.get('otApiKey') ){
                     me.onSettingsAdminSelect();
                 }else{
+
+                    //get the firebase url and create a client instance of Firebase at the viewport.
+                    var url = Ext.first('app-main').getViewModel().get('settings').get('fbUrl');
+                    Ext.first('app-main').getViewModel().data.firebaseRef =  new Firebase(url);
+
                     me.authenticate(
                         function() {
                             me.deferAndSelectFirst();

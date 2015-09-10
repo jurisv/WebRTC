@@ -99,6 +99,7 @@ app.route('/config/:id')
                 "SecretKey": "yoursecrethere"
             },
             "firebase": {
+                "Url": process.env.FirebaseUrl || config.serviceprovider.firebase.Url ,
                 "ApiKey": "yourkeyhere",
                 "SecretKey": "yoursecrethere"
             }

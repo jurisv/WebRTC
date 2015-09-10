@@ -19,7 +19,8 @@ baseRef.authWithCustomToken(firebaseToken, function(error, result) {
     if (error) {
         console.log("Authentication Failed!", error);
     } else {
-        baseRef.set({"rooms" : baseRooms});
+        baseRef.child('rooms').set(baseRooms);
+        baseRef.child('messages').set({});
         console.log('cleanup finished');
         setTimeout(function() {
             process.exit(0);

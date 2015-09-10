@@ -185,6 +185,10 @@
             //this is a remotely grabbed, locally cached tokbox WebRTC session management client library
             "path": "//static.opentok.com/v2/js/opentok.min.js",
             "remote": true
+        },{
+            //this is a remotely grabbed, locally cached firebase connetion
+            "path": "//cdn.firebase.com/js/client/2.2.9/firebase.js",
+            "remote": true
         }
     ],
 
