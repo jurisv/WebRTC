@@ -135,7 +135,7 @@ Ext.define('auth.controller.Auth', {
     *
     */
 
-    login: function(data){
+    login: function(btn,data){
         /*
          * Stub function meant to be overridden by application specific logic
          */
@@ -155,7 +155,7 @@ Ext.define('auth.controller.Auth', {
         }
     },
 
-    loginAs: function(data){
+    loginAs: function(btn,data){
         /*
          * Stub function meant to be overridden by application specific logic
          */
@@ -175,7 +175,7 @@ Ext.define('auth.controller.Auth', {
         }
     },
 
-    reset: function(data){
+    reset: function(btn,data){
         /*
          * Stub function meant to be overridden by application specific logic
          */
@@ -195,7 +195,7 @@ Ext.define('auth.controller.Auth', {
         }
     },
 
-    register: function(data){
+    register: function(btn,data){
         /*
          * Stub function meant to be overridden by application specific logic
          */

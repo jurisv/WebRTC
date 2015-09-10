@@ -27,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 if(nconf.get('adminsettings')['serviceprovider'] != undefined){
+
   data = require('./lib/data')(nconf);             // load data package for routes
 }
 

@@ -45,6 +45,13 @@ Ext.define('auth.view.authentication.Register', {
                     text: 'Create an account'
                 },
                 {
+                    xtype: 'label',
+                    reference: 'errorLabel',
+                    cls: 'lock-screen-top-label',
+                    hidden: true,
+                    text: 'An error has occurred'
+                },
+                {
                     xtype: 'textfield',
                     cls: 'auth-textbox',
                     height: 55,

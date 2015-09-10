@@ -71,7 +71,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
     checkSetup: function(){
         var me= this;
 
-       WebRTC.model.AdminSettings.load(0,{
+       me.getViewModel().data.settings = WebRTC.model.AdminSettings.load(0,{
             success: function(record,operation){
                 if( !record.get('otApiKey') ){
                     me.onSettingsAdminSelect();
