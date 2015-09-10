@@ -35,10 +35,12 @@ Ext.define('auth.controller.Auth', {
          */
         controller: {
             '*': {
-                authorize: 'onAuthorize'
+                authorize: 'authorize',
+                logout: 'logout'
             },
             'authentication': {
                 login: 'login',
+                loginFB: 'loginFB',
                 loginAs: 'loginAs',
                 reset: 'reset',
                 register: 'register'
@@ -80,24 +82,6 @@ Ext.define('auth.controller.Auth', {
      */
     onFailure: Ext.emptyFn,
 
-    /*
-    * this request object needs : viewport , success function, failure function
-    * any route is saved to this singleton controller and restored once a auth determination is made
-    */
-    onAuthorize: function(request){
-         var me = this;
-
-         if(me.isAuthenticating) return;
-
-         me.isAuthenticating = true;
-         me.originalRoute = window.location.hash;
-         me.onSuccess = request.success;
-         me.onFailure = request.failure;
-
-         me.redirectTo('login');
-
-    },
-
     cleanupAuth: function(request){
         var me = this;
         me.isAuthenticating = false;
@@ -135,7 +119,45 @@ Ext.define('auth.controller.Auth', {
     *
     */
 
+    authorize: function(request){
+        var me = this;
+
+        if(me.isAuthenticating) return;
+
+        me.isAuthenticating = true;
+        me.originalRoute = window.location.hash;
+        me.onSuccess = request.success;
+        me.onFailure = request.failure;
+
+        me.redirectTo('login');
+
+    },
+
+    logout: function(){
+
+    },
+
     login: function(btn,data){
+        /*
+         * Stub function meant to be overridden by application specific logic
+         */
+        var me = this;
+
+        /*
+         * Dummy logic tests for data and succeeds otherwise fails
+         *
+         */
+        me.cleanupAuth();
+        if(data){
+            if (Ext.isFunction(me.onSuccess))
+                me.onSuccess();
+        }else{
+            if (Ext.isFunction(me.onFailure))
+                me.onFailure();
+        }
+    },
+
+    loginFB: function(btn,data){
         /*
          * Stub function meant to be overridden by application specific logic
          */

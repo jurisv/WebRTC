@@ -22,6 +22,24 @@
 Ext.define('WebRTC.overrides.Auth', {
     override: 'auth.controller.Auth',
 
+    // starts checking for authorized users
+    authorize: function(request){
+        var me = this,
+            viewport = Ext.first('app-main'),
+            firebase = viewport.getViewModel().get('firebaseRef');
+
+        if(me.isAuthenticating) return;
+
+        me.isAuthenticating = true;
+
+        me.originalRoute = window.location.hash;
+        me.onSuccess = request.success;
+        me.onFailure = request.failure;
+
+        //callback depending on login state
+        firebase.onAuth(me.authDataCallback);
+    },
+
 
     register: function (btn,data) {
         var me = this;
@@ -71,68 +89,49 @@ Ext.define('WebRTC.overrides.Auth', {
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
         if (data && firebase) {
-
             firebase.authWithPassword({
                 email    : data.userid,
                 password : data.password
-            }, function(error, authData) {
-                if (error) {
-                    console.log("Login Failed!", error);
-                    me.cleanupAuth();
-                    if (Ext.isFunction(me.onFailure))
-                        me.onFailure();
-                } else {
-                    // console.log("Authenticated successfully with payload:", authData);
-
-                    viewport.getViewModel().data.authData = authData;
-
-                    firebase.child('/users/' + authData.uid).on("value",
-                        function (snapshot) {
-
-                            var user = snapshot.val(),
-                                expires = new Date("October 13, 2095 11:13:00");
-
-                            Ext.util.Cookies.clear('user');
-
-                            viewport.getViewModel().set('name', user.fn);
-                            viewport.getViewModel().set('user', user);
-                            Ext.util.Cookies.set('user', JSON.stringify(user), expires);
-                            me.cleanupAuth();
-                            if (Ext.isFunction(me.onSuccess)) {
-                                me.onSuccess();
-                            }
-
-                           // console.log( 'I got back:'+ snapshot.val());
-                        }, function (errorObject) {
-                            console.log("The read failed: " + errorObject.code);
-                        });
-                }
-            });
-
-
+            }, me.authHandler);
         }
         else{
-                me.cleanupAuth();
-                if (Ext.isFunction(me.onFailure))
-                    me.onFailure();
+            me.cleanupAuth();
+            if (Ext.isFunction(me.onFailure))
+                me.onFailure();
         }
     },
+
+    loginFB: function(btn,data){
+        var me = this,
+            viewport = Ext.first('app-main'),
+            firebase = viewport.getViewModel().get('firebaseRef');
+        if (data && firebase) {
+            firebase.authWithOAuthPopup("facebook", me.authHandler);
+        }
+        else{
+            me.cleanupAuth();
+            if (Ext.isFunction(me.onFailure))
+                me.onFailure();
+        }
+    },
+
+    logout: function(){
+        var me = this,
+            viewport = Ext.first('app-main'),
+            firebase = viewport.getViewModel().get('firebaseRef');
+
+        Ext.util.Cookies.clear('user');
+        window.location.hash = null;
+        window.location.href = window.location.pathname;
+
+        firebase.unauth();
+    },
+
+    //
     reset: function (btn,data) {
         var me = this;
 
-
         if(data){
-            var expires = new Date("October 13, 2095 11:13:00"),
-                newUser = Ext.create('WebRTC.model.User', {
-                    name: data.userid
-                });
-
-            Ext.util.Cookies.clear('user');
-            newUser.save();
-            me.authView.getViewModel().set('name', newUser.get('name'));
-            me.authView.getViewModel().set('user', newUser);
-            Ext.util.Cookies.set('user', JSON.stringify(newUser.data), expires);
-
             me.cleanupAuth();
             if (Ext.isFunction(me.onSuccess)){
                 me.onSuccess();
@@ -144,30 +143,67 @@ Ext.define('WebRTC.overrides.Auth', {
         }
     },
 
-    loginAs: function (btn,data) {
-        var me = this;
+    // handles all the firebase callbacks for authorization regardless of provider
+    authHandler: function(error, authData) {
+        var controller = WebRTC.app.getController('auth.controller.Auth'),
+            viewport = Ext.first('app-main'),
+            firebase = viewport.getViewModel().get('firebaseRef');
 
-
-        if(data){
-            var expires = new Date("October 13, 2095 11:13:00"),
-                newUser = Ext.create('WebRTC.model.User', {
-                    name: data.userid
-                });
-
-            Ext.util.Cookies.clear('user');
-            newUser.save();
-            me.authView.getViewModel().set('name', newUser.get('name'));
-            me.authView.getViewModel().set('user', newUser);
-            Ext.util.Cookies.set('user', JSON.stringify(newUser.data), expires);
-
-            if (Ext.isFunction(me.onSuccess))
-                me.cleanupAuth();
-            me.onSuccess();
-        }else{
-            if (Ext.isFunction(me.onFailure))
-                me.cleanupAuth();
-            me.onFailure();
+        if (error) {
+            console.log("Login Failed!", error);
+            controller.cleanupAuth();
+            if (Ext.isFunction(controller.onFailure))
+                controller.onFailure();
+        } else {
+            controller.storeUser(authData.uid);
         }
+    },
+
+    // Create a callback which logs the current auth state
+    authDataCallback: function (authData) {
+        var viewport = Ext.first('app-main'),
+            controller = WebRTC.app.getController('auth.controller.Auth');
+
+        if (authData) {
+            console.log("User " + authData.uid + " is logged in with " + authData.provider);
+            viewport.getViewModel().data.authData = authData;
+            controller.storeUser(authData.uid);
+
+        } else {
+            console.log("User is logged out");
+            controller.redirectTo('login');
+        }
+    },
+
+    //set the user on the viewModel and updates the cookie.
+    storeUser: function(id){
+        var controller = WebRTC.app.getController('auth.controller.Auth'),
+            viewport = Ext.first('app-main'),
+            firebase = viewport.getViewModel().get('firebaseRef');
+
+        firebase.child('/users/'+ id).on("value",
+            function (snapshot) {
+
+                var user = snapshot.val(),
+                    expires = new Date("October 13, 2095 11:13:00");
+
+                Ext.util.Cookies.clear('user');
+
+                viewport.getViewModel().set('name', user.fn);
+                viewport.getViewModel().set('user', user);
+
+                Ext.util.Cookies.set('user', JSON.stringify(user), expires);
+                controller.cleanupAuth();
+
+                if (Ext.isFunction(controller.onSuccess)) {
+                    controller.onSuccess();
+                }
+
+                // console.log( 'I got back:'+ snapshot.val());
+            }, function (errorObject) {
+                console.log("The read failed: " + errorObject.code);
+            });
+
     }
 
 

@@ -64,8 +64,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
 
     init: function() {
-        // var me = this;
-        // me.checkSetup()
+        var me = this;
+        me.checkSetup()
     },
 
     checkSetup: function(){
@@ -76,9 +76,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 if( !record.get('otApiKey') ){
                     me.onSettingsAdminSelect();
                 }else{
-
                     //get the firebase url and create a client instance of Firebase at the viewport.
-                    var url = Ext.first('app-main').getViewModel().get('settings').get('fbUrl');
+                    var url = record.data.fbUrl;
                     Ext.first('app-main').getViewModel().data.firebaseRef =  new Firebase(url);
 
                     me.authenticate(
@@ -584,7 +583,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     onRouteHome: function(){
             var me = this;
-            me.checkSetup()
+           // me.checkSetup()
     },
 
     onRouteUnmatched:function(route){
