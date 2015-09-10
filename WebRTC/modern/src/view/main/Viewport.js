@@ -15,6 +15,7 @@ Ext.define('WebRTC.view.main.Viewport', {
     controller: 'viewport',
 
     requires: [
+        'WebRTC.model.AdminSettings',
         'Ext.Toolbar',
         'Ext.MessageBox',
         'Ext.Menu'

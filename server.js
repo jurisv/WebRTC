@@ -99,7 +99,6 @@ app.route('/config/:id')
                 "SecretKey": "yoursecrethere"
             },
             "firebase": {
-                "Url": "replacewithyoururl",
                 "ApiKey": "yourkeyhere",
                 "SecretKey": "yoursecrethere"
             }

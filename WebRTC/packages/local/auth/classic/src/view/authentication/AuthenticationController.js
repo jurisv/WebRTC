@@ -3,9 +3,9 @@ Ext.define('auth.view.authentication.AuthenticationController', {
     alias: 'controller.authentication',
 
 
-    onFaceBookLogin : function() {
+    onFaceBookLogin : function(btn) {
         //TODO: implement central Facebook OATH handling here
-        this.fireEvent('loginFB', this, this.getViewModel()['data'] );
+        this.fireEvent('loginFB', btn, this.getViewModel()['data'] );
     },
 
     onLoginButton: function(btn) {

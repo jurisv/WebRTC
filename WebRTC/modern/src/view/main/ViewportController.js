@@ -7,6 +7,13 @@
 Ext.define('WebRTC.view.main.ViewportController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.viewport',
+
+    requires: [
+        'opentok.controller.OpenTok',
+        'soundlibrary.controller.SoundLibrary',
+        'auth.controller.Auth'
+    ],
+
     mixins: ['opentok.OpenTokMixin'],
 
     listen: {
