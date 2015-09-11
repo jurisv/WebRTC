@@ -25,6 +25,12 @@ Ext.define('auth.controller.Auth', {
         },
         'denied' : {
             action  : 'setCurrentView'
+        },
+        'newemail' : {
+            action  : 'setCurrentView'
+        },
+        'newpassword' : {
+            action  : 'setCurrentView'
         }
     },
 
@@ -43,6 +49,9 @@ Ext.define('auth.controller.Auth', {
                 loginFB: 'loginFB',
                 loginGitHub: 'loginGitHub',
                 loginAs: 'loginAs',
+                changePassword: 'changePassword',
+                changeEmail: 'changeEmail',
+                removeUser: 'removeUser',
                 reset: 'reset',
                 register: 'register'
             }
@@ -54,6 +63,8 @@ Ext.define('auth.controller.Auth', {
         'register': {view: 'Register'},
         'lock': {view: 'LockScreen'},
         'denied': {view: 'DeniedScreen'},
+        'newpassword': {view: 'ChangePassword'},
+        'newemail': {view: 'ChangeEmail'},
         'passwordreset': {view: 'PasswordReset'}
     },
 
@@ -131,6 +142,18 @@ Ext.define('auth.controller.Auth', {
         me.onFailure = request.failure;
 
         me.redirectTo('login');
+
+    },
+
+    changeEmail: function(){
+
+    },
+
+    changePassword: function(){
+
+    },
+
+    removeUser: function(){
 
     },
 

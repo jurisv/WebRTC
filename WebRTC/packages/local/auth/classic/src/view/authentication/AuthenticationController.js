@@ -10,6 +10,22 @@ Ext.define('auth.view.authentication.AuthenticationController', {
        }
     },
 
+    onNewEmail:  function(btn) {
+        this.redirectTo('newemail', btn,  true);
+    },
+
+    onChangeEmail:  function(btn) {
+        this.fireEvent('changeEmail', btn, this.getViewModel()['data'] );
+    },
+
+    onNewPassword:  function(btn) {
+        this.redirectTo('newpassword', btn,  true);
+    },
+
+    onChangePassword:  function(btn) {
+        this.fireEvent('changePassword', btn, this.getViewModel()['data'] );
+    },
+
     onFaceBookLogin : function(btn) {
         this.fireEvent('loginFB', btn, this.getViewModel()['data'] );
     },
