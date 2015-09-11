@@ -31,24 +31,18 @@ Ext.define('WebRTC.view.chat.RoomController', {
     },
 
     chatReceived: function(chat){
-        var list = this.lookupReference('historylist'),
-            store = this.getViewModel().getStore('messages');
-        // message = Ext.create('WebRTC.model.chat.Message',chat);
-
-        // message.set({mine:false});
+        var store = this.getViewModel().getStore('messages');
 
         store.add(chat);
-        // store.sync();
-        list.scrollBy(0, 999999, true);
-
         this.fireEvent('playsound','chat-sound');
+
+        this.scrollList();
     },
 
     chatSend: function(){
         var me = this,
             chat,
             store = this.getViewModel().getStore('messages'),
-            list = me.lookupReference('historylist'),
             timestamp = new Date().toISOString(),
             name = me.getView().parent.getViewModel().get('name'),
             roomId = me.getViewModel().get('id'),
@@ -67,9 +61,20 @@ Ext.define('WebRTC.view.chat.RoomController', {
         message.setValue('');
 
         store.add(chat);
-        // list.scrollBy(0, 999999, true);
 
         me.fireEvent('chatmessage', sessionId, chat.data);
+
+        me.scrollList();
+    },
+
+    scrollList: function () {
+        var list = this.lookupReference('historylist'),
+            scroller = list.getScrollable();
+
+        if (scroller) {
+            scroller.scrollTo(null, Infinity, true);
+        }
+
     },
 
 
