@@ -273,7 +273,7 @@ Ext.define('WebRTC.overrides.Auth', {
             window = Ext.first('lockingwindow'),
             firebase = viewport.getViewModel().get('firebaseRef');
 
-        debugger;
+
 
         if (error) {
             if (window) {
