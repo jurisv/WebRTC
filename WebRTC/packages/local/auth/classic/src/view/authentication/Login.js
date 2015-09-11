@@ -107,12 +107,14 @@ Ext.define('auth.view.authentication.Login', {
                 },
                 {
                     xtype: 'box',
+                    hidden: true,
                     html: '<div class="outer-div"><div class="seperator">OR</div></div>',
                     margin: '10 0'
                 },
                 {
                     xtype: 'button',
                     scale: 'large',
+                    hidden: true,
                     // ui: 'facebook',
                     iconAlign: 'right',
                     iconCls: 'x-fa fa-facebook',
@@ -123,12 +125,14 @@ Ext.define('auth.view.authentication.Login', {
                 },
                 {
                     xtype: 'box',
+                    hidden: true,
                     html: '<div class="outer-div"><div class="seperator">OR</div></div>',
                     margin: '10 0'
                 },
                 {
                     xtype: 'button',
                     scale: 'large',
+                    hidden: true,
                     // ui: 'facebook',
                     iconAlign: 'right',
                     iconCls: 'x-fa fa-github',

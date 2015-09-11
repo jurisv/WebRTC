@@ -23,12 +23,12 @@ Ext.define('WebRTC.overrides.Auth', {
     override: 'auth.controller.Auth',
 
     // starts checking for authorized users
-    authorize: function(request){
+    authorize: function (request) {
         var me = this,
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
 
-        if(me.isAuthenticating) return;
+        if (me.isAuthenticating) return;
 
         me.isAuthenticating = true;
 
@@ -40,10 +40,10 @@ Ext.define('WebRTC.overrides.Auth', {
         firebase.onAuth(me.authDataCallback);
     },
 
-    register: function (btn,data) {
+    register: function (btn, data) {
         var me = this;
 
-        if(data){
+        if (data) {
             var expires = new Date("October 13, 2095 11:13:00"),
                 newUser = Ext.create('WebRTC.model.User', {
                     fn: data.fullName,
@@ -55,12 +55,12 @@ Ext.define('WebRTC.overrides.Auth', {
             Ext.util.Cookies.clear('user');
 
             newUser.save({
-                failure: function(record, operation) {
+                failure: function (record, operation) {
                     var error = JSON.parse(operation.error.response.responseText),
                         message = error.message.code || 'Unable to save.';
                     btn.up('lockingwindow').getController().updateStatus(message);
                 },
-                success: function(record, operation) {
+                success: function (record, operation) {
                     var viewport = Ext.first('app-main');
                     viewport.getViewModel().set('name', newUser.get('fn'));
                     viewport.getViewModel().set('user', newUser);
@@ -68,42 +68,42 @@ Ext.define('WebRTC.overrides.Auth', {
 
                     me.cleanupAuth();
                     if (Ext.isFunction(me.onSuccess))
-                       me.onSuccess();
+                        me.onSuccess();
 
                 },
-                callback: function(record, operation, success) {
+                callback: function (record, operation, success) {
                 }
             });
 
 
-        }else{
-            me.cleanupAuth();
-            if (Ext.isFunction(me.onFailure))
-              me.onFailure();
-        }
-    },
-
-    login: function (btn,data) {
-        var me = this,
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
-        if (data && firebase) {
-            firebase.authWithPassword(
-                {
-                    email    : data.userid,
-                    password : data.password
-                },
-                me.authHandler
-            );
-        }
-        else{
+        } else {
             me.cleanupAuth();
             if (Ext.isFunction(me.onFailure))
                 me.onFailure();
         }
     },
 
-    loginFB: function(btn,data){
+    login: function (btn, data) {
+        var me = this,
+            viewport = Ext.first('app-main'),
+            firebase = viewport.getViewModel().get('firebaseRef');
+        if (data && firebase) {
+            firebase.authWithPassword(
+                {
+                    email: data.userid,
+                    password: data.password
+                },
+                me.authHandler
+            );
+        }
+        else {
+            me.cleanupAuth();
+            if (Ext.isFunction(me.onFailure))
+                me.onFailure();
+        }
+    },
+
+    loginFB: function (btn, data) {
         var me = this,
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
@@ -117,14 +117,14 @@ Ext.define('WebRTC.overrides.Auth', {
                 }
             );
         }
-        else{
+        else {
             me.cleanupAuth();
             if (Ext.isFunction(me.onFailure))
                 me.onFailure();
         }
     },
 
-    loginGitHub: function(btn,data){
+    loginGitHub: function (btn, data) {
         var me = this,
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
@@ -138,14 +138,14 @@ Ext.define('WebRTC.overrides.Auth', {
                 }
             );
         }
-        else{
+        else {
             me.cleanupAuth();
             if (Ext.isFunction(me.onFailure))
                 me.onFailure();
         }
     },
 
-    logout: function(){
+    logout: function () {
         var me = this,
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
@@ -158,15 +158,16 @@ Ext.define('WebRTC.overrides.Auth', {
         firebase.unauth();
     },
 
-    reset: function (btn,data) {
+    //send a password reset email
+    reset: function (btn, data) {
         var me = this,
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
 
-        if(data && data.email){
+        if (data && data.email) {
             firebase.resetPassword({
-                email : data.email
-            }, function(error) {
+                email: data.email
+            }, function (error) {
                 if (error === null) {
                     console.log("Password reset email sent successfully");
                     btn.up('lockingwindow').getController().updateStatus('Password reset email sent successfully:');
@@ -176,21 +177,22 @@ Ext.define('WebRTC.overrides.Auth', {
                     btn.up('lockingwindow').getController().updateStatus('Error sending password reset email:')
                 }
             });
-        }else{
+        } else {
             btn.up('lockingwindow').getController().updateStatus('Error with email:')
         }
     },
 
-    changeEmail: function (btn,data) {
+    //changes firebase email .. same userid
+    changeEmail: function (btn, data) {
         var me = this,
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
         if (data && firebase) {
             firebase.changeEmail({
-                oldEmail : data.oldEmail,
-                newEmail : data.newEmail,
-                password : data.password
-            }, function(error) {
+                oldEmail: data.oldEmail,
+                newEmail: data.newEmail,
+                password: data.password
+            }, function (error) {
                 if (error === null) {
                     console.log("Email changed successfully");
                     btn.up('lockingwindow').getController().updateStatus("Email changed successfully");
@@ -200,21 +202,22 @@ Ext.define('WebRTC.overrides.Auth', {
                 }
             });
         }
-        else{
+        else {
             btn.up('lockingwindow').getController().updateStatus("Unhandled error: Please let us know what happened.");
         }
     },
 
-    changePassword: function (btn,data) {
+    //changes firebase password
+    changePassword: function (btn, data) {
         var me = this,
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
         if (data && firebase) {
             firebase.changePassword({
-                email       :  data.email,
-                oldPassword : data.oldPassword,
-                newPassword : data.newPassword
-            }, function(error) {
+                email: data.email,
+                oldPassword: data.oldPassword,
+                newPassword: data.newPassword
+            }, function (error) {
                 if (error === null) {
                     console.log("Email changed successfully");
                     btn.up('lockingwindow').getController().updateStatus("Email changed successfully");
@@ -224,20 +227,21 @@ Ext.define('WebRTC.overrides.Auth', {
                 }
             });
         }
-        else{
+        else {
             btn.up('lockingwindow').getController().updateStatus("Unhandled error: Please let us know what happened.");
         }
     },
 
-    removeUser: function (btn,data) {
+    //deletes a firebase user
+    removeUser: function (btn, data) {
         var me = this,
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
         if (data && firebase) {
             firebase.removeUser({
-                email    :  data.email,
-                password : data.password
-            }, function(error) {
+                email: data.email,
+                password: data.password
+            }, function (error) {
                 if (error === null) {
                     console.log("User removed successfully");
                     btn.up('lockingwindow').getController().updateStatus("User removed successfully");
@@ -247,20 +251,20 @@ Ext.define('WebRTC.overrides.Auth', {
                 }
             });
         }
-        else{
+        else {
             btn.up('lockingwindow').getController().updateStatus("Unhandled error: Please let us know what happened.");
         }
     },
 
     // handles all the firebase callbacks for authorization regardless of provider
-    authHandler: function(error, authData) {
+    authHandler: function (error, authData) {
         var controller = WebRTC.app.getController('auth.controller.Auth'),
             viewport = Ext.first('app-main'),
             window = Ext.first('lockingwindow'),
             firebase = viewport.getViewModel().get('firebaseRef');
 
         if (error) {
-            if(window){
+            if (window) {
                 window.getController().updateStatus("Login Failed! " + error);
             }
             console.log("Login Failed!", error);
@@ -288,13 +292,13 @@ Ext.define('WebRTC.overrides.Auth', {
     },
 
     //set the user on the viewModel and updates the cookie.
-    storeUser: function(authData){
+    storeUser: function (authData) {
         var controller = WebRTC.app.getController('auth.controller.Auth'),
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef'),
             id;
 
-        if(authData.provider){
+        if (authData.provider) {
             switch (authData.provider) {
                 case 'password':
                     id = authData.uid;
@@ -304,14 +308,14 @@ Ext.define('WebRTC.overrides.Auth', {
             }
         }
 
-        if(id){
-            firebase.child('/users/'+ id).on("value",
+        if (id) {
+            firebase.child('/users/' + id).on("value",
                 function (snapshot) {
 
                     var user = snapshot.val(),
                         expires = new Date("October 13, 2095 11:13:00");
 
-                    if(user){
+                    if (user) {
                         Ext.util.Cookies.clear('user');
 
                         viewport.getViewModel().set('name', user['fn']);
@@ -329,12 +333,10 @@ Ext.define('WebRTC.overrides.Auth', {
                 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
                 });
-        }else{
+        } else {
 
         }
 
 
     }
-
-
 });
