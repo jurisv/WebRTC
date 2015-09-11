@@ -37,6 +37,13 @@ Ext.define('auth.view.authentication.Login', {
                     text: 'Sign into your account'
                 },
                 {
+                    xtype: 'label',
+                    reference: 'statusLabel',
+                    cls: 'status-top-label',
+                    hidden: true,
+                    text: 'An error has occurred'
+                },
+                {
                     xtype: 'textfield',
                     cls: 'auth-textbox',
                     name: 'userid',
@@ -112,6 +119,22 @@ Ext.define('auth.view.authentication.Login', {
                     text: 'Login with Facebook',
                     listeners: {
                         click: 'onFaceBookLogin'
+                    }
+                },
+                {
+                    xtype: 'box',
+                    html: '<div class="outer-div"><div class="seperator">OR</div></div>',
+                    margin: '10 0'
+                },
+                {
+                    xtype: 'button',
+                    scale: 'large',
+                    // ui: 'facebook',
+                    iconAlign: 'right',
+                    iconCls: 'x-fa fa-github',
+                    text: 'Login with GitHub',
+                    listeners: {
+                        click: 'onGitHubLogin'
                     }
                 },
                 {

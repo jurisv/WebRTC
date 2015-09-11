@@ -41,6 +41,7 @@ Ext.define('auth.controller.Auth', {
             'authentication': {
                 login: 'login',
                 loginFB: 'loginFB',
+                loginGitHub: 'loginGitHub',
                 loginAs: 'loginAs',
                 reset: 'reset',
                 register: 'register'
@@ -158,6 +159,26 @@ Ext.define('auth.controller.Auth', {
     },
 
     loginFB: function(btn,data){
+        /*
+         * Stub function meant to be overridden by application specific logic
+         */
+        var me = this;
+
+        /*
+         * Dummy logic tests for data and succeeds otherwise fails
+         *
+         */
+        me.cleanupAuth();
+        if(data){
+            if (Ext.isFunction(me.onSuccess))
+                me.onSuccess();
+        }else{
+            if (Ext.isFunction(me.onFailure))
+                me.onFailure();
+        }
+    },
+
+    loginGitHub: function(btn,data){
         /*
          * Stub function meant to be overridden by application specific logic
          */

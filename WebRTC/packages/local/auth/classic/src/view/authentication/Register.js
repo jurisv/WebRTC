@@ -46,8 +46,8 @@ Ext.define('auth.view.authentication.Register', {
                 },
                 {
                     xtype: 'label',
-                    reference: 'errorLabel',
-                    cls: 'lock-screen-top-label',
+                    reference: 'statusLabel',
+                    cls: 'status-top-label',
                     hidden: true,
                     text: 'An error has occurred'
                 },

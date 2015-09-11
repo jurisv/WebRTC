@@ -27,6 +27,12 @@ $color-green: #16b603;
 
 .auth-dialog{
 
+  .status-top-label{
+    color:$color-soft-orange;
+    font-size: 18px;
+    font-weight:bold;
+  }
+
   .auth-profile-wrap{
     background:$base-color;
     color:$lightest-color;

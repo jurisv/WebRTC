@@ -2,9 +2,20 @@ Ext.define('auth.view.authentication.AuthenticationController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.authentication',
 
+    updateStatus: function(text){
+       var statusLabel =  this.getView().down('[reference=statusLabel]');
+       if(statusLabel){
+           statusLabel.setText(text);
+           statusLabel.show();
+       }
+    },
 
     onFaceBookLogin : function(btn) {
         this.fireEvent('loginFB', btn, this.getViewModel()['data'] );
+    },
+
+    onGitHubLogin : function(btn) {
+        this.fireEvent('loginGitHub', btn, this.getViewModel()['data'] );
     },
 
     onLoginButton: function(btn) {

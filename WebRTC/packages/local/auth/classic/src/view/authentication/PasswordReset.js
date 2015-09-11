@@ -37,10 +37,18 @@ Ext.define('auth.view.authentication.PasswordReset', {
                     text: 'Enter your email address for further reset instructions'
                 },
                 {
+                    xtype: 'label',
+                    reference: 'statusLabel',
+                    cls: 'status-top-label',
+                    hidden: true,
+                    text: 'An error has occurred'
+                },
+                {
                     xtype: 'textfield',
                     cls: 'auth-textbox',
                     height: 55,
                     name: 'email',
+                    bind: '{email}',
                     hideLabel: true,
                     allowBlank: false,
                     emptyText: 'user@example.com',
