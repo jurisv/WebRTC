@@ -12,7 +12,7 @@ Ext.define('WebRTC.view.main.Viewport', {
     viewModel: {
         type: 'mainviewport'
     },
-    controller: 'viewport',
+    controller: 'mainviewport',
 
     requires: [
         'WebRTC.model.AdminSettings',

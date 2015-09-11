@@ -1,20 +1,39 @@
-/**
- * This class is the controller for the main view for the application. It is specified as
- * the "controller" of the Main view class.
- *
- * TODO - Replace this content of this view to suite the needs of your application.
- */
 Ext.define('WebRTC.view.main.ViewportController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.viewport',
+    alias: 'controller.mainviewport',
+    mixins: ['opentok.OpenTokMixin'],
 
     requires: [
         'opentok.controller.OpenTok',
         'soundlibrary.controller.SoundLibrary',
-        'auth.controller.Auth'
+        // 'auth.controller.Auth',
+        'WebRTC.model.AdminSettings',
+        'Ext.Toast'
     ],
 
-    mixins: ['opentok.OpenTokMixin'],
+    routes : {
+        'home' : {
+            action  : 'onRouteHome'
+        },
+        'room/:id' : {
+            before  : 'onRouteBeforeRoom',
+            action  : 'onRouteRoom'
+        },
+        'token/:id' : {
+            before  : 'onRouteBeforeToken',
+            action  : 'onRouteToken',
+            conditions : {
+                ':id' : '(.*)'
+            }
+        },
+        'user' : {
+            action  : 'onRouteUser'
+        },
+        'settings' : {
+            before  : 'onRouteBeforeSettings',
+            action  : 'onRouteSettings'
+        }
+    },
 
     listen: {
         controller: {
@@ -26,23 +45,29 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 streamdestroyed : 'onOTStreamDestroyed',
                 sessionconnected : 'onOTSessionConnected',
                 sessiondisconnect : 'onOTSessionDestroyed'
+            },
+            '#' : {
+                unmatchedroute : 'onRouteUnmatched'
             }
         },
         component:{
             'chatroomform button[action=ok]':{
-              tap: 'onRoomFormOkClick'
+               click: 'onRoomFormOkClick'
             },
-            'app-main':{
-                activeitemchange: 'onRoomClose'
+            'chatroom':{
+                activate: 'onRoomActivate',
+                deactivate: 'onRoomDeactivate',
+                beforeclose: 'onRoomClose'
             },
             'settingsadmin button[action=ok]':{
-                tap: 'onSettingsAdminOkClick'
+                click: 'onSettingsAdminOkClick'
             }
         }
     },
 
+
     init: function() {
-         var me = this;
+        var me = this;
         me.checkSetup()
     },
 
@@ -55,92 +80,80 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
 
     checkSetup: function(){
-        var me= this,
-            settings;
+        var me= this;
 
-        //Theres only one setting but the REST API needs and id.
-        WebRTC.model.AdminSettings.load(0,{
+       me.getViewModel().data.settings = WebRTC.model.AdminSettings.load(0,{
             success: function(record,operation){
                 if( !record.get('otApiKey') ){
                     me.onSettingsAdminSelect();
                 }else{
-                    me.authenticate();
+                    //get the firebase url and create a client instance of Firebase at the viewport.
+                    var url = record.data.fbUrl;
+                    Ext.first('app-main').getViewModel().data.firebaseRef =  new Firebase(url);
+
+                    me.authenticate(
+                        function() {
+                            me.deferAndSelectFirst();
+                        },
+                        function(){
+                            me.handleUnauthorized();
+                        })
                 }
             }
         });
 
     },
 
-    authenticate: function(){
-        var me = this,
+    handleUnauthorized: function(){
+        var me = this;
+        me.authenticate(
+        function() {
+            me.deferAndSelectFirst();
+        },
+        function(){
+            me.handleUnauthorized();
+        })
+    },
+
+
+    authenticate: function(success,failure){
+      var me = this,
             userStore = new Ext.util.LocalStorage({
                 id: 'userStorage'
-            }),
-            user,
+            }),            
             store = Ext.create('Ext.data.Store',{
                 model: 'WebRTC.model.User',
                 autoLoad: true
-            });
+            }),
+            user;
 
-        // Use this area to run function to launch screen instantly
-        // this.onSettingsUserSelect();
-        // return;
+        user = userStore.getItem('user');
 
-
-        if(!userStore.getItem('user')){
-            Ext.Msg.prompt('Username','Please enter your name',function(buttonId,value){
-                if(value) {
-                    //set the persons name
-                    var expires = new Date("October 13, 2095 11:13:00"),
-                        newUser = Ext.create('WebRTC.model.User',{
-                            name: value
-                        });
-
-                    newUser.save();
-
-
-                    me.getViewModel().set('name', newUser.get('name') );
-
-                    me.getViewModel().set('user', newUser);
-
-                    userStore.clear();
-                    userStore.setItem('user', JSON.stringify( newUser.data ) );
-
-                    //Ext.util.Cookies.set('user', JSON.stringify( newUser.data ) , expires);
-
-                    /*  Ext.toast({
-                     html: newUser + ' give us a moment while we set things up.',
-                     title: 'Welcome',
-                     width: 400,
-                     align: 't'
-                     });
-                     */
-
-                    Ext.defer(function() {
-                       // me.selectFirstRoom();
-                    }, 1200);
-
-                }
-            });
+        if(!user){
+           me.fireEvent('authorize',{
+               success: success,
+               failure: failure
+           });
         }else{
-            user =  JSON.parse(userStore.getItem('user')) ;
+            user =  JSON.parse(user) ;
             me.getViewModel().set('user', user);
-
             me.getViewModel().set('name', user.name );
-
-            /* Ext.toast({
-             html: 'Glad to see you again ' + user.data.name  + '.',
-             title: 'Welcome Back',
-             width: 400,
-             align: 't'
-             });*/
-
-            Ext.defer(function() {
-               // me.selectFirstRoom();
-            }, 1200);
+            if(success && Ext.isFunction(success)){
+                success();
+            }
 
         }
     },
+
+    //due to latency in getting push of rooms
+    deferAndSelectFirst: function(deferLength){
+        // var me = this;
+        // Ext.defer(function() {
+        //     me.selectFirstRoom();
+        // }, deferLength || 1200);
+        console.log('select First Room here');
+    },
+
 
     getOTGlobalSession: function(){
         var me=this;
@@ -236,6 +249,62 @@ Ext.define('WebRTC.view.main.ViewportController', {
         return menu;
     },
 
+    onRoomActivate: function(tab){
+        var me = this,
+            id = tab.getViewModel().get('room').id,
+            sessionId = tab.getViewModel().get('room').get('sessionId'),
+            combo = this.lookupReference('roomscombo');
+
+        combo.select(id);
+
+        var record = combo.getSelection(),
+            name = me.getViewModel().get('name');
+
+        this.fireEvent('resumeroom',sessionId);
+    },
+
+    onRoomDeactivate: function(tab){
+        var sessionId = tab.getViewModel().get('room').get('sessionId'),
+            userId = this.getViewModel().get('user').id;
+
+        // tab.getController().roomMemberRemove(userId);
+
+        this.fireEvent('pauseroom',sessionId);
+    },
+
+
+
+    onRoomFormOkClick: function(button) {
+        var window = button.up('window'),
+            form = window.down('form'),
+            data = form.getValues(),
+            store = this.getViewModel().getStore('rooms');
+
+        if (form.isValid()) {
+
+            //If there is no view model created then it is new otherwise the model has the record
+            if ( window.getViewModel().get('id') != null )
+            {
+                var record = window.getViewModel().get('theRoom');
+                Ext.Msg.wait('Saving', 'Saving room...');
+                form.up('window').close();
+                record.save({
+                    scope: this,
+                    callback: this.onComplete
+                });
+
+            } else {
+                Ext.Msg.wait('Creating', 'Creating room...');
+                store.add(data);
+                form.up('window').close();
+                store.sync({
+                    scope: this,
+                    callback: this.onComplete
+                });
+            }
+        }
+    },    
+
     onRoomClose: function(viewport,newItem,oldItem){
         if(newItem.referenceKey == 'roomsgrid' ){
             var sessionId = oldItem.sessionId;
@@ -244,6 +313,17 @@ Ext.define('WebRTC.view.main.ViewportController', {
             newItem.deselectAll();
         }
     },
+
+    // onRoomClose: function(tab){
+    //     var sessionId = tab.getViewModel().get('room').get('sessionId'),
+    //         userId = this.getViewModel().get('user').id,
+    //         combo = this.lookupReference('roomscombo');
+    //     combo.reset();
+
+    //    // tab.getController().roomMemberRemove(userId);
+
+    //     this.fireEvent('closeroom',sessionId);
+    // },    
 
     onRoomSelect: function(view,record) {
 
@@ -452,6 +532,108 @@ Ext.define('WebRTC.view.main.ViewportController', {
             };
 
         navView.push(form);
-    }
+    },
+
+    onRouteBeforeRoom : function(id, action) {
+        var me = this;
+
+        me.authenticate(function(){
+            action.resume()
+        },function(){
+            action.stop();
+            me.handleUnauthorized();
+        });
+
+    },
+
+    onRouteRoom: function(id){
+        var me = this,
+            combo = me.lookupReference('roomscombo');
+
+        //since the server pushes us rooms the using callback on load doesn't work
+        //a defer seems to work fine for now
+        Ext.Function.defer(function(){
+            var record = combo.store.getById(id);
+
+            if(record){
+                combo.select(record);
+                //not sure why this event isn't getting fired
+                combo.fireEvent('select',combo,record);
+            }else{
+                Ext.toast({
+                    html: 'We could not find the room provided.',
+                    title: 'Room not found',
+                    width: 400,
+                    align: 't'
+                });
+            }
+        },
+        1200);
+
+        me.redirectTo('room/' + id);
+
+    },
+
+    /*
+    * This is where we can create a token for sharing the room
+    */
+    onShareRoom: function(){
+        Ext.Ajax.request({
+            url     : '/data/jwtsign/' + qs.pwd,
+
+            params: payload,
+
+            success : function(response) {
+                var roomInfo = JSON.parse(response.responseText);
+                action.resume();
+            },
+            failure : function() {
+                action.stop();
+            }
+        });
+    },
+
+
+    onRouteBeforeToken : function(id, action) {
+        var me=this;
+
+        Ext.Msg.prompt('Password','Please enter password for this room',function(buttonId,value){
+            if(value) {
+                Ext.Ajax.request({
+                    url     : '/data/jwtdecode/' + id +'?pwd=' + value,
+                    success : function(response) {
+                        var store = me.getViewModel().getStore('rooms');
+
+                        me.tokenInfo = JSON.parse(response.responseText);
+                        //add the private room to the store.
+                        store.add(me.tokenInfo);
+                        action.resume();
+                    },
+                    failure : function(response) {
+                        // var error = JSON.parse(response.responseText);
+                        Ext.Msg.alert('Denied', 'The password entered is no longer valid');
+                        action.stop();
+                    }
+                });
+            }
+        });
+
+    },
+
+    onRouteToken: function(){
+       var id = this.tokenInfo.id;
+       this.onRouteRoom(id)
+    },
+
+    onRouteHome: function(){
+            var me = this;
+           // me.checkSetup()
+    },
+
+    onRouteUnmatched:function(route){
+        var me = this;
+        console.log('unmatched route' + route);
+        window.location.hash = '#home';
+    }    
 
 });
