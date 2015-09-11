@@ -56,8 +56,9 @@ Ext.define('WebRTC.overrides.Auth', {
 
             newUser.save({
                 failure: function(record, operation) {
-                    var error = JSON.parse(operation.error.response.responseText);
-                    btn.up('lockingwindow').getController().updateStatus(error);
+                    var error = JSON.parse(operation.error.response.responseText),
+                        message = error.message.code || 'Unable to save.';
+                    btn.up('lockingwindow').getController().updateStatus(message);
                 },
                 success: function(record, operation) {
                     var viewport = Ext.first('app-main');
