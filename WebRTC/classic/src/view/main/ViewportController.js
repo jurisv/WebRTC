@@ -113,7 +113,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
         // Use this area to run function to launch screen instantly
         // this.onSettingsUserSelect();
         // return;
+        me.fireEvent('authorize',{
+            success: success,
+            failure: failure
+        });
 
+        /*
         if(!userCookie){
            me.fireEvent('authorize',{
                success: success,
@@ -127,7 +132,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 success();
             }
 
-        }
+        }*/
     },
 
     //due to latency in getting push of rooms
@@ -217,6 +222,33 @@ Ext.define('WebRTC.view.main.ViewportController', {
             }
         }).show();
 
+
+    },
+
+    onRoomShare: function(){
+        var room = this.lookupReference('roomscombo').getSelection();
+
+        if(room && room.get('isPrivate') ){
+            Ext.Ajax.request({
+                url     : '/data/jwtsign/' + room.data.password,
+
+                params:  room.data,
+
+                success : function(response) {
+                    var token = response.responseText, message
+                    message = '<a target="_new" href="' + window.location.origin + '/#token/' + token + '">' + window.location.origin + '/#token/' + token + '</a> <br/> Password to enter room: ' + room.data.password ;
+                    Ext.Msg.alert('Private Room Token', message);
+
+                },
+                failure : function() {
+                }
+            });
+        }else{
+            var message = '<a href="' + window.location + '">' + window.location + '</a>';
+            Ext.Msg.alert('Public Room Link', message);
+
+            alert();
+        }
 
     },
 
@@ -331,7 +363,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
         var window = button.up('window'),
             form = window.down('form'),
             data = form.getValues(),
+            userid = this.getViewModel().get('user').id,
             store = this.getViewModel().getStore('rooms');
+
 
         if (form.isValid()) {
 
@@ -348,6 +382,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
             } else {
                 Ext.Msg.wait('Creating', 'Creating room...');
+                data.owner = userid;
                 store.add(data);
                 form.up('window').close();
                 store.sync({

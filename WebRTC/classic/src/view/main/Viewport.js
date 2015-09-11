@@ -100,6 +100,16 @@ Ext.define('WebRTC.view.main.Viewport', {
                         select: 'onRoomSelect'
                     }
                 },{
+                    iconCls: 'x-fa fa-share',
+                    plain: true,
+                    bind:{
+                        hidden: '{!isRoomSharingEnabled}',
+                        disabled: '{!isRoomSelected}'
+                    },
+                    listeners: {
+                        click: 'onRoomShare'
+                    }
+                },{
                     iconCls: 'x-fa fa-trash-o',
                     plain: true,
                     bind:{

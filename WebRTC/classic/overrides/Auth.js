@@ -36,8 +36,18 @@ Ext.define('WebRTC.overrides.Auth', {
         me.onSuccess = request.success;
         me.onFailure = request.failure;
 
-        //callback depending on login state
-        firebase.onAuth(me.authDataCallback);
+        if(!firebase){
+            // routes can happen prior to the viewport loading
+            // note: this nees to be rearchitected some - for now defer it..
+            Ext.Function.defer(function(){
+                    //callback depending on login state
+                    viewport.getViewModel().get('firebaseRef').onAuth(me.authDataCallback);
+            },
+            1200);
+        }else{
+            //callback depending on login state
+            firebase.onAuth(me.authDataCallback);
+        }
     },
 
     register: function (btn, data) {
@@ -263,6 +273,8 @@ Ext.define('WebRTC.overrides.Auth', {
             window = Ext.first('lockingwindow'),
             firebase = viewport.getViewModel().get('firebaseRef');
 
+        debugger;
+
         if (error) {
             if (window) {
                 window.getController().updateStatus("Login Failed! " + error);
@@ -318,11 +330,15 @@ Ext.define('WebRTC.overrides.Auth', {
                     if (user) {
                         Ext.util.Cookies.clear('user');
 
+
+                        viewport.getViewModel().set('userid', user['id']);
                         viewport.getViewModel().set('name', user['fn']);
                         viewport.getViewModel().set('user', user);
 
                         Ext.util.Cookies.set('user', JSON.stringify(user), expires);
                         controller.cleanupAuth();
+
+                        controller.syncStores();
 
                         if (Ext.isFunction(controller.onSuccess)) {
                             controller.onSuccess();
@@ -338,5 +354,11 @@ Ext.define('WebRTC.overrides.Auth', {
         }
 
 
+    },
+
+    // Re-load specific stores that have filters that are based on rules of the current user.
+    // This needs to be done after authentication as the viewModels load much earlier.
+    syncStores: function(){
+        Ext.StoreManager.lookup('rooms').load();
     }
 });

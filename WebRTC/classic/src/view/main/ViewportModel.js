@@ -30,10 +30,17 @@ Ext.define('WebRTC.view.main.ViewportModel', {
             },
             filters: [
                 function(item) {
-                    return !item.get('isPrivate');
+                    var user = Ext.first('app-main').getViewModel().get('user');
+                    if(item.get('passwordVerified')) {
+                        return true;
+                    }else if(user && user.id){
+                        return !item.get('isPrivate') || user.id == item.get('owner');
+                    }else{
+                        return !item.get('isPrivate')
+                    }
                 }
             ],
-            autoLoad: true
+            autoLoad: false  //wait for user auth prior to load
         },
         globalusers: {
             model: 'WebRTC.model.chat.RoomMember',
@@ -50,6 +57,9 @@ Ext.define('WebRTC.view.main.ViewportModel', {
         },
         isRoomSelected: function (get) {
             return get('room') != null ;    //edit allowed only when selected
+        },
+        isRoomSharingEnabled: function (get) {
+            return true;
         },
         getAuthToken: function (get) {
             if( get('authToken') ){
