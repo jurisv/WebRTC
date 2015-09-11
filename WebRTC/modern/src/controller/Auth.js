@@ -7,7 +7,7 @@ Ext.define('WebRTC.controller.Auth', {
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
 
-        if(me.isAuthenticating) return;
+        if(me.isAuthenticating || !firebase) return;
 
         me.isAuthenticating = true;
 

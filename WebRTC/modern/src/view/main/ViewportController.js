@@ -118,13 +118,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     authenticate: function(success,failure){
       var me = this,
-            userStore = new Ext.util.LocalStorage({
-                id: 'userStorage'
-            }),            
-            store = Ext.create('Ext.data.Store',{
-                model: 'WebRTC.model.User',
-                autoLoad: true
-            }),
+            userStore = Ext.util.LocalStorage.get('userStorage'),
             user;
 
         user = userStore.getItem('user');
@@ -252,13 +246,13 @@ Ext.define('WebRTC.view.main.ViewportController', {
     onRoomActivate: function(tab){
         var me = this,
             id = tab.getViewModel().get('room').id,
-            sessionId = tab.getViewModel().get('room').get('sessionId'),
-            combo = this.lookupReference('roomscombo');
+            sessionId = tab.getViewModel().get('room').get('sessionId');
+            // combo = this.lookupReference('roomscombo');
 
-        combo.select(id);
+        // combo.select(id);
 
-        var record = combo.getSelection(),
-            name = me.getViewModel().get('name');
+        // var record = combo.getSelection(),
+        //     name = me.getViewModel().get('name');
 
         this.fireEvent('resumeroom',sessionId);
     },
@@ -547,28 +541,28 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRouteRoom: function(id){
-        var me = this,
-            combo = me.lookupReference('roomscombo');
+        var me = this;
+            // combo = me.lookupReference('roomscombo');
 
         //since the server pushes us rooms the using callback on load doesn't work
         //a defer seems to work fine for now
-        Ext.Function.defer(function(){
-            var record = combo.store.getById(id);
+        // Ext.Function.defer(function(){
+        //     var record = combo.store.getById(id);
 
-            if(record){
-                combo.select(record);
-                //not sure why this event isn't getting fired
-                combo.fireEvent('select',combo,record);
-            }else{
-                Ext.toast({
-                    html: 'We could not find the room provided.',
-                    title: 'Room not found',
-                    width: 400,
-                    align: 't'
-                });
-            }
-        },
-        1200);
+        //     if(record){
+        //         combo.select(record);
+        //         //not sure why this event isn't getting fired
+        //         combo.fireEvent('select',combo,record);
+        //     }else{
+        //         Ext.toast({
+        //             html: 'We could not find the room provided.',
+        //             title: 'Room not found',
+        //             width: 400,
+        //             align: 't'
+        //         });
+        //     }
+        // },
+        // 1200);
 
         me.redirectTo('room/' + id);
 
