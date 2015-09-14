@@ -15,7 +15,9 @@ Ext.define('auth.view.authentication.Dialog', {
     controller: 'authentication',
     viewModel: {
         type: 'authentication'
-    }
+    },
+
+    cls: ['auth-dialog']
 
     /*
      * Seek out the first enabled, focusable, empty textfield when the form is focused
