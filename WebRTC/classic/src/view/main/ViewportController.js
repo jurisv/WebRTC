@@ -100,6 +100,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
             me.deferAndSelectFirst();
         },
         function(){
+            debugger;
             me.handleUnauthorized();
         })
     },
@@ -277,6 +278,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
             id = record.get('id'),
             tab = me.getRoomTabById(id),
             name = me.getViewModel().get('name'),
+            membersRef = me.getViewModel().get('firebaseRef').child('members/' + id),
             room;
 
 
@@ -298,6 +300,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
             });
 
             tab = roomtabs.insert(0, room);
+
+            membersRef.update( {userId: me.getViewModel().get('user').id } );
 
             // Notify TokBox in this case
             me.fireEvent('joinroom', tab, record.data, name);
@@ -528,13 +532,16 @@ Ext.define('WebRTC.view.main.ViewportController', {
     onRouteBeforeRoom : function(id, action) {
         var me = this;
 
-        me.authenticate(function(){
-            action.resume()
-        },function(){
-            action.stop();
-            me.handleUnauthorized();
-        });
-
+        if(id != "undefined" && !!id){
+            me.authenticate(function(){
+                action.resume()
+            },function(){
+                action.stop();
+                me.handleUnauthorized();
+            });
+        }else{
+            //window.location.hash = '#home';
+        }
     },
 
     onRouteRoom: function(id){
@@ -623,8 +630,11 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     onRouteUnmatched:function(route){
         var me = this;
-        console.log('unmatched route' + route);
-        window.location.hash = '#home';
+
+        if(!!route){
+            console.log('unmatched route' + route);
+            window.location.hash = '#home';
+        }
     }
 
 });
