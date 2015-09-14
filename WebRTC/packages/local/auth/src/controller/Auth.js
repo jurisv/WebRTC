@@ -144,6 +144,7 @@ Ext.define('auth.controller.Auth', {
          * Stub function meant to be overridden by application specific logic
          */
         var me = this;
+// debugger;
         /*
          * Dummy logic tests for data and succeeds otherwise fails
          *

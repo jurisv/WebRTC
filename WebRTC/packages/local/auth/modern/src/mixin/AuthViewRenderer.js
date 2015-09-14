@@ -24,7 +24,7 @@ Ext.define('auth.mixin.AuthViewRenderer', {
         if(me.currentView) {
             me.currentView.destroy();
         }
-
+console.log(hash);
         if(hash in me.validViews) {
             xtype = me.validViews[hash].xtype;
 

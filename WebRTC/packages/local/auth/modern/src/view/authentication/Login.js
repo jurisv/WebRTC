@@ -23,6 +23,10 @@ Ext.define('auth.view.authentication.Login', {
 
     cls: 'user-login-register-container',
 
+    defaults : {
+        margin : '5 0'
+    },
+
     items: [
         {
             xtype: 'titlebar',
@@ -44,26 +48,80 @@ Ext.define('auth.view.authentication.Login', {
                     label: 'Password',
                     name: 'password',
                     bind: '{password}'
-                }
+                },
+                {
+                    xtype: 'checkboxfield',
+                    cls: 'form-panel-font-color rememberMeCheckbox',
+                    height: 30,
+                    bind: '{persist}',
+                    label: 'Remember me'
+                }                
             ]            
+        },
+        {
+            xtype: 'container',
+            html: '<a href="#passwordreset" class="link-forgot-password"> Forgot Password ?</a>'
         },
         {
             xtype: 'button',
             reference: 'loginButton',
             scale: 'large',
             // ui: 'soft-green',
-            // iconAlign: 'right',
+            iconAlign: 'right',
             iconCls: 'x-fa fa-angle-right',
             text: 'Login',
-            handler: function () {
-                var f = this.up('formpanel');
-                var m = f.getViewModel().get('userid');
-                console.log(m);
+            formBind: true,
+            listeners: {
+                tap: 'onLoginButton'
             }
-            // formBind: true,
-            // listeners: {
-            //     tap: 'onLoginButton'
-            // }
+        },
+        // {
+        //     xtype: 'box',
+        //     html: '<div class="outer-div"><div class="seperator">OR</div></div>',
+        //     margin: '10 0'
+        // },
+        {
+            xtype: 'button',
+            scale: 'large',
+            // ui: 'facebook',
+            iconAlign: 'right',
+            iconCls: 'x-fa fa-facebook',
+            text: 'Login with Facebook',
+            listeners: {
+                tap: 'onFaceBookLogin'
+            }
+        },
+        // {
+        //     xtype: 'box',
+        //     html: '<div class="outer-div"><div class="seperator">OR</div></div>',
+        //     margin: '10 0'
+        // },
+        {
+            xtype: 'button',
+            scale: 'large',
+            // ui: 'facebook',
+            iconAlign: 'right',
+            iconCls: 'x-fa fa-github',
+            text: 'Login with GitHub',
+            listeners: {
+                tap: 'onGitHubLogin'
+            }
+        },
+        // {
+        //     xtype: 'box',
+        //     html: '<div class="outer-div"><div class="seperator">OR</div></div>',
+        //     margin: '10 0'
+        // },
+        {
+            xtype: 'button',
+            scale: 'large',
+            // ui: 'gray',
+            iconAlign: 'right',
+            iconCls: 'x-fa fa-user-plus',
+            text: 'Create Account',
+            listeners: {
+                tap: 'onNewAccount'
+            }
         }
 
         // {

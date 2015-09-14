@@ -3,7 +3,7 @@ Ext.define('auth.view.authentication.AuthenticationModel', {
     alias: 'viewmodel.authentication',
 
     data: {
-        userid   : 'Max',
+        userid   : '',
         fullName : '',
         password : '',
         email    : '',

@@ -67,7 +67,7 @@ Ext.define('WebRTC.controller.Auth', {
         var me = this,
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
-// debugger
+
         if (data && firebase) {
             firebase.authWithPassword({
                 email    : data.userid,
@@ -151,7 +151,7 @@ Ext.define('WebRTC.controller.Auth', {
 
         } else {
             console.log("User is logged out");
-            controller.redirectTo('login');
+            controller.redirectTo('login', true);
         }
     },
 
@@ -159,7 +159,8 @@ Ext.define('WebRTC.controller.Auth', {
     storeUser: function(id){
         var controller = WebRTC.app.getController('Auth'),
             viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = viewport.getViewModel().get('firebaseRef'),
+            storage = Ext.util.LocalStorage.get('userStorage');
 
         firebase.child('/users/'+ id).on("value",
             function (snapshot) {
@@ -167,12 +168,15 @@ Ext.define('WebRTC.controller.Auth', {
                 var user = snapshot.val(),
                     expires = new Date("October 13, 2095 11:13:00");
 
-                Ext.util.Cookies.clear('user');
+                // Ext.util.Cookies.clear('user');
+                storage.removeItem('user');
+
 
                 viewport.getViewModel().set('name', user.fn);
                 viewport.getViewModel().set('user', user);
 
-                Ext.util.Cookies.set('user', JSON.stringify(user), expires);
+                // Ext.util.Cookies.set('user', JSON.stringify(user), expires);
+                storage.setItem('user', JSON.stringify(user));
                 controller.cleanupAuth();
 
                 if (Ext.isFunction(controller.onSuccess)) {
