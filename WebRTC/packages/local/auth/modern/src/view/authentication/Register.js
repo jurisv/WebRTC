@@ -68,7 +68,7 @@ Ext.define('auth.view.authentication.Register', {
                             allowBlank : false,
                             emptyText: 'Fullname',
                             name: 'fullName',
-                            bind: '{fullName}',
+                            bind: '{fullName}'
                             // triggers: {
                             //     glyphed: {
                             //         cls: 'trigger-glyph-noop auth-email-trigger'
@@ -84,7 +84,7 @@ Ext.define('auth.view.authentication.Register', {
                             label: 'Username',
                             name: 'userid',
                             bind: '{userid}',
-                            emptyText: 'Username',
+                            emptyText: 'Username'
                             // triggers: {
                             //     glyphed: {
                             //         cls: 'trigger-glyph-noop auth-email-trigger'
@@ -101,12 +101,12 @@ Ext.define('auth.view.authentication.Register', {
                             name: 'email',
                             emptyText: 'user@example.com',
                             vtype: 'email',
-                            bind: '{email}',
-                            triggers: {
-                                glyphed: {
-                                    cls: 'trigger-glyph-noop auth-envelope-trigger'
-                                }
-                            }
+                            bind: '{email}'
+                            // triggers: {
+                            //     glyphed: {
+                            //         cls: 'trigger-glyph-noop auth-envelope-trigger'
+                            //     }
+                            // }
                         },
                         {
                             xtype: 'textfield',
@@ -118,12 +118,12 @@ Ext.define('auth.view.authentication.Register', {
                             emptyText: 'Password',
                             name: 'password',
                             inputType: 'password',
-                            bind: '{password}',
-                            triggers: {
-                                glyphed: {
-                                    cls: 'trigger-glyph-noop auth-password-trigger'
-                                }
-                            }
+                            bind: '{password}'
+                            // triggers: {
+                            //     glyphed: {
+                            //         cls: 'trigger-glyph-noop auth-password-trigger'
+                            //     }
+                            // }
                         },
                         {
                             xtype: 'checkboxfield',

@@ -42,12 +42,46 @@ Ext.define('WebRTC.overrides.Auth', {
             Ext.Function.defer(function(){
                     //callback depending on login state
                     viewport.getViewModel().get('firebaseRef').onAuth(me.authDataCallback);
+
             },
             1200);
         }else{
             //callback depending on login state
             firebase.onAuth(me.authDataCallback);
         }
+    },
+
+    startPresence: function(id){
+        if(!id || this.presenceOn) return;
+
+        var viewport = Ext.first('app-main'),
+            myConnectionsRef = viewport.getViewModel().get('firebaseRef').child('connections/' + id + '/connections'),
+            lastOnlineRef = viewport.getViewModel().get('firebaseRef').child('users/' + id + '/lastOnline'),
+            connectedRef = viewport.getViewModel().get('firebaseRef').child('/.info/connected');
+
+        this.presenceOn = true;
+
+        connectedRef.on("value", function(snap) {
+            if (snap.val() === true) {
+                // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
+                // add this device to my connections list
+                // this value could contain info about the device or a timestamp too
+                var con = myConnectionsRef.push({
+                    device: Ext.os.deviceType,
+                    osName: Ext.os.name,
+                    // osVersion: Ext.os.version,
+                    browserName: Ext.browser.name,
+                    browserVersion: Ext.browser.version,
+                    online: true
+                });
+                // when I disconnect, remove this device
+                con.onDisconnect().remove();
+                // when I disconnect, update the last time I was seen online
+                lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+            } else {
+                console.log("not connected");
+            }
+        });
     },
 
     register: function (btn, data) {
@@ -321,6 +355,9 @@ Ext.define('WebRTC.overrides.Auth', {
         }
 
         if (id) {
+
+            controller.startPresence(id);
+
             firebase.child('/users/' + id).on("value",
                 function (snapshot) {
 
