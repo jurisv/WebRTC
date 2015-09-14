@@ -2,8 +2,7 @@ Ext.define('auth.mixin.AuthViewRenderer', {
     extend: 'Ext.Mixin',
 
     requires: [
-        'auth.view.authentication.Login',
-        
+        'auth.view.authentication.Login'
     ],
 
     validViews: {
@@ -24,7 +23,7 @@ Ext.define('auth.mixin.AuthViewRenderer', {
         if(me.currentView) {
             me.currentView.destroy();
         }
-console.log(hash);
+
         if(hash in me.validViews) {
             xtype = me.validViews[hash].xtype;
 
@@ -40,18 +39,4 @@ console.log(hash);
             me.currentView = view;
         }
     }
-
-        // /*
-        // * Creating these autoShow modal windows will take over the screen.
-        // * Switching between them is the only option until the cleanupAuth is called.
-        // */
-        // if(hash in me.validViews) {
-        //     me.currentView = 
-        //     // Ext.Viewport.add(
-        //         Ext.create("auth.view.authentication."+ me.validViews[hash].view)
-        //     // );
-        //     Ext.Viewport.setActiveItem(me.currentView);
-        // }
-
-    // }
 });

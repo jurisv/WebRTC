@@ -28,4 +28,4 @@ Ext.define('auth.mixin.AuthViewRenderer', {
         }
 
     }
-})
+});
