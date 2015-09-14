@@ -2,29 +2,55 @@ Ext.define('auth.view.authentication.AuthenticationController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.authentication',
 
-
-    onFaceBookLogin : function() {
-        //TODO: implement central Facebook OATH handling here
-        this.fireEvent('loginFB', this.getViewModel()['data'] );
+    updateStatus: function(text){
+       var statusLabel =  this.getView().down('[reference=statusLabel]');
+       if(statusLabel){
+           statusLabel.setText(text);
+           statusLabel.show();
+       }
     },
 
-    onLoginButton: function() {
-        this.fireEvent('login', this.getViewModel()['data'] );
+    onNewEmail:  function(btn) {
+        this.redirectTo('newemail', btn,  true);
     },
 
-    onLoginAsButton: function() {
-        this.fireEvent('loginAs', this.getViewModel()['data'] );
+    onChangeEmail:  function(btn) {
+        this.fireEvent('changeEmail', btn, this.getViewModel()['data'] );
     },
 
-    onNewAccount:  function() {
-        this.redirectTo('register', true);
+    onNewPassword:  function(btn) {
+        this.redirectTo('newpassword', btn,  true);
     },
 
-    onSignupClick:  function() {
-        this.fireEvent('register', this.getViewModel()['data'] );
+    onChangePassword:  function(btn) {
+        this.fireEvent('changePassword', btn, this.getViewModel()['data'] );
     },
 
-    onResetClick:  function() {
-        this.fireEvent('reset', this.getViewModel()['data'] );
+    onFaceBookLogin : function(btn) {
+        this.fireEvent('loginFB', btn, this.getViewModel()['data'] );
+    },
+
+    onGitHubLogin : function(btn) {
+        this.fireEvent('loginGitHub', btn, this.getViewModel()['data'] );
+    },
+
+    onLoginButton: function(btn) {
+        this.fireEvent('login', btn,  this.getViewModel()['data'] );
+    },
+
+    onLoginAsButton: function(btn) {
+        this.fireEvent('loginAs', btn,  this.getViewModel()['data'] );
+    },
+
+    onNewAccount:  function(btn) {
+        this.redirectTo('register', btn,  true);
+    },
+
+    onSignupClick:  function(btn) {
+        this.fireEvent('register', btn, this.getViewModel()['data'] );
+    },
+
+    onResetClick:  function(btn) {
+        this.fireEvent('reset', btn, this.getViewModel()['data'] );
     }
 });

@@ -7,7 +7,7 @@ Ext.define('WebRTC.controller.Auth', {
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
 
-        if(me.isAuthenticating || !firebase) return;
+        if(me.isAuthenticating) return;
 
         me.isAuthenticating = true;
 
@@ -67,6 +67,7 @@ Ext.define('WebRTC.controller.Auth', {
         var me = this,
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
+// debugger
         if (data && firebase) {
             firebase.authWithPassword({
                 email    : data.userid,
@@ -124,7 +125,7 @@ Ext.define('WebRTC.controller.Auth', {
 
     // handles all the firebase callbacks for authorization regardless of provider
     authHandler: function(error, authData) {
-        var controller = WebRTC.app.getController('auth.controller.Auth'),
+        var controller = WebRTC.app.getController('Auth'),
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
 
@@ -141,7 +142,7 @@ Ext.define('WebRTC.controller.Auth', {
     // Create a callback which logs the current auth state
     authDataCallback: function (authData) {
         var viewport = Ext.first('app-main'),
-            controller = WebRTC.app.getController('auth.controller.Auth');
+            controller = WebRTC.app.getController('Auth');
 
         if (authData) {
             console.log("User " + authData.uid + " is logged in with " + authData.provider);
@@ -156,7 +157,7 @@ Ext.define('WebRTC.controller.Auth', {
 
     //set the user on the viewModel and updates the cookie.
     storeUser: function(id){
-        var controller = WebRTC.app.getController('auth.controller.Auth'),
+        var controller = WebRTC.app.getController('Auth'),
             viewport = Ext.first('app-main'),
             firebase = viewport.getViewModel().get('firebaseRef');
 
