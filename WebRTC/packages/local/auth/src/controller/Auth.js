@@ -92,7 +92,9 @@ Ext.define('auth.controller.Auth', {
     /*
      * Authenticated User
      */
-    aUser: null,
+    user: null,
+
+
 
 
     cleanupAuth: function(request){

@@ -1,15 +1,12 @@
-Ext.define('WebRTC.view.main.ViewportModel', {
+Ext.define('WebRTC.view.chat.RoomsContainerModel', {
     extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.mainviewport',
+    alias: 'viewmodel.chatroomscontainer',
 
     data: {
-        name: null,                     // set cookie on init
-        user: null,                     // set cookie on init
-//        room: null,
-        appTitle: 'Sencha WebRTC',      // Title used for auth package
-        authToken: 'myAuthTokenHere'    // This would be a user auth token like auth0 or  oAuth
-    }
-    /*,
+        room: null,
+        name: null,
+        user: null
+    },
     stores: {
         rooms: {
             model: 'WebRTC.model.chat.Room',
@@ -74,5 +71,5 @@ Ext.define('WebRTC.view.main.ViewportModel', {
                 };
             }
         }
-    }*/
+    }
 });

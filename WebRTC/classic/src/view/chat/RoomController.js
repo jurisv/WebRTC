@@ -4,8 +4,7 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
 
     roomMemberAdd: function(member){
-        var store = this.getViewModel().getStore('members'),
-            userId = this.getViewModel().get('user').id;
+        var store = this.getViewModel().getStore('members');
         store.add(member);
         this.fireEvent('playsound','enter-sound');
     },
@@ -34,12 +33,9 @@ Ext.define('WebRTC.view.chat.RoomController', {
     chatReceived: function(chat){
         var list = this.lookupReference('historylist'),
              store = this.getViewModel().getStore('messages');
-            // message = Ext.create('WebRTC.model.chat.Message',chat);
-
-        // message.set({mine:false});
 
          store.add(chat);
-        // store.sync();
+
         list.scrollBy(0, 999999, true);
 
         this.fireEvent('playsound','chat-sound');

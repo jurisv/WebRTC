@@ -1,9 +1,12 @@
-Ext.define('WebRTC.view.chat.Rooms', {
+Ext.define('WebRTC.view.chat.RoomsList', {
     extend: 'Ext.Panel',
-    xtype: 'chatrooms',
+    xtype: 'chatroomslist',
     autoScroll: true,
     bodyPadding: 10,
-
+    viewModel: {
+        type: 'chatroomscontainer'
+    },
+    controller: 'chatroomscontainer',
     items:[{
         xtype: 'dataview',
         itemSelector: 'div.room-wrap',

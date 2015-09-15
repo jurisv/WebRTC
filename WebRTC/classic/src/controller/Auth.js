@@ -19,14 +19,43 @@
  *   A function to run if there is a authentication failure
  *
  */
-Ext.define('WebRTC.overrides.Auth', {
-    override: 'auth.controller.Auth',
+Ext.define('WebRTC.controller.Auth', {
+    extend: 'auth.controller.Auth',
+
+    /*
+     *  The base URL for Firebase
+     */
+    firebaseUrl: null,
+
+    /*
+     *  A Firebase reference to the firebase client instance.
+     *  The URL is given from the server.
+     */
+    firebaseRef: null,
+
+
+    init: function(){
+        var me= this;
+
+        WebRTC.model.AdminSettings.load(0,{
+            success: function(record,operation){
+                if( !record.get('otApiKey') ){
+                    me.fireEvent('adminSetup');
+                }else{
+                    //get the firebase url and create a client instance of Firebase.
+                    me.FBUrl = record.data.fbUrl;
+                    me.firebaseRef =  new Firebase(me.FBUrl);
+                    me.fireEvent('authInit');
+                }
+            }
+        });
+
+    },
 
     // starts checking for authorized users
     authorize: function (request) {
         var me = this,
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = me.firebaseRef;
 
         if (me.isAuthenticating) return;
 
@@ -41,23 +70,26 @@ Ext.define('WebRTC.overrides.Auth', {
             // note: this nees to be rearchitected some - for now defer it..
             Ext.Function.defer(function(){
                     //callback depending on login state
-                    viewport.getViewModel().get('firebaseRef').onAuth(me.authDataCallback);
-
+                    me.firebaseRef.onAuth(me.authDataCallback, me);
             },
-            1200);
+            600);
         }else{
             //callback depending on login state
-            firebase.onAuth(me.authDataCallback);
+            firebase.onAuth(me.authDataCallback, me);
         }
+
+
+
     },
 
     startPresence: function(id){
         if(!id || this.presenceOn) return;
 
-        var viewport = Ext.first('app-main'),
-            myConnectionsRef = viewport.getViewModel().get('firebaseRef').child('users/' + id + '/connections'),
-            lastOnlineRef = viewport.getViewModel().get('firebaseRef').child('users/' + id + '/lastOnline'),
-            connectedRef = viewport.getViewModel().get('firebaseRef').child('/.info/connected');
+        var me =  this,
+            firebase = me.firebaseRef,
+            myConnectionsRef = firebase.child('users/' + id + '/connections'),
+            lastOnlineRef = firebase.child('users/' + id + '/lastOnline'),
+            connectedRef = firebase.child('/.info/connected');
 
         this.presenceOn = true;
 
@@ -77,7 +109,7 @@ Ext.define('WebRTC.overrides.Auth', {
                 // when I disconnect, remove this device
                 con.onDisconnect().remove();
                 // when I disconnect, update the last time I was seen online
-               // lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+                lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
             } else {
                 console.log("not connected");
             }
@@ -129,15 +161,15 @@ Ext.define('WebRTC.overrides.Auth', {
 
     login: function (btn, data) {
         var me = this,
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = me.firebaseRef;
+
         if (data && firebase) {
             firebase.authWithPassword(
                 {
                     email: data.userid,
                     password: data.password
                 },
-                me.authHandler
+                me.authHandler.bind(me)
             );
         }
         else {
@@ -149,12 +181,12 @@ Ext.define('WebRTC.overrides.Auth', {
 
     loginFB: function (btn, data) {
         var me = this,
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = me.firebaseRef;
+
         if (data && firebase) {
             firebase.authWithOAuthPopup(
                 "facebook",
-                me.authHandler,
+                me.authHandler.bind(me),
                 {
                     remember: "sessionOnly",
                     scope: "email,user_likes"
@@ -170,12 +202,12 @@ Ext.define('WebRTC.overrides.Auth', {
 
     loginGitHub: function (btn, data) {
         var me = this,
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = me.firebaseRef;
+
         if (data && firebase) {
             firebase.authWithOAuthPopup(
                 "github",
-                me.authHandler,
+                me.authHandler.bind(me),
                 {
                     remember: "sessionOnly",
                     scope: "user,gist"
@@ -191,8 +223,7 @@ Ext.define('WebRTC.overrides.Auth', {
 
     logout: function () {
         var me = this,
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = me.firebaseRef;
 
         Ext.util.Cookies.clear('user');
 
@@ -205,8 +236,7 @@ Ext.define('WebRTC.overrides.Auth', {
     //send a password reset email
     reset: function (btn, data) {
         var me = this,
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = me.firebaseRef;
 
         if (data && data.email) {
             firebase.resetPassword({
@@ -229,8 +259,8 @@ Ext.define('WebRTC.overrides.Auth', {
     //changes firebase email .. same userid
     changeEmail: function (btn, data) {
         var me = this,
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = me.firebaseRef;
+
         if (data && firebase) {
             firebase.changeEmail({
                 oldEmail: data.oldEmail,
@@ -254,8 +284,8 @@ Ext.define('WebRTC.overrides.Auth', {
     //changes firebase password
     changePassword: function (btn, data) {
         var me = this,
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = me.firebaseRef;
+
         if (data && firebase) {
             firebase.changePassword({
                 email: data.email,
@@ -279,8 +309,8 @@ Ext.define('WebRTC.overrides.Auth', {
     //deletes a firebase user
     removeUser: function (btn, data) {
         var me = this,
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = me.firebaseRef;
+
         if (data && firebase) {
             firebase.removeUser({
                 email: data.email,
@@ -302,12 +332,8 @@ Ext.define('WebRTC.overrides.Auth', {
 
     // handles all the firebase callbacks for authorization regardless of provider
     authHandler: function (error, authData) {
-        var controller = WebRTC.app.getController('auth.controller.Auth'),
-            viewport = Ext.first('app-main'),
-            window = Ext.first('lockingwindow'),
-            firebase = viewport.getViewModel().get('firebaseRef');
-
-
+        var me = this,
+            window = Ext.first('lockingwindow');
 
         if (error) {
             if (window) {
@@ -315,20 +341,19 @@ Ext.define('WebRTC.overrides.Auth', {
             }
             console.log("Login Failed!", error);
             if (Ext.isFunction(controller.onFailure))
-                controller.onFailure();
+                me.onFailure();
         } else {
-            controller.storeUser(authData);
+            me.storeUser(authData);
         }
     },
 
     // Create a callback which logs the current auth state
     authDataCallback: function (authData) {
-        var viewport = Ext.first('app-main'),
-            controller = WebRTC.app.getController('auth.controller.Auth');
+        var controller = this;
 
         if (authData) {
             console.log("User " + authData.uid + " is logged in with " + authData.provider);
-            viewport.getViewModel().data.authData = authData;
+            controller.authData = authData;
             controller.storeUser(authData);
 
         } else {
@@ -339,9 +364,8 @@ Ext.define('WebRTC.overrides.Auth', {
 
     //set the user on the viewModel and updates the cookie.
     storeUser: function (authData) {
-        var controller = WebRTC.app.getController('auth.controller.Auth'),
-            viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef'),
+        var controller = this,
+            firebase = controller.firebaseRef,
             id;
 
         if (authData.provider) {
@@ -368,11 +392,11 @@ Ext.define('WebRTC.overrides.Auth', {
                     if (user) {
                         Ext.util.Cookies.clear('user');
 
-                        viewport.getViewModel().set('userid', user['id']);
-                        viewport.getViewModel().set('name', user['fn']);
-                        viewport.getViewModel().set('user', user);
+                        controller.user =  user;
+                        controller.fireEvent('authUserData',user);
 
                         Ext.util.Cookies.set('user', JSON.stringify(user), expires);
+
                         controller.cleanupAuth();
                         controller.syncStores();
 

@@ -8,7 +8,7 @@ Ext.define('opentok.OpenTokMixin', {
     },
 
     getRoomBySessionId: function(sessionId){
-        var roomtabs = this.lookupReference('roomtabs'),
+        var roomtabs = Ext.first('[reference=roomtabs]'),
             tab = roomtabs.child('chatroom[sessionId="' + sessionId + '"]');
 
         return tab;
@@ -55,7 +55,7 @@ Ext.define('opentok.OpenTokMixin', {
             remotestreams = tab.down('#remotestreams'),
             them = tab.down('#them');
 
-        if( this.lookupReference('roomtabs').getActiveTab().sessionId == tab.sessionId ){
+        if( Ext.first('[reference=roomtabs]').getActiveTab().sessionId == tab.sessionId ){
             if(remotestreams.isHidden()){
                 remotestreams.show()
             }
@@ -100,7 +100,7 @@ Ext.define('opentok.OpenTokMixin', {
 
         // console.log(deadCmp);
 
-        if( this.lookupReference('roomtabs').getActiveTab().sessionId == tab.sessionId ){
+        if( Ext.first('[reference=roomtabs]').getActiveTab().sessionId == tab.sessionId ){
             if(deadCmp){
                 deadCmp.destroy();
                 if(!remotestreams.items.length){

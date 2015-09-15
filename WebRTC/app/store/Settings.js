@@ -23,9 +23,6 @@ Ext.define('WebRTC.store.Settings', {
 
     constructor: function () {
         var me = this;
-
-        
-
         me.callParent(arguments);
         me.on('load', me.applyDefaultSettings, me);
     },
