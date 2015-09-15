@@ -7,7 +7,7 @@
 Ext.define('auth.controller.Auth', {
     extend: 'Ext.app.Controller',
     id: 'auth',
-    
+
     requires: [
         'auth.view.authentication.Register'
     ],
@@ -89,6 +89,12 @@ Ext.define('auth.controller.Auth', {
      */
     onFailure: Ext.emptyFn,
 
+    /*
+     * Authenticated User
+     */
+    aUser: null,
+
+
     cleanupAuth: function(request){
         var me = this;
         me.isAuthenticating = false;
@@ -123,19 +129,19 @@ Ext.define('auth.controller.Auth', {
 
     },
 
-    changeEmail: function(){
+    changeEmail: function(btn,data){
 
     },
 
-    changePassword: function(){
+    changePassword: function(btn,data){
 
     },
 
-    removeUser: function(){
+    removeUser: function(btn,data){
 
     },
 
-    logout: function(){
+    logout: function(btn,data){
 
     },
 
@@ -144,7 +150,7 @@ Ext.define('auth.controller.Auth', {
          * Stub function meant to be overridden by application specific logic
          */
         var me = this;
-// debugger;
+
         /*
          * Dummy logic tests for data and succeeds otherwise fails
          *

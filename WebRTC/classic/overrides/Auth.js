@@ -55,7 +55,7 @@ Ext.define('WebRTC.overrides.Auth', {
         if(!id || this.presenceOn) return;
 
         var viewport = Ext.first('app-main'),
-            myConnectionsRef = viewport.getViewModel().get('firebaseRef').child('connections/' + id + '/connections'),
+            myConnectionsRef = viewport.getViewModel().get('firebaseRef').child('users/' + id + '/connections'),
             lastOnlineRef = viewport.getViewModel().get('firebaseRef').child('users/' + id + '/lastOnline'),
             connectedRef = viewport.getViewModel().get('firebaseRef').child('/.info/connected');
 
@@ -77,7 +77,7 @@ Ext.define('WebRTC.overrides.Auth', {
                 // when I disconnect, remove this device
                 con.onDisconnect().remove();
                 // when I disconnect, update the last time I was seen online
-                lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+               // lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
             } else {
                 console.log("not connected");
             }
@@ -358,7 +358,8 @@ Ext.define('WebRTC.overrides.Auth', {
 
             controller.startPresence(id);
 
-            firebase.child('/users/' + id).on("value",
+            // Only load and set the user cookie once when the app starts.
+            firebase.child('/users/' + id).once("value",
                 function (snapshot) {
 
                     var user = snapshot.val(),
@@ -367,14 +368,12 @@ Ext.define('WebRTC.overrides.Auth', {
                     if (user) {
                         Ext.util.Cookies.clear('user');
 
-
                         viewport.getViewModel().set('userid', user['id']);
                         viewport.getViewModel().set('name', user['fn']);
                         viewport.getViewModel().set('user', user);
 
                         Ext.util.Cookies.set('user', JSON.stringify(user), expires);
                         controller.cleanupAuth();
-
                         controller.syncStores();
 
                         if (Ext.isFunction(controller.onSuccess)) {

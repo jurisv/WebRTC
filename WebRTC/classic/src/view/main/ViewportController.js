@@ -65,6 +65,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     init: function() {
         var me = this;
+        Ext.Ajax.setDefaultHeaders({
+            token: 'Hi'
+        });
         me.checkSetup()
     },
 
@@ -277,8 +280,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
             roomtabs = this.lookupReference('roomtabs'),
             id = record.get('id'),
             tab = me.getRoomTabById(id),
+            userId = me.getViewModel().get('user').id,
             name = me.getViewModel().get('name'),
-            membersRef = me.getViewModel().get('firebaseRef').child('members/' + id),
+            membersRef = me.getViewModel().get('firebaseRef').child('members/' + id + '/' + userId),
             room;
 
 
@@ -296,12 +300,14 @@ Ext.define('WebRTC.view.main.ViewportController', {
                 var sessionId = childPanel.getViewModel().get('room').get('sessionId');
                 // childPanel.getViewModel().getStore('members').getProxy().socket.emit('leave',sessionId)
                 me.fireEvent('closeroom',sessionId);
+                me.getViewModel().get('firebaseRef').child('members/' + childPanel.getViewModel().get('room').get('id') + '/' + userId).remove();
+
                 roomtabs.remove(childPanel, true);
             });
 
             tab = roomtabs.insert(0, room);
 
-            membersRef.update( {userId: me.getViewModel().get('user').id } );
+            membersRef.update( {active: true } );
 
             // Notify TokBox in this case
             me.fireEvent('joinroom', tab, record.data, name);
@@ -310,6 +316,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
         tab.getViewModel().set('room', record);
         tab.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
 
+        console.log('room/' + id);
         this.redirectTo('room/' + id);
 
         /*
@@ -353,7 +360,9 @@ Ext.define('WebRTC.view.main.ViewportController', {
     },
 
     onRoomClose: function(tab){
-        var sessionId = tab.getViewModel().get('room').get('sessionId'),
+        var room = tab.getViewModel().get('room'),
+            sessionId = room.get('sessionId'),
+            roomId =  room.get('id'),
             userId = this.getViewModel().get('user').id,
             combo = this.lookupReference('roomscombo');
         combo.reset();

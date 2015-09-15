@@ -98,6 +98,7 @@ $color-green: #16b603;
     }
     &.auth-envelope-trigger:before{
       content: "\f0e0";
+      left:-12px;
     }
   }
   .seperator{

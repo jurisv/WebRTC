@@ -51,10 +51,10 @@ Ext.define('auth.view.authentication.Login', {
                     height: 55,
                     hideLabel: true,
                     allowBlank : false,
-                    emptyText: 'user id',
+                    emptyText: 'email address',
                     triggers: {
                         glyphed: {
-                            cls: 'trigger-glyph-noop auth-email-trigger'
+                            cls: 'trigger-glyph-noop auth-envelope-trigger'
                         }
                     }
                 },
