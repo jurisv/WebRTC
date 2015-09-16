@@ -5,6 +5,9 @@ Ext.define('WebRTC.view.settings.Admin', {
     bodyPadding: 10,
     autoScroll: true,
 
+    controller: 'settingsadmin',
+
+
     defaultFocus: 'textfield [name=otApiKey]',
     defaultButton: 'okButton',
 
@@ -75,6 +78,7 @@ Ext.define('WebRTC.view.settings.Admin', {
             iconCls: 'x-fa fa-thumbs-o-up',
             action:'ok',
             reference: 'okButton',
+            handler: 'onOkClick',
             text:'OK'
         }
     ]

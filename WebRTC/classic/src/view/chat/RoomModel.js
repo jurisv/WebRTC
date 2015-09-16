@@ -36,7 +36,7 @@ Ext.define('WebRTC.view.chat.RoomModel', {
             autoLoad: true,
             listeners: {
                 load: function(){
-                    console.log('roommembers loaded')
+                   // console.log('roommembers loaded')
                 }
             }
         }

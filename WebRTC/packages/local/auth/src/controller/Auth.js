@@ -97,7 +97,7 @@ Ext.define('auth.controller.Auth', {
 
 
 
-    cleanupAuth: function(request){
+    cleanupAuth: function(){
         var me = this;
         me.isAuthenticating = false;
 

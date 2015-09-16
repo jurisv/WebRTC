@@ -37,117 +37,59 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 sessionconnected : 'onOTSessionConnected',
                 sessiondisconnect : 'onOTSessionDestroyed'
             },
-            '*':{
-                adminSetup: 'onAdminSetup',
-                authInit: 'onAuthInit',
-                authUserData: 'onAuthUserData'
+            'auth':{
+                configure: 'onAdminSetup',
+                init: 'onAuthInit',
+                islogin: 'onAuthIsLogin',
+                islogout: 'onAuthIsLogout',
+                login: 'onAuthLogin',
+                userData: 'onAuthUserData'
             }
         },
         component:{
-            'chatroomform button[action=ok]':{
-                click: 'onRoomFormOkClick'
-            },
             'chatroom':{
                 activate: 'onRoomActivate',
                 deactivate: 'onRoomDeactivate',
                 beforeclose: 'onRoomClose'
-            },
-            'settingsadmin button[action=ok]':{
-                click: 'onSettingsAdminOkClick'
             }
         }
     },
 
-   /* init: function() {
-        var me = this;
-        Ext.Ajax.setDefaultHeaders({
-            token: 'Hi'
-        });
-        me.checkSetup()
-    },
-    */
-
+    //If there's no config info load the dialog
     onAdminSetup: function(){
         this.onSettingsAdminSelect();
     },
 
+    //once the authentication system is up authenticate the user
     onAuthInit: function(){
-        var me = this;
-        me.authenticate(
-            function() {
-                me.deferAndSelectFirst();
-            },
-            function(){
-                me.handleUnauthorized();
-            }
-        )
+        this.fireEvent('authorize');
     },
 
+    //something in the user data changed
     onAuthUserData: function(user){
+        this.getViewModel().set('user', user);
         this.getViewModel().set('userid', user['id']);
         this.getViewModel().set('name', user['fn']);
+
+        Ext.StoreManager.lookup('rooms').load();
     },
 
-   /* checkSetup: function(){
-        var me= this;
+    //user was already logged in
+    onAuthIsLogin: function(){
+        this.deferAndSelectFirst();
+    },
 
-        me.getViewModel().data.settings = WebRTC.model.AdminSettings.load(0,{
-            success: function(record,operation){
-                if( !record.get('otApiKey') ){
-                    me.onSettingsAdminSelect();
-                }else{
-                    //get the firebase url and create a client instance of Firebase at the viewport.
-                    var url = record.data.fbUrl;
-                    Ext.first('app-main').getViewModel().data.firebaseRef =  new Firebase(url);
+    //user was not logged in
+    onAuthIsLogout: function(){
+        this.fireEvent('authorize');
+    },
 
-                    me.authenticate(
-                        function() {
-                            me.deferAndSelectFirst();
-                        },
-                        function(){
-                            me.handleUnauthorized();
-                        })
-                }
-            }
-        });
-
-    },*/
-
-    handleUnauthorized: function(){
-        var me = this;
-        me.authenticate(
-            function() {
-                me.deferAndSelectFirst();
-            },
-            function(){
-                // debugger;
-                me.handleUnauthorized();
-            })
+    //login successful
+    onAuthLogin: function(){
+        this.deferAndSelectFirst();
     },
 
 
-    authenticate: function(success,failure){
-        var me = this,
-            userCookie = Ext.util.Cookies.get('user'),
-            user;
-
-        // Use this area to run function to launch screen instantly
-        // this.onSettingsUserSelect();
-        // return;
-
-        me.fireEvent('authorize',{
-            success: success,
-            failure: failure
-        });
-    },
-
-    //due to latency in getting push of rooms
-    deferAndSelectFirst: function(deferLength){
-        var me = this;
-        Ext.defer(function() {
-            me.selectFirstRoom();
-        }, deferLength || 1200);
-    },
 
     selectFirstRoom: function () {
         var selection,
@@ -180,9 +122,18 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         }
     },
 
+    //due to latency in getting push of rooms
+    deferAndSelectFirst: function(deferLength){
+        var me = this;
+        Ext.defer(function() {
+            me.selectFirstRoom();
+        }, deferLength || 1200);
+    },
 
-    onRoomAdd: function(){
-        Ext.create('Ext.window.Window', {
+
+
+    onRoomAdd: function(button){
+        var window = Ext.create('Ext.window.Window', {
             title: 'Add Room',
             iconCls: 'x-fa fa-plus-square fa-lg',
             height: 400,
@@ -190,6 +141,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             layout: 'fit',
             resizable: true,
             modal: true,
+            autoShow: true,
             viewModel:{
                 data:{
                     theRoom: {
@@ -202,13 +154,14 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 xtype: 'chatroomform',
                 border: false
             }
-        }).show();
+        });
+        button.up('chatroomscontainer').add(window);
     },
 
-    onRoomEdit: function(){
+    onRoomEdit: function(button){
         var record = Ext.first('combobox[reference=roomscombo]').getSelection();
 
-        Ext.create('Ext.window.Window', {
+        var window = Ext.create('Ext.window.Window', {
             title: 'Edit Room',
             iconCls: 'x-fa fa-plus-square fa-lg',
             height: 400,
@@ -216,6 +169,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             layout: 'fit',
             resizable: true,
             modal: true,
+            autoShow: true,
             viewModel:{
                 data:{
                     theRoom: record
@@ -226,7 +180,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 border: false
 
             }
-        }).show();
+        });
+        button.up('chatroomscontainer').add(window);
 
 
     },
@@ -263,7 +218,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
         if(record){
             var store = this.getViewModel().getStore('rooms');
-            // theRecord = this.getViewModel().getStore('rooms').findBy(record);
             this.getViewModel().getStore('rooms').remove(record);
             Ext.Msg.wait('Removing', 'Removing room...');
             store.sync({
@@ -271,7 +225,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 callback: this.onComplete
             });
         }
-
     },
 
     onRoomSelect: function(view,record){
@@ -319,20 +272,9 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         tab.getViewModel().set('room', record);
         tab.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
 
-        console.log('room/' + id);
+        // console.log('room/' + id);
+
         this.redirectTo('room/' + id);
-
-        /*
-         tab.getViewModel().getStore('members').getProxy().getExtraParams().room = id;
-
-         var member = Ext.create('WebRTC.model.chat.RoomMember',{
-         roomid: id,
-         user_id: this.getViewModel().get('user').id,
-         name: this.getViewModel().get('name')
-         });
-
-         tab.getController().roomMemberAdd(member);
-         */
 
         roomtabs.setActiveTab(tab);
 
@@ -375,47 +317,11 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         this.fireEvent('closeroom',sessionId);
     },
 
-    onRoomFormOkClick: function(button) {
-        var window = button.up('window'),
-            form = window.down('form'),
-            data = form.getValues(),
-            userid = this.getViewModel().get('user').id,
-            store = this.getViewModel().getStore('rooms');
-
-
-        if (form.isValid()) {
-
-            //If there is no view model created then it is new otherwise the model has the record
-            if ( window.getViewModel().get('id') != null )
-            {
-                var record = window.getViewModel().get('theRoom');
-                Ext.Msg.wait('Saving', 'Saving room...');
-                form.up('window').close();
-                record.save({
-                    scope: this,
-                    callback: this.onComplete
-                });
-
-            } else {
-                Ext.Msg.wait('Creating', 'Creating room...');
-                data.owner = userid;
-                store.add(data);
-                form.up('window').close();
-                store.sync({
-                    scope: this,
-                    callback: this.onComplete
-                });
-            }
-        }
-    },
-
-
 
     getRoomTabById: function(id){
         var roomtabs = Ext.first('[reference=roomtabs]');
         return roomtabs.child('chatroom[roomId="' + id + '"]');
     },
-
 
 
     onComplete: function() {
@@ -430,64 +336,30 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         });
     },
 
-    onLogoClick: function(record){
-        Ext.create('Ext.window.Window', {
-            title: 'About',
-            iconCls: 'x-fa fa-info-circle fa-lg',
-            height: 640,
-            width: 600,
-            layout: 'fit',
-            modal: true,
-            items: {
-                xtype: 'panel',
-                html: '<a href="http://www.sencha.com/services/" target="_blank" ><img src="/static/images/About.png" border=0 ></a> ',
-                border: false
-
-            }
-        }).show();
-    },
 
     onRouteBeforeRoom : function(id, action) {
         var me = this;
+        this.fireEvent('authorize');
 
         if(id != "undefined" && !!id){
-            me.authenticate(function(){
-                action.resume()
-            },function(){
-                action.stop();
-                me.handleUnauthorized();
-            });
+            action.resume();
         }else{
-            //window.location.hash = '#home';
+            action.stop();
         }
+
     },
 
     onRouteRoom: function(id){
-        var me = this,
-            combo = Ext.first('combobox[reference=roomscombo]');
+        var combo = Ext.first('combobox[reference=roomscombo]');
 
-        //since the server pushes us rooms the using callback on load doesn't work
-        //a defer seems to work fine for now
         Ext.Function.defer(function(){
                 var record = combo.store.getById(id);
-
                 if(record){
                     combo.select(record);
-                    //not sure why this event isn't getting fired
                     combo.fireEvent('select',combo,record);
-                }else{
-                    Ext.toast({
-                        html: 'We could not find the room provided.',
-                        title: 'Room not found',
-                        width: 400,
-                        align: 't'
-                    });
                 }
             },
             1200);
-
-        me.redirectTo('room/' + id);
-
     },
 
     /*
@@ -542,6 +414,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     },
 
 
+
     onToggleFullScreen: function (button) {
         if (!document.fullscreenElement &&    // alternative standard method
             !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
@@ -567,72 +440,23 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         }
     },
 
-    onSettingsUserSelect: function(){
-        Ext.create('Ext.window.Window', {
+    onUserClick : function(button){
+        var window =  Ext.create('Ext.window.Window', {
             title: 'User Settings',
             iconCls: 'x-fa fa-user fa-lg',
             height: 400,
             width: 600,
+            modal: true,
+            autoShow: true,
             layout: 'fit',
+            viewModel:{},
             items: {
                 xtype: 'settingsuser',
                 border: false
 
             }
-        }).show();
-    },
-
-
-    onSettingsAdminSelect: function(){
-
-        var me = this;
-
-        //Theres only one setting but the REST API needs and id.
-        WebRTC.model.AdminSettings.load(0,{
-            success: function(record,operation){
-
-                Ext.create('Ext.window.Window', {
-                    title: 'Admin Settings',
-                    iconCls: 'x-fa fa-gear fa-lg',
-                    height: 500,
-                    width: 400,
-                    layout: 'fit',
-                    modal: true,
-                    items: {
-                        xtype: 'settingsadmin',
-
-                        border: false
-
-                    }
-                }).show();
-
-            }
         });
-    },
-
-    onSettingsAdminOkClick: function(button){
-
-        var me = this,
-            window = button.up('window'),
-            form = window.down('form'),
-            data = form.getValues();
-
-
-        if (form.isValid()) {
-
-            Ext.Msg.wait('Saving', 'Saving initial settings...');
-            var record = form.getViewModel().data.adminSettings;
-
-            form.updateRecord(record);
-
-            record.save({
-                scope: this,
-                callback: this.onComplete
-            });
-            form.up('window').close();
-        }
-
-
+        button.up('chatroomscontainer').add(window);
     }
 
 });

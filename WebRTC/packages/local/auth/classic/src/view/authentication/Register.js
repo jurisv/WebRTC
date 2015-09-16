@@ -72,6 +72,7 @@ Ext.define('auth.view.authentication.Register', {
                     height: 55,
                     hideLabel: true,
                     allowBlank : false,
+                    disabled: true,
                     hidden: true,
                     name: 'userid',
                     bind: '{userid}',

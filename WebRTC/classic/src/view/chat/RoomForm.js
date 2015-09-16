@@ -5,6 +5,8 @@ Ext.define('WebRTC.view.chat.RoomForm', {
     bodyPadding: 10,
     autoScroll: true,
 
+    controller: 'chatroomform',
+
     /*
      * Seek out the first enabled, focusable, empty textfield when the form is focused
      */
@@ -76,6 +78,7 @@ Ext.define('WebRTC.view.chat.RoomForm', {
             reference: 'okButton',
             action:'ok',
             formBind: true,
+            handler: 'onOkClick',
             text:'OK'
         }
     ]
