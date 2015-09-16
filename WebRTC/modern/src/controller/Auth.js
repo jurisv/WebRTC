@@ -98,44 +98,57 @@ Ext.define('WebRTC.controller.Auth', {
     logout: function(){
         var me = this,
             viewport = Ext.first('app-main'),
-            firebase = viewport.getViewModel().get('firebaseRef');
+            firebase = viewport.getViewModel().get('firebaseRef'),
+            storage = Ext.util.LocalStorage.get('userStorage');
 
-        Ext.util.Cookies.clear('user');
+        storage.removeItem('user');
         window.location.hash = null;
         window.location.href = window.location.pathname;
 
         firebase.unauth();
     },
 
-    //
-    reset: function (btn,data) {
-        var me = this;
+    reset: function (btn, data) {
+        var me = this,
+            viewport = Ext.first('app-main'),
+            firebase = viewport.getViewModel().get('firebaseRef');
 
-        if(data){
-            me.cleanupAuth();
-            if (Ext.isFunction(me.onSuccess)){
-                me.onSuccess();
-            }
-        }else{
-            me.cleanupAuth();
-            if (Ext.isFunction(me.onFailure))
-                me.onFailure();
+        if (data && data.email) {
+            firebase.resetPassword({
+                email: data.email
+            }, function (error) {
+                if (error === null) {
+                    console.log("Password reset email sent successfully");
+                    btn.up('lockingwindow').getController().updateStatus('Password reset email sent successfully:');
+
+                } else {
+                    console.log("Error sending password reset email:", error);
+                    btn.up('lockingwindow').getController().updateStatus('Error sending password reset email:')
+                }
+            });
+        } else {
+            btn.up('lockingwindow').getController().updateStatus('Error with email:')
         }
     },
 
     // handles all the firebase callbacks for authorization regardless of provider
-    authHandler: function(error, authData) {
-        var controller = WebRTC.app.getController('Auth'),
+    authHandler: function (error, authData) {
+        var controller = WebRTC.app.getController('auth.controller.Auth'),
             viewport = Ext.first('app-main'),
+            window = Ext.first('lockingwindow'),
             firebase = viewport.getViewModel().get('firebaseRef');
 
+
+
         if (error) {
+            if (window) {
+                window.getController().updateStatus("Login Failed! " + error);
+            }
             console.log("Login Failed!", error);
-            controller.cleanupAuth();
             if (Ext.isFunction(controller.onFailure))
                 controller.onFailure();
         } else {
-            controller.storeUser(authData.uid);
+            controller.storeUser(authData);
         }
     },
 

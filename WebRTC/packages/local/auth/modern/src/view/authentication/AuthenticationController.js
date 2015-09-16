@@ -5,7 +5,7 @@ Ext.define('auth.view.authentication.AuthenticationController', {
     updateStatus: function(text){
        var statusLabel =  this.getView().down('[reference=statusLabel]');
        if(statusLabel){
-           statusLabel.setText(text);
+           statusLabel.setHtml(text);
            statusLabel.show();
        }
     },

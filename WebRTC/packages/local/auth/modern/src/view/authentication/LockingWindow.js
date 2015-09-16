@@ -12,13 +12,6 @@ Ext.define('auth.view.authentication.LockingWindow', {
     ],
 
     cls: 'auth-locked-window',
-    // closable: false,
-    // resizable: false,
-    // autoShow: true,
-    // titleAlign: 'center',
-    // maximized: true,
-    // modal: true,
-
-
+    layout: 'fit',
     controller: 'authentication'
 });

@@ -12,15 +12,10 @@ Ext.define('auth.view.authentication.Login', {
         'auth.view.authentication.AuthenticationModel'
     ],
 
-    controller: 'authentication',
     viewModel: {
         type: 'authentication'
     },
-
-    layout: 'fit',
     
-    // defaultFocus: 'authdialog', // Focus the Auth Form to force field focus as well
-
     cls: 'user-login-register-container',
 
     items: [
@@ -37,6 +32,13 @@ Ext.define('auth.view.authentication.Login', {
                     docked: 'top',
                     title: 'Let\'s Log In'
                 },
+                {
+                    xtype: 'label',
+                    reference: 'statusLabel',
+                    cls: 'status-top-label',
+                    hidden: true,
+                    html: 'An error has occurred'
+                },                
                 {
                     xtype: 'fieldset',
                     title: 'Sign into your account',

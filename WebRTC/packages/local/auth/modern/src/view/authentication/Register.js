@@ -3,21 +3,10 @@ Ext.define('auth.view.authentication.Register', {
     xtype: 'register',
 
     requires: [
-        'auth.view.authentication.Dialog',
-
-        /*
-        NOTE: Although register doesn't really require these they are placed here
-        to remove the dependency to look them up for the 'modern' toolkit
-        */
-        'auth.view.authentication.LockingWindow',
-        'auth.view.authentication.Login',
-        'auth.view.authentication.DeniedScreen',
-        'auth.view.authentication.LockScreen',
-        'auth.view.authentication.PasswordReset'
-
+        'auth.view.authentication.Dialog'
     ],
 
-    layout: 'fit',    
+    cls: ['auth-dialog-register'],
 
     items: [
         {
@@ -28,33 +17,21 @@ Ext.define('auth.view.authentication.Register', {
         {
             xtype: 'authdialog',
             bodyPadding: '20 20',
-            // width: 455,
             reference : 'authDialog',
 
-            // defaultButton : 'submitButton',
-            // autoComplete: true,
-            // cls: ['auth-dialog-register'],
-            layout: {
-                type: 'vbox',
-                align: 'stretch'
-            },
             defaults : {
                 margin: '10 0',
                 selectOnFocus : true
             },
+
             items: [
-                // {
-                //     xtype: 'label',
-                //     cls: 'lock-screen-top-label',
-                //     text: 'Create an account'
-                // },
-                // {
-                //     xtype: 'label',
-                //     reference: 'statusLabel',
-                //     cls: 'status-top-label',
-                //     hidden: true,
-                //     text: 'An error has occurred'
-                // },
+                {
+                    xtype: 'label',
+                    reference: 'statusLabel',
+                    cls: 'status-top-label',
+                    hidden: true,
+                    html: 'An error has occurred'
+                },
                 {
                     xtype: 'fieldset',
                     title: 'Create an account',
@@ -69,68 +46,40 @@ Ext.define('auth.view.authentication.Register', {
                             emptyText: 'Fullname',
                             name: 'fullName',
                             bind: '{fullName}'
-                            // triggers: {
-                            //     glyphed: {
-                            //         cls: 'trigger-glyph-noop auth-email-trigger'
-                            //     }
-                            // }
                         },
                         {
                             xtype: 'textfield',
                             cls: 'auth-textbox',
-                            // height: 55,
-                            // hideLabel: true,
                             allowBlank : false,
                             label: 'Username',
                             name: 'userid',
                             bind: '{userid}',
                             emptyText: 'Username'
-                            // triggers: {
-                            //     glyphed: {
-                            //         cls: 'trigger-glyph-noop auth-email-trigger'
-                            //     }
-                            // }
                         },
                         {
                             xtype: 'textfield',
                             cls: 'auth-textbox',
-                            // height: 55,
-                            // hideLabel: true,
                             allowBlank : false,
                             label: 'email',
                             name: 'email',
                             emptyText: 'user@example.com',
                             vtype: 'email',
                             bind: '{email}'
-                            // triggers: {
-                            //     glyphed: {
-                            //         cls: 'trigger-glyph-noop auth-envelope-trigger'
-                            //     }
-                            // }
                         },
                         {
                             xtype: 'textfield',
                             cls: 'auth-textbox',
-                            // height: 55,
-                            // hideLabel: true,
                             allowBlank : false,
                             label: 'Password',
                             emptyText: 'Password',
                             name: 'password',
                             inputType: 'password',
                             bind: '{password}'
-                            // triggers: {
-                            //     glyphed: {
-                            //         cls: 'trigger-glyph-noop auth-password-trigger'
-                            //     }
-                            // }
                         },
                         {
                             xtype: 'checkboxfield',
-                            // flex: 1,
                             name: 'agrees',
                             cls: 'form-panel-font-color rememberMeCheckbox',
-                            // height: 32,
                             bind: '{agrees}',
                             allowBlank : false,
                             label: 'I agree with the Terms and Conditions',

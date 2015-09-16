@@ -2,17 +2,17 @@ Ext.define('auth.mixin.AuthViewRenderer', {
     extend: 'Ext.Mixin',
 
     requires: [
-        'auth.view.authentication.Login'
+        'auth.view.authentication.*'
     ],
 
     validViews: {
         'login': { xtype: 'login' },
-        'register': { xtype: 'register' }
+        'register': { xtype: 'register' },
         // 'lock': { view: 'LockScreen'},
         // 'denied': {view: 'DeniedScreen'},
         // 'newpassword': {view: 'ChangePassword'},
         // 'newemail': {view: 'ChangeEmail'},
-        // 'passwordreset': {view: 'PasswordReset'}
+        'passwordreset': {xtype: 'passwordreset'}
     },
 
     setCurrentView: function(hashtag) {
