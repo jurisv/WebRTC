@@ -100,7 +100,7 @@ Ext.define('auth.view.authentication.Register', {
                     reference: 'submitButton',
                     bind: false,
                     margin: '5 0',
-                    iconAlign: 'right',
+                    iconAlign: 'top',
                     iconCls: 'x-fa fa-angle-right',
                     text: 'Signup',
                     listeners: {
@@ -108,15 +108,12 @@ Ext.define('auth.view.authentication.Register', {
                     }
                 },
                 {
-                    // xtype: 'box',
-                    html: '<div class="outer-div"><div class="seperator">OR</div></div>'
-                },
-                {
                     xtype: 'button',
                     scale: 'large',
                     // ui: 'facebook',
+                    hiden: true,
                     margin: '5 0',
-                    iconAlign: 'right',
+                    iconAlign: 'top',
                     iconCls: 'x-fa fa-facebook',
                     text: 'Login with Facebook',
                     listeners: {

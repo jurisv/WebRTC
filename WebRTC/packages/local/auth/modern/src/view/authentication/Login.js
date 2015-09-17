@@ -73,19 +73,14 @@ Ext.define('auth.view.authentication.Login', {
                     reference: 'loginButton',
                     scale: 'large',
                     // ui: 'soft-green',
-                    iconAlign: 'right',
+                    iconAlign: 'top',
                     iconCls: 'x-fa fa-angle-right',
                     text: 'Login',
-                    formBind: true,
+                    // formBind: true,
                     listeners: {
                         tap: 'onLoginButton'
                     }
                 },
-                // {
-                //     xtype: 'box',
-                //     html: '<div class="outer-div"><div class="seperator">OR</div></div>',
-                //     margin: '10 0'
-                // },
                 {
                     xtype: 'button',
                     scale: 'large',
@@ -98,10 +93,6 @@ Ext.define('auth.view.authentication.Login', {
                         tap: 'onFaceBookLogin'
                     }
                 },
-                // {
-                //     html: '<div class="outer-div"><div class="seperator">OR</div></div>',
-                //     margin: '10 0'
-                // },
                 {
                     xtype: 'button',
                     scale: 'large',
@@ -115,14 +106,10 @@ Ext.define('auth.view.authentication.Login', {
                     }
                 },
                 {
-                    html: '<div class="outer-div"><div class="seperator">OR</div></div>',
-                    margin: '10 0'
-                },
-                {
                     xtype: 'button',
                     scale: 'large',
                     // ui: 'gray',
-                    iconAlign: 'right',
+                    iconAlign: 'top',
                     iconCls: 'x-fa fa-user-plus',
                     text: 'Create Account',
                     listeners: {

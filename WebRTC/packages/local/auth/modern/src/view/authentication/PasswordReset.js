@@ -55,7 +55,7 @@ Ext.define('auth.view.authentication.PasswordReset', {
                     scale: 'large',
                     // ui: 'soft-blue',
                     // formBind: true,
-                    iconAlign: 'right',
+                    iconAlign: 'top',
                     iconCls: 'x-fa fa-angle-right',
                     text: 'Reset Password',
                     listeners: {
