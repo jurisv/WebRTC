@@ -10,11 +10,11 @@ Ext.define('WebRTC.view.chat.HistoryController', {
             this.editLastMessage();
         }
     },
+
     chatSend: function(){
         var me = this,
             chat,
             store = this.getViewModel().getStore('messages'),
-            list = me.lookupReference('historylist'),
             timestamp = new Date().toISOString(),
             user = me.getViewModel().get('user'),
             name = user['name'],
@@ -36,36 +36,52 @@ Ext.define('WebRTC.view.chat.HistoryController', {
         message.setValue('');
 
         store.add(chat);
-        list.scrollBy(0, 999999, true);
+        me.scrollToBottom();
 
         me.fireEvent('chatmessage', sessionId, chat.data);
     },
 
-    editLastMessage: function(){
-        var me = this,
-            user = me.getViewModel().get('user'),
-            editWindow,
-            myLastMessage;
+    scrollToBottom: function(){
+        var list = this.getView().down('dataview[reference=historylist]');
+        if(list) {
+            //this is deferred to ensure the data has loaded from firebase and knows the amount of records
+            Ext.Function.defer(function () {
+                    list.scrollBy(0, 999999, true);
+            },
+            500);
+        }
+    },
 
-        me.getViewModel().get('mymessages').filterBy(function(record){
-            if(record.get('userid') == user['id']){
-                myLastMessage = record;
-                return true;
-            }else{
-                return false;
-            }
-        });
+    onDblClick: function(view,record,item){
+        var me = this,
+            user = me.getViewModel().get('user');
+
+        if(record.get('userid') == user['id']){
+            me.editMessage(record);
+        }
+    },
+
+    editMessage: function(record){
+        var me = this,
+            editWindow;
+
+        record.set('edited',true);
 
         editWindow = Ext.create('Ext.window.Window',{
-            title: 'Edit Last Message',
+            title: 'Edit Message',
             minWidth: 500,
             minHeight: 50,
             bodyPadding: 10,
             resizable: true,
             layout: 'fit',
+            /*
+             * Seek out the first enabled, focusable, empty textfield when the form is focused
+             */
+            defaultFocus: 'textfield:focusable:not([hidden]):not([disabled]):not([value])',
+
             viewModel:{
                 data:{
-                    message: myLastMessage
+                    theMessage: record
                 }
             },
             items: [{
@@ -74,37 +90,42 @@ Ext.define('WebRTC.view.chat.HistoryController', {
                 name      : 'message',
                 fieldLabel: 'Message',
                 labelAlign: 'top',
-                value: myLastMessage.data.message,
+                bind: {
+                    value: '{theMessage.message}'
+                },
                 anchor    : '100%'
-            }],
-            bbar:[{
-                iconCls: 'x-fa fa-thumbs-o-down',
-                action:'cancel',
-                hidden: true,
-                text:'Cancel'
-            }
-                ,'->',
-                {
-                    iconCls: 'x-fa fa-thumbs-o-up',
-                    reference: 'okButton',
-                    action:'ok',
-                    formBind: true,
-                    handler: 'onEditOkClick',
-                    text:'OK'
-                }]
+            }]
         });
-
         me.getView().add(editWindow);
         editWindow.show();
     },
 
+    editLastMessage: function(){
+        var me = this,
+            user = me.getViewModel().get('user'),
+            editWindow,
+            theRecord;
+
+        me.getViewModel().get('mymessages').filterBy(function(record){
+            if(record.get('userid') == user['id']){
+                theRecord = record;
+                return true;
+            }else{
+                return false;
+            }
+        });
+
+        me.editMessage(theRecord);
+
+    },
+
     onEditOkClick: function(button){
-       // debugger;
+       //debugger;
 
         var window = button.up('window'),
             form = window.down('form');
         if (form.isValid()) {
-
+            window.getViewModel().get('message').save();
         }
     }
 
