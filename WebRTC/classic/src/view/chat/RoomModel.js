@@ -19,9 +19,7 @@ Ext.define('WebRTC.view.chat.RoomModel', {
     stores:{
         messages: {
             model: 'WebRTC.model.chat.Message',
-            sorters:[
-                {property: 'date', diection: 'DESC'}
-            ],
+            sorters:[{property: 'date', diection: 'DESC'}],
             autoSync: true,
             autoLoad: true,
             listeners: {
@@ -31,14 +29,8 @@ Ext.define('WebRTC.view.chat.RoomModel', {
         mymessages: {
             model: 'WebRTC.model.chat.Message',
             source: '{messages}',
-            sorters:[
-                {property: 'date', diection: 'DESC'}
-            ],
-            // autoSync: true,
-            autoLoad: true,
-            listeners: {
-                //  load: 'onMessagesLoad'
-            }
+            sorters:[{property: 'date', diection: 'DESC'}],
+            autoLoad: true
         },
         members: {
             model:'WebRTC.model.chat.RoomMember',

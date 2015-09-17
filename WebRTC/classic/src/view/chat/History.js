@@ -1,10 +1,8 @@
 Ext.define('WebRTC.view.chat.History', {
     extend: 'Ext.Panel',
     xtype: 'chathistory',
-
-    bodyPadding: 10,
+    controller: 'chathistory',
     layout:'fit',
-
     items: [{
         xtype: 'dataview',
         loadMask: false,
@@ -14,20 +12,29 @@ Ext.define('WebRTC.view.chat.History', {
             store: '{messages}'
         },
         itemSelector: 'tr.chat-wrap',
+        listeners:{
+          itemdblclick: 'onDblClick',
+          afterrender: 'scrollToBottom'
+        },
         tpl: [
-            '<table cellspacing="0" cellpadding="8" width="100%">',
+            '<div class="marginfix"><table class="chatTable">',
             '<tpl for=".">',
             '<tr class="chat-wrap">',
-            '<td width="125" style="font-weight:100;border-bottom: solid 1px #eee;">',
+            '<td class="from">',
             '{from}',
-            '</td><td style="font-weight:400;border-bottom: solid 1px #eee;">',
+            '</td>',
+            '<td class="message">',
             '{[this.formatMessage(values.message)]}',
-            '</td><td width="100" style="font-weight:400;border-bottom: solid 1px #eee;text-align:right;">',
+            '</td>',
+            '<td class="date">',
             '{shortDate}',
+            '</td>',
+            '<td class="edited">',
+            '{[this.formatEdited(values.edited)]}',
             '</td>',
             '</tr>',
             '</tpl>',
-            '</table>',
+            '</table></div>',
             {
                 formatMessage: function (message) {
                     var matcher = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/ig;
@@ -42,6 +49,11 @@ Ext.define('WebRTC.view.chat.History', {
                     }
 
                     return message.replace(matcher, anchorTag);
+                },
+                formatEdited: function (edited) {
+                    if(edited)
+                        return '<span class="x-fa fa-pencil"></span>';
+                    return ;
                 }
             }
         ]

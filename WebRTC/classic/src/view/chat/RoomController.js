@@ -23,12 +23,13 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
 
     chatReceived: function(chat){
-        var list = this.lookupReference('historylist'),
+        var list = this.getView().down('dataview[reference=historylist]'),
             store = this.getViewModel().getStore('messages');
 
         store.add(chat);
 
-        list.scrollBy(0, 999999, true);
+        if(list)
+            list.scrollBy(0, 999999, true);
 
         this.fireEvent('playsound','chat-sound');
     },
