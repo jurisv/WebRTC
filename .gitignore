@@ -3,3 +3,10 @@
 /build
 node_modules/
 local-*
+WebRTC/classic.json
+WebRTC/modern.json
+WebRTC/material-classic.json
+WebRTC/material-modern.json
+WebRTC/bootstrap.css
+WebRTC/bootstrap.js
+WebRTC/cache.appcache

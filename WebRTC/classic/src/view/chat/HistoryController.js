@@ -99,7 +99,7 @@ Ext.define('WebRTC.view.chat.HistoryController', {
     },
 
     onEditOkClick: function(button){
-        debugger;
+       // debugger;
 
         var window = button.up('window'),
             form = window.down('form');
