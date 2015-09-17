@@ -21,53 +21,18 @@ Ext.define('WebRTC.view.chat.RoomController', {
     },
 
 
-    onSpecialKey: function(f,e){
-        if (e.getKey() == e.ENTER && !e.shiftKey ) {
-            this.chatSend();
-        }
-        if (e.getKey() == e.UP) {
-            alert('edit last')
-        }
-    },
 
     chatReceived: function(chat){
         var list = this.lookupReference('historylist'),
-             store = this.getViewModel().getStore('messages');
+            store = this.getViewModel().getStore('messages');
 
-         store.add(chat);
+        store.add(chat);
 
         list.scrollBy(0, 999999, true);
 
         this.fireEvent('playsound','chat-sound');
     },
 
-    chatSend: function(){
-        var me = this,
-            chat,
-            store = this.getViewModel().getStore('messages'),
-            list = me.lookupReference('historylist'),
-            timestamp = new Date().toISOString(),
-            name = me.getViewModel().get('name'),
-            roomId = me.getViewModel().get('id'),
-            sessionId = this.getViewModel().get('room.sessionId'),
-            message = me.lookupReference('chattext');
-
-        chat = Ext.create('WebRTC.model.chat.Message',{
-            message: message.getValue(),
-            roomid: roomId,
-            mine: true,
-            from: this.getViewModel().get('name'),
-            date: timestamp
-        });
-
-        message.focus(false,200);
-        message.setValue('');
-
-        store.add(chat);
-        list.scrollBy(0, 999999, true);
-
-        me.fireEvent('chatmessage', sessionId, chat.data);
-    },
 
 
     onAudioCallRoom: function(button){

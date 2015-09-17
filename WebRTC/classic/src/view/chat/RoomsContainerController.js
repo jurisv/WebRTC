@@ -105,19 +105,19 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             // selection = list.getSelection();
             if (!selection || !selection.length) {
                 Ext.Function.defer(function(){
-                        if(currentLaunchRoom){
-                            var record = store.getById(currentLaunchRoom);
-                            combo.select(record);
-                            //not sure why this event isn't getting fired
-                            combo.fireEvent('select',combo,record);
-                        }else{
-                            // combo.select(store.getAt(0));
-                            // list.getSelectionModel().select(0)
-                            //not sure why this event isn't getting fired
-                            // combo.fireEvent('select',combo,record);
-                        }
-                    },
-                    500);
+                    if(currentLaunchRoom){
+                        var record = store.getById(currentLaunchRoom);
+                        combo.select(record);
+                        //not sure why this event isn't getting fired
+                        combo.fireEvent('select',combo,record);
+                    }else{
+                        // combo.select(store.getAt(0));
+                        // list.getSelectionModel().select(0)
+                        //not sure why this event isn't getting fired
+                        // combo.fireEvent('select',combo,record);
+                    }
+                },
+                500);
             }
         }
     },

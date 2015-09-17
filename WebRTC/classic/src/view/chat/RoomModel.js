@@ -8,6 +8,7 @@ Ext.define('WebRTC.view.chat.RoomModel', {
         useMic: true,
         useCamera: true
     },
+
     links: {
         room: {
             type: 'WebRTC.model.chat.Room',
@@ -27,6 +28,18 @@ Ext.define('WebRTC.view.chat.RoomModel', {
                 load: 'onMessagesLoad'
             }
         },
+        mymessages: {
+            model: 'WebRTC.model.chat.Message',
+            source: '{messages}',
+            sorters:[
+                {property: 'date', diection: 'DESC'}
+            ],
+            // autoSync: true,
+            autoLoad: true,
+            listeners: {
+                //  load: 'onMessagesLoad'
+            }
+        },
         members: {
             model:'WebRTC.model.chat.RoomMember',
             sorters:[
@@ -36,11 +49,12 @@ Ext.define('WebRTC.view.chat.RoomModel', {
             autoLoad: true,
             listeners: {
                 load: function(){
-                   // console.log('roommembers loaded')
+                    // console.log('roommembers loaded')
                 }
             }
         }
     },
+
     formulas:{
         audioCallIcon: function(get){
             if(get('inAudioCall')){
