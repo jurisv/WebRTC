@@ -16,19 +16,18 @@ Ext.define('WebRTC.view.settings.UserController', {
             currentLeaveSound = settings.getById('leave-sound').get('value'),
             soundLeaveCombo = view.down('selectfield[name=leave-sound]'),
             currentLaunchRoom = settings.getById('launchroom').get('value'),
-            LaunchCombo = view.down('selectfield[name=launchroom]');
+            launchCombo = view.down('selectfield[name=launchroom]');
 
         soundChatCombo.setValue(currentChatSound);
         soundEnterCombo.setValue(currentEnterSound);
         soundLeaveCombo.setValue(currentLeaveSound);
 
-        LaunchCombo.setValue(currentLaunchRoom);
+        launchCombo.setValue(currentLaunchRoom);
 
     },
 
     signOut: function () {
-        localStorage.removeItem("userStorage-user");
-        window.location.href=window.location.href;
+        this.fireEvent('logout');
     },
 
     saveSettings: function () {

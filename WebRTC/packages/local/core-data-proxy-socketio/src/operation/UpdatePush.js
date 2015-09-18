@@ -12,20 +12,24 @@ Ext.define('Sencha.ux.data.operation.UpdatePush', {
         var records = resultSet.getRecords(),
             len = records.length,
             store = this.getInternalScope(),
-            idProperty = store.getModel().idProperty,
             clientRecords = [],
-            clientRec, i;
+            idProperty, clientRec, i;
 
-        for (i = 0; i < len; ++i) {
-            clientRec = store.getById(records[i][idProperty]);
-            if (clientRec) {
-                clientRecords.push(clientRec);
+        if (store) {
+            idProperty = store.getModel().idProperty;           
+
+            for (i = 0; i < len; ++i) {
+                clientRec = store.getById(records[i][idProperty]);
+                if (clientRec) {
+                    clientRecords.push(clientRec);
+                }
             }
+            
+            if (clientRecords.length) {
+                this.setRecords(clientRecords);
+            }            
         }
-        
-        if (clientRecords.length) {
-            this.setRecords(clientRecords);
-        }
+
 
         this.callParent(arguments);
     },
