@@ -2,6 +2,19 @@ Ext.define('WebRTC.view.chat.RoomController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.chatroom',
 
+    unread: 0,
+
+    listen: {
+        /*
+         * Any controller that fires authorize needs us to handle it and then run the next steps
+         * passed in to the request.
+         */
+        controller: {
+            'auth': {
+                visibilityChanged: 'setUnreadTitle'
+            }
+        }
+    },
 
     roomMemberAdd: function(member){
         var store = this.getViewModel().getStore('members');
@@ -21,20 +34,39 @@ Ext.define('WebRTC.view.chat.RoomController', {
     },
 
 
-
     chatReceived: function(chat){
-        var list = this.getView().down('dataview[reference=historylist]'),
+        var me = this,
+            list = this.getView().down('dataview[reference=historylist]'),
             store = this.getViewModel().getStore('messages');
 
         store.add(chat);
 
-        if(list)
+        if(list){
             list.scrollBy(0, 999999, true);
+        }
+
+        me.unread++;
+        me.setUnreadTitle();
+
+        if( document.hidden ){
+            window.document.title = '(' + me.unread + ') Unread Chat - Communicator'
+        }else{
+            me.unread = 0;
+            window.document.title = 'Communicator'
+        }
 
         this.fireEvent('playsound','chat-sound');
     },
 
-
+    setUnreadTitle: function(){
+        var me=this;
+        if( document.hidden ){
+            window.document.title = '(' + me.unread + ') Unread Chat - Communicator'
+        }else{
+            me.unread = 0;
+            window.document.title = 'Communicator'
+        }
+    },
 
     onAudioCallRoom: function(button){
         var you = this.lookupReference('you'),

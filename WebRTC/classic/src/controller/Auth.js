@@ -38,6 +38,10 @@ Ext.define('WebRTC.controller.Auth', {
     init: function(){
         var me= this;
 
+        // Add a single event listener to handle when the user tabs away.
+        // this can be used to trigger timers or other events related to security
+        if(document.addEventListener) document.addEventListener("visibilitychange", me.visibilityChanged.bind(me) );
+
         WebRTC.model.AdminSettings.load(0,{
             success: function(record,operation){
                 if( !record.get('otApiKey') ){
@@ -53,7 +57,13 @@ Ext.define('WebRTC.controller.Auth', {
 
     },
 
-    // starts checking for authorized users
+    visibilityChanged: function (){
+        this.fireEvent('visibilityChanged',document.hidden);
+        // console.log('visibility changed');
+    },
+
+
+// starts checking for authorized users
     authorize: function () {
         var me = this,
             firebase = me.firebaseRef;
