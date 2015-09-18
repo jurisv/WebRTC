@@ -46,6 +46,7 @@ Ext.define('WebRTC.controller.Auth', {
                     //get the firebase url and create a client instance of Firebase.
                     me.FBUrl = record.data.fbUrl;
                     me.firebaseRef =  new Firebase(me.FBUrl);
+                    me.firebaseRef.onAuth(me.authDataCallback, me);
                     me.fireEvent('init');
                 }
             }
@@ -61,19 +62,6 @@ Ext.define('WebRTC.controller.Auth', {
         if (me.isAuthenticating) return;
         me.isAuthenticating = true;
         me.originalRoute = window.location.hash;
-
-
-        // routes happen prior to the viewport loading
-        // note: this needs to be rearchitected some - for now defer it..
-        if(!firebase){
-            Ext.Function.defer(function(){
-                    me.firebaseRef.onAuth(me.authDataCallback, me);
-            },
-            600);
-        }else{
-            firebase.onAuth(me.authDataCallback, me);
-        }
-
     },
 
     // handles all the firebase callbacks for authorization regardless of provider

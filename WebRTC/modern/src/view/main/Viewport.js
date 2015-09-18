@@ -63,7 +63,7 @@ Ext.define('WebRTC.view.main.Viewport', {
                     xtype: 'button',
                     bind:{
                      text: '{name}'
-                     },
+                    },
                     handler: 'onSettingsUserSelect'
                 },
                 {
@@ -108,10 +108,11 @@ Ext.define('WebRTC.view.main.Viewport', {
                select: 'onRoomSelect'
             }
         }
-    ],
+    ]
+    // ,
 
-    listeners:{
-        show: 'onShow',
-        scope: 'controller'
-    }
+    // listeners:{
+    //     show: 'onShow',
+    //     scope: 'controller'
+    // }
 });
