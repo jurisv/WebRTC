@@ -1,5 +1,5 @@
 Ext.define('WebRTC.view.chat.RoomsContainer', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.panel.Panel',
     xtype: 'chatroomscontainer',
     viewModel: {
         type: 'chatroomscontainer'
@@ -43,7 +43,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
                 disabled: '{!isRoomSelected}'
             },
             listeners: {
-                click: 'onRoomShare'
+                click: 'onRoomShareClick'
             }
         },{
             iconCls: 'x-fa fa-trash-o',
@@ -71,33 +71,9 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
             bind:{
                 hidden: '{isAdmin}'
             },
-            handler: function(){
-
-                var me = this;
-
-                //Theres only one setting but the REST API needs and id.
-                WebRTC.model.AdminSettings.load(0,{
-                    success: function(record,operation){
-
-                        Ext.create('Ext.window.Window', {
-                            title: 'Admin Settings',
-                            iconCls: 'x-fa fa-gear fa-lg',
-                            height: 500,
-                            width: 400,
-                            layout: 'fit',
-                            modal: true,
-                            items: {
-                                xtype: 'settingsadmin',
-
-                                border: false
-
-                            }
-                        }).show();
-
-                    }
-                });
-            }
+            handler: 'onGearClick'
         },{
+            //This is left here on purpose to easily remove branding piece from project
             style:'background-image: url(/static/images/TokBoxIcon.png) !important; background-size: 29px 29px; background-repeat: no-repeat; ',
             plain: true,
             listeners: {
@@ -122,7 +98,19 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
 
     ],
     tabPosition: 'bottom',
-    flex:4,
-    items: []
+    layout:'fit',
+    items: [
+    {
+        defaultContent: true,
+        layout:{
+            type: 'vbox',
+            pack: 'middle',
+            align: 'middle'
+        },
+        items:[{
+            html:'<div class="defaultContent"><h1>Welcome</h1><p>Please select a room</p></div>'
+        }]
+    }
+    ]
 
 });

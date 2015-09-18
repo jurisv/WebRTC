@@ -14,10 +14,10 @@ Ext.define('WebRTC.view.chat.Room', {
         type: 'chatroom'
     },
 
-    bind : {
+  /*  bind : {
         title : '{room.name}'
     },
-
+*/
     items: [
         {
             layout: {
@@ -58,7 +58,7 @@ Ext.define('WebRTC.view.chat.Room', {
                     items: [
                         {
                             items: {
-                                style: 'display: block; background-color:#eeeeee; background-image: url(https://static.opentok.com/webrtc/v2.6.0/images/rtc/audioonly-silhouette.svg); background-position: center bottom; background-repeat: no-repeat; background-size: auto 76%;',
+                                cls: 'youBox',
                                 xtype: 'container',
                                 layout: 'fit',
                                 minHeight: 180,

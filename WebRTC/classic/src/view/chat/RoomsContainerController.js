@@ -89,7 +89,27 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         this.deferAndSelectFirst();
     },
 
+    onGearClick: function(){
+        var me = this;
 
+        //Theres only one setting but the REST API needs and id.
+        WebRTC.model.AdminSettings.load(0,{
+            success: function(record,operation){
+                Ext.create('Ext.window.Window', {
+                    title: 'Admin Settings',
+                    iconCls: 'x-fa fa-gear fa-lg',
+                    height: 500,
+                    width: 400,
+                    layout: 'fit',
+                    modal: true,
+                    items: {
+                        xtype: 'settingsadmin',
+                        border: false
+                    }
+                }).show();
+            }
+        });
+    },
 
     selectFirstRoom: function () {
         var selection,
@@ -141,7 +161,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             layout: 'fit',
             resizable: true,
             modal: true,
-            autoShow: true,
             viewModel:{
                 data:{
                     theRoom: {
@@ -155,7 +174,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 border: false
             }
         });
-        button.up('chatroomscontainer').add(window);
+        window.show();
     },
 
     onRoomEdit: function(button){
@@ -169,7 +188,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             layout: 'fit',
             resizable: true,
             modal: true,
-            autoShow: true,
             viewModel:{
                 data:{
                     theRoom: record
@@ -181,36 +199,60 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
             }
         });
-        button.up('chatroomscontainer').add(window);
+        window.show();
 
 
     },
 
-    onRoomShare: function(){
-        var room = Ext.first('combobox[reference=roomscombo]').getSelection();
+    onRoomShareClick: function(button){
+        var me=this,
+            room = Ext.first('combobox[reference=roomscombo]').getSelection();
 
         if(room && room.get('isPrivate') ){
             Ext.Ajax.request({
                 url     : '/data/jwtsign/' + room.data.password,
-
                 params:  room.data,
-
                 success : function(response) {
                     var token = response.responseText, message,
                         message = '<a target="_new" href="' + window.location.origin + '/#token/' + token + '">' + window.location.origin + '/#token/' + token + '</a> <br/> Password to enter room: ' + room.data.password ;
-                    Ext.Msg.alert('Private Room Token', message);
-
+                    me.showRoomShare(button,room,message)
                 },
                 failure : function() {
                 }
             });
         }else{
             var message = '<a href="' + window.location + '">' + window.location + '</a>';
-            Ext.Msg.alert('Public Room Link', message);
+            me.showRoomShare(button,room,message)
 
-            alert();
         }
 
+    },
+
+    showRoomShare: function(button, room, message){
+        var window = Ext.create('Ext.window.Window', {
+            title: 'Share Room',
+            iconCls: 'x-fa fa-share fa-lg',
+            height: 400,
+            width: 800,
+            layout: 'fit',
+            resizable: true,
+            modal: true,
+            viewModel:{
+                data:{
+                    theRoom: room,
+                    theMessage: message
+                }
+            },
+            items: {
+                xtype: 'chatroomshareform',
+                border: false
+
+            },
+            listeners:{
+                blur: function(){this.close();}
+            }
+        });
+        window.show();
     },
 
     onRoomRemove: function(){
@@ -233,6 +275,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
         var me = this,
             roomtabs = Ext.first('[reference=roomtabs]'),
+            defaultContent = Ext.first('[defaultContent=true]'),
             id = record.get('id'),
             tab = me.getRoomTabById(id),
             auth = WebRTC.app.getController('Auth'),
@@ -241,13 +284,15 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             membersRef = auth.firebaseRef.child('members/' + id + '/' + userId),
             room;
 
+        if(defaultContent)
+        roomtabs.remove(defaultContent, true);
 
         //only add one
         if (!tab) {
             room = {
                 xtype: 'chatroom',
-                closable: true,
-                iconCls: 'x-fa fa-comments',
+                // closable: true,
+                // iconCls: 'x-fa fa-comments',
                 roomId: id,
                 flex: 1
             };
@@ -276,7 +321,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
         this.redirectTo('room/' + id);
 
-        roomtabs.setActiveTab(tab);
+      //  roomtabs.setActiveTab(tab);
 
     },
 
@@ -403,6 +448,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                         action.stop();
                     }
                 });
+            }else{
+               me.redirectTo('')
             }
         });
 
@@ -444,19 +491,19 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         var window =  Ext.create('Ext.window.Window', {
             title: 'User Settings',
             iconCls: 'x-fa fa-user fa-lg',
-            height: 400,
+            height: 600,
             width: 600,
             modal: true,
             autoShow: true,
             layout: 'fit',
             viewModel:{},
-            items: {
+            items: [{
                 xtype: 'settingsuser',
                 border: false
 
-            }
+            }]
         });
-        button.up('chatroomscontainer').add(window);
+        button.up('chatroomscontainer').insert(0,window);
     }
 
 });

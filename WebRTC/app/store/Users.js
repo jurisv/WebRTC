@@ -21,7 +21,6 @@ Ext.define('WebRTC.store.Users', {
 
         me.firebaseRef =  new Firebase('https://senchartc.firebaseio.com/commons');
         me.firebaseRef.on("value", function(snap) {
-            debugger;
             if (snap.val() === true) {
                 me.data = snap.val();
             }

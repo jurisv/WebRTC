@@ -96,14 +96,13 @@ Ext.define('WebRTC.view.chat.HistoryController', {
                 anchor    : '100%'
             }]
         });
-        me.getView().add(editWindow);
+        me.getView().insert(0,editWindow);
         editWindow.show();
     },
 
     editLastMessage: function(){
         var me = this,
             user = me.getViewModel().get('user'),
-            editWindow,
             theRecord;
 
         me.getViewModel().get('mymessages').filterBy(function(record){
