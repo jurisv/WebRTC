@@ -13,25 +13,28 @@ Ext.define('Sencha.ux.data.operation.DestroyPush', {
     doProcess: function( resultSet, request, response ) {
         var records = resultSet.getRecords(),
             len = records.length,
-            store = this.getInternalScope(),
-            idProperty = store.getModel().idProperty,
+            store = this.getInternalScope(),            
             clientRecords = [],
-            clientRec, i;
+            idProperty, clientRec, i;
 
+        if (store) {
+            idProperty = store.getModel().idProperty;
 
-        for (i = 0; i < len; ++i) {
-            clientRec = store.getById(records[i][idProperty]);
-            // if we remove the record locally, it won't be pressent in the store anymore
-            if (clientRec) {
-                clientRecords.push(clientRec);    
+            for (i = 0; i < len; ++i) {
+                clientRec = store.getById(records[i][idProperty]);
+                // if we remove the record locally, it won't be pressent in the store anymore
+                if (clientRec) {
+                    clientRecords.push(clientRec);    
+                }
+                
             }
             
+            if (clientRecords.length) {
+                store.data.remove(clientRecords);
+                this.setRecords(clientRecords);
+            }            
         }
-        
-        if (clientRecords.length) {
-            store.data.remove(clientRecords);
-            this.setRecords(clientRecords);
-        }
+
 
         this.callParent(arguments);
     },

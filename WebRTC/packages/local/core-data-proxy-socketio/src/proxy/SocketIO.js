@@ -242,7 +242,7 @@ Ext.define ('Sencha.ux.data.proxy.SocketIO', {
         // REMOVE
         me.socket.on (apiEvents['destroy'], function (data) {
             var operation = me.createOperation('destroypush', Ext.apply(operationCfg, {
-                internalCallback: operationCfg.internalScope['onProxyWrite']
+                internalCallback: operationCfg.internalScope ? operationCfg.internalScope['onProxyWrite'] : undefined
             }));
             var request = Ext.create('Ext.data.Request',{
                 action: 'destroy',
@@ -257,7 +257,7 @@ Ext.define ('Sencha.ux.data.proxy.SocketIO', {
         //UPDATE
         me.socket.on (apiEvents['update'], function (data) {
             var operation = me.createOperation('updatepush', Ext.apply(operationCfg, {
-                internalCallback: operationCfg.internalScope['onProxyWrite']
+                internalCallback: operationCfg.internalScope ? operationCfg.internalScope['onProxyWrite'] : undefined
             }));
 
             var request = Ext.create('Ext.data.Request',{
