@@ -52,5 +52,11 @@ Ext.define('auth.view.authentication.AuthenticationController', {
 
     onResetClick:  function(btn) {
         this.fireEvent('reset', btn, this.getViewModel()['data'] );
+    },
+
+    onDone:  function(btn) {
+        this.fireEvent('done', btn, this.getViewModel()['data'] );
     }
+
+
 });

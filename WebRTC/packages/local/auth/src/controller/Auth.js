@@ -57,7 +57,8 @@ Ext.define('auth.controller.Auth', {
                 changeEmail: 'changeEmail',
                 removeUser: 'removeUser',
                 reset: 'reset',
-                register: 'register'
+                register: 'register',
+                done: 'cleanupAuth'
             }
         }
     },

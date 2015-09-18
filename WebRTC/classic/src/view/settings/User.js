@@ -13,7 +13,17 @@ Ext.define('WebRTC.view.settings.User', {
 
 
     items: [
+        {
+            xtype: 'fieldset',
+            title: 'Password',
+            defaults:{
+                anchor: '100%',
+                labelWidth: 180
+            },
+            items: [
 
+            ]
+        },
         {
             xtype: 'fieldset',
             title: 'Sounds',

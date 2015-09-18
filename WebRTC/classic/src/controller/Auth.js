@@ -120,8 +120,8 @@ Ext.define('WebRTC.controller.Auth', {
 
         if (data && firebase) {
             firebase.changeEmail({
-                oldEmail: data.oldEmail,
-                newEmail: data.newEmail,
+                oldEmail: data.email,
+                newEmail: data.newemail,
                 password: data.password
             }, function (error) {
                 if (error === null) {
@@ -141,20 +141,21 @@ Ext.define('WebRTC.controller.Auth', {
     //changes firebase password
     changePassword: function (btn, data) {
         var me = this,
+            email = me.user['email_pref'],
             firebase = me.firebaseRef;
 
         if (data && firebase) {
             firebase.changePassword({
-                email: data.email,
-                oldPassword: data.oldPassword,
-                newPassword: data.newPassword
+                email: email,
+                oldPassword: data.password,
+                newPassword: data.newpassword
             }, function (error) {
                 if (error === null) {
                     console.log("Email changed successfully");
-                    btn.up('lockingwindow').getController().updateStatus("Email changed successfully");
+                    btn.up('lockingwindow').getController().updateStatus("Password changed successfully");
                 } else {
                     console.log("Error changing email:", error);
-                    btn.up('lockingwindow').getController().updateStatus("Error changing email: " + error);
+                    btn.up('lockingwindow').getController().updateStatus("Error changing password: " + error);
                 }
             });
         }
