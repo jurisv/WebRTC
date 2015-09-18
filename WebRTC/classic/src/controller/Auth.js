@@ -38,6 +38,10 @@ Ext.define('WebRTC.controller.Auth', {
     init: function(){
         var me= this;
 
+        // Add a single event listener to handle when the user tabs away.
+        // this can be used to trigger timers or other events related to security
+        if(document.addEventListener) document.addEventListener("visibilitychange", me.visibilityChanged.bind(me) );
+
         WebRTC.model.AdminSettings.load(0,{
             success: function(record,operation){
                 if( !record.get('otApiKey') ){
@@ -53,7 +57,13 @@ Ext.define('WebRTC.controller.Auth', {
 
     },
 
-    // starts checking for authorized users
+    visibilityChanged: function (){
+        this.fireEvent('visibilityChanged',document.hidden);
+        // console.log('visibility changed');
+    },
+
+
+// starts checking for authorized users
     authorize: function () {
         var me = this,
             firebase = me.firebaseRef;
@@ -120,8 +130,8 @@ Ext.define('WebRTC.controller.Auth', {
 
         if (data && firebase) {
             firebase.changeEmail({
-                oldEmail: data.oldEmail,
-                newEmail: data.newEmail,
+                oldEmail: data.email,
+                newEmail: data.newemail,
                 password: data.password
             }, function (error) {
                 if (error === null) {
@@ -141,20 +151,21 @@ Ext.define('WebRTC.controller.Auth', {
     //changes firebase password
     changePassword: function (btn, data) {
         var me = this,
+            email = me.user['email_pref'],
             firebase = me.firebaseRef;
 
         if (data && firebase) {
             firebase.changePassword({
-                email: data.email,
-                oldPassword: data.oldPassword,
-                newPassword: data.newPassword
+                email: email,
+                oldPassword: data.password,
+                newPassword: data.newpassword
             }, function (error) {
                 if (error === null) {
                     console.log("Email changed successfully");
-                    btn.up('lockingwindow').getController().updateStatus("Email changed successfully");
+                    btn.up('lockingwindow').getController().updateStatus("Password changed successfully");
                 } else {
                     console.log("Error changing email:", error);
-                    btn.up('lockingwindow').getController().updateStatus("Error changing email: " + error);
+                    btn.up('lockingwindow').getController().updateStatus("Error changing password: " + error);
                 }
             });
         }

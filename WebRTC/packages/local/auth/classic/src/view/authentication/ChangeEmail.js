@@ -105,11 +105,15 @@ Ext.define('auth.view.authentication.ChangeEmail', {
                     }
                 },
                 {
-                    xtype: 'component',
-                    html: '<div style="text-align:right">' +
-                        '<a href="#home" class="link-forgot-password">'+
-                            'Close</a>' +
-                        '</div>'
+                    xtype: 'button',
+                    // scale: 'large',
+                    // ui: 'soft-blue',
+                    iconAlign: 'right',
+                    //iconCls: 'x-fa fa-check',
+                    text: 'Done',
+                    listeners: {
+                        click: 'onDone'
+                    }
                 }
             ]
         }

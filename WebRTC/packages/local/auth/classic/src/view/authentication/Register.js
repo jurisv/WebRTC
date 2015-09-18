@@ -13,7 +13,9 @@ Ext.define('auth.view.authentication.Register', {
         'auth.view.authentication.Login',
         'auth.view.authentication.DeniedScreen',
         'auth.view.authentication.LockScreen',
-        'auth.view.authentication.PasswordReset'
+        'auth.view.authentication.PasswordReset',
+        'auth.view.authentication.ChangePassword',
+        'auth.view.authentication.ChangeEmail'
 
     ],
 

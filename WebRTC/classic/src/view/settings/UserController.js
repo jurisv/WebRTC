@@ -30,6 +30,14 @@ Ext.define('WebRTC.view.settings.UserController', {
         this.fireEvent('logout');
     },
 
+    onChangePassword: function(){
+        this.redirectTo('#newpassword');
+    },
+
+    onChangeEmail: function(){
+        this.redirectTo('#newemail');
+    },
+
     saveSettings: function () {
         var view = this.getView(),
             data = view.getForm().getFieldValues(),

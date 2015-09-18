@@ -13,7 +13,46 @@ Ext.define('WebRTC.view.settings.User', {
 
 
     items: [
-
+        {
+            xtype: 'fieldset',
+            title: 'Password',
+            defaults:{
+                anchor: '100%',
+                labelWidth: 180
+            },
+            items: [{
+                    xtype: 'button',
+                    reference: 'changePassword',
+                    scale: 'large',
+                    // ui: 'soft-blue',
+                    iconAlign: 'right',
+                    iconCls: 'x-fa fa-lock',
+                    text: 'Change Password',
+                    listeners: {
+                        click: 'onChangePassword'
+                    }
+            }]
+        },
+        {
+            xtype: 'fieldset',
+            title: 'Email',
+            defaults:{
+                anchor: '100%',
+                labelWidth: 180
+            },
+            items: [{
+                xtype: 'button',
+                reference: 'changeEmail',
+                scale: 'large',
+                // ui: 'soft-blue',
+                iconAlign: 'right',
+                iconCls: 'x-fa fa-envelope',
+                text: 'Change Email',
+                listeners: {
+                    click: 'onChangeEmail'
+                }
+            }]
+        },
         {
             xtype: 'fieldset',
             title: 'Sounds',
