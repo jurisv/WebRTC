@@ -13,7 +13,7 @@ Ext.define('WebRTC.view.chat.RoomFormController', {
     if (form.isValid()) {
 
         //If there is no view model created then it is new otherwise the model has the record
-        if ( window.getViewModel().get('id') != null )
+        if ( window.getViewModel().get('theRoom').get('id') != null )
         {
             var record = window.getViewModel().get('theRoom');
             Ext.Msg.wait('Saving', 'Saving room...');
