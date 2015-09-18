@@ -59,7 +59,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
                     bind:{
                      text: '{name}'
                     },
-                    handler: 'onSettingsUserSelect'
+                    handler: 'onDisplayUserSettings'
                 },
                 {
                     iconCls: 'x-fa fa-expand',

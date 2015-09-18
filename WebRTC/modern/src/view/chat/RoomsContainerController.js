@@ -342,12 +342,12 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     },
 
     onRoomClose: function(tab){
-        var room = tab.getViewModel().get('room'),
-            sessionId = room.get('sessionId'),
-            roomId =  room.get('id'),
-            userId = this.getViewModel().get('user').id,
-            combo = Ext.first('combobox[reference=roomscombo]');
-        combo.reset();
+        // var room = tab.getViewModel().get('room'),
+        //     sessionId = room.get('sessionId'),
+        //     roomId =  room.get('id'),
+        //     userId = this.getViewModel().get('user').id,
+        //     combo = Ext.first('combobox[reference=roomscombo]');
+        // combo.reset();
 
         // tab.getController().roomMemberRemove(userId);
 
@@ -477,23 +477,21 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         }
     },
 
-    onUserClick : function(button){
-        var window =  Ext.create('Ext.window.Window', {
-            title: 'User Settings',
-            iconCls: 'x-fa fa-user fa-lg',
-            height: 400,
-            width: 600,
-            modal: true,
-            autoShow: true,
-            layout: 'fit',
-            viewModel:{},
-            items: {
-                xtype: 'settingsuser',
-                border: false
+    onDisplayUserSettings : function(button){
+        var me = this,
+            navView = me.getView().up('app-main'),
+            form = {
+                title: 'User Settings',
+                iconCls: 'x-fa fa-user fa-lg',
+                layout: 'fit',
+                items: {
+                    xtype: 'settingsuser',
+                    border: false
 
-            }
-        });
-        button.up('chatroomscontainer').add(window);
+                }
+            };
+        navView.push(form);
+
     }
 
 });
