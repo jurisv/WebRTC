@@ -1,6 +1,5 @@
 Ext.define('auth.view.authentication.Login', {
     extend: 'auth.view.authentication.LockingWindow',
-    // extend: 'Ext.form.Panel',
     xtype: 'login',
 
     requires: [

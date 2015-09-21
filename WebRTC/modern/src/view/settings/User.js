@@ -127,10 +127,6 @@ Ext.define('WebRTC.view.settings.User', {
             ]
         }
 
-    ],
-
-    bbar:[
-
     ]
 
 });
