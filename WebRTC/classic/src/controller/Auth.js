@@ -264,7 +264,7 @@ Ext.define('WebRTC.controller.Auth', {
                 newUser = Ext.create('WebRTC.model.User', {
                     fn: data.fullName,
                     email_userid: data.email,
-                    name: data.userid,
+                    name: data.fullName,
                     password: data.password
                 });
 

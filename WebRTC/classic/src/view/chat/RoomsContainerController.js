@@ -5,27 +5,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
     requires: ['WebRTC.model.AdminSettings'],
 
-    routes : {
-        'room/:id' : {
-            before  : 'onRouteBeforeRoom',
-            action  : 'onRouteRoom'
-        },
-        'token/:id' : {
-            before  : 'onRouteBeforeToken',
-            action  : 'onRouteToken',
-            conditions : {
-                ':id' : '(.*)'
-            }
-        },
-        'user' : {
-            action  : 'onRouteUser'
-        },
-        'settings' : {
-            before  : 'onRouteBeforeSettings',
-            action  : 'onRouteSettings'
-        }
-    },
-
     listen: {
         controller: {
             'opentok': {
@@ -60,6 +39,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         this.onSettingsAdminSelect();
     },
 
+
+
     //once the authentication system is up authenticate the user
     onAuthInit: function(){
         this.fireEvent('authorize');
@@ -88,6 +69,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     onAuthLogin: function(){
         this.deferAndSelectFirst();
     },
+
+
 
     onGearClick: function(){
         var me = this;
@@ -382,30 +365,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     },
 
 
-    onRouteBeforeRoom : function(id, action) {
-        var me = this;
-        this.fireEvent('authorize');
-
-        if(id != "undefined" && !!id){
-            action.resume();
-        }else{
-            action.stop();
-        }
-
-    },
-
-    onRouteRoom: function(id){
-        var combo = Ext.first('combobox[reference=roomscombo]');
-
-        Ext.Function.defer(function(){
-                var record = combo.store.getById(id);
-                if(record){
-                    combo.select(record);
-                    combo.fireEvent('select',combo,record);
-                }
-            },
-            1200);
-    },
 
     /*
      * This is where we can create a token for sharing the room
@@ -424,40 +383,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 action.stop();
             }
         });
-    },
-
-
-    onRouteBeforeToken : function(id, action) {
-        var me=this;
-
-        Ext.Msg.prompt('Password','Please enter password for this room',function(buttonId,value){
-            if(value) {
-                Ext.Ajax.request({
-                    url     : '/data/jwtdecode/' + id +'?pwd=' + value,
-                    success : function(response) {
-                        var store = me.getViewModel().getStore('rooms');
-
-                        me.tokenInfo = JSON.parse(response.responseText);
-                        //add the private room to the store.
-                        store.add(me.tokenInfo);
-                        action.resume();
-                    },
-                    failure : function(response) {
-                        // var error = JSON.parse(response.responseText);
-                        Ext.Msg.alert('Denied', 'The password entered is no longer valid');
-                        action.stop();
-                    }
-                });
-            }else{
-               me.redirectTo('')
-            }
-        });
-
-    },
-
-    onRouteToken: function(){
-        var id = this.tokenInfo.id;
-        this.onRouteRoom(id)
     },
 
 
