@@ -6,8 +6,8 @@ Ext.define('WebRTC.view.chat.RoomFormController', {
     var window = button.up('window'),
         form = window.down('form'),
         data = form.getValues(),
-        userid = button.up('chatroomscontainer').getViewModel().get('user').id,
-        store = button.up('chatroomscontainer').getViewModel().getStore('rooms');
+        userid = Ext.first('chatroomscontainer').getViewModel().get('user').id,
+        store = Ext.first('chatroomscontainer').getViewModel().getStore('rooms');
 
 
     if (form.isValid()) {

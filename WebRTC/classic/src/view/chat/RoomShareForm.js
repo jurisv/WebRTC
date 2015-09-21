@@ -48,7 +48,7 @@ Ext.define('WebRTC.view.chat.RoomShareForm', {
         },
         {
             xtype: 'fieldset',
-            title: 'Invite People',
+            title: 'Invite Person',
             items: [
                 {
                     xtype:'container',
@@ -58,8 +58,16 @@ Ext.define('WebRTC.view.chat.RoomShareForm', {
                         {
                             xtype:'textfield',
                             fieldLabel: 'Email',
+                            allowBlank: false,
+                            emptyText: 'user@example.com',
+                            vtype: 'email',
                             flex:1,
-                            name: 'email'
+                            name: 'email',
+                            triggers: {
+                                glyphed: {
+                                    cls: 'trigger-glyph-noop auth-email-trigger'
+                                }
+                            }
                         },
                         {
                             xtype:'button',

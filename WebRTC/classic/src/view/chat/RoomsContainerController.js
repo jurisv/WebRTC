@@ -198,7 +198,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 success : function(response) {
                     var token = response.responseText, message,
                         message = '<a target="_new" href="' + window.location.origin + '/#token/' + token + '">' + window.location.origin + '/#token/' + token + '</a> <br/> Password to enter room: ' + room.data.password ;
-                    me.showRoomShare(button,room,message)
+                    me.showRoomShare(button,room,message,token)
                 },
                 failure : function() {
                 }
@@ -211,7 +211,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
     },
 
-    showRoomShare: function(button, room, message){
+    showRoomShare: function(button, room, message, token){
         var window = Ext.create('Ext.window.Window', {
             title: 'Share Room',
             iconCls: 'x-fa fa-share fa-lg',
@@ -223,7 +223,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             viewModel:{
                 data:{
                     theRoom: room,
-                    theMessage: message
+                    theMessage: message,
+                    theToken: token
                 }
             },
             items: {
