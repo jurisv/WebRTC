@@ -82,7 +82,7 @@ Ext.define('WebRTC.controller.Navigation', {
     onRouteToken: function(){
         var id = this.tokenInfo.id;
         this.onRouteRoom(id)
-    },
+    }
 
 
 });
