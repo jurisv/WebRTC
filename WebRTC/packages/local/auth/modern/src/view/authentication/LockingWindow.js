@@ -13,5 +13,13 @@ Ext.define('auth.view.authentication.LockingWindow', {
 
     cls: 'auth-locked-window',
     layout: 'fit',
-    controller: 'authentication'
+    controller: 'authentication',
+
+    updateStatus: function(text){
+       var statusLabel =  this.down('[reference=statusLabel]');
+       if(statusLabel){
+           statusLabel.setHtml(text);
+           statusLabel.show();
+       }
+    }
 });

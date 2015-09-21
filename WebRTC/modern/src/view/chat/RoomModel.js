@@ -8,6 +8,7 @@ Ext.define('WebRTC.view.chat.RoomModel', {
         useMic: true,
         useCamera: true
     },
+
     links: {
         room: {
             type: 'WebRTC.model.chat.Room',
@@ -15,18 +16,34 @@ Ext.define('WebRTC.view.chat.RoomModel', {
         }
     },
 
-   stores:{
+    stores:{
         messages: {
             model: 'WebRTC.model.chat.Message',
-            sorters:[
-                {property: 'date', diection: 'DESC'}
-            ],
+            sorters:[{property: 'date', diection: 'DESC'}],
             autoSync: true,
+            autoLoad: true,
+            listeners: {
+                load: 'onMessagesLoad'
+            }
+        },
+        mymessages: {
+            model: 'WebRTC.model.chat.Message',
+            source: '{messages}',
+            sorters:[{property: 'date', diection: 'DESC'}],
             autoLoad: true
         },
         members: {
             model:'WebRTC.model.chat.RoomMember',
-            autoLoad: true
+            sorters:[
+                {property: 'name', diection: 'ASC'}
+            ],
+            autoSync: true,
+            autoLoad: true,
+            listeners: {
+                load: function(){
+                    // console.log('roommembers loaded')
+                }
+            }
         }
     },
 
@@ -70,7 +87,7 @@ Ext.define('WebRTC.view.chat.RoomModel', {
             if (Ext.browser.is.Safari  || Ext.browser.is.IE ) {
                 return false;
             }else{
-                if ( !!window.webkitRTCPeerConnection || !!window.mozRTCPeerConnection ) {
+                if( !!window.webkitRTCPeerConnection || !!window.mozRTCPeerConnection ) {
                     return true;
                 }else{
                     return false;

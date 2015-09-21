@@ -55,7 +55,7 @@ Ext.define('opentok.OpenTokMixin', {
             remotestreams = tab.down('#remotestreams'),
             them = tab.down('#them');
 
-        if( Ext.first('[reference=roomtabs]').getActiveTab().sessionId == tab.sessionId ){
+        if(  Ext.first('[reference=roomtabs]').items.items[0].sessionId == tab.sessionId ){
             if(remotestreams.isHidden()){
                 remotestreams.show()
             }
@@ -100,7 +100,7 @@ Ext.define('opentok.OpenTokMixin', {
 
         // console.log(deadCmp);
 
-        if( Ext.first('[reference=roomtabs]').getActiveTab().sessionId == tab.sessionId ){
+        if(  Ext.first('[reference=roomtabs]').items.items[0].sessionId == tab.sessionId ){
             if(deadCmp){
                 deadCmp.destroy();
                 if(!remotestreams.items.length){

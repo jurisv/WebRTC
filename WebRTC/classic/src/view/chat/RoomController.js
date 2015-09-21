@@ -11,7 +11,7 @@ Ext.define('WebRTC.view.chat.RoomController', {
          */
         controller: {
             'auth': {
-                visibilityChanged: 'setUnreadTitle'
+                visibilityChanged: 'onVisibilityChanged'
             }
         }
     },
@@ -48,25 +48,29 @@ Ext.define('WebRTC.view.chat.RoomController', {
         me.unread++;
         me.setUnreadTitle();
 
-        if( document.hidden ){
-            window.document.title = '(' + me.unread + ') Unread Chat - Communicator'
-        }else{
-            me.unread = 0;
-            window.document.title = 'Communicator'
-        }
-
         this.fireEvent('playsound','chat-sound');
+    },
+
+    onVisibilityChanged: function(){
+        var me=this;
+        if(!document.hidden) {
+            me.unread = 0;
+        }
+        me.setUnreadTitle();
     },
 
     setUnreadTitle: function(){
         var me=this;
-        if( document.hidden ){
-            window.document.title = '(' + me.unread + ') Unread Chat - Communicator'
+        if(!me.orginalTitle){
+            me.orginalTitle = window.document.title;
+        }
+        if( document.hidden && me.unread != 0  ){
+            window.document.title = '(' + me.unread + ') Unread Chat | ' + me.orginalTitle;
         }else{
-            me.unread = 0;
-            window.document.title = 'Communicator'
+            window.document.title = me.orginalTitle;
         }
     },
+
 
     onAudioCallRoom: function(button){
         var you = this.lookupReference('you'),

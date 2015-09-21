@@ -2,14 +2,6 @@ Ext.define('auth.view.authentication.AuthenticationController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.authentication',
 
-    updateStatus: function(text){
-       var statusLabel =  this.getView().down('[reference=statusLabel]');
-       if(statusLabel){
-           statusLabel.setHtml(text);
-           statusLabel.show();
-       }
-    },
-
     onNewEmail:  function(btn) {
         this.redirectTo('newemail', btn,  true);
     },

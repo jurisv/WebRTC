@@ -10,6 +10,7 @@ Ext.define('WebRTC.view.main.Viewport', {
     xtype: 'app-main',
 
     requires: [
+        'WebRTC.view.main.ViewportController',
         'WebRTC.view.chat.RoomsContainer'
     ],
 
@@ -23,7 +24,8 @@ Ext.define('WebRTC.view.main.Viewport', {
     items: [
         {
             xtype:'chatroomscontainer',
-            reference: 'roomtabs'            
+            reference: 'roomtabs',
+            title: 'Rooms'
         }
     ]    
 });

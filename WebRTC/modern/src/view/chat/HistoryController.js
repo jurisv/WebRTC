@@ -23,8 +23,6 @@ Ext.define('WebRTC.view.chat.HistoryController', {
             sessionId = this.getViewModel().get('room.sessionId'),
             message = me.lookupReference('chattext');
 
-        if(message.getValue() == ''){return;}
-
         chat = Ext.create('WebRTC.model.chat.Message',{
             message: message.getValue(),
             roomid: roomid,
@@ -92,7 +90,6 @@ Ext.define('WebRTC.view.chat.HistoryController', {
                 name      : 'message',
                 fieldLabel: 'Message',
                 labelAlign: 'top',
-                allowBlank: false,
                 bind: {
                     value: '{theMessage.message}'
                 },
