@@ -28,11 +28,11 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
             },
             filters: [
                 function(item) {
-                    var user = Ext.first('app-main').getViewModel().get('user');
+                    var user = Ext.first('chatroomscontainer').getViewModel().get('user');
                     if(item.get('passwordVerified')) {
                         return true;
-                    }else if(user && user.id){
-                        return !item.get('isPrivate') || user.id == item.get('owner');
+                    }else if(user && user['id']){
+                        return !item.get('isPrivate') || user.id == item.get('owner') || user.name == 'admin';
                     }else{
                         return !item.get('isPrivate')
                     }
@@ -52,6 +52,10 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
     formulas: {
         isAdmin: function (get) {
             return get('name') != 'admin' ;    //shows config button if name is admin
+        },
+        isRoomSelectedByOwner: function (get) {
+            var user = Ext.first('chatroomscontainer').getViewModel().get('user');
+            return get('room') != null && (user.id == get('room').get('owner') ) ;    //edit allowed only when owner
         },
         isRoomSelected: function (get) {
             return get('room') != null ;    //edit allowed only when selected

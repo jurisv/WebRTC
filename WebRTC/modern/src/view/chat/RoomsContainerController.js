@@ -45,14 +45,15 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 login: 'onAuthLogin',
                 userData: 'onAuthUserData'
             }
-        },
-        component:{
-            'chatroom':{
-                activate: 'onRoomActivate',
-                deactivate: 'onRoomDeactivate',
-                beforeclose: 'onRoomClose'
-            }
         }
+        // component:{
+        //     'chatroom':{
+        //         activate: 'onRoomActivate',
+        //         destroy: 'onRoomRemoved'
+        //         // deactivate: 'onRoomDeactivate',
+        //         // beforeclose: 'onRoomClose'
+        //     }
+        // }
     },
 
     //If there's no config info load the dialog
@@ -92,6 +93,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
     // @TODO
     selectFirstRoom: function () {
+        console.log('TODO: selectFirstRoom')
         // var selection,
         //     combo = Ext.first('combobox[reference=roomscombo]'),
         //     // list = this.getView().down('chatrooms').down('dataview'),
@@ -133,55 +135,57 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
 
     onRoomAdd: function(button){
-        var window = Ext.create('Ext.window.Window', {
-            title: 'Add Room',
-            iconCls: 'x-fa fa-plus-square fa-lg',
-            height: 400,
-            width: 800,
-            layout: 'fit',
-            resizable: true,
-            modal: true,
-            autoShow: true,
-            viewModel:{
-                data:{
-                    theRoom: {
-                        id: null,
-                        isPrivate: false
-                    }
-                }
-            },
-            items: {
-                xtype: 'chatroomform',
-                border: false
-            }
-        });
-        button.up('chatroomscontainer').add(window);
+        console.log('TODO: onRoomAdd');
+        // var window = Ext.create('Ext.window.Window', {
+        //     title: 'Add Room',
+        //     iconCls: 'x-fa fa-plus-square fa-lg',
+        //     height: 400,
+        //     width: 800,
+        //     layout: 'fit',
+        //     resizable: true,
+        //     modal: true,
+        //     autoShow: true,
+        //     viewModel:{
+        //         data:{
+        //             theRoom: {
+        //                 id: null,
+        //                 isPrivate: false
+        //             }
+        //         }
+        //     },
+        //     items: {
+        //         xtype: 'chatroomform',
+        //         border: false
+        //     }
+        // });
+        // button.up('chatroomscontainer').add(window);
     },
 
     onRoomEdit: function(button){
-        var record = Ext.first('combobox[reference=roomscombo]').getSelection();
+        console.log('TODO: onRoomEdit');
+        // var record = Ext.first('combobox[reference=roomscombo]').getSelection();
 
-        var window = Ext.create('Ext.window.Window', {
-            title: 'Edit Room',
-            iconCls: 'x-fa fa-plus-square fa-lg',
-            height: 400,
-            width: 800,
-            layout: 'fit',
-            resizable: true,
-            modal: true,
-            autoShow: true,
-            viewModel:{
-                data:{
-                    theRoom: record
-                }
-            },
-            items: {
-                xtype: 'chatroomform',
-                border: false
+        // var window = Ext.create('Ext.window.Window', {
+        //     title: 'Edit Room',
+        //     iconCls: 'x-fa fa-plus-square fa-lg',
+        //     height: 400,
+        //     width: 800,
+        //     layout: 'fit',
+        //     resizable: true,
+        //     modal: true,
+        //     autoShow: true,
+        //     viewModel:{
+        //         data:{
+        //             theRoom: record
+        //         }
+        //     },
+        //     items: {
+        //         xtype: 'chatroomform',
+        //         border: false
 
-            }
-        });
-        button.up('chatroomscontainer').add(window);
+        //     }
+        // });
+        // button.up('chatroomscontainer').add(window);
 
 
     },
@@ -286,10 +290,53 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         if (!record) return false;
 
         var me = this,
+            // navView = me.getView().up('app-main'),
+            id = record.get('id');
+            // roomName = record.get('name'),
+            // auth = WebRTC.app.getController('Auth'),
+            // userId = auth.user['id'],
+            // name = me.getViewModel().get('name'),
+            // membersRef = auth.firebaseRef.child('members/' + id + '/' + userId),
+            // room;
+
+
+        // room = Ext.create({
+        //     xtype: 'chatroom',
+        //     title: roomName,
+        //     closable: true,
+        //     iconCls: 'x-fa fa-comments',
+        //     roomId: id,
+        //     flex: 1
+        // });
+
+        // navView.push(room);
+        // navView.getViewModel().set('room', record);
+
+        // room.getViewModel().set('room', record);
+        // room.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
+
+        // // room.setBind({ title: '{room.name}'});
+        
+        
+        // // Notify TokBox in this case
+        // me.fireEvent('joinroom', room, record.data, name);
+
+    
+        me.redirectTo('room/' + id);
+
+    },
+
+    displayRoom: function(record) {
+        if (!record) return false;
+
+        var me = this,
             navView = me.getView().up('app-main'),
             id = record.get('id'),
             roomName = record.get('name'),
+            auth = WebRTC.app.getController('Auth'),
+            userId = auth.user['id'],
             name = me.getViewModel().get('name'),
+            membersRef = auth.firebaseRef.child('members/' + id + '/' + userId),
             room;
 
 
@@ -309,30 +356,28 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         room.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
 
         // room.setBind({ title: '{room.name}'});
-
+        
+        
         // Notify TokBox in this case
         me.fireEvent('joinroom', room, record.data, name);
-
-
-
     },
 
 
     onRoomActivate: function(tab){
         var me = this,
             id = tab.getViewModel().get('room').id,
-            sessionId = tab.getViewModel().get('room').get('sessionId'),
-            combo = Ext.first('combobox[reference=roomscombo]');
+            sessionId = tab.getViewModel().get('room').get('sessionId');
+        //     combo = Ext.first('combobox[reference=roomscombo]');
 
-        combo.select(id);
+        // combo.select(id);
 
-        var record = combo.getSelection(),
-            name = me.getViewModel().get('name');
+        // var record = combo.getSelection(),
+        //     name = me.getViewModel().get('name');
 
         this.fireEvent('resumeroom',sessionId);
     },
 
-    onRoomDeactivate: function(tab){
+    onRoomRemoved: function(tab){
         var sessionId = tab.getViewModel().get('room').get('sessionId'),
             userId = this.getViewModel().get('user').id;
 
@@ -342,14 +387,14 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     },
 
     onRoomClose: function(tab){
-        // var room = tab.getViewModel().get('room'),
-        //     sessionId = room.get('sessionId'),
-        //     roomId =  room.get('id'),
-        //     userId = this.getViewModel().get('user').id,
-        //     combo = Ext.first('combobox[reference=roomscombo]');
-        // combo.reset();
+console.log('onRoomClose')
 
-        // tab.getController().roomMemberRemove(userId);
+        var room = tab.getViewModel().get('room'),
+            sessionId = room.get('sessionId'),
+            roomId =  room.get('id'),
+            userId = this.getViewModel().get('user').id;
+
+        tab.getController().roomMemberRemove(userId);
 
         this.fireEvent('closeroom',sessionId);
     },
@@ -387,16 +432,26 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     },
 
     onRouteRoom: function(id){
-        var combo = Ext.first('combobox[reference=roomscombo]');
+        var me = this,
+            store = me.getViewModel().getStore('rooms'),
+            record;
 
-        Ext.Function.defer(function(){
-                var record = combo.store.getById(id);
+        if (store && store.isLoaded()) {
+             record = store.getById(id);
+             if(record){
+                me.displayRoom(record);
+            }
+        } else {
+            Ext.Function.defer(function(){
+                var store = me.getViewModel().getStore('rooms'),
+                    record = store.getById(id);
                 if(record){
-                    combo.select(record);
-                    combo.fireEvent('select',combo,record);
+                    me.displayRoom(record);
                 }
             },
             1200);
+
+        }
     },
 
     /*

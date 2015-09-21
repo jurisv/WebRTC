@@ -67,11 +67,11 @@ Ext.define('WebRTC.controller.Auth', {
     // handles all the firebase callbacks for authorization regardless of provider
     authHandler: function (error, authData) {
         var me = this,
-            window = Ext.first('lockingwindow');
+            lWindow = Ext.first('lockingwindow');
 
         if (error) {
-            if (window) {
-                window.getController().updateStatus("Login Failed! " + error);
+            if (lWindow) {
+                lWindow.updateStatus("Login Failed! " + error);
             }
             // console.log("Login Failed!", error);
             me.fireEvent('failure',error);
@@ -87,13 +87,13 @@ Ext.define('WebRTC.controller.Auth', {
         var me = this;
 
         if (authData) {
-            // console.log("User " + authData.uid + " is logged in with " + authData.provider);
+            console.log("User " + authData.uid + " is logged in with " + authData.provider);
             me.authData = authData;
             me.storeUser(authData);
             me.fireEvent('islogin',authData);
             me.cleanupAuth();
         } else {
-            // console.log("User is logged out");
+            console.log("User is logged out");
             this.redirectTo('login');
             me.fireEvent('islogout',authData);
 
@@ -114,15 +114,15 @@ Ext.define('WebRTC.controller.Auth', {
             }, function (error) {
                 if (error === null) {
                     console.log("Email changed successfully");
-                    btn.up('lockingwindow').getController().updateStatus("Email changed successfully");
+                    btn.up('lockingwindow').updateStatus("Email changed successfully");
                 } else {
                     console.log("Error changing email:", error);
-                    btn.up('lockingwindow').getController().updateStatus("Error changing email: " + error);
+                    btn.up('lockingwindow').updateStatus("Error changing email: " + error);
                 }
             });
         }
         else {
-            btn.up('lockingwindow').getController().updateStatus("Unhandled error: Please let us know what happened.");
+            btn.up('lockingwindow').updateStatus("Unhandled error: Please let us know what happened.");
         }
     },
 
@@ -139,15 +139,15 @@ Ext.define('WebRTC.controller.Auth', {
             }, function (error) {
                 if (error === null) {
                     console.log("Email changed successfully");
-                    btn.up('lockingwindow').getController().updateStatus("Email changed successfully");
+                    btn.up('lockingwindow').updateStatus("Email changed successfully");
                 } else {
                     console.log("Error changing email:", error);
-                    btn.up('lockingwindow').getController().updateStatus("Error changing email: " + error);
+                    btn.up('lockingwindow').updateStatus("Error changing email: " + error);
                 }
             });
         }
         else {
-            btn.up('lockingwindow').getController().updateStatus("Unhandled error: Please let us know what happened.");
+            btn.up('lockingwindow').updateStatus("Unhandled error: Please let us know what happened.");
         }
     },
 
@@ -222,15 +222,15 @@ Ext.define('WebRTC.controller.Auth', {
             }, function (error) {
                 if (error === null) {
                     console.log("Password reset email sent successfully");
-                    btn.up('lockingwindow').getController().updateStatus('Password reset email sent successfully:');
+                    btn.up('lockingwindow').updateStatus('Password reset email sent successfully:');
 
                 } else {
                     console.log("Error sending password reset email:", error);
-                    btn.up('lockingwindow').getController().updateStatus('Error sending password reset email:')
+                    btn.up('lockingwindow').updateStatus('Error sending password reset email:')
                 }
             });
         } else {
-            btn.up('lockingwindow').getController().updateStatus('Error with email:')
+            btn.up('lockingwindow').updateStatus('Error with email:')
         }
     },
 
@@ -254,7 +254,7 @@ Ext.define('WebRTC.controller.Auth', {
                 failure: function (record, operation) {
                     var error = JSON.parse(operation.error.response.responseText),
                         message = error.message.code || 'Unable to save.';
-                    btn.up('lockingwindow').getController().updateStatus(message);
+                    btn.up('lockingwindow').updateStatus(message);
                 },
                 success: function (record, operation) {
                     storage.setItem('user', JSON.stringify(newUser.data));
@@ -281,15 +281,15 @@ Ext.define('WebRTC.controller.Auth', {
             }, function (error) {
                 if (error === null) {
                     console.log("User removed successfully");
-                    btn.up('lockingwindow').getController().updateStatus("User removed successfully");
+                    btn.up('lockingwindow').updateStatus("User removed successfully");
                 } else {
                     console.log("Error removing user:", error);
-                    btn.up('lockingwindow').getController().updateStatus("Error removing user: " + error);
+                    btn.up('lockingwindow').updateStatus("Error removing user: " + error);
                 }
             });
         }
         else {
-            btn.up('lockingwindow').getController().updateStatus("Unhandled error: Please let us know what happened.");
+            btn.up('lockingwindow').updateStatus("Unhandled error: Please let us know what happened.");
         }
     },
 
@@ -378,6 +378,24 @@ Ext.define('WebRTC.controller.Auth', {
             console.log("Error getting id of an auththenication: " + errorObject.code);
         }
 
+
+    },
+
+    cleanupAuth: function(){
+        var me = this,
+            app = me.getApplication(),
+            next = me.originalRoute || app.getDefaultToken();
+
+        me.isAuthenticating = false;
+
+        if(me.currentView) {
+            me.currentView.destroy();
+        }
+
+        if (next) {
+            me.redirectTo(next, true);
+            me.originalRoute = undefined;
+        }
 
     }
 
