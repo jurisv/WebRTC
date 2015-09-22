@@ -98,7 +98,7 @@ Ext.define('auth.controller.Auth', {
 
 
 
-    cleanupAuth: function(){
+    cleanupAuth: function(callback){
         var me = this;
         me.isAuthenticating = false;
 
@@ -108,7 +108,6 @@ Ext.define('auth.controller.Auth', {
 
         me.redirectTo(me.originalRoute || '');
         me.originalRoute = null;
-
     },
 
 

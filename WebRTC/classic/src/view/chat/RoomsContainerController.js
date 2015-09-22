@@ -60,19 +60,17 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         this.deferAndSelectFirst();
     },
 
-    //user was not logged in
+    //login successful
+    onAuthLogin: function(authData){
+        this.deferAndSelectFirst();
+    },
+
+    //user was not logged in - so log them in
     onAuthIsLogout: function(){
         this.fireEvent('authorize');
     },
 
-    //login successful
-    onAuthLogin: function(authData){
-        if(authData.password.isTemporaryPassword){
-            this.redirectTo('newpassword');
-        }else{
-            this.deferAndSelectFirst();
-        }
-    },
+
 
 
 

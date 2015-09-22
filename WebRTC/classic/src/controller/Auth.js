@@ -22,6 +22,7 @@
 Ext.define('WebRTC.controller.Auth', {
     extend: 'auth.controller.Auth',
     alias: 'controller.auth',
+    id: 'auth',
 
     /*
      *  The base URL for Firebase
@@ -68,6 +69,7 @@ Ext.define('WebRTC.controller.Auth', {
             firebase = me.firebaseRef;
 
         if (me.isAuthenticating) return;
+
         me.isAuthenticating = true;
         me.originalRoute = window.location.hash;
 
@@ -78,14 +80,15 @@ Ext.define('WebRTC.controller.Auth', {
             Ext.Function.defer(function(){
                     me.firebaseRef.onAuth(me.authDataCallback, me);
             },
-            600);
+            500);
         }else{
             firebase.onAuth(me.authDataCallback, me);
         }
 
     },
 
-    // handles all the firebase callbacks for authorization regardless of provider
+    // handles all the firebase callbacks request to authorize regardless of provider
+    //this is the yes/no with login data callback
     authHandler: function (error, authData) {
         var me = this,
             window = Ext.first('lockingwindow');
@@ -96,22 +99,36 @@ Ext.define('WebRTC.controller.Auth', {
             }
             me.fireEvent('failure',error);
         } else {
+
             me.storeUser(authData);
-            me.isAuthenticating = false;
-            me.fireEvent('login',authData);
+
+            if(authData.password.isTemporaryPassword){
+                me.redirectTo('newpassword');
+            }else{
+                me.cleanupAuth();
+                me.fireEvent('login',authData);
+            }
+
         }
     },
 
-    // Create a callback which logs the current auth state
+    // Callback which fires with any change of the current auth state
+    // also fires once to determine inital login
     authDataCallback: function (authData) {
         var me = this;
 
         if (authData) {
-            // console.log("User " + authData.uid + " is logged in with " + authData.provider);
-            me.authData = authData;
+
             me.storeUser(authData);
-            me.fireEvent('islogin',authData);
-            me.cleanupAuth();
+
+            if(authData.password.isTemporaryPassword){
+                me.redirectTo('newpassword');
+            }else{
+                me.cleanupAuth();
+                me.fireEvent('islogin',authData);
+            }
+
+
         } else {
             // console.log("User is logged out");
             this.redirectTo('login');
