@@ -38,7 +38,10 @@ Ext.define('opentok.OpenTokMixin', {
         var id = event.connection.connectionId,
             room = this.getRoomBySessionId(event.target.sessionId);
 
-        room.getController().roomMemberRemove(id);
+        if (room) {
+            room.getController().roomMemberRemove(id);    
+        }
+        
     },
 
 

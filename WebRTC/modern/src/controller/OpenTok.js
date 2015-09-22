@@ -3,4 +3,3 @@ Ext.define('WebRTC.controller.OpenTok', {
     alias: 'controller.opentok'
 
 });
-
