@@ -9,13 +9,15 @@ Ext.define('WebRTC.Application', {
     name: 'WebRTC',
 
     requires: [
-        'WebRTC.*'
+        'WebRTC.*',
+        'Ext.Toast'
     ],
 
     defaultToken : 'home',
 
     controllers: [
-        'Auth'
+        'Auth',
+        'OpenTok'
     ],
 
     stores:[

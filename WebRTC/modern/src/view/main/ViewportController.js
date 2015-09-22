@@ -8,6 +8,12 @@ Ext.define('WebRTC.view.main.ViewportController', {
         }
     },
     listen: {
+        component: {
+            'app-main': {
+                back: 'onNavigationPop'
+            }
+        },
+
         controller: {
             '#' : {
                 unmatchedroute : 'onRouteUnmatched'
@@ -22,5 +28,10 @@ Ext.define('WebRTC.view.main.ViewportController', {
     onRouteUnmatched:function(route){
         console.log('unmatched route' , route);
         this.redirectTo('home');
+    },
+
+
+    onNavigationPop: function () {
+        Ext.util.History.back();
     }
 });
