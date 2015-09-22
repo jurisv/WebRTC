@@ -33,5 +33,8 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     onNavigationPop: function () {
         Ext.util.History.back();
+        var dataview = this.getView().down('dataview');
+
+        dataview.deselectAll(true);
     }
 });

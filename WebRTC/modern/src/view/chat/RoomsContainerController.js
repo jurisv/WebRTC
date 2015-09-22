@@ -56,6 +56,18 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         // }
     },
 
+    // required by OpenTokMixin
+    getRoomBySessionId: function(sessionId){
+        var room = Ext.first('chatroom[sessionId="' + sessionId + '"]');
+
+        return room;
+    },
+
+    getOpenTokController: function () {
+        return WebRTC.app.getController('OpenTok');
+    },
+
+
     //If there's no config info load the dialog
     onAdminSetup: function(){
         this.onSettingsAdminSelect();
