@@ -7,6 +7,7 @@ Ext.define('opentok.OpenTokMixin', {
         }
     },
 
+
     getRoomBySessionId: function(sessionId){
         var room = this.getView().child('chatroom[sessionId="' + sessionId + '"]');
         return room;
@@ -37,13 +38,16 @@ Ext.define('opentok.OpenTokMixin', {
         var id = event.connection.connectionId,
             room = this.getRoomBySessionId(event.target.sessionId);
 
-        room.getController().roomMemberRemove(id);
+        if (room) {
+            room.getController().roomMemberRemove(id);    
+        }
+        
     },
 
 
 
     onOTStreamCreated: function (event) {
-        var OT = WebRTC.app.getController('opentok.controller.OpenTok'),
+        var OT = this.getOpenTokController(),
             session = OT.getSessionById(event.target.sessionId),
             room = this.getRoomBySessionId(event.target.sessionId),
             remotestreams = room.down('#remotestreams'),
@@ -83,7 +87,7 @@ Ext.define('opentok.OpenTokMixin', {
     },
 
     onOTStreamDestroyed: function (event) {
-        var OT = WebRTC.app.getController('opentok.controller.OpenTok'),
+        var OT = this.getOpenTokController(),
             session = OT.getSessionById(event.target.sessionId),
             deadCmp = this.getView().down('#' + this.getSafeStreamCmpId(event.stream.id)),
             room = this.getRoomBySessionId(event.target.sessionId),
