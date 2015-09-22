@@ -66,8 +66,12 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     },
 
     //login successful
-    onAuthLogin: function(){
-        this.deferAndSelectFirst();
+    onAuthLogin: function(authData){
+        if(authData.password.isTemporaryPassword){
+            this.redirectTo('newpassword');
+        }else{
+            this.deferAndSelectFirst();
+        }
     },
 
 
@@ -237,6 +241,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             }
         });
         window.show();
+
+
     },
 
     onRoomRemove: function(){
@@ -293,6 +299,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             tab = roomtabs.insert(0, room);
 
             membersRef.update( {active: true } );
+            // when I disconnect, remove this member
+            membersRef.onDisconnect().remove();
 
             // Notify TokBox in this case
             me.fireEvent('joinroom', tab, record.data, name);
@@ -420,7 +428,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             height: 600,
             width: 600,
             modal: true,
-            autoShow: true,
             layout: 'fit',
             viewModel:{},
             items: [{
@@ -429,7 +436,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
             }]
         });
-        button.up('chatroomscontainer').insert(0,window);
+        // button.up('chatroomscontainer').insert(0,window);
+        window.show();
     }
 
 });
