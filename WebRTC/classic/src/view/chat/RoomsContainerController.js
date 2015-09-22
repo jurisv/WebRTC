@@ -39,8 +39,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         this.onSettingsAdminSelect();
     },
 
-
-
     //once the authentication system is up authenticate the user
     onAuthInit: function(){
         this.fireEvent('authorize');

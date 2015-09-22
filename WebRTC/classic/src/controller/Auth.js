@@ -176,10 +176,18 @@ Ext.define('WebRTC.controller.Auth', {
                 newPassword: data.newpassword
             }, function (error) {
                 if (error === null) {
-                    console.log("Email changed successfully");
-                    btn.up('lockingwindow').getController().updateStatus("Password changed successfully");
+                    console.log("Password changed successfully.");
+                    btn.up('lockingwindow').getController().updateStatus("Password changed successfully.");
+                    //now login with new info.
+                    firebase.authWithPassword(
+                        {
+                            email: email,
+                            password: data.newpassword
+                        },
+                        function(){return true;} //don't do anything
+                    );
                 } else {
-                    console.log("Error changing email:", error);
+                    console.log("Error changing passsword:", error);
                     btn.up('lockingwindow').getController().updateStatus("Error changing password: " + error);
                 }
             });

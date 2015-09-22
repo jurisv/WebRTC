@@ -106,8 +106,15 @@ Ext.define('auth.controller.Auth', {
             me.currentView.destroy();
         }
 
-        me.redirectTo(me.originalRoute || '');
-        me.originalRoute = null;
+        // If a callback is given execute it.
+        // Otherwise redirect to the original route, default to home.
+        if(callback && Ext.isFunction(callback) ){
+            callback();
+        }else{
+            me.redirectTo(me.originalRoute || '');
+            me.originalRoute = null;
+        }
+
     },
 
 
@@ -148,122 +155,26 @@ Ext.define('auth.controller.Auth', {
     },
 
     login: function(btn,data){
-        /*
-         * Stub function meant to be overridden by application specific logic
-         */
-        var me = this;
 
-        /*
-         * Dummy logic tests for data and succeeds otherwise fails
-         *
-         */
-        me.cleanupAuth();
-        if(data){
-            if (Ext.isFunction(me.onSuccess))
-                me.onSuccess();
-        }else{
-            if (Ext.isFunction(me.onFailure))
-                me.onFailure();
-        }
     },
 
     loginFB: function(btn,data){
-        /*
-         * Stub function meant to be overridden by application specific logic
-         */
-        var me = this;
 
-        /*
-         * Dummy logic tests for data and succeeds otherwise fails
-         *
-         */
-        me.cleanupAuth();
-        if(data){
-            if (Ext.isFunction(me.onSuccess))
-                me.onSuccess();
-        }else{
-            if (Ext.isFunction(me.onFailure))
-                me.onFailure();
-        }
     },
 
     loginGitHub: function(btn,data){
-        /*
-         * Stub function meant to be overridden by application specific logic
-         */
-        var me = this;
 
-        /*
-         * Dummy logic tests for data and succeeds otherwise fails
-         *
-         */
-        me.cleanupAuth();
-        if(data){
-            if (Ext.isFunction(me.onSuccess))
-                me.onSuccess();
-        }else{
-            if (Ext.isFunction(me.onFailure))
-                me.onFailure();
-        }
     },
 
     loginAs: function(btn,data){
-        /*
-         * Stub function meant to be overridden by application specific logic
-         */
-        var me = this;
 
-        /*
-         * Dummy logic tests for data and succeeds otherwise fails
-         *
-         */
-        me.cleanupAuth();
-        if(data){
-            if (Ext.isFunction(me.onSuccess))
-                me.onSuccess();
-        }else{
-            if (Ext.isFunction(me.onFailure))
-                me.onFailure();
-        }
     },
 
     reset: function(btn,data){
-        /*
-         * Stub function meant to be overridden by application specific logic
-         */
-        var me = this;
 
-        /*
-         * Dummy logic tests for data and succeeds otherwise fails
-         *
-         */
-        me.cleanupAuth();
-        if(data){
-            if (Ext.isFunction(me.onSuccess))
-                me.onSuccess();
-        }else{
-            if (Ext.isFunction(me.onFailure))
-                me.onFailure();
-        }
     },
 
     register: function(btn,data){
-        /*
-         * Stub function meant to be overridden by application specific logic
-         */
-        var me = this;
 
-        /*
-         * Dummy logic tests for data and succeeds otherwise fails
-         *
-         */
-        me.cleanupAuth();
-        if(data){
-            if (Ext.isFunction(me.onSuccess))
-                me.onSuccess();
-        }else{
-            if (Ext.isFunction(me.onFailure))
-                me.onFailure();
-        }
     }
 });
