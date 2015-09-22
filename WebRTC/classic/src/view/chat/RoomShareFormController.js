@@ -8,6 +8,7 @@ Ext.define('WebRTC.view.chat.RoomShareFormController', {
             window = button.up('window'),
             form = window.down('form'),
             data = form.getValues(),
+            room = window.getViewModel().get('theRoom'),
             roomId = window.getViewModel().get('theRoom')['id'],
             message = window.getViewModel().get('theMessage'),
             token = window.getViewModel().get('theToken'),
@@ -22,6 +23,7 @@ Ext.define('WebRTC.view.chat.RoomShareFormController', {
                 params : {
                     user: JSON.stringify(user),
                     email: data,
+                    room: JSON.stringify(room.data),
                     message: message,
                     token: token
                 },

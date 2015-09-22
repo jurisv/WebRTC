@@ -1,0 +1,35 @@
+<% include header.html %>
+
+<div class="page-header">
+    <h1>Your Invited</h1>
+
+    <center><img class="avatar" src="<%= origin %>/static/images/unknownuser.jpeg" height="100" width="100" /></center>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><center><i class="fa fa-comments fa-lg"></i> <%= content.room.name %></center></h3>
+        </div>
+
+
+        <div class="panel-body">
+        <% if (isNew) { %>
+            <h2 >Welcome.</h2>
+            <p>It seems your new here. An account has been created for you and your password is being sent in another email. Keep an eye out for it.</p>
+            <p>Your username is your email address. Use your email and new password to log in to the room link below.</p>
+        <% } %>
+
+
+        <p> To gain access to the video conference going on in this room click <a href="<%= origin %>/#room/<%= content.room.id %>" target=" _blank">here now</a>.</p>
+        <p>Then enter your username and password.</p>
+
+            <% if (content.room.password) { %>
+            <p>&nbsp;</p>
+            <h3>This is a private room.</h3>
+            <p>You will need a password to access it.</p>
+            <p><b>Password:</b> <%= content.room.password %> </p>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<% include footer.html %>

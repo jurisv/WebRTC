@@ -94,12 +94,11 @@ Ext.define('WebRTC.controller.Auth', {
             if (window) {
                 window.getController().updateStatus("Login Failed! " + error);
             }
-            // console.log("Login Failed!", error);
             me.fireEvent('failure',error);
         } else {
             me.storeUser(authData);
-            me.fireEvent('login',authData);
             me.isAuthenticating = false;
+            me.fireEvent('login',authData);
         }
     },
 
@@ -244,10 +243,10 @@ Ext.define('WebRTC.controller.Auth', {
                 if (error === null) {
                     console.log("Password reset email sent successfully");
                     btn.up('lockingwindow').getController().updateStatus('Password reset email sent successfully:');
-
                 } else {
                     console.log("Error sending password reset email:", error);
-                    btn.up('lockingwindow').getController().updateStatus('Error sending password reset email:')
+                    btn.up('lockingwindow').getController().updateStatus('Error sending password reset email:');
+
                 }
             });
         } else {
@@ -320,7 +319,7 @@ Ext.define('WebRTC.controller.Auth', {
 
         var me =  this,
             firebase = me.firebaseRef,
-            myConnectionsRef = firebase.child('users/' + id + '/connections'),
+            myConnectionsRef = firebase.child('connections/' + id ),
             lastOnlineRef = firebase.child('users/' + id + '/lastOnline'),
             connectedRef = firebase.child('/.info/connected');
 
@@ -341,9 +340,12 @@ Ext.define('WebRTC.controller.Auth', {
                 });
                 // when I disconnect, remove this device
                 con.onDisconnect().remove();
+
                 // when I disconnect, update the last time I was seen online
                 lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
             } else {
+                //Even though disconnected is fired, other firebase ref's can use the pattern : ref.onDisconnect().remove();
+                me.fireEvent('disconnected');
                 console.log("not connected");
             }
         });
