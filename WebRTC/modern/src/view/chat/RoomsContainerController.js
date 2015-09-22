@@ -444,26 +444,31 @@ console.log('onRoomClose')
     },
 
     onRouteRoom: function(id){
-        var me = this,
-            store = me.getViewModel().getStore('rooms'),
-            record;
+        var me = this;
 
-        if (store && store.isLoaded()) {
-             record = store.getById(id);
-             if(record){
+        function checkStoreAndDisplayRoom() {
+            var store = me.getViewModel().getStore('rooms'),
+                record;
+
+            if  (store) {
+                if (store.isLoaded()) {
+                    record = store.getById(id)
+                    displayRoom(record);
+                } else {
+                    store.on('load', checkStoreAndDisplayRoom, {single: true});
+                }
+            } else {
+                Ext.Function.defer(checkStoreAndDisplayRoom, 1200);
+            }
+        }
+
+        function displayRoom(record) {
+            if(record){
                 me.displayRoom(record);
             }
-        } else {
-            Ext.Function.defer(function(){
-                var store = me.getViewModel().getStore('rooms'),
-                    record = store.getById(id);
-                if(record){
-                    me.displayRoom(record);
-                }
-            },
-            1200);
-
         }
+
+        checkStoreAndDisplayRoom();
     },
 
     /*
