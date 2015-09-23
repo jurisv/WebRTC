@@ -23,6 +23,8 @@ Ext.define('WebRTC.view.chat.HistoryController', {
             sessionId = this.getViewModel().get('room.sessionId'),
             message = me.lookupReference('chattext');
 
+        if (!message.getValue()) return;
+
         chat = Ext.create('WebRTC.model.chat.Message',{
             message: message.getValue(),
             roomid: roomid,
@@ -42,13 +44,16 @@ Ext.define('WebRTC.view.chat.HistoryController', {
     },
 
     scrollToBottom: function(){
-        var list = this.getView().down('dataview[reference=historylist]');
+        var list = this.getView().down('dataview[reference=historylist]'),
+            scroller, store;
         if(list) {
-            //this is deferred to ensure the data has loaded from firebase and knows the amount of records
-            Ext.Function.defer(function () {
-                    list.scrollBy(0, 999999, true);
-            },
-            500);
+            scroller = list.getScrollable();
+            store = list.getStore();
+            if (scroller && store.isLoaded()){
+                scroller.scrollBy(null, Infinity, true);
+            } else {
+                store.on('load', function() {scroller.scrollBy(null, Infinity, true);}, {single: true});
+            }
         }
     },
 

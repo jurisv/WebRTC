@@ -55,17 +55,16 @@ Ext.define('WebRTC.view.chat.History', {
                     xtype:'textfield',
                     flex:1,
                     name:'text',
-                    reference: 'chattext',
-                    listeners: {
-                        specialkey: 'onSpecialKey'
-                    }
+                    reference: 'chattext'
+                    // listeners: {
+                    //     specialkey: 'onSpecialKey'
+                    // }
                 },{
                     xtype: 'button',
                     iconCls: 'x-fa fa-smile-o',
                     plain: true,
-                    listeners: {
-                        tap: 'chatSend'
-                    }
+                    handler: 'chatSend'
+                    
                 }
             ]
         }

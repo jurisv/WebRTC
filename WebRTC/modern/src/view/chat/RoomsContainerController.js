@@ -6,10 +6,10 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     requires: ['WebRTC.model.AdminSettings'],
 
     routes : {
-        'room/:id' : {
-            before  : 'onRouteBeforeRoom',
-            action  : 'onRouteRoom'
-        },
+        // 'room/:id' : {
+        //     before  : 'onRouteBeforeRoom',
+        //     action  : 'onRouteRoom'
+        // },
         'token/:id' : {
             before  : 'onRouteBeforeToken',
             action  : 'onRouteToken',
@@ -80,11 +80,11 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
     //something in the user data changed
     onAuthUserData: function(user){
-        this.getViewModel().set('user', user);
-        this.getViewModel().set('userid', user['id']);
-        this.getViewModel().set('name', user['fn']);
+        // this.getViewModel().set('user', user);
+        // this.getViewModel().set('userid', user['id']);
+        // this.getViewModel().set('name', user['fn']);
 
-        Ext.StoreManager.lookup('rooms').load();
+        // Ext.StoreManager.lookup('rooms').load();
     },
 
     //user was already logged in
@@ -338,41 +338,41 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
     },
 
-    displayRoom: function(record) {
-        if (!record) return false;
+    // displayRoom: function(record) {
+    //     if (!record) return false;
 
-        var me = this,
-            navView = me.getView().up('app-main'),
-            id = record.get('id'),
-            roomName = record.get('name'),
-            auth = WebRTC.app.getController('Auth'),
-            userId = auth.user['id'],
-            name = me.getViewModel().get('name'),
-            membersRef = auth.firebaseRef.child('members/' + id + '/' + userId),
-            room;
+    //     var me = this,
+    //         navView = me.getView().up('app-main'),
+    //         id = record.get('id'),
+    //         roomName = record.get('name'),
+    //         auth = WebRTC.app.getController('Auth'),
+    //         userId = auth.user['id'],
+    //         name = me.getViewModel().get('name'),
+    //         membersRef = auth.firebaseRef.child('members/' + id + '/' + userId),
+    //         room;
 
 
-        room = Ext.create({
-            xtype: 'chatroom',
-            title: roomName,
-            closable: true,
-            iconCls: 'x-fa fa-comments',
-            roomId: id,
-            flex: 1
-        });
+    //     room = Ext.create({
+    //         xtype: 'chatroom',
+    //         title: roomName,
+    //         closable: true,
+    //         iconCls: 'x-fa fa-comments',
+    //         roomId: id,
+    //         flex: 1
+    //     });
 
-        navView.push(room);
-        navView.getViewModel().set('room', record);
+    //     navView.push(room);
+    //     navView.getViewModel().set('room', record);
 
-        room.getViewModel().set('room', record);
-        room.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
+    //     room.getViewModel().set('room', record);
+    //     room.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
 
-        // room.setBind({ title: '{room.name}'});
+    //     // room.setBind({ title: '{room.name}'});
         
         
-        // Notify TokBox in this case
-        me.fireEvent('joinroom', room, record.data, name);
-    },
+    //     // Notify TokBox in this case
+    //     me.fireEvent('joinroom', room, record.data, name);
+    // },
 
 
     onRoomActivate: function(tab){
@@ -431,45 +431,45 @@ console.log('onRoomClose')
     },
 
 
-    onRouteBeforeRoom : function(id, action) {
-        var me = this;
-        this.fireEvent('authorize');
+    // onRouteBeforeRoom : function(id, action) {
+    //     var me = this;
+    //     this.fireEvent('authorize');
 
-        if(id != "undefined" && !!id){
-            action.resume();
-        }else{
-            action.stop();
-        }
+    //     if(id != "undefined" && !!id){
+    //         action.resume();
+    //     }else{
+    //         action.stop();
+    //     }
 
-    },
+    // },
 
-    onRouteRoom: function(id){
-        var me = this;
+    // onRouteRoom: function(id){
+    //     var me = this;
 
-        function checkStoreAndDisplayRoom() {
-            var store = me.getViewModel().getStore('rooms'),
-                record;
+    //     function checkStoreAndDisplayRoom() {
+    //         var store = me.getViewModel().getStore('rooms'),
+    //             record;
 
-            if  (store) {
-                if (store.isLoaded()) {
-                    record = store.getById(id)
-                    displayRoom(record);
-                } else {
-                    store.on('load', checkStoreAndDisplayRoom, {single: true});
-                }
-            } else {
-                Ext.Function.defer(checkStoreAndDisplayRoom, 1200);
-            }
-        }
+    //         if  (store) {
+    //             if (store.isLoaded()) {
+    //                 record = store.getById(id)
+    //                 displayRoom(record);
+    //             } else {
+    //                 store.on('load', checkStoreAndDisplayRoom, {single: true});
+    //             }
+    //         } else {
+    //             Ext.Function.defer(checkStoreAndDisplayRoom, 1200);
+    //         }
+    //     }
 
-        function displayRoom(record) {
-            if(record){
-                me.displayRoom(record);
-            }
-        }
+    //     function displayRoom(record) {
+    //         if(record){
+    //             me.displayRoom(record);
+    //         }
+    //     }
 
-        checkStoreAndDisplayRoom();
-    },
+    //     checkStoreAndDisplayRoom();
+    // },
 
     /*
      * This is where we can create a token for sharing the room
