@@ -80,7 +80,7 @@ Ext.define('WebRTC.controller.Auth', {
             Ext.Function.defer(function(){
                     me.firebaseRef.onAuth(me.authDataCallback, me);
             },
-            500);
+            800);
         }else{
             firebase.onAuth(me.authDataCallback, me);
         }
@@ -371,6 +371,7 @@ Ext.define('WebRTC.controller.Auth', {
             } else {
                 //Even though disconnected is fired, other firebase ref's can use the pattern : ref.onDisconnect().remove();
                 me.fireEvent('disconnected');
+                me.redirectTo('login');
                 console.log("not connected");
             }
         });
@@ -393,8 +394,6 @@ Ext.define('WebRTC.controller.Auth', {
         }
 
         if (id) {
-
-            me.startPresence(id);
 
             // Set the user cookie once when the app starts.
             firebase.child('/users/' + id).once("value",
@@ -421,6 +420,8 @@ Ext.define('WebRTC.controller.Auth', {
                     console.log("The read failed: " + errorObject.code);
                 }
             );
+
+            me.startPresence(id);
 
         } else {
             console.log("Error getting id of an auththenication: " + errorObject.code);

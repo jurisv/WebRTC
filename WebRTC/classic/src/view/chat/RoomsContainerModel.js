@@ -12,29 +12,17 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
             model: 'WebRTC.model.chat.Room',
             storeId: 'rooms',
             sorters: 'name',
-            proxy: {
-                type: 'socketio',
-                url : '/rooms',
-                extraParams: '{getAuthToken}',
-                apiEvents: {
-                    read: 'child_added',
-                    update: 'child_changed',
-                    destroy: 'child_removed'
-                },
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data'
-                }
-            },
             filters: [
                 function(item) {
-                    var user = Ext.first('chatroomscontainer').getViewModel().get('user');
-                    if(item.get('passwordVerified')) {
-                        return true;
-                    }else if(user && user['id']){
-                        return !item.get('isPrivate') || user.id == item.get('owner') || user.name == 'admin';
-                    }else{
-                        return !item.get('isPrivate')
+                    if(item){
+                        var user = Ext.first('chatroomscontainer').getViewModel().get('user');
+                        if(item.get('passwordVerified')) {
+                            return true;
+                        }else if(user && user['id']){
+                            return !item.get('isPrivate') || user.id == item.get('owner') || user.name == 'admin';
+                        }else{
+                            return !item.get('isPrivate')
+                        }
                     }
                 }
             ],
