@@ -228,7 +228,8 @@ Ext.define ('Sencha.ux.data.proxy.SocketIO', {
         // READ
         me.socket.on (apiEvents['read'], function (data) {
             var operation = me.createOperation('readpush', Ext.apply(operationCfg, {
-                addRecords: true
+                addRecords: true,
+                internalCallback: operationCfg.internalScope ? operationCfg.internalScope['onProxyLoad'] : undefined
             }));
             var request = Ext.create('Ext.data.Request',{
                 action: 'read',
