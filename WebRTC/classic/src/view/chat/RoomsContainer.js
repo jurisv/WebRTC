@@ -102,12 +102,14 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
     items: [
     {
         defaultContent: true,
+        bodyStyle: 'background: rgb(236, 247, 255);',
         layout:{
             type: 'vbox',
             pack: 'middle',
             align: 'middle'
         },
         items:[{
+            bodyStyle: 'background: transparent;',
             html:'<div class="defaultContent"><h1>Welcome</h1><p>Please select a room</p></div>'
         }]
     }
