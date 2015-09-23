@@ -40,10 +40,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
             ],
             autoLoad: false  //wait for user auth prior to load
         },
-        globalusers: {
-            model: 'WebRTC.model.chat.RoomMember',
-            autoLoad: true
-        },
         users: {
             model: 'WebRTC.model.User',
             autoLoad: true
@@ -53,7 +49,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
         isAdmin: function (get) {
             return get('name') != 'admin' ;    //shows config button if name is admin
         },
-        isRoomSelectedByOwner: function (get) {
+        isRoomSelectedByOwner: function (get){
             var user = Ext.first('chatroomscontainer').getViewModel().get('user');
             return get('room') != null && (user.id == get('room').get('owner') ) ;    //edit allowed only when owner
         },

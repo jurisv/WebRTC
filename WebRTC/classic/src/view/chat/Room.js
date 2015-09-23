@@ -34,11 +34,10 @@ Ext.define('WebRTC.view.chat.Room', {
                         align: 'stretch'
                     },
                     flex: 4,
-                    bodyPadding: 6,
+                    bodyPadding: 8,
                     items: [
                         {
                             xtype: 'chatinfo',
-                            bodyPadding: 6,
                             hidden: false
                         }, {
                             xtype: 'chathistory',
