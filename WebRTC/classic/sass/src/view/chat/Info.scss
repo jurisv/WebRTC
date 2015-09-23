@@ -3,9 +3,11 @@
   border-bottom: solid 1px #cacaca;
   margin-bottom:0px;
   margin-left:8px;
+  padding-bottom: 12px;
 
   .room-icon{
-    font-size:32px;
+    font-size:48px;
+    width:120px;
   }
 
   .room-title{
@@ -15,6 +17,7 @@
   }
 
   .room-description{
-    margin-left:42px;
+    padding: 5px;
+    color: #cacaca;
   }
 }

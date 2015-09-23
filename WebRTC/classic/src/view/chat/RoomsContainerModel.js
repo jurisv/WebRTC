@@ -19,7 +19,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
                         if(item.get('passwordVerified')) {
                             return true;
                         }else if(user && user['id']){
-                            return !item.get('isPrivate') || user.id == item.get('owner') || user.name == 'admin';
+                            return !item.get('isPrivate') || user['id'] == item.get('owner') || user['name'] == 'admin';
                         }else{
                             return !item.get('isPrivate')
                         }
@@ -46,18 +46,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
         },
         isRoomSharingEnabled: function (get) {
             return true;
-        },
-        getAuthToken: function (get) {
-            if( get('authToken') ){
-                return {
-                    authToken: get('authToken')
-                };
-            }else{
-                // no AuthToken could route to login code??
-                return {
-                    authToken: null
-                };
-            }
         }
     }
 });

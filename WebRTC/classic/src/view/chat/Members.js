@@ -14,15 +14,32 @@ Ext.define('WebRTC.view.chat.Members', {
         },
         itemSelector: 'tr.member-wrap',
         tpl: [
-            '<table cellspacing="0" cellpadding="8" width="100%">',
+            '<table class="members">',
             '<tpl for=".">',
             '<tr class="member-wrap">',
-            '<td width="125" style="font-weight:100;border-bottom: solid 1px #eee;">',
-            '<span class="x-fa fa-user" title="{name}"> </span> {name}',
+            '<td >',
+            '{[this.getIcon(values.callStatus)]} {[this.getIcon(values.micStatus)]} {name}',
             '</td>',
             '</tr>',
             '</tpl>',
-            '</table>'
+            '</table>',
+            {
+                getIcon: function(data){
+                    if(data == 'video'){
+                        return '<span class="x-fa fa-video-camera green"></span>'
+                    }else if(data == 'video-hide'){
+                        return '<span class="x-fa fa-video-camera red"></span>'
+                    }else if(data == 'audio'){
+                        return '<span class="x-fa fa-phone green"></span>'
+                    }else if(data == 'mute'){
+                        return '<span class="x-fa fa-microphone-slash red"></span>'
+                    }else if(data == 'idle'){
+                        return '<span class="x-fa fa-user"></span>'
+                    }else{
+                        return ''
+                    }
+                }
+            }
         ]
     }]
 

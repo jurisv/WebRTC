@@ -13,10 +13,12 @@ Ext.define('WebRTC.view.chat.Info', {
         var me = this;
 
         me.tpl = new Ext.XTemplate(
-            '<div class="room-data">',
-            '<div class="room-title">{[this.getIcon(values.isPrivate)]} {name}</div>',
+            '<div class="room-data"><table><tr>',
+            '<td>{[this.getIcon(values.isPrivate)]}</td>',
+            '<td>',
+            '<div class="room-title">{name}</div>',
             '<div class="room-description">{topic}&nbsp;</div>',
-            '</div>',
+            '</td></tr></table></div>',
             {
                 getIcon: function(isPrivate){
                     if(isPrivate){

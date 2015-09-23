@@ -296,10 +296,22 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             room;
 
         if(defaultContent)
-        roomtabs.remove(defaultContent, true);
+            roomtabs.remove(defaultContent, true);
+
 
         //only add one
         if (!tab) {
+
+            membersRef.update({
+                id: userId,
+                callStatus:'idle',
+                micStatus:'',
+                name: name
+            });
+            // when I disconnect, remove this member
+            membersRef.onDisconnect().remove();
+
+
             room = {
                 xtype: 'chatroom',
                 // closable: true,
@@ -312,6 +324,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 var sessionId = childPanel.getViewModel().get('room').get('sessionId');
                 // childPanel.getViewModel().getStore('members').getProxy().socket.emit('leave',sessionId)
                 me.fireEvent('closeroom',sessionId);
+                // remove member from room
                 auth.firebaseRef.child('roommembers/' + childPanel.getViewModel().get('room').get('id') + '/' + userId).remove();
 
                 roomtabs.remove(childPanel, true);
@@ -319,20 +332,19 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
             tab = roomtabs.insert(0, room);
 
-            membersRef.update({
-                id: userId,
-                name: name
-            });
-            // when I disconnect, remove this member
-            membersRef.onDisconnect().remove();
+            tab.getViewModel().set('room', record);
+
+            tab.getViewModel().getStore('messages').getProxy().setExtraParam('room',id);
+            tab.getViewModel().getStore('messages').load();
+
+            tab.getViewModel().getStore('members').getProxy().setExtraParam('room',id);
+            tab.getViewModel().getStore('members').load();
 
             // Notify TokBox in this case
             me.fireEvent('joinroom', tab, record.data, name);
         }
 
-        tab.getViewModel().set('room', record);
-        tab.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
-        tab.getViewModel().getStore('members').getProxy().getExtraParams().room = id;
+
 
         // console.log('room/' + id);
 

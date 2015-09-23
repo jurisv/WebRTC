@@ -80,10 +80,11 @@ Ext.define('WebRTC.view.chat.RoomController', {
         if( !this.getViewModel().get('inAudioCall') ){
             this.getViewModel().set('inAudioCall', true);
             this.getViewModel().set('showingCamera', false);
-
+            this.setMemberCallStatus({callStatus:'audio'});
             this.fireEvent('callroom', {sessionId: sessionId, element: you.id, video: false} );
         }else{
             this.onEndAudioCall(button);
+            this.setMemberCallStatus({callStatus:'idle'});
         }
 
     },
@@ -95,10 +96,11 @@ Ext.define('WebRTC.view.chat.RoomController', {
         if( !this.getViewModel().get('inVideoCall') ){
             this.getViewModel().set('inVideoCall', true);
             this.getViewModel().set('showingCamera', true);
-
+            this.setMemberCallStatus({callStatus:'video'});
             this.fireEvent('callroom',  {sessionId: sessionId, element: you.id, video: true} );
         }else{
             this.onEndVideoCall(button);
+            this.setMemberCallStatus({callStatus:'idle'});
         }
     },
 
@@ -127,6 +129,14 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
     },
 
+    setMemberCallStatus: function(status){
+        var auth = WebRTC.app.getController('Auth'),
+            id = this.getViewModel().get('room')['id'],
+            userId = auth.user['id'],
+            membersRef = auth.firebaseRef.child('roommembers/' + id + '/' + userId);
+
+        membersRef.update(status);
+    },
 
     onPublishAudioToggle: function(button){
         var you = this.lookupReference('you'),
@@ -134,9 +144,11 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
         if( this.getViewModel().get('useMic') ){
             this.getViewModel().set('useMic',false);
+            this.setMemberCallStatus({micStatus:'mute'});
             this.fireEvent('hidePublisherAudio', sessionId);
         }else{
             this.getViewModel().set('useMic',true);
+            this.setMemberCallStatus({micStatus:''});
             this.fireEvent('showPublisherAudio', sessionId);
         }
 
@@ -148,9 +160,11 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
         if( this.getViewModel().get('useCamera') ){
             this.getViewModel().set('useCamera',false);
+            this.setMemberCallStatus({callStatus:'video-hide'});
             this.fireEvent('hidePublisherVideo', sessionId);
         }else{
             this.getViewModel().set('useCamera',true);
+            this.setMemberCallStatus({callStatus:'video'});
             this.fireEvent('showPublisherVideo', sessionId);
         }
 
