@@ -36,20 +36,28 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
     chatReceived: function(chat){
         var me = this,
-            list = this.getView().down('dataview[reference=historylist]'),
             store = this.getViewModel().getStore('messages');
 
         store.add(chat);
 
-        if(list){
-            list.scrollBy(0, 999999, true);
-        }
-
+        me.scrollToBottom();
         me.unread++;
         me.setUnreadTitle();
 
-        this.fireEvent('playsound','chat-sound');
+        me.fireEvent('playsound','chat-sound');
     },
+
+    scrollToBottom: function(){
+        var list = this.getView().down('dataview[reference=historylist]'),
+            scroller;
+        if(list) {
+            scroller = list.getScrollable();
+            
+            if (scroller){
+                scroller.scrollBy(null, Infinity, true);
+            }
+        }
+    },    
 
     onVisibilityChanged: function(){
         var me=this;
