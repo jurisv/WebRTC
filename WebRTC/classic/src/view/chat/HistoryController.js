@@ -129,6 +129,23 @@ Ext.define('WebRTC.view.chat.HistoryController', {
         if (form.isValid()) {
             window.getViewModel().get('message').save();
         }
+    },
+
+    onKeyUp: function(field,e){
+        if(field.getValue().length){
+            this.setMemberTypingStatus({typingStatus:'typing'});
+        }else{
+            this.setMemberTypingStatus({typingStatus:''});
+        }
+    },
+
+    setMemberTypingStatus: function(status){
+        var auth = WebRTC.app.getController('Auth'),
+            id = this.getViewModel().get('room')['id'],
+            userId = auth.user['id'],
+            membersRef = auth.firebaseRef.child('roommembers/' + id + '/' + userId);
+
+        membersRef.update(status);
     }
 
 });

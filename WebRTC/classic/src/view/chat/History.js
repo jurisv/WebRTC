@@ -63,7 +63,9 @@ Ext.define('WebRTC.view.chat.History', {
         xtype:'textfield',
         name:'text',
         reference: 'chattext',
+        enableKeyEvents: true,
         listeners: {
+            keyup: 'onKeyUp',
             specialkey: 'onSpecialKey'
         },
         flex:1

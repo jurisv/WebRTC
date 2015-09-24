@@ -18,7 +18,7 @@ Ext.define('WebRTC.view.chat.Members', {
             '<tpl for=".">',
             '<tr class="member-wrap">',
             '<td >',
-            '{[this.getIcon(values.callStatus)]} {[this.getIcon(values.micStatus)]} {name}',
+            '{[this.getIcon(values.callStatus)]} {[this.getIcon(values.micStatus)]} {[this.getIcon(values.typingStatus)]} {name}',
             '</td>',
             '</tr>',
             '</tpl>',
@@ -35,6 +35,8 @@ Ext.define('WebRTC.view.chat.Members', {
                         return '<span class="x-fa fa-microphone-slash red"></span>'
                     }else if(data == 'idle'){
                         return '<span class="x-fa fa-user"></span>'
+                    }else if(data == 'typing'){
+                        return '<span class="x-fa fa-keyboard-o"></span>'
                     }else{
                         return ''
                     }
