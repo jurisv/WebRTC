@@ -242,15 +242,40 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     },
 
     onRoomRemove: function(){
-        var record = Ext.first('combobox[reference=roomscombo]').getSelection();
+        var me= this,
+            roomtabs = Ext.first('[reference=roomtabs]'),
+            auth = WebRTC.app.getController('Auth'),
+            combo = Ext.first('combobox[reference=roomscombo]'),
+            record = combo.getSelection();
 
         if(record){
-            var store = this.getViewModel().getStore('rooms');
-            this.getViewModel().getStore('rooms').remove(record);
-            Ext.Msg.wait('Removing', 'Removing room...');
-            store.sync({
-                scope: this,
-                callback: this.onComplete
+            Ext.Msg.show({
+                icon: Ext.Msg.QUESTION,
+                buttons: Ext.Msg.YESNO,
+                title: 'Are you sure?',
+                msg: 'You really want to delete room ' + record.get('name') + ' ?',
+                fn: function (status) {
+                    if ('yes' === status) {
+                        var store = me.getViewModel().getStore('rooms');
+                        me.getViewModel().getStore('rooms').remove(record);
+                        Ext.Msg.wait('Removing', 'Removing room...');
+                        Ext.each(roomtabs.items.items, function(childPanel) {
+                            var sessionId = childPanel.getViewModel().get('room').get('sessionId');
+                            me.fireEvent('closeroom',sessionId);
+                            auth.firebaseRef.child('roommembers/' + childPanel.getViewModel().get('room').get('id') ).remove();
+                            combo.clearValue();
+                            roomtabs.remove(childPanel, true);
+                        });
+                        store.sync({
+                            scope: me,
+                            callback: me.onComplete
+                        });
+                        me.redirectTo('');
+
+
+
+                    }
+                }
             });
         }
     },
@@ -267,14 +292,26 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             auth = WebRTC.app.getController('Auth'),
             userId = auth.user['id'],
             name = auth.user['fn'],
-            membersRef = auth.firebaseRef.child('members/' + id + '/' + userId),
+            membersRef = auth.firebaseRef.child('roommembers/' + id + '/' + userId),
             room;
 
         if(defaultContent)
-        roomtabs.remove(defaultContent, true);
+            roomtabs.remove(defaultContent, true);
+
 
         //only add one
         if (!tab) {
+
+            membersRef.update({
+                id: userId,
+                callStatus:'idle',
+                micStatus:'',
+                name: name
+            });
+            // when I disconnect, remove this member
+            membersRef.onDisconnect().remove();
+
+
             room = {
                 xtype: 'chatroom',
                 // closable: true,
@@ -287,23 +324,27 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 var sessionId = childPanel.getViewModel().get('room').get('sessionId');
                 // childPanel.getViewModel().getStore('members').getProxy().socket.emit('leave',sessionId)
                 me.fireEvent('closeroom',sessionId);
-                auth.firebaseRef.child('members/' + childPanel.getViewModel().get('room').get('id') + '/' + userId).remove();
+                // remove member from room
+                auth.firebaseRef.child('roommembers/' + childPanel.getViewModel().get('room').get('id') + '/' + userId).remove();
 
                 roomtabs.remove(childPanel, true);
             });
 
             tab = roomtabs.insert(0, room);
 
-            membersRef.update( {active: true } );
-            // when I disconnect, remove this member
-            membersRef.onDisconnect().remove();
+            tab.getViewModel().set('room', record);
+
+            tab.getViewModel().getStore('messages').getProxy().setExtraParam('room',id);
+            tab.getViewModel().getStore('messages').load();
+
+            tab.getViewModel().getStore('members').getProxy().setExtraParam('room',id);
+            tab.getViewModel().getStore('members').load();
 
             // Notify TokBox in this case
             me.fireEvent('joinroom', tab, record.data, name);
         }
 
-        tab.getViewModel().set('room', record);
-        tab.getViewModel().getStore('messages').getProxy().getExtraParams().room = id;
+
 
         // console.log('room/' + id);
 

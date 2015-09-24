@@ -10,10 +10,10 @@ Ext.define('WebRTC.model.chat.Room', {
         { name: 'sessionId', type: 'string'  },     //Tokbox SessionId
         { name: 'apiKey', type: 'number'  },        //Tokbox apiKey
         { name: 'name', type: 'string'  },
+        { name: 'owner', type: 'string'  },
+        { name: 'topic', type: 'string'  },
         // { name: 'jid', type: 'string'  },
-        // { name: 'topic', type: 'string'  },
         // { name: 'privacy', type: 'string'  },
-        // { name: 'owner', type: 'string'  },
         // { name: 'nickname', type: 'string'  },
         /*{ name: 'myJID', type: 'string'  , convert: function(v, record){
             return record.get('jid') + '/' + record.get('nickname');

@@ -8,11 +8,29 @@ Ext.define('WebRTC.view.chat.Info', {
             deep: true
         }
     },
-    tpl: [
-        '<div class="room-data">',
-        '<div class="room-title" style="font-size:24px;margin-top:10px;"><span class="x-fa fa-comments fa-lg"></span> {name}</div>',
-        '<div class="room-description" style="margin-left:42px;">{description}&nbsp;</div>',
-        '</div>'
-    ]
+
+    initComponent: function(){
+        var me = this;
+
+        me.tpl = new Ext.XTemplate(
+            '<div class="room-data"><table><tr>',
+            '<td>{[this.getIcon(values.isPrivate)]}</td>',
+            '<td>',
+            '<div class="room-title">{name}</div>',
+            '<div class="room-description">{topic}&nbsp;</div>',
+            '</td></tr></table></div>',
+            {
+                getIcon: function(isPrivate){
+                    if(isPrivate){
+                        return '<span class="x-fa fa-shield fa-lg room-icon"></span>'
+                    }else{
+                        return '<span class="x-fa fa-comments fa-lg room-icon"></span>'
+                    }
+                }
+            }
+        );
+
+        me.callParent();
+    }
 
 });

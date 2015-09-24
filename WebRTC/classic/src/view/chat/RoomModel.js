@@ -16,10 +16,10 @@ Ext.define('WebRTC.view.chat.RoomModel', {
         }
     },
 
-    stores:{
+    stores: {
         messages: {
             model: 'WebRTC.model.chat.Message',
-            sorters:[{property: 'date', diection: 'DESC'}],
+            sorters: [{property: 'date', direction: 'DESC'}],
             autoSync: true,
             autoLoad: true,
             listeners: {
@@ -29,67 +29,87 @@ Ext.define('WebRTC.view.chat.RoomModel', {
         mymessages: {
             model: 'WebRTC.model.chat.Message',
             source: '{messages}',
-            sorters:[{property: 'date', diection: 'DESC'}],
+            sorters: [{property: 'date', direction: 'DESC'}],
             autoLoad: true
         },
         members: {
-            model:'WebRTC.model.chat.RoomMember',
-            sorters:[
-                {property: 'name', diection: 'ASC'}
+            model: 'WebRTC.model.chat.RoomMember',
+            proxy: {
+                type: 'socketio',
+                url: '/roommembers',
+                extraParams: {
+                    room: null
+                },
+                apiEvents: {
+                    read: 'child_added',
+                    update: 'child_changed',
+                    destroy: 'child_removed'
+                },
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data'
+                },
+                writer: {
+                    type: 'json',
+                    writeAllFields: true
+                }
+            },
+            sorters: [
+                {property: 'name', direction: 'ASC'}
             ],
             autoSync: true,
             autoLoad: true,
             listeners: {
-                load: function(){
-                    // console.log('roommembers loaded')
+                load: function () {
+                    //  console.log('roommembers loaded')
                 }
             }
         }
     },
 
-    formulas:{
-        audioCallIcon: function(get){
-            if(get('inAudioCall')){
+    formulas: {
+        audioCallIcon: function (get) {
+            if (get('inAudioCall')) {
                 return 'x-fa fa-stop';
-            }else{
+            } else {
                 return 'x-fa fa-phone';
             }
         },
-        videoCallIcon: function(get){
-            if(get('inVideoCall')){
+        videoCallIcon: function (get) {
+            if (get('inVideoCall')) {
                 return 'x-fa fa-stop';
-            }else{
+            } else {
                 return 'x-fa fa-video-camera';
             }
         },
-        audioToggleIcon: function(get){
-            if(get('useMic')){
+        audioToggleIcon: function (get) {
+            if (get('useMic')) {
                 return 'x-fa fa-microphone';
-            }else{
+            } else {
                 return 'x-fa fa-microphone-slash';
             }
         },
-        videoToggleIcon: function(get){
-            if(get('useCamera')){
+        videoToggleIcon: function (get) {
+            if (get('useCamera')) {
                 return 'x-fa fa-eye';
-            }else{
+            } else {
                 return 'x-fa fa-ban';
             }
         },
-        isMicDisabled: function(get){
-            if(get('inAudioCall') || get('inVideoCall')){
+        isMicDisabled: function (get) {
+            if (get('inAudioCall') || get('inVideoCall')) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
         },
-        isWebRTCSupported: function(get){
-            if (Ext.browser.is.Safari  || Ext.browser.is.IE ) {
+        isWebRTCSupported: function (get) {
+            if (Ext.browser.is.Safari || Ext.browser.is.IE) {
                 return false;
-            }else{
-                if( !!window.webkitRTCPeerConnection || !!window.mozRTCPeerConnection ) {
+            } else {
+                if (!!window.webkitRTCPeerConnection || !!window.mozRTCPeerConnection) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
             }

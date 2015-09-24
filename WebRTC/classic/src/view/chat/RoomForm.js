@@ -35,6 +35,11 @@ Ext.define('WebRTC.view.chat.RoomForm', {
                     fieldLabel: 'Room Name',
                     name: 'name',
                     bind: '{theRoom.name}'
+                },{
+                    xtype:'textfield',
+                    fieldLabel: 'Topic',
+                    name: 'topic',
+                    bind: '{theRoom.topic}'
                 },
                 {
                     xtype:'checkboxfield',

@@ -1,7 +1,16 @@
+@import url(https://fonts.googleapis.com/css?family=Oregano);
+
 .defaultContent{
-    color: #efefef;
+
     text-align: center;
-    h1 {
-        font-size: 72px;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    color: #a0a0a0;
+  h1 {
+        font-family: 'Oregano', sans-serif;
+        text-shadow: 1px 1px 5px #aaa;
+        color: #cde4ff;
+        font-size: 88px;
+        margin: 36px;
     }
 }
