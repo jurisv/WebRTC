@@ -269,6 +269,12 @@ Ext.define ('Sencha.ux.data.proxy.SocketIO', {
             var response =  me.getPushedDataAsResponse(data);
             me.processResponse(true, operation, request, response);            
         });
+    },
+
+    destroy: function () {
+        this.socket.removeAllListeners();
+        this.socket = null;
+        this.callParent();
     }
 
 });
