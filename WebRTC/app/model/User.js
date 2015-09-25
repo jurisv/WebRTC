@@ -19,6 +19,10 @@ Ext.define('WebRTC.model.User', {
         reader: {
             type: 'json',
             rootProperty: 'data'
+        },
+        writer: {
+            type: 'json',
+            writeAllFields: true
         }
     },
     /*
@@ -37,6 +41,7 @@ Ext.define('WebRTC.model.User', {
 
     fields: [
         { name: 'id',               type: 'string'                            },
+        { name: 'gender',           type: 'string'                            },
         { name: 'jid',              type: 'string'                            },
         { name: 'is_xmpp',          type: 'boolean', defaultValue: false      },
         { name: 'xmpp_name',        type: 'string'                            },    // The associated XMPP client
@@ -84,11 +89,11 @@ Ext.define('WebRTC.model.User', {
         { name: 'n_prefix',       type: 'string' },
         { name: 'n_suffix',       type: 'string' },
 
-        { name: 'tel_home',       type: 'string' },
-        { name: 'tel_work',       type: 'string' },
-        { name: 'tel_fax',        type: 'string' },
-        { name: 'tel_pager',      type: 'string' },
-        { name: 'tel_cell',       type: 'string' },
+        { name: 'tel_home',       type: 'string',    defaultValue: null },
+        { name: 'tel_work',       type: 'string',    defaultValue: null },
+        { name: 'tel_fax',        type: 'string',    defaultValue: null },
+        { name: 'tel_pager',      type: 'string',    defaultValue: null },
+        { name: 'tel_cell',       type: 'string',    defaultValue: null },
 
         // This field is choose from all the informations we have
         { name: 'display_name', type: 'string',

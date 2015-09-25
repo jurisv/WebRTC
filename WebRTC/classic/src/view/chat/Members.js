@@ -1,7 +1,7 @@
 Ext.define('WebRTC.view.chat.Members', {
     extend: 'Ext.Panel',
     xtype: 'chatmembers',
-
+    controller: 'chatmembers',
     bodyPadding: 10,
     layout:'fit',
 
@@ -13,6 +13,9 @@ Ext.define('WebRTC.view.chat.Members', {
           store: '{members}'
         },
         itemSelector: 'tr.member-wrap',
+        listeners: {
+            itemdblclick: 'onDblClick'
+        },
         tpl: [
             '<table class="members">',
             '<tpl for=".">',

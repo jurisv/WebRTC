@@ -41,7 +41,24 @@ Ext.define('WebRTC.view.settings.UserController', {
     saveSettings: function () {
         var view = this.getView(),
             data = view.getForm().getFieldValues(),
+            auth = WebRTC.app.getController('Auth'),
+            userId = auth.user['id'],
             settings = Ext.getStore('Settings');
+
+        auth.firebaseRef.child('users/' + userId).update({
+            fn: data['fn'],
+            location: data['location'],
+            status_msg: data['status_msg'],
+            gender: data['gender'],
+            country: data['country'],
+            state: data['state'],
+            title: data['title'],
+            tel_work: data['tel_work'],
+            tel_cell: data['tel_cell'],
+            company: data['company'],
+            name: data['fn']
+        });
+
 
         // saving only chat-sound so far
         var key = 'chat-sound';

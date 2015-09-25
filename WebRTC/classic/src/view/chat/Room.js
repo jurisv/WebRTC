@@ -111,11 +111,17 @@ Ext.define('WebRTC.view.chat.Room', {
                                     }
                                 }
                             ]
-                        }, {
-                            title: 'Members',
-                            collapsable: true,
+                        },{
+                            // title: 'Members',
+                            // iconCls: 'x-fa fa-group fa-lg',
+                            // collapsable: true,
                             xtype: 'chatmembers',
-                            iconCls: 'x-fa fa-group fa-lg',
+                            flex: 1
+                        },{
+                            // title: 'Online',
+                            // collapsable: true,
+                            // iconCls: 'x-fa fa-group fa-lg',
+                            xtype: 'chatpresense',
                             flex: 1
                         }, {
                             title: 'Files',

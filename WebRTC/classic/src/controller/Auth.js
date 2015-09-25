@@ -36,6 +36,7 @@ Ext.define('WebRTC.controller.Auth', {
     firebaseRef: null,
 
 
+
     init: function(){
         var me= this;
 
@@ -100,7 +101,7 @@ Ext.define('WebRTC.controller.Auth', {
             me.fireEvent('failure',error);
         } else {
 
-            me.storeUser(authData);
+            me.initUser(authData);
 
             if(authData.password.isTemporaryPassword){
                 me.redirectTo('newpassword');
@@ -119,7 +120,7 @@ Ext.define('WebRTC.controller.Auth', {
 
         if (authData) {
 
-            me.storeUser(authData);
+            me.initUser(authData);
 
             if(authData.password.isTemporaryPassword){
                 me.redirectTo('newpassword');
@@ -346,9 +347,12 @@ Ext.define('WebRTC.controller.Auth', {
             firebase = me.firebaseRef,
             myConnectionsRef = firebase.child('connections/' + id ),
             lastOnlineRef = firebase.child('users/' + id + '/lastOnline'),
+            statusRef = firebase.child('users/' + id + '/status'),
             connectedRef = firebase.child('/.info/connected');
 
         this.presenceOn = true;
+
+        me.startPresenceTimer();
 
         connectedRef.on("value", function(snap) {
             if (snap.val() === true) {
@@ -366,6 +370,9 @@ Ext.define('WebRTC.controller.Auth', {
                 // when I disconnect, remove this device
                 con.onDisconnect().remove();
 
+                statusRef.set('online');
+                statusRef.onDisconnect().set('offline');
+
                 // when I disconnect, update the last time I was seen online
                 lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
             } else {
@@ -377,8 +384,49 @@ Ext.define('WebRTC.controller.Auth', {
         });
     },
 
+    startPresenceTimer: function(){
+        var me = this;
+
+        me.resetTimer = function(){
+            me.fireEvent('active',Firebase.ServerValue.TIMESTAMP);
+            // console.log('active');
+            me.idleTime = 0;
+            me.lastActivityTime = Firebase.ServerValue.TIMESTAMP;
+        };
+
+        // Increment the idle time counter every second.
+        me.idleIntervalLoop = setInterval(me.onTimerIncrement, 1000, me);
+
+        //setup inital state
+        me.idleTime = 0;
+        me.lastActivityTime = Firebase.ServerValue.TIMESTAMP;
+
+        //keep idleTime at the window scope to monitor any events.
+        window.onload = me.resetTimer;
+        window.onclick = me.resetTimer;
+        window.onmousemove = me.resetTimer;
+        window.onmouseenter = me.resetTimer;
+        window.onkeydown = me.resetTimer;
+        window.onscroll = me.resetTimer;
+        window.onmousewheel = me.resetTimer;
+
+    },
+
+    //timer counter and rules
+    onTimerIncrement: function(me){
+        me.idleTime++;
+        // console.log('icrement' + window.idleTime );
+        if (me.idleTime > (5 * 60) )
+        {
+            // console.log('idle');
+            me.fireEvent('idle',Firebase.ServerValue.TIMESTAMP);
+        }
+    },
+
+
+
     //set the user here in the controller and update the cookie.
-    storeUser: function (authData) {
+    initUser: function (authData) {
         var me = this,
             firebase = me.firebaseRef,
             id;

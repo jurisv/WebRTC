@@ -23,6 +23,9 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 islogout: 'onAuthIsLogout',
                 login: 'onAuthLogin',
                 userData: 'onAuthUserData'
+            },
+            '*':{
+                openUser: 'onUserClick'
             }
         },
         component:{
@@ -459,14 +462,19 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     },
 
     onUserClick : function(button){
+        var auth = WebRTC.app.getController('Auth'),
+            user = auth.user;
+
         var window =  Ext.create('Ext.window.Window', {
-            title: 'User Settings',
+            title: 'User',
             iconCls: 'x-fa fa-user fa-lg',
             height: 600,
             width: 600,
             modal: true,
             layout: 'fit',
-            viewModel:{},
+            viewModel:{
+                data: user
+            },
             items: [{
                 xtype: 'settingsuser',
                 border: false
