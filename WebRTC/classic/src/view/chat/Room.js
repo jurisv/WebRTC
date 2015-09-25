@@ -4,7 +4,7 @@ Ext.define('WebRTC.view.chat.Room', {
 
     layout: {
         type: 'box',
-        vertical: true,
+        vertical: false,
         align: 'stretch'
     },
 
@@ -116,12 +116,6 @@ Ext.define('WebRTC.view.chat.Room', {
                             // iconCls: 'x-fa fa-group fa-lg',
                             // collapsable: true,
                             xtype: 'chatmembers',
-                            flex: 1
-                        },{
-                            // title: 'Online',
-                            // collapsable: true,
-                            // iconCls: 'x-fa fa-group fa-lg',
-                            xtype: 'chatpresense',
                             flex: 1
                         }, {
                             title: 'Files',

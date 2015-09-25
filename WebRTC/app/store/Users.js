@@ -19,6 +19,10 @@ Ext.define('WebRTC.store.Users', {
             writeAllFields: true
         }
     },
+    sorters: [
+        {property: 'statusOrder', direction: 'DESC'},
+        {property: 'fn', direction: 'ASC'}
+    ],
     autoLoad: true,
     autoSync: true
 

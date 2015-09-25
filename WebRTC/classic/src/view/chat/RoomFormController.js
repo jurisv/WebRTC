@@ -17,11 +17,11 @@ Ext.define('WebRTC.view.chat.RoomFormController', {
         {
             var record = window.getViewModel().get('theRoom');
             Ext.Msg.wait('Saving', 'Saving room...');
-            form.up('window').close();
             record.save({
                 scope: this,
                 callback: this.onComplete
             });
+            form.up('window').close();
 
         } else {
             Ext.Msg.wait('Creating', 'Creating room...');

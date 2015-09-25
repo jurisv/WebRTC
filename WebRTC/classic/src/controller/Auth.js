@@ -35,6 +35,8 @@ Ext.define('WebRTC.controller.Auth', {
      */
     firebaseRef: null,
 
+    //used to store the currect number of seconds idle
+    idleTime: 0,
 
 
     init: function(){
@@ -133,8 +135,7 @@ Ext.define('WebRTC.controller.Auth', {
         } else {
             // console.log("User is logged out");
             this.redirectTo('login');
-            me.fireEvent('islogout',authData);
-
+            me.fireEvent('islogout');
         }
     },
 
@@ -346,8 +347,7 @@ Ext.define('WebRTC.controller.Auth', {
         var me =  this,
             firebase = me.firebaseRef,
             myConnectionsRef = firebase.child('connections/' + id ),
-            lastOnlineRef = firebase.child('users/' + id + '/lastOnline'),
-            statusRef = firebase.child('users/' + id + '/status'),
+            userRef = firebase.child('users/' + id),
             connectedRef = firebase.child('/.info/connected');
 
         this.presenceOn = true;
@@ -367,14 +367,26 @@ Ext.define('WebRTC.controller.Auth', {
                     browserVersion: Ext.browser.version,
                     online: true
                 });
+
                 // when I disconnect, remove this device
                 con.onDisconnect().remove();
 
-                statusRef.set('online');
-                statusRef.onDisconnect().set('offline');
+                me.fireEvent('connected');
+                me.setPresenseStatus({
+                    status: 'online',
+                    statusOrder: 100,
+                    lastActivity: null
+                });
+
+                userRef.onDisconnect().update({
+                    status: 'offline',
+                    statusOrder: 0,
+                    lastOnceLine: Firebase.ServerValue.TIMESTAMP,
+                    lastActivity: null
+                });
 
                 // when I disconnect, update the last time I was seen online
-                lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+                //lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
             } else {
                 //Even though disconnected is fired, other firebase ref's can use the pattern : ref.onDisconnect().remove();
                 me.fireEvent('disconnected');
@@ -389,6 +401,14 @@ Ext.define('WebRTC.controller.Auth', {
 
         me.resetTimer = function(){
             me.fireEvent('active',Firebase.ServerValue.TIMESTAMP);
+            if(me.isIdle){
+                me.setPresenseStatus({
+                    status: 'online',
+                    statusOrder: 100,
+                    lastActivity: null
+                });
+                me.isIdle = false;
+            }
             // console.log('active');
             me.idleTime = 0;
             me.lastActivityTime = Firebase.ServerValue.TIMESTAMP;
@@ -419,11 +439,24 @@ Ext.define('WebRTC.controller.Auth', {
         if (me.idleTime > (5 * 60) )
         {
             // console.log('idle');
+            me.isIdle = true;
+            me.setPresenseStatus({
+                status: 'idle',
+                statusOrder: 10,
+                lastActivity: Firebase.ServerValue.TIMESTAMP
+            });
             me.fireEvent('idle',Firebase.ServerValue.TIMESTAMP);
+
         }
     },
 
-
+    setPresenseStatus: function(status){
+        var me=this,
+            id = me.user['id'],
+            usersRef = me.firebaseRef.child('users/' + id);
+        //debugger;
+        usersRef.update(status);
+    },
 
     //set the user here in the controller and update the cookie.
     initUser: function (authData) {
@@ -463,13 +496,16 @@ Ext.define('WebRTC.controller.Auth', {
                 function (snapshot) {
                     var user = snapshot.val();
                     me.user =  user;
+                    Ext.first('app-main').getViewModel().data.user = user;
                     me.fireEvent('userData',user);
+                    me.startPresence(id);
+
                 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
                 }
             );
 
-            me.startPresence(id);
+
 
         } else {
             console.log("Error getting id of an auththenication: " + errorObject.code);

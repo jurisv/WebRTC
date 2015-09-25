@@ -32,32 +32,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
             model: 'WebRTC.model.User',
             source: '{users}',
             autoLoad: true
-        },
-        users: {
-            model: 'WebRTC.model.User',
-            proxy: {
-                type: 'socketio',
-                url: '/users',
-                apiEvents: {
-                    read: 'child_added',
-                    update: 'child_changed',
-                    destroy: 'child_removed'
-                },
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data'
-                },
-                writer: {
-                    type: 'json',
-                    writeAllFields: true
-                }
-            },
-            sorters: [
-                {property: 'status', direction: 'DESC'},
-                {property: 'fn', direction: 'ASC'}
-            ],
-            autoSync: true,
-            autoLoad: true
         }
     },
     formulas: {

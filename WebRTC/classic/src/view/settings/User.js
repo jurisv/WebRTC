@@ -63,13 +63,11 @@ Ext.define('WebRTC.view.settings.User', {
                             emptyText: 'VP of mojo enhancement.',
                             name: 'title',
                             bind: '{title}'
-                        }, {
+                        },{
                             xtype: 'radiogroup',
                             fieldLabel: 'Gender',
                             columns: 2,
-                            bind:{
-                                value:'{gender}'
-                            },
+                            bind: {value: {gender: '{gender}'} },
                             defaults: {
                                 name: 'gender'
                             },

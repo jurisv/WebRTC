@@ -52,6 +52,7 @@ Ext.define('WebRTC.model.User', {
         }
         },
         { name: 'status',           type: 'string',  defaultValue: 'offline'  },
+        { name: 'statusOrder',      type: 'int',  defaultValue: 0  },
         { name: 'name',             type: 'string'                            },
         { name: 'mention_name',     type: 'string'                            },
         { name: 'unread_messages',  type: 'int',     defaultValue: 0          },
@@ -99,19 +100,19 @@ Ext.define('WebRTC.model.User', {
         { name: 'display_name', type: 'string',
             convert: function(v, record){
 
-            var fn = record.get('fn'),
-                name = record.get('name');
+                var fn = record.get('fn'),
+                    name = record.get('name');
 
-            if(!Ext.isEmpty(fn)){
-                return fn;
+                if(!Ext.isEmpty(fn)){
+                    return fn;
+                }
+                else if(name){
+                    return name;
+                }
+
+                return record.getId();
+
             }
-            else if(name){
-                return name;
-            }
-
-            return record.getId();
-
-        }
         }
 
     ],

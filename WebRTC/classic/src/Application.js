@@ -14,7 +14,7 @@ Ext.define('WebRTC.Application', {
         'Navigation'
     ],
 
-    stores:['Settings','SecurityRoles'],
+    stores:['Settings','SecurityRoles','Users'],
 
     onAppUpdate: function () {
         Ext.Msg.confirm('Application Update', 'This application has an update, reload?',

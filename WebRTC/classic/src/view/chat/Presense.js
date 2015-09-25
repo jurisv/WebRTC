@@ -4,7 +4,7 @@ Ext.define('WebRTC.view.chat.Presense', {
     controller: 'chatpresense',
     bodyPadding: 10,
     layout:'fit',
-
+    viewModel: 'presense',
     items:[{
         xtype:'dataview',
         autoScroll: true,
@@ -30,15 +30,15 @@ Ext.define('WebRTC.view.chat.Presense', {
             {
                 getIcon: function(data){
                     if(data == 'idle'){
-                        return '<span class="x-fa fa-minus-circle orange"></span>';
+                        return '<span class="x-fa fa-minus-circle orange" title="idle"></span>';
                     }else if(data == 'online'){
-                        return '<span class="x-fa fa-circle green"></span>'
+                        return '<span class="x-fa fa-circle green" title="online"></span>'
                     }else if(data == 'busy'){
-                        return '<span class="x-fa fa-circle red"></span>'
+                        return '<span class="x-fa fa-circle red" title="busy"></span>'
                     }else if(data == 'broadcasting'){
-                        return '<span class="x-fa fa-video-camera green"></span>'
+                        return '<span class="x-fa fa-video-camera green" title="broadcasting"></span>'
                     }else{
-                        return '<span class="x-fa fa-circle-thin"></span>'
+                        return '<span class="x-fa fa-circle-thin" title="offline"></span>'
                     }
                 },
                 getMoment: function(data){
