@@ -16,6 +16,13 @@ Ext.define('WebRTC.view.chat.Room', {
 
     items: [
         {
+            xtype: 'titlebar',
+            bind: {
+                title: '{room.name}'    
+            },
+            docked: 'top'            
+        },
+        {
             layout: {
                 type: 'hbox',
                 align: 'stretch'
@@ -132,4 +139,12 @@ Ext.define('WebRTC.view.chat.Room', {
             flex: 2
         }
     ]
+
+    // updateTitle: function (title) {
+    //     var nav = this.up('navigationview');
+    //     if (nav) {
+    //         nav.updateTitleContainerTitle(title);
+    //     }
+    // } 
+
 });

@@ -52,7 +52,7 @@ Ext.define('WebRTC.view.chat.HistoryController', {
             if (scroller && store.isLoaded()){
                 scroller.scrollBy(null, Infinity, true);
             } else {
-                store.on('load', function() {scroller.scrollBy(null, Infinity, true);}, {single: true});
+                store.on('load', function() {scroller.scrollBy(null, Infinity, true);}, this, {single: true});
             }
         }
     },

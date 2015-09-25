@@ -88,19 +88,19 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
         {
             xtype: 'dataview',
             title: 'Rooms',
+            disableSelection: true,
             reference: 'roomsgrid',
             itemSelector: 'div.room-wrap',
             itemTpl: [
                 '<div class="room-wrap">',
                 '<span class="x-fa fa-comments fa-lg" title="{name}"> </span>{name}',
-                '<br/>',
                 '</div>'
             ],
             bind:{
                 store: '{rooms}'
             },
             listeners: {
-               select: 'onRoomSelect'
+               itemtap: 'onRoomSelect'
             }
         }
     ]
