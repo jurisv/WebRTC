@@ -182,8 +182,8 @@
             "path": "app.js",
             "bundle": true
         },{
-            "path": "static/moment.js",
-            "bundle": true
+            "path": "//momentjs.com/downloads/moment.js",
+            "remote": true
         },{
             //this is a remotely grabbed, locally cached tokbox WebRTC session management client library
             "path": "//static.opentok.com/v2/js/opentok.min.js",
