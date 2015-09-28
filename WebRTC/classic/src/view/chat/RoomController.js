@@ -160,10 +160,14 @@ Ext.define('WebRTC.view.chat.RoomController', {
     setMemberCallStatus: function(status){
         var auth = WebRTC.app.getController('Auth'),
             id = this.getViewModel().get('room')['id'],
-            userId = auth.user['id'],
-            membersRef = auth.firebaseRef.child('roommembers/' + id + '/' + userId);
+            user = this.getViewModel().get('user');
 
-        membersRef.update(status);
+
+        if(user){
+            var userId = user['id'],
+                membersRef = auth.firebaseRef.child('roommembers/' + id + '/' + userId);
+            membersRef.update(status);
+        }
     },
 
     onPublishAudioToggle: function(button){

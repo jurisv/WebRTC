@@ -10,7 +10,7 @@ Ext.define('WebRTC.view.chat.Presense', {
         autoScroll: true,
         loadMask: false,
         bind:{
-            store: '{users}'
+            store: '{presenseusers}'
         },
         itemSelector: 'tr.member-wrap',
         listeners: {
@@ -37,6 +37,8 @@ Ext.define('WebRTC.view.chat.Presense', {
                         return '<span class="x-fa fa-circle red" title="busy"></span>'
                     }else if(data == 'broadcasting'){
                         return '<span class="x-fa fa-video-camera green" title="broadcasting"></span>'
+                    }else if(data == 'temp'){
+                        return '<span class="x-fa fa-unlock orange" title="temporary account"></span>'
                     }else{
                         return '<span class="x-fa fa-circle-thin" title="offline"></span>'
                     }

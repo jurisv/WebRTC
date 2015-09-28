@@ -4,7 +4,7 @@ Ext.define('WebRTC.view.chat.PresenseController', {
 
 
     onDblClick: function(list,record){
-        var userId = WebRTC.app.getController('Auth').user['id'];
+        var userId = this.getViewModel().get('user')['id'];
         if(userId == record.get('id')){
             this.fireEvent('openUser');
         }

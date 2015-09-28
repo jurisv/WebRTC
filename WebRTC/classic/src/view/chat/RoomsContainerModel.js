@@ -8,42 +8,52 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
         user: null
     },
     stores: {
-        rooms: {
-            model: 'WebRTC.model.chat.Room',
-            storeId: 'rooms',
-            sorters: 'name',
-            filters: [
-                function(item) {
-                    if(item){
-                        var user = Ext.first('chatroomscontainer').getViewModel().get('user');
-                        if(item.get('passwordVerified')) {
-                            return true;
-                        }else if(user && user['id']){
-                            return !item.get('isPrivate') || user['id'] == item.get('owner') || user['name'] == 'admin';
-                        }else{
-                            return !item.get('isPrivate')
-                        }
-                    }
-                }
-            ],
-            autoLoad: false  //wait for user auth prior to load
-        },
         presense: {
             model: 'WebRTC.model.User',
             source: '{users}',
             autoLoad: true
+        },
+        myrooms: {
+            source: 'rooms',
+            sorters: [{property: 'date', direction: 'ASC'}],
+            filters: [
+                function (item) {
+                    if (item) {
+                        var user = Ext.first('chatroomscontainer').getViewModel().get('user');
+                        if (item.get('isPublic')) {
+                            return true;
+                        } else if (user && user['name'] == 'admin' ) {
+                            return true;
+                        } else if (user && user['id'] == item.get('owner') ) {
+                            return true;
+                        }  else if (user && user['id']) {
+                            return !item.get('isPrivate')
+                        }else {
+                            return false;
+                        }
+                    }
+                }
+            ],
+            autoLoad: true
         }
     },
     formulas: {
-        isAdmin: function (get) {
-            return get('name') != 'admin' ;    //shows config button if name is admin
+        isUser: function (get) {
+            return !!get('user');
         },
-        isRoomSelectedByOwner: function (get){
+        isAdmin: function (get) {
+            return get('name') != 'admin';    //shows config button if name is admin
+        },
+        isRoomSelectedByOwner: function (get) {
             var user = Ext.first('chatroomscontainer').getViewModel().get('user');
-            return get('room') != null && (user.id == get('room').get('owner') ) ;    //edit allowed only when owner
+            if (user) {
+                return get('room') != null && (user.id == get('room').get('owner') );    //edit allowed only when owner
+            } else {
+                return false
+            }
         },
         isRoomSelected: function (get) {
-            return get('room') != null ;    //edit allowed only when selected
+            return !!get('user') && get('room') != null;    //edit allowed only when selected by a user
         },
         isRoomSharingEnabled: function (get) {
             return true;

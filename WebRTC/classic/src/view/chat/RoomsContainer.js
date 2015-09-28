@@ -9,6 +9,9 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
         {
             iconCls: 'x-fa fa-plus-square',
             plain: true,
+            bind:{
+                disabled: '{!isUser}'
+            },
             listeners: {
                 click: 'onRoomAdd'
             }
@@ -25,7 +28,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
             xtype: 'combobox',
             reference: 'roomscombo',
             bind:{
-                store: '{rooms}'
+                store: '{myrooms}'
             },
             queryMode: 'local',
             displayField: 'name',

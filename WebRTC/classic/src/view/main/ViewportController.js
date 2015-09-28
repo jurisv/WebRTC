@@ -4,27 +4,7 @@ Ext.define('WebRTC.view.main.ViewportController', {
 
     requires: [
         'Ext.window.Toast'
-    ],
+    ]
 
-    routes : {
-        'home' : {
-            action  : 'onRouteHome'
-        }
-    },
-    listen: {
-        controller: {
-            '#' : {
-                unmatchedroute : 'onRouteUnmatched'
-            }
-        }
-    },
-    onRouteHome: function(){
-    },
 
-    onRouteUnmatched:function(route){
-        if(!!route){
-            console.log('unmatched route' + route);
-            window.location.hash = '#home';
-        }
-    }
 });

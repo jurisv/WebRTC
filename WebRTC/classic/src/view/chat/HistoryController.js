@@ -17,13 +17,17 @@ Ext.define('WebRTC.view.chat.HistoryController', {
             store = this.getViewModel().getStore('messages'),
             timestamp = new Date().toISOString(),
             user = me.getViewModel().get('user'),
-            name = user['name'],
-            userid = user['id'],
+            name =  me.getViewModel().get('name'),
+            userid = null,
             roomid = me.getViewModel().get('id'),
             sessionId = this.getViewModel().get('room.sessionId'),
             message = me.lookupReference('chattext');
 
         if(message.getValue() == ''){return;}
+
+        if(user){
+            userid = user['id'];
+        }
 
         chat = Ext.create('WebRTC.model.chat.Message',{
             message: message.getValue(),
@@ -142,10 +146,13 @@ Ext.define('WebRTC.view.chat.HistoryController', {
     setMemberTypingStatus: function(status){
         var auth = WebRTC.app.getController('Auth'),
             id = this.getViewModel().get('room')['id'],
-            userId = auth.user['id'],
-            membersRef = auth.firebaseRef.child('roommembers/' + id + '/' + userId);
+            user = this.getViewModel().get('user');
 
-        membersRef.update(status);
+        if(user){
+            var userId = user['id'],
+                membersRef = auth.firebaseRef.child('roommembers/' + id + '/' + userId);
+            membersRef.update(status);
+        }
     }
 
 });

@@ -1,11 +1,8 @@
 Ext.define('WebRTC.view.chat.PresenseModel', {
     extend: 'Ext.app.ViewModel',
     alias: 'viewmodel.presense',
-    data: {
-        user: 'brad'
-    },
     stores: {
-        users: {
+        presenseusers: {
             model: 'WebRTC.model.User',
             proxy: {
                 type: 'socketio',
@@ -24,6 +21,17 @@ Ext.define('WebRTC.view.chat.PresenseModel', {
                     writeAllFields: true
                 }
             },
+           /* filters: [
+                function (item) {
+                    if (item) {
+                        if(item.get('email_pref')) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            ],*/
             sorters: [
                 {property: 'statusOrder', direction: 'DESC'},
                 {property: 'fn', direction: 'ASC'}

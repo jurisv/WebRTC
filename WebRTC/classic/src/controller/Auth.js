@@ -451,11 +451,13 @@ Ext.define('WebRTC.controller.Auth', {
     },
 
     setPresenseStatus: function(status){
-        var me=this,
-            id = me.user['id'],
-            usersRef = me.firebaseRef.child('users/' + id);
-        //debugger;
-        usersRef.update(status);
+        var me=this;
+
+        if(me.user){
+            var id = me.user['id'],
+                usersRef = me.firebaseRef.child('users/' + id);
+            usersRef.update(status);
+        }
     },
 
     //set the user here in the controller and update the cookie.
@@ -485,6 +487,7 @@ Ext.define('WebRTC.controller.Auth', {
                     if (user) {
                         Ext.util.Cookies.clear('user');
                         Ext.util.Cookies.set('user', JSON.stringify(user), expires);
+                        Ext.first('app-main').getViewModel().set('user',user);
                     }
                 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
@@ -496,7 +499,8 @@ Ext.define('WebRTC.controller.Auth', {
                 function (snapshot) {
                     var user = snapshot.val();
                     me.user =  user;
-                    Ext.first('app-main').getViewModel().data.user = user;
+                    Ext.first('app-main').getViewModel().set('user',user);
+                    Ext.first('app-main').getViewModel().set('name',user['name]']);
                     me.fireEvent('userData',user);
                     me.startPresence(id);
 
