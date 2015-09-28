@@ -42,7 +42,8 @@ Ext.define('WebRTC.view.settings.UserController', {
         var view = this.getView(),
             data = view.getForm().getFieldValues(),
             auth = WebRTC.app.getController('Auth'),
-            userId = auth.user['id'],
+            user = Ext.first('app-main').getViewModel().get('user'),
+            userId = user['id'],
             settings = Ext.getStore('Settings');
 
         auth.firebaseRef.child('users/' + userId).update({

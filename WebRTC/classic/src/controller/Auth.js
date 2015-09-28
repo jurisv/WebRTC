@@ -248,7 +248,13 @@ Ext.define('WebRTC.controller.Auth', {
 
     logout: function () {
         var me = this,
+            user = Ext.first('app-main').getViewModel().get('user'),
             firebase = me.firebaseRef;
+
+        if(user && user['isTemp']){
+           var userId =  userId = user['id'];
+           firebase.child('users/' + userId).remove();
+        }
 
         Ext.util.Cookies.clear('user');
 

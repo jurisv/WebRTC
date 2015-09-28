@@ -99,8 +99,9 @@ Ext.define('WebRTC.controller.Navigation', {
                                     action.stop();
                                 },
                                 success: function (record, operation) {
-                                   // Ext.util.Cookies.set('user', JSON.stringify(newUser.data), expires);
                                     Ext.util.Cookies.set('user', JSON.stringify( newUser.data ), expires);
+                                    Ext.first('app-main').getViewModel().set('user',user);
+                                    Ext.first('app-main').getViewModel().set('name',user['fn']);
                                     action.resume();
                                 },
                                 callback: function (record, operation, success) {

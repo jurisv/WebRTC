@@ -286,6 +286,13 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     onRoomSelect: function(view,record){
 
         if(!record) return;
+
+        // must have name to continue.. get one.
+        if( this.getViewModel().get('name') == null ){
+            this.redirectTo('room/' + record.get('id'));
+            return;
+        }
+
         if(!this.getViewModel().get('user')) return;
 
         var me = this,
@@ -299,15 +306,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             name = user['fn'],
             membersRef = auth.firebaseRef.child('roommembers/' + id + '/' + userId),
             room;
-
-        // must have name to continue.. get one.
-        if( this.getViewModel().get('name') == null ){
-            this.redirectTo('room/' + id);
-            return;
-        }
-
-
-
 
 
         if(defaultContent)
