@@ -107,6 +107,22 @@ Ext.define('auth.view.authentication.Login', {
                 },
                 {
                     xtype: 'box',
+                    html: '<div class="outer-div"><div class="seperator">OR</div></div>',
+                    margin: '10 0'
+                },
+                {
+                    xtype: 'button',
+                    scale: 'large',
+                    // ui: 'gray',
+                    iconAlign: 'right',
+                    iconCls: 'x-fa fa-right',
+                    text: 'Guest Access',
+                    listeners: {
+                        click: 'onGuestShow'
+                    }
+                },
+                {
+                    xtype: 'box',
                     hidden: true,
                     html: '<div class="outer-div"><div class="seperator">OR</div></div>',
                     margin: '10 0'

@@ -8,6 +8,4 @@ Ext.define('WebRTC.view.main.ViewportModel', {
         appTitle: 'Sencha Communicator',      // Title used for auth package
         authToken: 'myAuthTokenHere'    // This would be a user auth token like auth0 or  oAuth
     }
-
-
 });

@@ -18,6 +18,9 @@ Ext.define('auth.controller.Auth', {
         'passwordreset' : {
              action  : 'setCurrentView'
         },
+        'guest' : {
+            action  : 'setCurrentView'
+        },
         'login' : {
             action  : 'setCurrentView'
         },
@@ -49,6 +52,7 @@ Ext.define('auth.controller.Auth', {
                 logout: 'logout'
             },
             'authentication': {
+                guest: 'guest',
                 login: 'login',
                 loginFB: 'loginFB',
                 loginGitHub: 'loginGitHub',
@@ -135,6 +139,10 @@ Ext.define('auth.controller.Auth', {
         me.onFailure = request.failure;
 
         me.redirectTo('login');
+
+    },
+
+    guest: function(btn,data){
 
     },
 

@@ -10,6 +10,7 @@ Ext.define('auth.view.authentication.Register', {
         to remove the dependency to look them up for the 'modern' toolkit
         */
         'auth.view.authentication.LockingWindow',
+        'auth.view.authentication.Guest',
         'auth.view.authentication.Login',
         'auth.view.authentication.DeniedScreen',
         'auth.view.authentication.LockScreen',

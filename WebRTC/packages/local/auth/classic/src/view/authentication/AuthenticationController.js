@@ -56,7 +56,16 @@ Ext.define('auth.view.authentication.AuthenticationController', {
 
     onDone:  function(btn) {
         this.fireEvent('done', btn, this.getViewModel()['data'] );
+    },
+
+    onGuestShow:  function(btn) {
+        this.redirectTo('guest', btn,  true);
+    },
+
+    onEnterButton:  function(btn) {
+        this.fireEvent('guest', btn, this.getViewModel()['data'] );
     }
+
 
 
 });

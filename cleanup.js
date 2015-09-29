@@ -8,7 +8,25 @@ var firebase = require('firebase'), //npm install firebase
         {uid: "1", username: 'admin'},
         {admin: true}
     ),
+    Cleanup = {},
     baseRef =  new firebase( process.env.FirebaseUrl );
+
+
+Cleanup.removeTempUsers = function(){
+    baseRef.child('users').once("value",
+        function (snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                var user = childSnapshot.val();
+                if(user['isTemp'] == true){
+                 //   baseRef.child('users/' + user['id']).remove();
+                }
+            })
+
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        }
+    );
+};
 
 var baseRooms = {
     "355e25fe-b0ac-477d-8464-a7a4b39f1149":{"apiKey":"45254262","id":"355e25fe-b0ac-477d-8464-a7a4b39f1149","isPrivate":false,"isRoom":true,"jid":"","joined":false,"myJID":"/","name":"Default Room One","nickname":"","num_participants":"","owner":"","privacy":"","sessionId":"1_MX40NTI1NDI2Mn5-MTQzODM3NjAwNDc0NX5KQ3d0R2lzc2g2MGF3cmR3Mm9XSzRRR25-UH4","topic":"","unread_messages":0,"xmpp_name":""},
@@ -19,7 +37,9 @@ baseRef.authWithCustomToken(firebaseToken, function(error, result) {
     if (error) {
         console.log("Authentication Failed!", error);
     } else {
+        Cleanup.removeTempUsers();
         baseRef.child('rooms').set(baseRooms);
+        baseRef.child('connections').set({});
         baseRef.child('messages').set({});
         console.log('cleanup finished');
         setTimeout(function() {
@@ -28,4 +48,6 @@ baseRef.authWithCustomToken(firebaseToken, function(error, result) {
 
     }
 });
+
+
 

@@ -40,10 +40,5 @@ Ext.define('WebRTC.view.chat.PresenseModel', {
             autoLoad: true
         }
 
-    },
-    formulas: {
-        isAuthenticated: function (get) {
-            return get('user') != null
-        }
     }
 });

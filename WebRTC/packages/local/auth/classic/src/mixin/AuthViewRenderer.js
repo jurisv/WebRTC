@@ -2,6 +2,7 @@ Ext.define('auth.mixin.AuthViewRenderer', {
     extend: 'Ext.Mixin',
 
     validViews: {
+        'guest': {view: 'Guest'},
         'login': {view: 'Login'},
         'register': {view: 'Register'},
         'lock': {view: 'LockScreen'},

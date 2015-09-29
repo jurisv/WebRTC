@@ -8,7 +8,7 @@ Ext.define('WebRTC.controller.Navigation', {
             action  : 'onRouteHome'
         },
         'room/:id' : {
-            before  : 'onRouteBeforeRoom',
+           // before  : 'onRouteBeforeRoom',
             action  : 'onRouteRoom'
         },
         'token/:id' : {
@@ -36,6 +36,7 @@ Ext.define('WebRTC.controller.Navigation', {
     },
 
     onRouteHome: function(){
+
     },
 
     onRouteUnmatched:function(route){
@@ -45,7 +46,8 @@ Ext.define('WebRTC.controller.Navigation', {
         }
     },
 
-    onRouteBeforeRoom : function(id, action) {
+   /*
+   onRouteBeforeRoom : function(id, action) {
         var me = this,
             roomId = id;
 
@@ -60,7 +62,7 @@ Ext.define('WebRTC.controller.Navigation', {
 
         }else{
             Ext.StoreManager.lookup('rooms').load(function(){
-                var room = Ext.StoreManager.lookup('rooms').getById(roomId);
+                var room = Ext.StoreManager.lookup('rooms').getById(roomId); //lookup the value after callback
                 if(!room){
                     action.stop();
                     me.redirectTo('');
@@ -77,65 +79,16 @@ Ext.define('WebRTC.controller.Navigation', {
 
 
         if( room.get('isPublic') ){
-            if(!userCookie) {
-                //if(!tempUserCookie) {
-                    Ext.Msg.prompt('Nickname', 'Please enter your name', function (buttonId, value) {
-                        if (value) {
-                            var expires = new Date("October 13, 2095 11:13:00"),
-                                newUser = Ext.create('WebRTC.model.User',{
-                                    isTemp: true,
-                                    name: value,
-                                    status: 'temp',
-                                    statusOrder: -100,
-                                    fn: value
-                                });
-
-                            Ext.util.Cookies.clear('user');
-                            newUser.save({
-                                failure: function (record, operation) {
-                                    var error = JSON.parse(operation.error.response.responseText),
-                                        message = error.message.code || 'Unable to save.';
-
-                                    action.stop();
-                                },
-                                success: function (record, operation) {
-                                    Ext.util.Cookies.set('user', JSON.stringify( newUser.data ), expires);
-                                    Ext.first('app-main').getViewModel().set('user',user);
-                                    Ext.first('app-main').getViewModel().set('name',user['fn']);
-                                    action.resume();
-                                },
-                                callback: function (record, operation, success) {
-                                }
-                            });
-
-
-                        }else{
-                            action.stop();
-                        }
-                    });
-
-            }
-            else{
-                var user = JSON.parse( userCookie );
-                if(user['email']){
-                    // since we know it was a registered user just log them in.
-                    action.stop();
-                    me.fireEvent('authorize');
-                }else{
-                    Ext.first('app-main').getViewModel().set('user',user);
-                    Ext.first('app-main').getViewModel().set('name',user['fn']);
-                    action.resume();
-                }
-
-            }
+            action.resume();
         }else{
-            //all non public rooms need authorization
-            Ext.defer(function() {
-                action.stop();
-                me.fireEvent('authorize');
-            }, 1200);
+            if( room.get('isPrivate') ){
+                this.redirectTo('denied');
+            }else{
+                action.resume();
+            }
         }
     },
+    */
 
     onRouteRoom: function(id){
         var combo = Ext.first('combobox[reference=roomscombo]');

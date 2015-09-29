@@ -3,9 +3,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
     alias: 'viewmodel.chatroomscontainer',
 
     data: {
-        room: null,
-        name: null,
-        user: null
+        room: null
     },
     stores: {
         presense: {
@@ -26,7 +24,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
                             return true;
                         } else if (user && user['id'] == item.get('owner') ) {
                             return true;
-                        }  else if (user && user['id']) {
+                        }  else if (user && user['id'] && !user['isTemp']) {
                             return !item.get('isPrivate')
                         }else {
                             return false;
@@ -34,7 +32,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
                     }
                 }
             ],
-            autoLoad: true
+            autoLoad: true,
+            autosync: true
         }
     },
     formulas: {
