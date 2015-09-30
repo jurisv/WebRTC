@@ -108,24 +108,12 @@ Ext.define('WebRTC.controller.Auth', {
 
         console.log('AuthHandler Routine being run');
 
-        /*  if (error) {
-         if (window) {
-         window.getController().updateStatus("Login Failed! " + error);
+          if (error) {
+             if (window) {
+             window.getController().updateStatus("Login Failed! " + error);
+             }
+             me.fireEvent('failure',error);
          }
-         me.fireEvent('failure',error);
-         } else {
-
-         me.initUser(authData);
-
-         if(authData.password.isTemporaryPassword){
-         me.redirectTo('newpassword');
-         }else{
-         me.cleanupAuth();
-         me.fireEvent('login',authData);
-
-         }
-
-         }*/
     },
 
     // Callback which fires with any change of the current auth state
