@@ -18,7 +18,7 @@ Ext.define('opentok.controller.OpenTok', {
                 closeroom: 'onCloseRoom',
                 callroom: 'onCallRoom',
                 endcall: 'onUnpublish',
-                chatmessage: 'onChatEmit',
+                // chatmessage: 'onChatEmit',
                 showPublisherAudio: 'onShowAudio',
                 hidePublisherAudio: 'onHideAudio',
                 showPublisherVideo: 'onShowVideo',
@@ -62,7 +62,7 @@ Ext.define('opentok.controller.OpenTok', {
     bindSessionEvents: function(session){
         var me = this;
         session.on({
-            'signal:chat': Ext.bind(me.onChatReceived,me),
+            // 'signal:chat': Ext.bind(me.onChatReceived,me),
             archiveStarted: Ext.bind(me.onArchiveStarted,me),
             archiveStopped: Ext.bind(me.onArchiveStopped,me),
             connectionCreated: Ext.bind(me.onConnectionCreated,me),
