@@ -9,8 +9,16 @@ Ext.define('auth.view.authentication.LockingWindow', {
 
     requires: [
         'auth.view.authentication.AuthenticationController',
+        'auth.view.authentication.AuthenticationModel',
         'Ext.layout.container.VBox'
     ],
+
+
+    controller: 'authentication',
+    viewModel: {
+        type: 'authentication'
+    },
+
 
     cls: 'auth-locked-window',
     closable: false,
@@ -26,5 +34,5 @@ Ext.define('auth.view.authentication.LockingWindow', {
         pack: 'center'
     },
 
-    controller: 'authentication'
+
 });
