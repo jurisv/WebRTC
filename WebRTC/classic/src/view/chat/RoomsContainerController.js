@@ -305,7 +305,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             userId = user['id'],
             name = user['fn'],
             membersRef = auth.firebaseRef.child('roommembers/' + id + '/' + userId),
-            room;
+            newroom;
 
 
         if(defaultContent)
@@ -316,18 +316,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         //only add one
         if (!tab) {
 
-            membersRef.update({
-                id: userId,
-                callStatus:'idle',
-                micStatus:'',
-                name: name
-            });
-            // when I disconnect, remove this member
-            membersRef.onDisconnect().remove();
 
-
-
-            room = {
+            newroom = {
                 xtype: 'chatroom',
                 // closable: true,
                 // iconCls: 'x-fa fa-comments',
@@ -336,17 +326,14 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             };
 
             Ext.each(roomtabs.items.items, function(childPanel) {
-                var sessionId = childPanel.getViewModel().get('room').get('sessionId');
-                // childPanel.getViewModel().getStore('members').getProxy().socket.emit('leave',sessionId)
-                me.fireEvent('closeroom',sessionId);
-                // remove member from room
-
-                auth.firebaseRef.child('roommembers/' + childPanel.getViewModel().get('room').get('id') + '/' + userId).remove();
-
+                var sessionId = childPanel.getViewModel().get('room').get('sessionId'),
+                    room = childPanel.getViewModel().get('room'),
+                    roomId = childPanel.getViewModel().get('room').get('id');
+                me.fireEvent('closeroom',childPanel, room, user);
                 roomtabs.remove(childPanel, true);
             });
 
-            tab = roomtabs.insert(0, room);
+            tab = roomtabs.insert(0, newroom);
 
             tab.getViewModel().set('room', record);
 
@@ -356,8 +343,8 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
             tab.getViewModel().getStore('members').getProxy().setExtraParam('room',id);
             tab.getViewModel().getStore('members').load();
 
-            // Notify TokBox in this case
-            me.fireEvent('joinroom', tab, record.data, name);
+
+            me.fireEvent('joinroom', tab, record, user);
         }
 
         this.redirectTo('room/' + id);
@@ -366,39 +353,28 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
 
     onRoomActivate: function(tab){
-        var me = this,
-            id = tab.getViewModel().get('room').id,
-            sessionId = tab.getViewModel().get('room').get('sessionId'),
+        var room = tab.getViewModel().get('room'),
+            user = this.getViewModel().get('user'),
             combo = Ext.first('combobox[reference=roomscombo]');
 
-        combo.select(id);
-
-        var record = combo.getSelection(),
-            name = me.getViewModel().get('name');
-
-        this.fireEvent('resumeroom',sessionId);
+        this.fireEvent('resumeroom',tab,room,user);
     },
 
     onRoomDeactivate: function(tab){
-        var sessionId = tab.getViewModel().get('room').get('sessionId'),
-            userId = this.getViewModel().get('user').id;
+        var room = tab.getViewModel().get('room'),
+            user = this.getViewModel().get('user');
 
-        // tab.getController().roomMemberRemove(userId);
 
-        this.fireEvent('pauseroom',sessionId);
+        this.fireEvent('pauseroom',tab,room,user);
     },
 
     onRoomClose: function(tab){
         var room = tab.getViewModel().get('room'),
-            sessionId = room.get('sessionId'),
-            roomId =  room.get('id'),
-            userId = this.getViewModel().get('user').id,
+            user = this.getViewModel().get('user'),
             combo = Ext.first('combobox[reference=roomscombo]');
         combo.reset();
 
-        // tab.getController().roomMemberRemove(userId);
-
-        this.fireEvent('closeroom',sessionId);
+        this.fireEvent('closeroom',tab,room,user);
     },
 
 

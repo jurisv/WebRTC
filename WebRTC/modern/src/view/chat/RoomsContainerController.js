@@ -255,28 +255,33 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
     onRoomActivate: function(tab){
         var me = this,
+            user = this.getViewModel().get('user'),
+            room = tab.getViewModel().get('room'),
             sessionId = tab.getViewModel().get('room').get('sessionId');
 
-        this.fireEvent('resumeroom',sessionId);
+        this.fireEvent('resumeroom',tab, room, user);
     },
 
     onRoomRemoved: function(tab){
-        var sessionId = tab.getViewModel().get('room').get('sessionId');
+        var user = this.getViewModel().get('user'),
+            room = tab.getViewModel().get('room'),
+            sessionId = tab.getViewModel().get('room').get('sessionId');
 
-        this.fireEvent('pauseroom',sessionId);
+        this.fireEvent('pauseroom',tab, room, user);
     },
 
     onRoomClose: function(tab){
-        console.log('onRoomClose')
+        console.log('onRoomClose');
 
         var room = tab.getViewModel().get('room'),
             sessionId = room.get('sessionId'),
             roomId =  room.get('id'),
+            user = this.getViewModel().get('user'),
             userId = this.getViewModel().get('user').id;
 
         tab.getController().roomMemberRemove(userId);
 
-        this.fireEvent('closeroom',sessionId);
+        this.fireEvent('closeroom',tab, room, user);
     },
 
 

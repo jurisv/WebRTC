@@ -7,9 +7,40 @@ Ext.define('WebRTC.view.chat.MembersController', {
                 visibilityChanged: 'onVisibilityChanged',
                 idle: 'onIdle',
                 active: 'onActive'
+            },
+            '*': {
+                closeroom: 'onCloseRoom',
+                joinroom: 'onJoinRoom'
             }
         }
     },
+
+    onCloseRoom: function(tab,room, user){
+        var auth = WebRTC.app.getController('Auth'),
+            membersRef = auth.firebaseRef.child('roommembers/' + room['id'] + '/' + user['id']);
+
+        // remove member from room
+        membersRef.remove();
+
+        console.log('members | room closed')
+    },
+
+    onJoinRoom: function(tab, room, user){
+        var auth = WebRTC.app.getController('Auth'),
+            membersRef = auth.firebaseRef.child('roommembers/' + room['id'] + '/' + user['id']);
+
+        membersRef.update({
+            id: user['id'],
+            callStatus:'idle',
+            micStatus:'',
+            name: user['fn']
+        });
+        // when I disconnect, remove this member
+        membersRef.onDisconnect().remove();
+        console.log('members | room joined')
+    },
+
+
 
     onDblClick: function(list,record){
         console.log('dble user');
