@@ -7,17 +7,17 @@ Ext.define('auth.view.authentication.Dialog', {
     extend: 'Ext.form.Panel',
     xtype: 'authdialog',
 
-    requires: [
-        'auth.view.authentication.AuthenticationController',
-        'auth.view.authentication.AuthenticationModel',
-        'Ext.form.Panel'
-    ],
+    // requires: [
+    //     'auth.view.authentication.AuthenticationController',
+    //     'auth.view.authentication.AuthenticationModel',
+    //     'Ext.form.Panel'
+    // ],
 
-    controller: 'authentication',
-    viewModel: {
-        type: 'authentication'
-    },
-
+    // // controller: 'authentication',
+    // viewModel: {
+    //     type: 'authentication'
+    // },
+    
     /*
      * Seek out the first enabled, focusable, empty textfield when the form is focused
      */

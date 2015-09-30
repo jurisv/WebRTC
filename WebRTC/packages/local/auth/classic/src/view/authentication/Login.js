@@ -12,11 +12,11 @@ Ext.define('auth.view.authentication.Login', {
 
     title: 'Let\'s Log In',
     defaultFocus: 'authdialog', // Focus the Auth Form to force field focus as well
-
+    
     items: [
         {
             xtype: 'authdialog',
-            defaultButton : 'loginButton',
+            defaultButton : 'loginButton',            
             autoComplete: true,
             bodyPadding: '20 20',
             cls: 'auth-dialog-login',
