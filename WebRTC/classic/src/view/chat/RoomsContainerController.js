@@ -21,8 +21,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 init: 'onAuthInit',
                 islogin: 'onAuthIsLogin',
                 islogout: 'onAuthIsLogout',
-                login: 'onAuthLogin',
-                userData: 'onAuthUserData'
+                login: 'onAuthLogin'
             },
             '*':{
                 openUser: 'onUserClick'
@@ -47,16 +46,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
     onAuthInit: function(){
        console.log('AuthInit');
        this.fireEvent('authorize');
-    },
-
-    //something in the user data changed
-    onAuthUserData: function(user){
-        console.log('user data changed');
-        this.getViewModel().set('user', user);
-        this.getViewModel().set('userid', user['id']);
-        this.getViewModel().set('name', user['fn']);
-
-        Ext.StoreManager.lookup('rooms').load();
     },
 
     //user was already logged in
