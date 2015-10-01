@@ -267,7 +267,8 @@ Ext.define('WebRTC.controller.Auth', {
         if (user && user['isTemp']) {
             var userId = user['id'],
                 email = user['email_userid'];
-
+            alert('deleting user');
+            return;
             firebase.child('users/' + userId).remove();
             firebase.removeUser({
                 email: email,
