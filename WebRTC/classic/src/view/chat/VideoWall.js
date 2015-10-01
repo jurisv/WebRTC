@@ -7,8 +7,8 @@ Ext.define('WebRTC.view.chat.VideoWall', {
     layout: {
         type: 'box',
         pack: 'center',
-        align: 'middle',
-        vertical: false
+        align: 'stretch',
+        vertical: true
     },
 
     items: [],

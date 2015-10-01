@@ -108,8 +108,10 @@ Ext.define('WebRTC.view.chat.RoomController', {
                 statusOrder: 60,
                 lastActivity: null
             });
+            you.show();
             this.fireEvent('callroom',  {sessionId: sessionId, element: you.id, video: true} );
         }else{
+            you.hide();
             this.onEndVideoCall(button);
         }
     },

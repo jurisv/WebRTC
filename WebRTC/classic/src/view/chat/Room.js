@@ -14,10 +14,6 @@ Ext.define('WebRTC.view.chat.Room', {
         type: 'chatroom'
     },
 
-  /*  bind : {
-        title : '{room.name}'
-    },
-*/
     items: [
         {
             layout: {
@@ -25,8 +21,8 @@ Ext.define('WebRTC.view.chat.Room', {
                 vertical: false,
                 align: 'stretch'
             },
-            flex:4,
-            items:[
+            flex: 4,
+            items: [
                 {
                     layout: {
                         type: 'box',
@@ -53,21 +49,17 @@ Ext.define('WebRTC.view.chat.Room', {
                         vertical: true,
                         align: 'stretch'
                     },
+                    minWidth: 200,
                     flex: 1,
                     items: [
                         {
-                            items: {
-                                cls: 'youBox',
-                                xtype: 'container',
-                                layout: 'fit',
-                                minHeight: 180,
-                                reference: 'you'
-                            },
-                            bind:{
+                            xtype: 'toolbar',
+                            docked: 'top',
+                            cls: 'roomControls',
+                            bind: {
                                 hidden: '{!isWebRTCSupported}'
                             },
-                            bodyPadding: 6,
-                            bbar: [
+                            items: [
                                 {
                                     bind: {
                                         disabled: '{inVideoCall}',
@@ -112,11 +104,36 @@ Ext.define('WebRTC.view.chat.Room', {
                                 }
                             ]
                         },{
+                            xtype:'panel',
+                            bodyPadding: 6,
+                            items: [{
+                                xtype: 'container',
+                                // cls: 'youBox',
+                                layout: 'fit',
+                                hidden: true,
+                                minwidth: 200,
+                                height: 200,
+                                minHeight: 180,
+                                reference: 'you'
+                            }],
+                            bind: {
+                                hidden: '{!isWebRTCSupported}'
+                            }
+
+                        },
+                        {
                             // title: 'Members',
                             // iconCls: 'x-fa fa-group fa-lg',
                             // collapsable: true,
                             xtype: 'chatmembers',
+                            minHeight: 80,
                             flex: 1
+                        }, {
+                            xtype: 'chatvideowall',
+                            hidden: true,
+                            bodyPadding: 6,
+                            minHeight: 200,
+                            flex: 3
                         }, {
                             title: 'Files',
                             hidden: true,
@@ -127,16 +144,9 @@ Ext.define('WebRTC.view.chat.Room', {
                     ]
                 }
             ]
-        },
-        {
-            xtype: 'chatvideowall',
-            hidden: true,
-            bodyPadding: 6,
-            minHeight: 300,
-            flex: 1
         }
-    ]
 
+    ]
 
 
 });

@@ -61,6 +61,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
         ,'->',
         {
             iconCls: 'x-fa fa-user',
+            hidden: true,
             bind:{
                 text: '{name}'
             },
@@ -68,6 +69,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
         },
         {
             iconCls: 'x-fa fa-expand',
+            hidden: true,
             handler: 'onToggleFullScreen'
         },{
             iconCls: 'x-fa fa-gear',
@@ -78,6 +80,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
         },{
             //This is left here on purpose to easily remove branding piece from project
             style:'background-image: url(/static/images/TokBoxIcon.png) !important; background-size: 29px 29px; background-repeat: no-repeat; ',
+            hidden: true,
             plain: true,
             listeners: {
                 click: function(){
@@ -102,6 +105,39 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
     ],
     tabPosition: 'bottom',
     layout:'fit',
+    tools: [
+        {
+            type: 'gear',
+            callback: 'onUserClick'
+        },{
+            type: 'save',
+            bind:{
+                hidden: '{isAdmin}'
+            },
+            handler: 'onGearClick'
+        }, {
+            type: 'maximize',
+            callback: 'onToggleFullScreen'
+        },{
+            type: 'help',
+            callback: function() {
+                Ext.create('Ext.window.Window', {
+                    title: 'About',
+                    iconCls: 'x-fa fa-info-circle fa-lg',
+                    height: 640,
+                    width: 600,
+                    layout: 'fit',
+                    modal: true,
+                    items: {
+                        xtype: 'panel',
+                        html: '<a href="http://www.sencha.com/services/" target="_blank" ><img src="/static/images/About.png" border=0 ></a> ',
+                        border: false
+
+                    }
+                }).show();
+            }
+        }
+    ],
     items: [
     {
         defaultContent: true,

@@ -31,29 +31,6 @@ Ext.define('WebRTC.view.main.Viewport', {
         title: 'Sencha Communicator',
         flex:5,
 
-        /*tools: [
-        {
-            type: 'plus',
-            callback: function() {
-                // show help here
-            }
-        }, {
-            type: 'gear',
-            callback: function() {
-                // do refresh
-            }
-        }, {
-            type: 'maximize',
-            callback: function() {
-                // do refresh
-            }
-        },{
-            type: 'help',
-            callback: function() {
-                // show help here
-            }
-        }
-        ],*/
 
         reference: 'roomtabs'
     }]
