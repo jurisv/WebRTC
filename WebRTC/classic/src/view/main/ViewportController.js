@@ -6,7 +6,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
         'Ext.window.Toast'
     ],
 
-
     listen: {
         controller: {
             'auth':{
@@ -14,7 +13,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
             }
         }
     },
-
 
     //something in the user data changed
     onAuthUserData: function(user){
@@ -24,7 +22,6 @@ Ext.define('WebRTC.view.main.ViewportController', {
         this.getViewModel().set('name', user['fn']);
 
         Ext.StoreManager.lookup('rooms').load();
-    },    
-
+    }
 
 });
