@@ -79,6 +79,16 @@ Ext.define('WebRTC.view.settings.User', {
                                 inputValue: 'f'
                             }]
                         }]
+                    },{
+                        xtype:'textfield',
+                        fieldLabel: '#UN',
+                        anchor: '100%',
+                        minWidth:600,
+                        name: 'id',
+                        disabled: true,
+                        bind: {
+                            value: '{id}'
+                        }
                     }
                 ]
             }, {
