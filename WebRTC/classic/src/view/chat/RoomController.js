@@ -145,8 +145,11 @@ Ext.define('WebRTC.view.chat.RoomController', {
         this.getViewModel().set('useCamera', true);
         this.getViewModel().set('useMic',true);
 
-        this.setMemberCallStatus({callStatus:'idle'});
-        this.setMemberCallStatus({micStatus:''});
+        this.setMemberCallStatus({
+            callStatus:'idle',
+            micStatus:''
+        });
+        // this.setMemberCallStatus({micStatus:''});
         auth.setPresenseStatus({
             status: 'online',
             statusOrder: 100,
