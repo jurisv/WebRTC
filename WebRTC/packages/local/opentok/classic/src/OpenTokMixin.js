@@ -67,6 +67,7 @@ Ext.define('opentok.OpenTokMixin', {
             itemId: this.getSafeStreamCmpId(event.stream.id),
             html:'<div id="' + event.stream.id + '"></div>',
             flex: 1,
+            maxHeight: 300,
             minWidth: 150,
             minHeight: 150
         });

@@ -9,7 +9,13 @@
   border-spacing: 0px;
   width: 100%;
 
+  .chat-wrap {
+    cursor: pointer;
 
+  }
+  .selectable{
+    -webkit-user-select: initial;
+  }
 
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#37bcd3+0,000000+100&amp;0.11+0,0+54 */
   background: -moz-linear-gradient(top,  rgba(55,188,211,0.11) 0%, rgba(25,86,97,0) 54%, rgba(0,0,0,0) 100%); /* FF3.6+ */

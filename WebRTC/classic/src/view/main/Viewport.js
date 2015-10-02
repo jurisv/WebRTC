@@ -14,13 +14,13 @@ Ext.define('WebRTC.view.main.Viewport', {
         // title: 'Online',
         // collapsable: true,
         // iconCls: 'x-fa fa-group fa-lg',
-        title: 'People',
+        title: 'All Users',
         xtype: 'chatpresense',
         region:'west',
         collapsable: true,
         collasped: true,
         bind: {
-            hidden: '{!isAuthenticated}'
+            hidden: '{!isAdmin}'
         },
         split:true,
         minWidth: 200,

@@ -7,5 +7,14 @@ Ext.define('WebRTC.view.main.ViewportModel', {
         user: null,                     // set cookie on init
         appTitle: 'Sencha Communicator',      // Title used for auth package
         authToken: 'myAuthTokenHere'    // This would be a user auth token like auth0 or  oAuth
+    },
+    formulas: {
+        isUser: function (get) {
+            return !!get('user');
+        },
+        isAdmin: function (get) {
+            return get('name') == 'admin';    //shows config button if name is admin
+        }
+
     }
 });

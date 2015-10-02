@@ -23,7 +23,7 @@ Ext.define('WebRTC.view.chat.History', {
             '<td class="from">',
             '{from}',
             '</td>',
-            '<td class="message">',
+            '<td class="message selectable">',
             '{[this.formatMessage(values.message)]}',
             '</td>',
             '<td class="date">',

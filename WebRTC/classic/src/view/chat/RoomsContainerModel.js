@@ -37,12 +37,6 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
         }
     },
     formulas: {
-        isUser: function (get) {
-            return !!get('user');
-        },
-        isAdmin: function (get) {
-            return get('name') != 'admin';    //shows config button if name is admin
-        },
         isRoomSelectedByOwner: function (get) {
             var user = Ext.first('chatroomscontainer').getViewModel().get('user');
             if (user) {

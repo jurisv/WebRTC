@@ -74,7 +74,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
         },{
             iconCls: 'x-fa fa-gear',
             bind:{
-                hidden: '{isAdmin}'
+                hidden: '{!isAdmin}'
             },
             handler: 'onGearClick'
         },{
@@ -112,7 +112,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
         },{
             type: 'save',
             bind:{
-                hidden: '{isAdmin}'
+                hidden: '{!isAdmin}'
             },
             handler: 'onGearClick'
         }, {
