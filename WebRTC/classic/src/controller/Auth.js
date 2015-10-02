@@ -267,8 +267,8 @@ Ext.define('WebRTC.controller.Auth', {
         if (user && user['isTemp']) {
             var userId = user['id'],
                 email = user['email_userid'];
-            alert('deleting user');
-            return;
+            // alert('deleting user');
+            // return;
             firebase.child('users/' + userId).remove();
             firebase.removeUser({
                 email: email,
@@ -289,16 +289,14 @@ Ext.define('WebRTC.controller.Auth', {
                 } else {
                     console.log("User account deleted successfully!");
                     Ext.util.Cookies.clear('user');
-                    window.location.hash = null;
-                    window.location.href = window.location.pathname;
                     firebase.unauth();
+                    this.redirectTo('login');
                 }
             });
         }else{
             Ext.util.Cookies.clear('user');
-            window.location.hash = null;
-            window.location.href = window.location.pathname;
             firebase.unauth();
+            this.redirectTo('login')
         }
 
     },
