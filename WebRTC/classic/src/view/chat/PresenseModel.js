@@ -36,7 +36,7 @@ Ext.define('WebRTC.view.chat.PresenseModel', {
                 {property: 'statusOrder', direction: 'DESC'},
                 {property: 'fn', direction: 'ASC'}
             ],
-            autoSync: true,
+            // autoSync: true,
             autoLoad: true
         }
 
