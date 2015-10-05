@@ -18,16 +18,20 @@
             <p>Your username is your email address. Use your email and new password to log in to the room link below.</p>
         <% } %>
 
+        <p> To gain access to the video conference going on in this room click the link below.</p>
+        <p>If you are already a member then enter your username and password.</p>
+        <p> If not, you will need to register. You may also log in as 'guest'.</p>
 
-        <p> To gain access to the video conference going on in this room click <a href="<%= origin %>/#room/<%= content.room.id %>" target=" _blank">here now</a>.</p>
-        <p>Then enter your username and password.</p>
-
-            <% if (content.room.password) { %>
-            <p>&nbsp;</p>
-            <h3>This is a private room.</h3>
-            <p>You will need a password to access it.</p>
-            <p><b>Password:</b> <%= content.room.password %> </p>
+        <center>
+            <% if (content.room.isPrivate) { %>
+            <h1><a href="<%= origin %>/?pwd=<%= content.room.password %>#token/<%= content.token %>" target=" _blank">ENTER ROOM</a></h1>
             <% } %>
+            <% if (!content.room.isPrivate) { %>
+            <h1><a href="<%= origin %>/#room/<%= content.room.id %>" target=" _blank">ENTER ROOM</a></h1>
+            <% } %>
+        </center>
+
+
         </div>
     </div>
 </div>

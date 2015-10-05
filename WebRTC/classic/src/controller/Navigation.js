@@ -104,30 +104,50 @@ Ext.define('WebRTC.controller.Navigation', {
     },
 
     onRouteBeforeToken : function(id, action) {
-        var me=this;
+        var me=this,
+            qs= Ext.Object.fromQueryString(location.search);
 
-        Ext.Msg.prompt('Password','Please enter password for this room',function(buttonId,value){
-            if(value) {
-                Ext.Ajax.request({
-                    url     : '/data/jwtdecode/' + id +'?pwd=' + value,
-                    success : function(response) {
-                        var store = me.getViewModel().getStore('rooms');
+        if(qs['pwd']){
+            Ext.Ajax.request({
+                url     : '/data/jwtdecode/' + id +'?pwd=' + qs['pwd'],
+                success : function(response) {
+                    var store = Ext.StoreManager.lookup('rooms');
+                    me.tokenInfo = JSON.parse(response.responseText);
+                    //add the private room to the store.
+                    store.add(me.tokenInfo);
+                    action.resume();
+                },
+                failure : function(response) {
+                    // var error = JSON.parse(response.responseText);
+                    Ext.Msg.alert('Denied', 'The token for this room is no longer valid');
+                    action.stop();
+                }
+            });
+        }else{
+            Ext.Msg.prompt('Password','Please enter password for this room',function(buttonId,value){
+                if(value) {
+                    Ext.Ajax.request({
+                        url     : '/data/jwtdecode/' + id +'?pwd=' + value,
+                        success : function(response) {
+                            var store = Ext.StoreManager.lookup('rooms');
+                            me.tokenInfo = JSON.parse(response.responseText);
+                            //add the private room to the store.
+                            store.add(me.tokenInfo);
+                            action.resume();
+                        },
+                        failure : function(response) {
+                            // var error = JSON.parse(response.responseText);
+                            Ext.Msg.alert('Denied', 'The password entered is no longer valid');
+                            action.stop();
+                        }
+                    });
+                }else{
+                    me.redirectTo('')
+                }
+            });
+        }
 
-                        me.tokenInfo = JSON.parse(response.responseText);
-                        //add the private room to the store.
-                        store.add(me.tokenInfo);
-                        action.resume();
-                    },
-                    failure : function(response) {
-                        // var error = JSON.parse(response.responseText);
-                        Ext.Msg.alert('Denied', 'The password entered is no longer valid');
-                        action.stop();
-                    }
-                });
-            }else{
-                me.redirectTo('')
-            }
-        });
+
 
     },
 

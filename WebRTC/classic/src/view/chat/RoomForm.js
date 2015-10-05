@@ -48,15 +48,8 @@ Ext.define('WebRTC.view.chat.RoomForm', {
                     bind: '{theRoom.isPrivate}',
                     checked: false,
                     inputValue: true
-                },{
-                    xtype:'textfield',
-                    fieldLabel: 'Room Password',
-                    name: 'password',
-                    bind: {
-                        value: '{theRoom.password}',
-                        hidden: '{!theRoom.isPrivate}'
-                    }
                 }
+
             ]
         },{
             xtype:'textfield',
@@ -67,7 +60,16 @@ Ext.define('WebRTC.view.chat.RoomForm', {
                 value: '{theRoom.id}',
                 hidden: '{!theRoom.id}'
             }
-        }
+        },{
+         xtype:'textfield',
+         fieldLabel: 'Room Password',
+         name: 'password',
+         disabled: true,
+         bind: {
+             value: '{theRoom.password}',
+             hidden: '{!theRoom.isPrivate}'
+         }
+         }
     ],
 
     bbar:[

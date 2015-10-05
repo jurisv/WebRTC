@@ -189,7 +189,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                 params:  room.data,
                 success : function(response) {
                     var token = response.responseText, message,
-                        message = '<a target="_new" href="' + window.location.origin + '/#token/' + token + '">' + window.location.origin + '/#token/' + token + '</a> <br/> Password to enter room: ' + room.data.password ;
+                        message = '<a target="_new" href="' + window.location.origin + '?pwd=' + room.data.password + '#token/' + token + '">' + window.location.origin  + '?pwd=' + room.data.password + '#token/' + token + '</a>';
                     me.showRoomShare(button,room,message,token)
                 },
                 failure : function() {

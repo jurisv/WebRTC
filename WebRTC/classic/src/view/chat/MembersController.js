@@ -43,7 +43,27 @@ Ext.define('WebRTC.view.chat.MembersController', {
 
 
     onDblClick: function(list,record){
-        console.log('dble user');
+        debugger;
+        var auth = WebRTC.app.getController('Auth'),
+            user = this.getViewModel().get('user'),
+            member = record.get('id'),
+            userroomsRef = auth.firebaseRef.child('userrooms/' + user['id']+ '/' + member);
+
+        if(user['id'] == record.get('id')){
+            this.fireEvent('openUser');
+        }else{
+
+        }
+
+       /* membersRef.update({
+            id: user['id'],
+            callStatus:'idle',
+            micStatus:'',
+            name: user['fn']
+        });
+        // when I disconnect, remove this member
+        membersRef.onDisconnect().remove();
+        console.log('members | room joined')*/
     },
 
     onVisibilityChanged: function(){

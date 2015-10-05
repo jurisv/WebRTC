@@ -7,10 +7,12 @@ Ext.define('WebRTC.view.chat.RoomFormController', {
         form = window.down('form'),
         data = form.getValues(),
         userid = Ext.first('chatroomscontainer').getViewModel().get('user')['id'],
-        store = Ext.StoreManager.lookup('rooms');
+        store = Ext.StoreManager.lookup('rooms'),
+        password;
 
 
     if (form.isValid()) {
+
 
         //If there is no view model created then it is new otherwise the model has the record
         if ( window.getViewModel().get('theRoom')['id'] != null )
@@ -24,6 +26,11 @@ Ext.define('WebRTC.view.chat.RoomFormController', {
             form.up('window').close();
 
         } else {
+            if(data['isPrivate']){
+                password =  "id" + Math.random().toString(16).slice(2) + 'uv' + (new Date()).getTime();
+                data['password'] = password;
+            }
+
             Ext.Msg.wait('Creating', 'Creating room...');
             data.owner = userid;
             store.add(data);
