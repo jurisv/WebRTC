@@ -447,7 +447,9 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         }
 
         var window =  Ext.create('Ext.window.Window', {
-            title: 'User',
+            bind:{
+                title: 'Settings | {user.name} '
+            },
             iconCls: 'x-fa fa-user fa-lg',
             height: 600,
             width: 600,

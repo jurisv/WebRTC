@@ -17,7 +17,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
             filters: [
                 function (item) {
                     if (item) {
-                        var user = Ext.first('chatroomscontainer').getViewModel().get('user');
+                        var user = Ext.first('app-main').getViewModel().get('user');
                         if (item.get('isPublic')) {
                             return true;
                         } else if (user && user['name'] == 'admin' ) {

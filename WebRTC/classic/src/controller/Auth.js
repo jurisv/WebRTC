@@ -1,6 +1,5 @@
 /**
- * @class WebRTC.overrides.Auth
- * @override auth.controller.Auth
+
  *
  *  Description: The authorization package need to override the default behavior for registration and login
  *  for your specific application. There are four main methods to override:
@@ -45,6 +44,7 @@ Ext.define('WebRTC.controller.Auth', {
         // Add a single document event listener to handle when the user tabs away.
         if (document.addEventListener) document.addEventListener("visibilitychange", me.visibilityChanged.bind(me));
 
+
         WebRTC.model.AdminSettings.load(0, {
             success: function (record, operation) {
                 if (!record.get('otApiKey')) {
@@ -54,6 +54,8 @@ Ext.define('WebRTC.controller.Auth', {
                     me.FBUrl = record.data.fbUrl;
                     me.firebaseRef = new Firebase(me.FBUrl);
                     me.fireEvent('init');
+
+
                 }
             }
         });
@@ -69,6 +71,7 @@ Ext.define('WebRTC.controller.Auth', {
     // starts checking for authorized users
     authorize: function () {
         var me = this;
+
 
         if (me.isAuthenticating) {
             console.log('was authenticating');
@@ -90,12 +93,26 @@ Ext.define('WebRTC.controller.Auth', {
         if (!me.firebaseRef) {
             Ext.Function.defer(function () {
                     console.log('defered FB auth');
-                    me.firebaseRef.onAuth(me.authDataCallback, me);
+                    if(Ext.isSpace) {
+                        Ext.onSpaceReady().then(
+                            function() {
+                                me.loginSpaceClient();
+                            });
+                    }else{
+                        me.firebaseRef.onAuth(me.authDataCallback, me);
+                    }
                 },
                 1500);
         } else {
             console.log('FB auth');
-            me.firebaseRef.onAuth(me.authDataCallback, me);
+            if(Ext.isSpace) {
+                Ext.onSpaceReady().then(
+                    function() {
+                        me.loginSpaceClient();
+                    });
+            }else{
+               me.firebaseRef.onAuth(me.authDataCallback, me);
+            }
         }
 
     },
@@ -251,6 +268,84 @@ Ext.define('WebRTC.controller.Auth', {
                 }
             );
         }
+    },
+
+    loginSpaceClient: function(){
+        var me=this,
+            firebase = me.firebaseRef,
+            un = 'space-' + Ext.space.Profile.org.name + '-' + Ext.space.Profile.user.userId,
+            pwd = 'pwd-' + Ext.space.Profile.user.userId;
+
+        //Try to login, if fails try to register then login.
+        firebase.authWithPassword(
+            {
+                email: un,
+                password: pwd
+            }
+            ,function(err,authData){
+               if (authData) {
+                    console.log('Space User logged in');
+                   me.firebaseRef.onAuth(me.authDataCallback, me);
+                } else {
+                    me.registerSpaceClient();
+                }
+            }
+        );
+
+        // alert( 'Auth |' + Ext.space.Profile.user.userId + ' - '  +  Ext.space.Profile.user);
+        Ext.space.Logger.log("current username", Ext.space.Profile.user.userId);
+    },
+
+    registerSpaceClient: function(){
+        var me=this,
+            expires = new Date("October 13, 2095 11:13:00"),
+            firebase = me.firebaseRef,
+            un = 'space-' + Ext.space.Profile.org.name + '-' + Ext.space.Profile.user.userId,
+            pwd = 'pwd-' + Ext.space.Profile.user.userId,
+            newUser = Ext.create('WebRTC.model.User', {
+                fn: Ext.space.Profile.user.userId,
+                isSpace: true,
+                spaceUserId: Ext.space.Profile.user.userId,
+                spaceOrgId: Ext.space.Profile.org.name,
+                email_userid: un,
+                name: Ext.space.Profile.user.userId,
+                password: pwd
+            });
+
+        Ext.util.Cookies.clear('user');
+
+
+        //Post to server as it has admin access to create users.
+        newUser.save({
+            failure: function (record, operation) {
+                var error = JSON.parse(operation.error.response.responseText),
+                    message = error.message.code || 'Unable to save.';
+                alert(error);
+            },
+            success: function (record, operation) {
+                Ext.util.Cookies.set('user', JSON.stringify(newUser.data), expires);
+            },
+            callback: function (record, operation, success) {
+                // alert('space login | ' + Ext.space.Profile.user.userId);
+                firebase.authWithPassword(
+                    {
+                        email: un,
+                        password: pwd
+                    }
+                    ,function(err,authData){
+                        if (authData) {
+                            console.log('New Space User logged in');
+                            me.firebaseRef.onAuth(me.authDataCallback, me);
+                        } else {
+                            me.registerSpaceClient();
+                        }
+                    }
+                );
+
+            }
+
+
+        })
     },
 
     logout: function () {

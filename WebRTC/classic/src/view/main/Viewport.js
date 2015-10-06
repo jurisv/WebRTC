@@ -28,10 +28,10 @@ Ext.define('WebRTC.view.main.Viewport', {
     },{
         xtype:'chatroomscontainer',
         region:'center',
-        title: 'Sencha Communicator',
         flex:5,
-
-
+        bind: {
+            title: 'Sencha Communicator  | {user.fn}'
+        },
         reference: 'roomtabs'
     }]
 });

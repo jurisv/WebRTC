@@ -17,9 +17,46 @@ Cleanup.removeTempUsers = function(){
         function (snapshot) {
             snapshot.forEach(function(childSnapshot) {
                 var user = childSnapshot.val();
-                if(user['isTemp'] == true){
-                 //   baseRef.child('users/' + user['id']).remove();
+                if(user['isTemp'] == true) {
+                    baseRef.child('users/' + user['id']).remove(function(error) {
+                        if (error) {
+                            switch (error.code) {
+                                case "INVALID_USER":
+                                    console.log("The specified user account does not exist.");
+                                    break;
+                                case "INVALID_PASSWORD":
+                                    console.log("The specified user account password is incorrect.");
+                                    break;
+                                default:
+                                    console.log("Error removing user:", error);
+                            }
+                        } else {
+                            console.log("User account " + user['id'] + " deleted successfully!");
+                        }
+                    });
                 }
+
+                /*    baseRef.removeUser({
+                        email: "bobtony@firebase.com",
+                        password: "correcthorsebatterystaple"
+                    }, function(error) {
+                        if (error) {
+                            switch (error.code) {
+                                case "INVALID_USER":
+                                    console.log("The specified user account does not exist.");
+                                    break;
+                                case "INVALID_PASSWORD":
+                                    console.log("The specified user account password is incorrect.");
+                                    break;
+                                default:
+                                    console.log("Error removing user:", error);
+                            }
+                        } else {
+                            console.log("User account deleted successfully!");
+                        }
+
+                    });
+                */
             })
 
         }, function (errorObject) {
@@ -38,9 +75,9 @@ baseRef.authWithCustomToken(firebaseToken, function(error, result) {
         console.log("Authentication Failed!", error);
     } else {
         Cleanup.removeTempUsers();
-        baseRef.child('rooms').set(baseRooms);
-        baseRef.child('connections').set({});
-        baseRef.child('messages').set({});
+        // baseRef.child('rooms').set(baseRooms);
+        // baseRef.child('connections').set({});
+        // baseRef.child('messages').set({});
         console.log('cleanup finished');
         setTimeout(function() {
             process.exit(0);

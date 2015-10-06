@@ -32,7 +32,7 @@ Ext.define('auth.view.authentication.LockingWindow', {
         type: 'vbox',
         align: 'center',
         pack: 'center'
-    },
+    }
 
 
 });

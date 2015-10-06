@@ -109,7 +109,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
         {
             type: 'gear',
             bind:{
-                tooltip: '{user.name}'
+                tooltip: '{user.name} Settings'
             },
             callback: 'onUserClick'
         },{
