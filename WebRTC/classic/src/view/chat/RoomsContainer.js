@@ -19,7 +19,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
             iconCls: 'x-fa fa-pencil',
             plain: true,
             bind:{
-                disabled: '{!isRoomSelected}'
+                disabled: '{!isRoomSelectedByOwner}'
             },
             listeners: {
                 click: 'onRoomEdit'
@@ -52,7 +52,7 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
             iconCls: 'x-fa fa-trash-o',
             plain: true,
             bind:{
-                disabled: '{!isRoomSelected}'
+                disabled: '{!isRoomSelectedByOwner}'
             },
             listeners: {
                 click: 'onRoomRemove'
@@ -108,6 +108,9 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
     tools: [
         {
             type: 'gear',
+            bind:{
+                tooltip: '{user.name}'
+            },
             callback: 'onUserClick'
         },{
             type: 'save',
@@ -117,9 +120,11 @@ Ext.define('WebRTC.view.chat.RoomsContainer', {
             handler: 'onGearClick'
         }, {
             type: 'maximize',
+            tooltip: 'Full Screen',
             callback: 'onToggleFullScreen'
         },{
             type: 'help',
+            tooltip: 'About',
             callback: function() {
                 Ext.create('Ext.window.Window', {
                     title: 'About',

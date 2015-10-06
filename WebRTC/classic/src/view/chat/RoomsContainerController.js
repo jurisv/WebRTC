@@ -324,7 +324,9 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
             tab = roomtabs.insert(0, newroom);
 
-            tab.getViewModel().set('room', record);
+            //Set the viewmodel on the container as the room model will link to it.
+            // tab.getViewModel().set('room', record);
+            this.getViewModel().set('room', record);
 
             tab.getViewModel().getStore('messages').getProxy().setExtraParam('room',id);
             tab.getViewModel().getStore('messages').load();

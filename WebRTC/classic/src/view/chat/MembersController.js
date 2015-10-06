@@ -43,7 +43,6 @@ Ext.define('WebRTC.view.chat.MembersController', {
 
 
     onDblClick: function(list,record){
-        debugger;
         var auth = WebRTC.app.getController('Auth'),
             user = this.getViewModel().get('user'),
             member = record.get('id'),
@@ -52,18 +51,18 @@ Ext.define('WebRTC.view.chat.MembersController', {
         if(user['id'] == record.get('id')){
             this.fireEvent('openUser');
         }else{
-
+            userroomsRef.once("value", function (snap) {
+                if ( snap.val() ) {
+                    console.log('foundroom');
+                }else{
+                    console.log('createrooms');
+                    //userroomsRef.update({private:true})
+                }
+            }, function (err) {
+                    console.log(err);
+            });
         }
 
-       /* membersRef.update({
-            id: user['id'],
-            callStatus:'idle',
-            micStatus:'',
-            name: user['fn']
-        });
-        // when I disconnect, remove this member
-        membersRef.onDisconnect().remove();
-        console.log('members | room joined')*/
     },
 
     onVisibilityChanged: function(){

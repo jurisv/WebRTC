@@ -38,9 +38,9 @@ Ext.define('WebRTC.view.chat.RoomsContainerModel', {
     },
     formulas: {
         isRoomSelectedByOwner: function (get) {
-            var user = Ext.first('chatroomscontainer').getViewModel().get('user');
+            var user = get('user');
             if (user) {
-                return get('room') != null && (user.id == get('room').get('owner') );    //edit allowed only when owner
+                return get('room') != null && (user['id'] == get('room').get('owner') );    //edit allowed only when owner
             } else {
                 return false
             }
