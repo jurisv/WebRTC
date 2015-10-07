@@ -74,22 +74,28 @@ Ext.define('WebRTC.view.chat.MembersController', {
     },
 
     onIdle: function(lastActivity){
-        var me=this;
+        var me=this,
+            user = this.getViewModel().get('user');
         if(me.isIdle){return}
         me.isIdle = true;
         me.setPresenseStatus({
             status: 'idle',
+            id: user['id'],
+            name: user['fn'],
             lastActivity: lastActivity
         });
         // console.log('idle');
     },
 
     onActive: function(){
-        var me=this;
+        var me=this,
+            user = this.getViewModel().get('user');
         if(me.isIdle){
             me.isIdle = false;
             me.setPresenseStatus({
                 status: 'online',
+                id: user['id'],
+                name: user['fn'],
                 lastActivity: null
             });
         }

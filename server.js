@@ -5,7 +5,6 @@ var fs = require('fs'),                         // file system
     moment = require('moment'),                 // moment is a friendly time library
     ejs = require('ejs'),                       // ejs is a template engine for JSON to HTML
     wrap = require('./lib/wrapjsonresponse.js'),
-
     data,
     firebase,
     serverConfig;
@@ -23,7 +22,6 @@ var app = module.exports = require('express')();                      // Setup e
 //to parse form body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 
 if(nconf.get('adminsettings')['serviceprovider'] != undefined){

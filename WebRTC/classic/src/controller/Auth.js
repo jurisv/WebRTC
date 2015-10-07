@@ -569,14 +569,19 @@ Ext.define('WebRTC.controller.Auth', {
                 con.onDisconnect().remove();
 
                 me.fireEvent('connected');
+
                 me.setPresenseStatus({
                     status: 'online',
+                    id: me.user['id'],
+                    name: me.user['fn'],
                     statusOrder: 100,
                     lastActivity: null
                 });
 
                 userRef.onDisconnect().update({
                     status: 'offline',
+                    id: me.user['id'],
+                    name: me.user['fn'],
                     statusOrder: 0,
                     lastOnceLine: Firebase.ServerValue.TIMESTAMP,
                     lastActivity: null
@@ -601,6 +606,8 @@ Ext.define('WebRTC.controller.Auth', {
             if (me.isIdle) {
                 me.setPresenseStatus({
                     status: 'online',
+                    id: me.user['id'],
+                    name: me.user['fn'],
                     statusOrder: 100,
                     lastActivity: null
                 });
@@ -638,6 +645,8 @@ Ext.define('WebRTC.controller.Auth', {
             me.isIdle = true;
             me.setPresenseStatus({
                 status: 'idle',
+                id: me.user['id'],
+                name: me.user['fn'],
                 statusOrder: 10,
                 lastActivity: Firebase.ServerValue.TIMESTAMP
             });

@@ -13,10 +13,13 @@ Ext.define('WebRTC.view.chat.PresenseController', {
 
     onCloseRoom: function(tab, room, user){
         var auth = WebRTC.app.getController('Auth'),
+            user = this.getViewModel().get('user'),
             usersRef = auth.firebaseRef.child('users/' + user['id']);
 
         usersRef.update({
             status: 'online',
+            id: user['id'],
+            name: user['fn'],
             statusOrder: 100
         });
 
@@ -25,10 +28,13 @@ Ext.define('WebRTC.view.chat.PresenseController', {
 
     onJoinRoom: function(tab, room, user){
         var auth = WebRTC.app.getController('Auth'),
+            user = this.getViewModel().get('user'),
             usersRef = auth.firebaseRef.child('users/' + user['id']);
 
         usersRef.update({
             status: 'online',
+            id: user['id'],
+            name: user['fn'],
             statusOrder: 100
         });
 
