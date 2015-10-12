@@ -50,6 +50,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
 
     //user was already logged in
     onAuthIsLogin: function(){
+        console.log('Was logged in now selecting');
         this.deferAndSelectFirst();
     },
 
@@ -106,13 +107,14 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
                         //not sure why this event isn't getting fired
                         combo.fireEvent('select',combo,record);
                     }else{
+                        console.log('hmm no currentLaunchRoom');
                         // combo.select(store.getAt(0));
                         // list.getSelectionModel().select(0)
                         //not sure why this event isn't getting fired
                         // combo.fireEvent('select',combo,record);
                     }
                 },
-                500);
+                700);
             }
         }
     },
@@ -122,7 +124,7 @@ Ext.define('WebRTC.view.chat.RoomsContainerController', {
         var me = this;
         Ext.defer(function() {
             me.selectFirstRoom();
-        }, deferLength || 1200);
+        }, deferLength || 500);
     },
 
 

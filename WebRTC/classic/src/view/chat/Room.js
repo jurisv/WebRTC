@@ -17,7 +17,7 @@ Ext.define('WebRTC.view.chat.Room', {
     items: [
         {
             layout: {
-                type: 'box',
+                type: 'border',
                 vertical: false,
                 align: 'stretch'
             },
@@ -29,7 +29,8 @@ Ext.define('WebRTC.view.chat.Room', {
                         vertical: true,
                         align: 'stretch'
                     },
-                    flex: 4,
+                    region: 'center',
+                    flex: 1,
                     bodyPadding: 8,
                     items: [
                         {
@@ -44,6 +45,10 @@ Ext.define('WebRTC.view.chat.Room', {
                 },
                 {
                     hidden: false,
+                    region: 'east',
+                    collapsable: true,
+                    collasped: true,
+                    split:true,
                     layout: {
                         type: 'box',
                         vertical: true,
@@ -106,15 +111,25 @@ Ext.define('WebRTC.view.chat.Room', {
                             ]
                         },{
                             xtype:'panel',
-                            bodyPadding: 6,
+                            // bodyPadding: 3,
+                            bodyStyle: 'background-color: #cacaca; margin:10px;',
+                            layout: {
+                                type: 'box',
+                                pack: 'center',
+                                align: 'center'
+                            },
                             items: [{
                                 xtype: 'container',
+                                bodyPadding: 4,
                                 // cls: 'youBox',
                                 layout: 'fit',
                                 hidden: true,
+                                maxWidth: 400,
+                                maxHeight: 400,
                                 minwidth: 200,
-                                height: 200,
-                                minHeight: 180,
+                                height: 150,
+                                width: 225,
+                                minHeight: 110,
                                 reference: 'you'
                             }],
                             bind: {
@@ -130,11 +145,16 @@ Ext.define('WebRTC.view.chat.Room', {
                             minHeight: 80,
                             flex: 1
                         }, {
-                            xtype: 'chatvideowall',
-                            hidden: true,
-                            bodyPadding: 6,
-                            minHeight: 200,
-                            flex: 3
+                            layout: 'fit',
+                            flex: 2,
+                            items:[{
+                                xtype: 'chatvideowall',
+                                hidden: true,
+                                bodyPadding: 10,
+                                minHeight: 200,
+                                autoScroll: true,
+                                flex: 1
+                            }]
                         }, {
                             title: 'Files',
                             hidden: true,

@@ -63,13 +63,13 @@ Ext.define('opentok.OpenTokMixin', {
 
         var newly = remotestreams.add({
             xtype: 'panel',
-            bodyPadding: 3,
+            bodyPadding: 2,
+            margin:'3 3 3 3',
             itemId: this.getSafeStreamCmpId(event.stream.id),
             html:'<div id="' + event.stream.id + '"></div>',
             flex: 1,
-            maxHeight: 300,
-            minWidth: 150,
-            minHeight: 150
+            minWidth: 250,
+            minHeight: 200
         });
 
         var subscription = session.subscribe(event.stream, event.stream.id , {

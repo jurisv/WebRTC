@@ -5,10 +5,7 @@ Ext.define('WebRTC.view.chat.VideoWall', {
     itemId: 'remotestreams',
     bodyStyle: 'background-color: #cacaca;',
     layout: {
-        type: 'box',
-        pack: 'center',
-        align: 'stretch',
-        vertical: true
+        type: 'column'
     },
 
     items: [],
