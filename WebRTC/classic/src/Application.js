@@ -16,6 +16,10 @@ Ext.define('WebRTC.Application', {
 
     stores:['WebRTC.store.chat.Rooms','Settings','SecurityRoles','Users'],
 
+    init: function(){
+        WebRTC.util.ErrorLogger.init();
+    },
+
     onAppUpdate: function () {
         Ext.Msg.confirm('Application Update', 'This application has an update, reload?',
             function (choice) {

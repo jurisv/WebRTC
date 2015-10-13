@@ -40,6 +40,11 @@ if(serverConfig.logAllCalls) {
     });
 }
 
+//All browser crashes are logged to here.
+app.route('/crashlog')
+    .get(function(req, res, id) {
+        res.status(200).send(null);
+    });
 
 //Route all data related calls as a single route with an id or not
 app.route('/data/:store/:id')
