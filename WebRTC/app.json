@@ -199,12 +199,12 @@
      * Settings specific to classic toolkisencha app regft builds.
      */
     "classic": {
-        // "js": [
-        //     {
-        //         // Remove this entry to individually load sources from the framework.
-        //        //  "path": "${framework.dir}/build/ext-all-rtl-debug.js"
-        //     }
-        // ]
+       "js": [
+             {
+                 // Remove this entry to individually load sources from the framework.
+               //"path": "${framework.dir}/build/ext-all.js"
+             }
+         ]
     },
 
     /**

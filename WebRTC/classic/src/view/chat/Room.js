@@ -30,7 +30,7 @@ Ext.define('WebRTC.view.chat.Room', {
                         align: 'stretch'
                     },
                     region: 'center',
-                    flex: 1,
+                    flex: 3,
                     bodyPadding: 8,
                     items: [
                         {
@@ -87,6 +87,30 @@ Ext.define('WebRTC.view.chat.Room', {
                                     }
                                 }
                                 , '->',
+                                {
+                                    iconCls: 'x-fa fa-user',
+                                    bind: {
+                                        hidden: '{!inVideoCall}',
+                                        tooltip: '{showSelfTooltip}',
+                                        iconCls: '{isShowingSelfIcon}'
+                                    },
+                                    listeners: {
+                                        click: 'onShowSelfToggle'
+                                    }
+                                }
+                                , '->',
+                                {
+                                    iconCls: 'x-fa fa-th',
+                                    bind: {
+                                        disabled: false,
+                                        tooltip: '{wallTooltip}',
+                                        hidden: '{!isStreams}'
+
+                                    },
+                                    listeners: {
+                                        click: 'onVideoWallToggle'
+                                    }
+                                },
                                 {
                                     iconCls: 'x-fa fa-eye',
                                     tooltip: 'Toggle Camera',
@@ -145,16 +169,28 @@ Ext.define('WebRTC.view.chat.Room', {
                             minHeight: 80,
                             flex: 1
                         }, {
-                            layout: 'fit',
-                            flex: 2,
-                            items:[{
-                                xtype: 'chatvideowall',
-                                hidden: true,
-                                bodyPadding: 10,
-                                minHeight: 200,
-                                autoScroll: true,
-                                flex: 1
-                            }]
+                            xtype: 'chatvideowall',
+                            bind: {
+                                title: '{room.name} Wall',
+                                hidden: '{!showStreams}'
+                            },
+                            header: {
+                                listeners: {
+                                    dblclick: function(){
+                                        // console.log('clicked');
+                                        alert('dble');
+                                    }
+                                }
+                            },
+                            listeners:{
+                              hide: 'onWallHide'
+
+                            },
+                            hidden: true,
+                            // bodyPadding: 10,
+                            minHeight: 200,
+                            autoScroll: true,
+                            flex: 1
                         }, {
                             title: 'Files',
                             hidden: true,

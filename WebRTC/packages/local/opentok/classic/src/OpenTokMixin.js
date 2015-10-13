@@ -56,7 +56,8 @@ Ext.define('opentok.OpenTokMixin', {
             them = tab.down('#them');
 
         if(  Ext.first('[reference=roomtabs]').items.items[0].sessionId == tab.sessionId ){
-            if(remotestreams.isHidden()){
+            if( tab.getViewModel().get('showStreams') ){
+                tab.getViewModel().set('isStreams',true);
                 remotestreams.show()
             }
         }
@@ -105,6 +106,7 @@ Ext.define('opentok.OpenTokMixin', {
             if(deadCmp){
                 deadCmp.destroy();
                 if(!remotestreams.items.length){
+                    tab.getViewModel().set('isStreams',false);
                     remotestreams.hide();
                 }
             }

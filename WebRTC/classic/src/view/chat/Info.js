@@ -24,7 +24,7 @@ Ext.define('WebRTC.view.chat.Info', {
                     if(isPrivate){
                         return '<span class="x-fa fa-shield fa-lg room-icon"></span>'
                     }else{
-                        return '<span class="x-fa fa-comments fa-lg room-icon"></span>'
+                        return '<span class="x-fa fa-group fa-lg room-icon"></span>'
                     }
                 }
             }

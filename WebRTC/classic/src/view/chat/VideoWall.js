@@ -1,5 +1,5 @@
 Ext.define('WebRTC.view.chat.VideoWall', {
-    extend: 'Ext.Panel',
+    extend: 'Ext.window.Window',
     xtype: 'chatvideowall',
     autoscroll: 'true',
     itemId: 'remotestreams',
@@ -7,7 +7,7 @@ Ext.define('WebRTC.view.chat.VideoWall', {
     layout: {
         type: 'column'
     },
-
+    closeAction: 'hide',
     items: [],
     tbar:[{
         // This is experimental to see if we can pop out video wall.

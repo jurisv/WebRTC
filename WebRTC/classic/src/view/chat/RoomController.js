@@ -210,6 +210,40 @@ Ext.define('WebRTC.view.chat.RoomController', {
 
     },
 
+    onShowSelfToggle: function(button){
+        var you = Ext.first('[reference=you]'),
+            showSelf = this.getViewModel().get('showSelf');
+
+        if( showSelf ){
+            this.getViewModel().set('showSelf',false);
+            you.hide();
+        }else{
+            this.getViewModel().set('showSelf',true);
+            you.show();
+        }
+
+    },
+
+    onVideoWallToggle: function(button){
+        var you = this.lookupReference('videowall'),
+            sessionId = this.getViewModel().get('room.sessionId');
+
+        if( this.getViewModel().get('showStreams') ){
+            this.getViewModel().set('showStreams',false);
+            // this.setMemberCallStatus({callStatus:'video-hide'});
+            // this.fireEvent('hidePublisherVideo', sessionId);
+        }else{
+            this.getViewModel().set('showStreams',true);
+            // this.setMemberCallStatus({callStatus:'video'});
+            // this.fireEvent('showPublisherVideo', sessionId);
+        }
+
+    },
+
+    onWallHide: function(button){
+        this.getViewModel().set('showStreams',false);
+    },
+
     onMessagesLoad: function(){
         this.fireEvent('playsound','chat-sound');
     }

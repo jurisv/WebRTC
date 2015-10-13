@@ -5,6 +5,9 @@ Ext.define('WebRTC.view.chat.RoomModel', {
     data: {
         inAudioCall: false,
         inVideoCall: false,
+        isStreams: false,
+        showStreams: true,
+        showSelf: true,
         useMic: true,
         useCamera: true
     },
@@ -101,6 +104,41 @@ Ext.define('WebRTC.view.chat.RoomModel', {
                 return false;
             } else {
                 return true;
+            }
+        },
+        isInCall: function (get) {
+            if (get('inVideoCall')) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isShowingSelf: function (get) {
+            if (get('showSelf')) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        showSelfTooltip: function (get) {
+            if (get('showSelf')) {
+                return 'Hide You';
+            } else {
+                return 'Show You';
+            }
+        },
+        wallTooltip: function (get) {
+            if (get('showStreams')) {
+                return 'Hide Wall';
+            } else {
+                return 'Show Wall';
+            }
+        },
+        isShowingSelfIcon: function (get) {
+            if (get('showSelf')) {
+                return 'x-fa fa-user';
+            } else {
+                return 'x-fa fa-user-times';
             }
         },
         isWebRTCSupported: function (get) {
